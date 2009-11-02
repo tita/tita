@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+	<!--
+
+   Copyright 2009 TiTA
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+
+	<groupId>at.ac.tuwien.ifs</groupId>
+	<artifactId>tita-parent</artifactId>
+	<packaging>pom</packaging>
+	<version>1.0.0-SNAPSHOT</version>
+	<name>tita-parent</name>
+
+	<licenses>
+		<license>
+			<name>Propietary</name>
+			<comments>(C) 2009 TiTA</comments>
+		</license>
+	</licenses>
+
+	<properties>
+
+		<!-- Library Versions -->
+		<spring.version>2.5.6.SEC01</spring.version>
+		<jdk.version>1.6</jdk.version>
+
+		<slf4j.version>1.5.8</slf4j.version>
+		<jgit.version>0.5.0</jgit.version>
+		<log4j.version>1.2.14</log4j.version>
+		<commons.lang.version>2.4</commons.lang.version>
+		<junit.version>4.4</junit.version>
+		<mockito.version>1.7</mockito.version>
+		<xmlunit.version>1.3</xmlunit.version>
+
+		<!-- Plugin Version -->
+		<docbkx.version>2.0.7</docbkx.version>
+		<maven.plugin.surefire>2.4.3</maven.plugin.surefire>
+
+	</properties>
+
+
+	<description>
+	Parent project of all TiTA subprojects. 
+  </description>
+
+	<modules>
+
+	</modules>
+
+	<inceptionYear>2009</inceptionYear>
+
+	<scm>
+		<connection>scm:git:git://github.com/tita/tita.git</connection>
+		<developerConnection>scm:git:git@github.com:tita/tita.git</developerConnection>
+		<url>http://github.com/tita/tita</url>
+	</scm>
+
+	<issueManagement>
+		<system>GitHub</system>
+		<url>.....</url>
+	</issueManagement>
+
+	<ciManagement>
+		<!--Hudson -->
+	</ciManagement>
+
+	<mailingLists>
+
+		<mailingList>
+			<name>Developer Mailing List</name>
+			<post>tita_ase@googlegroups.com</post>
+			<archive>http://groups.google.com/group/tita_ase</archive>
+		</mailingList>
+
+	</mailingLists>
+
+	<developers>
+		<developer>
+			<id>api</id>
+			<name>Christoph Zehetner</name>
+			<organization>ASE Group 10 TiTA</organization>
+			<email>chris.zehetner@gmail.com</email>
+			<timezone>+1</timezone>
+			<roles>
+				<role>Team coordinator</role>
+				<role>Developer</role>
+				<role>Git Expert</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>fwa</id>
+			<name>Johannes Ferner</name>
+			<organization>ASE Group 10 TiTA</organization>
+			<email>johannes_ferner@yahoo.de</email>
+			<timezone>+1</timezone>
+			<roles>
+				<role>2nd Team coordniator</role>
+				<role>Developer</role>
+				<role>Spring Expert</role>
+			</roles>
+		</developer>
+		<developer>
+			<name>Herbert Brunner</name>
+			<email>herbert.brunner@gmail.com</email>
+			<organization>ASE Group 10 TiTA</organization>
+			<timezone>+1</timezone>
+			<roles>
+				<role>Technical architect</role>
+				<role>Developer</role>
+				<role>Wicket Expert</role>
+			</roles>
+		</developer>
+		<developer>
+			<name>Rene Kernegger</name>
+			<email>rene.kernegger@tele2.at</email>
+			<organization>ASE Group 10 TiTA</organization>
+			<timezone>+1</timezone>
+			<roles>
+				<role>2nd Technical Archtect</role>
+				<role>Developer</role>
+				<role>Jasper Reports Expert</role>
+			</roles>
+		</developer>
+		<developer>
+			<name>Karin Popp</name>
+			<email>karin.popp@telering.at</email>
+			<organization>ASE Group 10 TiTA</organization>
+			<timezone>+1</timezone>
+			<roles>
+				<role>Tester</role>
+				<role>Developer</role>
+				<role>Issue Tracker Expert</role>
+			</roles>
+		</developer>
+		<developer>
+			<name>Markus Siedler</name>
+			<email>markus.siedler@gmail.com</email>
+			<organization>ASE Group 10 TiTA</organization>
+			<timezone>+1</timezone>
+			<roles>
+				<role>Document Manager</role>
+				<role>Developer</role>
+				<role>Issue Tracker Expert</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*</include>
+				</includes>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<includes>
+					<include>**/*</include>
+				</includes>
+			</testResource>
+		</testResources>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+					<targetJdk>${jdk.version}</targetJdk>
+					<fork>true</fork>
+					<meminitial>128m</meminitial>
+					<maxmem>512m</maxmem>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+				<configuration>
+					<reportSets>
+						<reportSet>
+							<reports>
+								<report>report-only</report>
+							</reports>
+						</reportSet>
+					</reportSets>
+				</configuration>
+			</plugin>
+
+			<!--
+				code covarge for hudson <plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cobertura-maven-plugin</artifactId> <configuration>
+
+				<outputDirectory>results/cobertura</outputDirectory> <formats>
+
+				<format>xml</format> </formats> <instrumentation> <excludes>
+				<exclude>**/*Test*.class</exclude> </excludes> </instrumentation>
+				</configuration> </plugin> <plugin>
+				<groupId>com.keyboardsamurais.maven</groupId>
+				<artifactId>maven-timestamp-plugin</artifactId>
+				<version>0.1</version> <configuration>
+				<propertyName>build.timestamp</propertyName>
+				<timestampPattern>yyyyMMdd</timestampPattern> </configuration>
+				<executions> <execution> <goals> <goal>create</goal> </goals>
+				</execution> </executions> </plugin> <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId> <configuration>
+				<linkXref>false</linkXref> <sourceEncoding>UTF-8</sourceEncoding>
+				<minimumTokens>30</minimumTokens>
+				<targetJdk>{jdk.version}</targetJdk> <rulesets>
+				<ruleset>/rulesets/unusedcode.xml</ruleset>
+				<ruleset>/rulesets/basic.xml</ruleset>
+				<ruleset>/rulesets/design.xml</ruleset>
+				<ruleset>/rulesets/braces.xml</ruleset>
+				<ruleset>/rulesets/naming.xml</ruleset> </rulesets> </configuration>
+				</plugin>
+			-->
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<addMavenDescriptor>false</addMavenDescriptor>
+						<manifest>
+							<addDefaultImplementationEntries> true 
+						</addDefaultImplementationEntries>
+						</manifest>
+						<manifestEntries>
+							<!--
+								siehe
+								http://hudson.gotdns.com/wiki/display/HUDSON/Building+a+software+project
+							-->
+							<Revision>${SVN_REVISION}</Revision>
+							<BuildTag>${BUILD_TAG}</BuildTag>
+							<BuildTimestamp>${build.timestamp}</BuildTimestamp>
+							<JDKVersion>${jdk.version}</JDKVersion>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<configuration>
+					<!-- 
+					<configLocation>checkstyle.xml</configLocation>
+					<cacheFile>${project.build.directory}/resources/checkstyle-cachefile</cacheFile>
+					<outputFile>${project.build.directory}/checkstyle/checkstyle-result.xml</outputFile>
+					<enableRSS>false</enableRSS>
+					-->
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+
+
+			<!--
+				for licenses <plugin> <groupId>org.apache.rat</groupId>
+				<artifactId>apache-rat-plugin</artifactId> <configuration>
+				<excludeSubProjects>false</excludeSubProjects> <excludes>
+				<exclude>**/.gitignore</exclude> <exclude>**/.git/**</exclude>
+
+				<exclude>**/target/**</exclude> <exclude>**/.classpath</exclude>
+				<exclude>**/.project</exclude> <exclude>**/.settings/**</exclude>
+				<exclude>**/.metadata/**</exclude> </excludes> </configuration>
+				<executions> <execution> <phase>verify</phase> <goals>
+				<goal>check</goal> </goals> </execution> </executions> </plugin>
+			-->
+		</plugins>
+	</build>
+
+	<dependencyManagement>
+		<dependencies>
+
+			<!-- Documentation -->
+
+			<!-- Logging Dependencies -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>jcl-over-slf4j</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>${log4j.version}</version>
+			</dependency>
+
+			<!-- Spring Dependencies -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-test</artifactId>
+				<version>${spring.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-aop</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-jms</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>cglib</groupId>
+				<artifactId>cglib</artifactId>
+				<version>${cglib.version}</version>
+			</dependency>
+
+
+			<!-- Util Dependencies -->
+			<dependency>
+				<groupId>commons-lang</groupId>
+				<artifactId>commons-lang</artifactId>
+				<version>${commons.lang.version}</version>
+			</dependency>
+
+			<!-- Test Dependencies -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${junit.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-all</artifactId>
+				<version>${mockito.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>xmlunit</groupId>
+				<artifactId>xmlunit</artifactId>
+				<version>${xmlunit.version}</version>
+				<scope>test</scope>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
+
+	<repositories>
+
+	</repositories>
+
+	<distributionManagement>
+		<!--
+			<repository> <id>internal</id> <name>Internal Release
+			Repository</name> <url>
+			dav:http://svnmaster:8181/archiva/repository/internal/ </url>
+			</repository> <snapshotRepository> <id>snapshots</id> <name>Internal
+			Snapshot Repository</name> <url>
+			dav:http://svnmaster:8181/archiva/repository/snapshots/ </url>
+			</snapshotRepository>
+		-->
+	</distributionManagement>
+
+</project>

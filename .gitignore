@@ -1,0 +1,21 @@
+#=================
+#eclipse-workspace
+#=================
+.metadata
+
+#=================
+#eclipse-project
+#=================
+*.project
+*.classpath
+*.settings
+
+#=================
+#maven-files
+#=================
+*target
+
+#================
+#log files
+#================
+
