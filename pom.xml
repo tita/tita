@@ -374,6 +374,16 @@
 				<version>${xmlunit.version}</version>
 				<scope>test</scope>
 			</dependency>
+			
+			<!-- Jasper Dependency -->
+			   
+			<dependency>
+				<groupId>jasperreports</groupId>
+				<artifactId>jasperreports</artifactId>
+				<version>3.6.1</version>
+			</dependency>
+
+
 
 		</dependencies>
 	</dependencyManagement>
