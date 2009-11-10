@@ -39,7 +39,7 @@
 		<jcommon.version>1.0.16</jcommon.version>
 		<jasperreports.version>3.6.1</jasperreports.version>
 		<jfreechart.version>1.0.13</jfreechart.version>
-		<wicket.version>1.4-rc1</wicket.version>
+		<wicket.version>1.4.0</wicket.version>
 		<velocity.version>1.4</velocity.version>
 		<jhighlight.version>1.0</jhighlight.version>
 		
@@ -295,7 +295,7 @@
 				<goal>check</goal> </goals> </execution> </executions> </plugin>
 			-->
 			
-			<!-- for automatic validating and compiling of jasper jrxml reports -->
+			<!-- for automatic validating and compiling of jasper jrxml reports 
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>jasperreports-maven-plugin</artifactId>
@@ -308,8 +308,8 @@
 					  <goal>compile-reports</goal>
 					</goals>
 				  </execution>
-				</executions>
-				<!-- do not delete is needed a second time -->
+				</executions>-->
+				<!-- do not delete is needed a second time 
 			   <dependencies>
 				 <dependency>
 				   <groupId>jasperreports</groupId>
@@ -317,7 +317,7 @@
 				   <version>${jasperreports.version}</version>
 				 </dependency>
 			   </dependencies>
-			</plugin>
+			</plugin>-->
 		</plugins>
 	</build>
 
@@ -432,10 +432,10 @@
 			<!-- wicket dependencies -->
 			<dependency>
 				<groupId>org.apache.wicket</groupId>
-				<artifactId>wicket</artifactId>
+				<artifactId>wicket-parent</artifactId>
 				<version>${wicket.version}</version>
 			</dependency>
-			<dependency>
+			<!--<dependency> 
 				<groupId>org.apache.wicket</groupId>
 				<artifactId>wicket</artifactId>
 			</dependency>
@@ -485,13 +485,22 @@
 				<groupId>javax.portlet</groupId>
 				<artifactId>portlet-api</artifactId>
 				<scope>provided</scope>
-			</dependency>
+			</dependency>-->
 
 		</dependencies>
 	</dependencyManagement>
 
 	<repositories>
+		<repository>
+			<id>org.wicketstuff</id>
+			<name>Wicket Stuff Repository</name>
+			<url>http://wicketstuff.org/maven/repository</url>
+		</repository>
 
+		<repository>
+			<id>thirdparty</id>
+			<url>http://maven.openengsb.org/nexus/content/repositories/thirdparty</url>
+		</repository>
 	</repositories>
 
 	<distributionManagement>
@@ -504,16 +513,7 @@
 			dav:http://svnmaster:8181/archiva/repository/snapshots/ </url>
 			</snapshotRepository>
 		-->
-		<repository>
-			<id>org.wicketstuff</id>
-			<name>Wicket Stuff Repository</name>
-			<url>http://wicketstuff.org/maven/repository</url>
-		</repository>
-
-		<repository>
-			<id>thirdparty</id>
-			<url>http://maven.openengsb.org/nexus/content/repositories/thirdparty</url>
-		</repository>
+		
 		 
 	</distributionManagement>
 
