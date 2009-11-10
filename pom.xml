@@ -432,7 +432,7 @@
 			<!-- wicket dependencies -->
 			<dependency>
 				<groupId>org.apache.wicket</groupId>
-				<artifactId>wicket-parent</artifactId>
+				<artifactId>wicket</artifactId>
 				<version>${wicket.version}</version>
 			</dependency>
 			<!--<dependency> 
