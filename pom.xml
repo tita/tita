@@ -42,6 +42,7 @@
 		<wicket.version>1.4.3</wicket.version>
 		<velocity.version>1.4</velocity.version>
 		<jhighlight.version>1.0</jhighlight.version>
+		<cglib.version>2.0.2</cglib.version>
 		
 		<!-- Plugin Version -->
 		<docbkx.version>2.0.7</docbkx.version>
