@@ -32,6 +32,7 @@
 		<persistence.version>1.0</persistence.version>
 		<hibcore.version>3.3.2.GA</hibcore.version>
 		<hibentity.version>3.4.0.GA</hibentity.version>
+		<h2db.version>1.2.121</h2db.version>
 		<slf4j.version>1.5.8</slf4j.version>
 		<jgit.version>0.5.0</jgit.version>
 		<log4j.version>1.2.14</log4j.version>
@@ -408,6 +409,13 @@
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-entitymanager</artifactId>
 				<version>${hibentity.version}</version>
+			</dependency>
+			
+			<!--  H2 Database -->
+			<dependency>
+				<groupId>com.h2database</groupId>
+				<artifactId>h2</artifactId>
+				<version>${h2db.version}</version>
 			</dependency>
 		
 			<!-- Util Dependencies -->
