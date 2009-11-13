@@ -16,7 +16,7 @@
   <name>tita-datasource</name>
  
   <description>
-    Module that offers data-acces to other modules
+    Module that offers data-access to other modules
   </description>
  
   <dependencies>
@@ -45,13 +45,7 @@
 		<artifactId>hibernate-entitymanager</artifactId>
 		<version>3.4.0.GA</version>
 	</dependency>
-
-	<dependency>
-		<groupId>javax.servlet</groupId>
-		<artifactId>servlet-api</artifactId>
-		<version>2.4</version>
-	</dependency>
-		
+	
 	<!-- Spring Dependencies -->
 	<dependency>
 		<groupId>org.springframework</groupId>
