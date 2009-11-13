@@ -3,26 +3,25 @@ package at.ac.tuwien.ifs.tita.datasource.main;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import at.ac.tuwien.ifs.tita.datasource.dao.IBaseDAO;
 import at.ac.tuwien.ifs.tita.datasource.domain.Role;
 import at.ac.tuwien.ifs.tita.datasource.domain.User;
+import at.ac.tuwien.ifs.tita.datasource.exception.TitaDAOException;
+import at.ac.tuwien.ifs.tita.datasource.service.IUserService;
 
 public class Main {
-    public static void main(String[] args) {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("beans.xml");
-        IBaseDAO<User> userDAO = (IBaseDAO<User>) ctx.getBean("userDAO");
-        IBaseDAO<Role> roleDAO = (IBaseDAO<Role>) ctx.getBean("roleDAO");
+    public static void main(String[] args) throws TitaDAOException {
+        ApplicationContext ctx = new ClassPathXmlApplicationContext(
+                "persistence-context.xml");
+
+        IUserService service = (IUserService) ctx.getBean("userService");
 
         Role role1 = new Role();
         role1.setDescription("Das ist die TestRolle1");
         Role role2 = new Role();
         role2.setDescription("Das ist die TestRolle2");
 
-        roleDAO.save(role1);
-        roleDAO.save(role2);
-
-        System.err.println(roleDAO.getById(Role.class, 1L).getDescription());
-        System.err.println(roleDAO.getById(Role.class, 2L).getDescription());
+        role1 = service.saveRole(role1);
+        role2 = service.saveRole(role2);
 
         User u1 = new User();
         u1.setDeleted(false);
@@ -39,19 +38,23 @@ public class Main {
         u2.setFirstName("User2");
         u2.setLastName("LastnameUser2");
         u2.setPassword("User2");
-        u2.setRole(role2);
+        u2.setRole(role1);
         u2.setUserName("username2");
 
-        userDAO.save(u1);
-        userDAO.save(u2);
+        u1 = service.saveUser(u1);
+        u2 = service.saveUser(u2);
 
-        System.err.println(userDAO.getById(User.class, 1L).getUserName());
-        System.err.println(userDAO.getById(User.class, 2L).getUserName());
+        System.err.println("-------------------------------------------------");
+        System.err.println(service.getUserById(u1.getId()).getId());
+        System.err.println(service.getUserById(u1.getId()).getRole());
+        System.err.println(service.getUserById(u1.getId()).getRole().getId());
+        System.err.println(service.getUserById(u2.getId()).getRole().getId());
+        System.err.println("-------------------------------------------------");
 
-        userDAO.delete(u1);
-        userDAO.delete(u2);
+        service.deleteRole(role1);
+        service.deleteRole(role2);
 
-        roleDAO.delete(role1);
-        roleDAO.delete(role2);
+        service.deleteUser(u1);
+        service.deleteUser(u2);
     }
 }

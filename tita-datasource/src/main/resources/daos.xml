@@ -6,5 +6,11 @@
 	<!-- The DAOs -->
 	<bean id="userDAO" class="at.ac.tuwien.ifs.tita.datasource.dao.UserDAO" />
 	<bean id="roleDAO" class="at.ac.tuwien.ifs.tita.datasource.dao.RoleDAO" />
+  
+  <!-- The Services -->
+  <bean id="userService" class="at.ac.tuwien.ifs.tita.datasource.service.UserService" >
+    <property name="userDAO" ref="userDAO"/>
+    <property name="roleDAO" ref="roleDAO"/>
+  </bean>
 
 </beans>

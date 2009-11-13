@@ -2,10 +2,12 @@ package at.ac.tuwien.ifs.tita.datasource.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -24,8 +26,7 @@ public class User extends BaseEntity implements Serializable {
     private String email;
     private boolean deleted;
 
-    // @ManyToMany(mappedBy="Role",fetch = FetchType.EAGER)
-    // FIXME: herausfinden welche relation
+    @OneToOne(cascade = CascadeType.ALL, targetEntity = Role.class)
     private Role role;
 
     @Override
