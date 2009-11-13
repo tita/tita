@@ -1,2 +1,5 @@
 #====Exclude DB Folder=====
 *db
+
+#====Exclude Bin Folder====
+*bin
