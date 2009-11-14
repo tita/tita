@@ -51,10 +51,10 @@ public class Main {
         System.err.println(service.getUserById(u2.getId()).getRole().getId());
         System.err.println("-------------------------------------------------");
 
-        service.deleteRole(role1);
-        service.deleteRole(role2);
-
         service.deleteUser(u1);
         service.deleteUser(u2);
+
+        service.deleteRole(role1);
+        service.deleteRole(role2);
     }
 }

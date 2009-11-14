@@ -22,7 +22,7 @@
   <!--
     NOTE: Autowire option above declares, that Spring looks for Dependencies automatically by a given Name
   -->
- 
+
   <!-- The Entity Manager -->
   <!--
     NOTE: 1. JPA needs a persistence.xml, which is not specified here, JPA automatically looks for

@@ -1,8 +1,24 @@
+/**
+   Copyright 2009 TiTA Project, Vienna University of Technology
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+       http://www.apache.org/licenses/LICENSE\-2.0
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+   
+ */
+
 package at.ac.tuwien.ifs.tita.datasource.dao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import at.ac.tuwien.ifs.tita.datasource.domain.BaseEntity;
@@ -26,6 +42,8 @@ public class BaseDAO<DomainClass extends BaseEntity> implements
 
     protected EntityManager entityManager;
 
+    final Logger log = LoggerFactory.getLogger(BaseDAO.class);
+
     @PersistenceContext
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
@@ -40,19 +58,30 @@ public class BaseDAO<DomainClass extends BaseEntity> implements
      */
     public DomainClass save(DomainClass entity) throws TitaDAOException {
         if (entity == null) {
+            log.debug("Entity is null, Exception will be thrown");
             throw new TitaDAOException(
                     "Entity with value null cannot be persisted");
         }
+
+        log.debug("Trying to persist Domain with Id: " + entity.getId() + ".");
 
         try {
             if (entity.getId() == null) {
                 DomainClass retDomain = entityManager.merge(entity);
                 entityManager.persist(retDomain);
+                log.debug("Entity with Id: " + entity.getId()
+                        + " successfuly  saved!");
                 return retDomain;
             } else {
-                return entityManager.merge(entity);
+                log.debug("Entity seems to exist, trying to update");
+                DomainClass retDomain = entityManager.merge(entity);
+                log.debug("Entity with Id: " + retDomain.getId()
+                        + " successfuly updated!");
+                return entity;
             }
         } catch (Exception e) {
+            log.debug("Exception catched while trying to save Entity with Id: "
+                    + entity.getId());
             throw new TitaDAOException("Exception was thrown: \n" + "Cause: "
                     + e.getCause() + "\n" + "Error: " + e.getMessage());
         }
@@ -66,13 +95,20 @@ public class BaseDAO<DomainClass extends BaseEntity> implements
      */
     public void update(DomainClass entity) throws TitaDAOException {
         if (entity == null || entity.getId() == null) {
+            log.debug("Entity is null, Exception will be thrown");
             throw new TitaDAOException(
                     "Entity cannot be updated if its ID or itself is null");
         }
 
         try {
+            log.debug("Trying to update Entity with Id: " + entity.getId());
             entityManager.merge(entity);
+            log.debug("Entity with Id: " + entity.getId()
+                    + " successfuly updated!");
         } catch (Exception e) {
+            log
+                    .debug("Exception catched while trying to update Entity with Id: "
+                            + entity.getId());
             throw new TitaDAOException("Exception was thrown: \n" + "Cause: "
                     + e.getCause() + "\n" + "Error: " + e.getMessage());
         }
@@ -86,13 +122,20 @@ public class BaseDAO<DomainClass extends BaseEntity> implements
      */
     public void delete(DomainClass entity) throws TitaDAOException {
         if (entity == null || entity.getId() == null) {
+            log.debug("Entity or its Id is null, Exception will be thrown");
             throw new TitaDAOException(
                     "Entity cannot be deleted if its ID or itself is null");
         }
 
         try {
+            log.debug("trying to remove Entity with Id: " + entity.getId());
             entityManager.remove(entityManager.merge(entity));
+            log.debug("Entity with Id: " + entity.getId()
+                    + " successfuly removed");
         } catch (Exception e) {
+            log
+                    .debug("Exception catched while trying to delete Entity with Id: "
+                            + entity.getId());
             throw new TitaDAOException("Exception was thrown: \n" + "Cause: "
                     + e.getCause() + "\n" + "Error: " + e.getMessage());
         }
@@ -109,13 +152,18 @@ public class BaseDAO<DomainClass extends BaseEntity> implements
             Long id) throws TitaDAOException {
 
         if (id == null) {
+            log.debug("Id of Entity is null, Exception will be thrown");
             throw new TitaDAOException("Entity with id: null cannot be found");
         }
 
         DomainClass entity = null;
         try {
+            log.debug("trying to find Entity with Id: " + id);
             entity = entityManager.find(persistentClass, id);
+            log.debug("Entity with Id: " + id + " was found.");
         } catch (Exception e) {
+            log.debug("Exception catched while trying to get Entity with Id: "
+                    + id);
             throw new TitaDAOException("Exception was thrown: \n" + "Cause: "
                     + e.getCause() + "\n" + "Error: " + e.getMessage());
         }
