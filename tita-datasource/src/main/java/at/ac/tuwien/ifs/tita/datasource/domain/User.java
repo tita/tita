@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -26,7 +26,7 @@ public class User extends BaseEntity implements Serializable {
     private String email;
     private boolean deleted;
 
-    @OneToOne(cascade = CascadeType.ALL, targetEntity = Role.class)
+    @ManyToOne(cascade = CascadeType.ALL, targetEntity = Role.class)
     private Role role;
 
     @Override
