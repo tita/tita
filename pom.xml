@@ -36,6 +36,12 @@
 		<junit.version>4.4</junit.version>
 		<mockito.version>1.7</mockito.version>
 		<xmlunit.version>1.3</xmlunit.version>
+		<jcommon.version>1.0.16</jcommon.version>
+		<jasperreports.version>3.6.1</jasperreports.version>
+		<jfreechart.version>1.0.13</jfreechart.version>
+		<wicket.version>1.4.3</wicket.version>
+		<velocity.version>1.4</velocity.version>
+		<jhighlight.version>1.0</jhighlight.version>
 
 		<!-- Plugin Version -->
 		<docbkx.version>2.0.7</docbkx.version>
@@ -158,6 +164,12 @@
 					<include>**/*</include>
 				</includes>
 			</resource>
+			<!--
+				http://mojo.codehaus.org/jasperreports-maven-plugin/examples/example-1.html
+			-->
+			<resource>
+				<directory>target/jasper</directory>
+			</resource>
 		</resources>
 		<testResources>
 			<testResource>
@@ -249,16 +261,16 @@
 					</archive>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<configuration>
-					<!-- 
-					<configLocation>checkstyle.xml</configLocation>
-					<cacheFile>${project.build.directory}/resources/checkstyle-cachefile</cacheFile>
-					<outputFile>${project.build.directory}/checkstyle/checkstyle-result.xml</outputFile>
-					<enableRSS>false</enableRSS>
+					<!--
+						<configLocation>checkstyle.xml</configLocation>
+						<cacheFile>${project.build.directory}/resources/checkstyle-cachefile</cacheFile>
+						<outputFile>${project.build.directory}/checkstyle/checkstyle-result.xml</outputFile>
+						<enableRSS>false</enableRSS>
 					-->
 				</configuration>
 			</plugin>
@@ -272,17 +284,56 @@
 			</plugin>
 
 
-			<!--
-				for licenses <plugin> <groupId>org.apache.rat</groupId>
-				<artifactId>apache-rat-plugin</artifactId> <configuration>
-				<excludeSubProjects>false</excludeSubProjects> <excludes>
-				<exclude>**/.gitignore</exclude> <exclude>**/.git/**</exclude>
+			<!-- licenses -->
+			<plugin>
+				<groupId>org.apache.rat</groupId>
+				<artifactId>apache-rat-plugin</artifactId>
+				<configuration>
+					<excludeSubProjects>false</excludeSubProjects>
+					<excludes>
+						<exclude>**/.gitignore</exclude>
+						<exclude>**/.git/**</exclude>
 
-				<exclude>**/target/**</exclude> <exclude>**/.classpath</exclude>
-				<exclude>**/.project</exclude> <exclude>**/.settings/**</exclude>
-				<exclude>**/.metadata/**</exclude> </excludes> </configuration>
-				<executions> <execution> <phase>verify</phase> <goals>
-				<goal>check</goal> </goals> </execution> </executions> </plugin>
+						<exclude>**/target/**</exclude>
+						<exclude>**/.classpath</exclude>
+						<exclude>**/.project</exclude>
+						<exclude>**/.settings/**</exclude>
+						<exclude>**/.metadata/**</exclude>
+						
+						<exclude>**/*.pdf</exclude>
+						<exclude>**/*.jpg</exclude>
+						<exclude>**/*.dia</exclude>
+						<exclude>**/*.log</exclude>
+						
+						<exclude>NOTICE</exclude>
+						<exclude>LICENSE</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>verify</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+
+			<!--
+				for automatic validating and compiling of jasper jrxml reports
+				<plugin> <groupId>org.codehaus.mojo</groupId>
+				<artifactId>jasperreports-maven-plugin</artifactId> <configuration>
+				<outputDirectory>${project.build.directory}/jasper</outputDirectory>
+				</configuration> <executions> <execution> <goals>
+				<goal>compile-reports</goal> </goals> </execution> </executions>
+			-->
+			<!--
+				do not delete is needed a second time <dependencies> <dependency>
+				<groupId>jasperreports</groupId>
+				<artifactId>jasperreports</artifactId>
+				<version>${jasperreports.version}</version> </dependency>
+				</dependencies> </plugin>
 			-->
 		</plugins>
 	</build>
@@ -375,11 +426,73 @@
 				<scope>test</scope>
 			</dependency>
 
+			<!-- JFreeChart dependencies -->
+			<dependency>
+				<groupId>jcommon</groupId>
+				<artifactId>jcommon</artifactId>
+				<version>${jcommon.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>jfreechart</groupId>
+				<artifactId>jfreechart</artifactId>
+				<version>${jfreechart.version}</version>
+			</dependency>
+
+			<!-- Jasper dependencies -->
+			<dependency>
+				<groupId>jasperreports</groupId>
+				<artifactId>jasperreports</artifactId>
+				<version>${jasperreports.version}</version>
+			</dependency>
+
+			<!-- wicket dependencies -->
+			<dependency>
+				<groupId>org.apache.wicket</groupId>
+				<artifactId>wicket</artifactId>
+				<version>${wicket.version}</version>
+			</dependency>
+			<!--
+				<dependency> <groupId>org.apache.wicket</groupId>
+				<artifactId>wicket</artifactId> </dependency> <dependency>
+				<groupId>org.apache.wicket</groupId>
+				<artifactId>wicket-extensions</artifactId> </dependency>
+				<dependency> <groupId>org.apache.wicket</groupId>
+				<artifactId>wicket-guice</artifactId> </dependency> <dependency>
+				<groupId>org.apache.wicket</groupId>
+				<artifactId>wicket-jmx</artifactId> </dependency> <dependency>
+				<groupId>org.apache.wicket</groupId>
+				<artifactId>wicket-auth-roles</artifactId> </dependency>
+				<dependency> <groupId>org.apache.wicket</groupId>
+				<artifactId>wicket-datetime</artifactId> </dependency> <dependency>
+				<groupId>org.apache.wicket</groupId>
+				<artifactId>wicket-velocity</artifactId> </dependency> <dependency>
+				<groupId>org.apache.wicket</groupId>
+				<artifactId>wicket-spring</artifactId> </dependency> <dependency>
+				<groupId>velocity</groupId> <artifactId>velocity</artifactId>
+				<version>${velocity.version}</version> </dependency> <dependency>
+				<groupId>com.uwyn</groupId> <artifactId>jhighlight</artifactId>
+				<version>${jhighlight.version}</version> </dependency> <dependency>
+				<groupId>httpunit</groupId> <artifactId>httpunit</artifactId>
+				</dependency> <dependency> <groupId>javax.portlet</groupId>
+				<artifactId>portlet-api</artifactId> <scope>provided</scope>
+				</dependency>
+			-->
+
 		</dependencies>
 	</dependencyManagement>
 
 	<repositories>
+		<repository>
+			<id>org.wicketstuff</id>
+			<name>Wicket Stuff Repository</name>
+			<url>http://wicketstuff.org/maven/repository</url>
+		</repository>
 
+		<repository>
+			<id>thirdparty</id>
+			<url>http://maven.openengsb.org/nexus/content/repositories/thirdparty</url>
+		</repository>
 	</repositories>
 
 	<distributionManagement>
