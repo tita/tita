@@ -47,6 +47,8 @@
 		<velocity.version>1.4</velocity.version>
 		<jhighlight.version>1.0</jhighlight.version>
 		<cglib.version>2.0.2</cglib.version>
+		<portlet.version>1.0</portlet.version>
+		<httpunit.version>1.6.1</httpunit.version>
 		
 		<!-- Plugin Version -->
 		<docbkx.version>2.0.7</docbkx.version>
@@ -471,37 +473,45 @@
 				<artifactId>wicket</artifactId>
 				<version>${wicket.version}</version>
 			</dependency>
-			<!--<dependency> 
+			<dependency> 
 				<groupId>org.apache.wicket</groupId>
 				<artifactId>wicket</artifactId>
+				<version>${wicket.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.wicket</groupId>
 				<artifactId>wicket-extensions</artifactId>
+				<version>${wicket.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.wicket</groupId>
 				<artifactId>wicket-guice</artifactId>
+				<version>${wicket.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.wicket</groupId>
 				<artifactId>wicket-jmx</artifactId>
+				<version>${wicket.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.wicket</groupId>
 				<artifactId>wicket-auth-roles</artifactId>
+				<version>${wicket.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.wicket</groupId>
 				<artifactId>wicket-datetime</artifactId>
+				<version>${wicket.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.wicket</groupId>
 				<artifactId>wicket-velocity</artifactId>
+				<version>${wicket.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.wicket</groupId>
 				<artifactId>wicket-spring</artifactId>
+				<version>${wicket.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>velocity</groupId>
@@ -516,12 +526,14 @@
 			<dependency>
 				<groupId>httpunit</groupId>
 				<artifactId>httpunit</artifactId>
+				<version>${httpunit.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>javax.portlet</groupId>
 				<artifactId>portlet-api</artifactId>
+				<version>${portlet.version}</version>
 				<scope>provided</scope>
-			</dependency>-->
+			</dependency>
 
 		</dependencies>
 	</dependencyManagement>
