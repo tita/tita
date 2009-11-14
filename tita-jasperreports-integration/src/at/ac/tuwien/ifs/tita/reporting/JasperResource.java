@@ -1,123 +1,213 @@
+/**
+   Copyright 2009 TiTA Project, Vienna University of Technology
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+       http://www.apache.org/licenses/LICENSE\-2.0
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+  
+ */
 package at.ac.tuwien.ifs.tita.reporting;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.util.HashMap;
 import java.util.Map;
 
 import net.sf.jasperreports.engine.JRAbstractExporter;
 import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
 
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.markup.html.DynamicWebResource;
 
-
 /**
-* Base Class for different Resources
-* @author rene
-*
-*/
+ * Base Class for different Resources.
+ * 
+ * @author rene
+ * 
+ */
 public abstract class JasperResource extends DynamicWebResource {
-	
-	/**
-	 * compiled report.
-	 */
-	private JasperReport jasperReport;
-	/**
-	 * datasource of report.
-	 */
-	private JRDataSource reportDataSource;
-	/**
-	 * report parameters.
-	 */
-	private Map<String, String> params;
-	
-	/**
-	 * Creates an exporter for a resource type.
-	 * 
-	 * @return exporter instance
-	 */
-	protected abstract JRAbstractExporter createExporter();
-	
-	/**
-	 * 
-	 * Fills the report with the applied data source and parameter.
-	 * 
-	 * @return jasperprint instance
-	 * @throws JRException
-	 */
-	protected JasperPrint createJasperPrint() throws JRException
-	{
-		return new JasperPrint();
-	}
-	
-	/**
-	 * Gets the Content of a resource type.
-	 * @return
-	 */
-	public abstract String getContentType();
-	
-	/**
-	 * @see org.apache.wicket.markup.html.DynamicWebResource#getResourceState()
-	 */
-	protected ResourceState getResourceState()
-	{
-		final byte[] data = new byte[256];
-	
-		return new ResourceState() {
+
+    /** compiled report. */
+    private JasperReport jasperReport;
+    /** data source of report. */
+    private JRDataSource reportDataSource;
+    /** report parameters. */
+    private Map<String, String> reportParameters;
+    /** report filename. */
+    private String filename;
+
+    /**
+     * Loads report from compiled report file.
+     * 
+     * @param reportFile compiled report file.
+     * @throws JRException if file could not be loaded.
+     */
+    protected void loadReport(File reportFile) throws JRException {
+        setJasperReport((JasperReport) JRLoader.loadObject(reportFile));
+    }
+
+    /**
+     * Fills the report with the applied data source and parameter.
+     * 
+     * @return JasperPrint instance
+     * @throws JRException if report could not be filled.
+     */
+    protected JasperPrint createJasperPrint() throws JRException {
+        if (reportDataSource == null) {
+            setReportDataSource(new JREmptyDataSource());
+        }
+        if (reportParameters == null) {
+            setParameters(new HashMap<String, String>());
+        }
+        return JasperFillManager.fillReport(getJasperReport(), getReportParamaters(), getReportDataSource());
+    }
+
+    /**
+     * Returns the generated resource.
+     * 
+     * @see org.apache.wicket.markup.html.DynamicWebResource#getResourceState()
+     * @return resource as ResourceState
+     */
+    @Override
+    protected ResourceState getResourceState() {
+        ByteArrayOutputStream os = null;
+        try {
+            JasperPrint printer = createJasperPrint();
+            JRAbstractExporter exporter = createExporter();
+
+            os = new ByteArrayOutputStream();
+            exporter.setParameter(JRExporterParameter.JASPER_PRINT, printer);
+            exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, os);
+
+            exporter.exportReport();
+        } catch (JRException e) {
+            throw new WicketRuntimeException(e);
+        }
+
+        final byte[] data = os.toByteArray();
+        return new ResourceState() {
+            @Override
             public String getContentType() {
-               return "application/pdf";
+                return getFileExtension();
             }
 
+            @Override
             public byte[] getData() {
-            	return data;
+                return data;
             }
-            
-			public int getLength()
-			{
-				return data.length;
-			}
-         };
-	}
 
-	/**
-	 * @return the jasperReport
-	 */
-	public JasperReport getJasperReport() {
-		return jasperReport;
-	}
+            @Override
+            public int getLength() {
+                return data.length;
+            }
+        };
+    }
 
-	/**
-	 * @param jasperReport the jasperReport to set
-	 */
-	public void setJasperReport(JasperReport jasperReport) {
-		this.jasperReport = jasperReport;
-	}
-	
-	/**
-	 * @return the reportDataSource
-	 */
-	public JRDataSource getReportDataSource() {
-		return reportDataSource;
-	}
+    /**
+     * Creates an exporter for a resource type.
+     * 
+     * @return exporter instance
+     */
+    protected abstract JRAbstractExporter createExporter();
 
-	/**
-	 * @param reportDataSource the reportDataSource to set
-	 */
-	public void setReportDataSource(JRDataSource reportDataSource) {
-		this.reportDataSource = reportDataSource;
-	}
+    /**
+     * Returns content type of resource.
+     * 
+     * @return content type as string.
+     */
+    public abstract String getContentType();
 
-	/**
-	 * @return the params
-	 */
-	public Map<String, String> getParams() {
-		return params;
-	}
+    /**
+     * Returns file extension of the resource.
+     * 
+     * @return file extension as string
+     */
+    public abstract String getFileExtension();
 
-	/**
-	 * @param params the params to set
-	 */
-	public void setParams(Map<String, String> params) {
-		this.params = params;
-	}
+    /**
+     * Returns a compiled report.
+     * 
+     * @return jasperReport instance
+     */
+    private JasperReport getJasperReport() {
+        return jasperReport;
+    }
+
+    /**
+     * Sets compiled report.
+     * 
+     * @param jasperReport report as JasperReport
+     */
+    private void setJasperReport(JasperReport jasperReport) {
+        this.jasperReport = jasperReport;
+    }
+
+    /**
+     * Returns report data source.
+     * 
+     * @return the report data source as JRDataSource
+     */
+    public JRDataSource getReportDataSource() {
+        return reportDataSource;
+    }
+
+    /**
+     * Sets report data source.
+     * 
+     * @param reportDataSource report data source as JRDataSource
+     */
+    public void setReportDataSource(JRDataSource reportDataSource) {
+        this.reportDataSource = reportDataSource;
+    }
+
+    /**
+     * Returns report parameters.
+     * 
+     * @return report parameter as Map
+     */
+    public Map<String, String> getReportParamaters() {
+        return reportParameters;
+    }
+
+    /**
+     * Sets report parameters.
+     * 
+     * @param parameters report parameter as Map
+     */
+    public void setReportParameters(Map<String, String> parameters) {
+        reportParameters = parameters;
+    }
+
+    /**
+     * Returns filename of report.
+     * 
+     * @return the filename
+     */
+    public String getFilename() {
+        if (filename == null) {
+            filename = this.getJasperReport().getName() + this.getFileExtension();
+        }
+        return filename;
+    }
+
+    /**
+     * Sets filename of report.
+     * 
+     * @param filename the filename to set
+     */
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
 }
