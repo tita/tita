@@ -41,13 +41,6 @@ public class Init {
         Role role2 = new Role();
         role2.setDescription("Project Leader - No it's Time Inspector");
 
-        try {
-            role1 = service.saveRole(role1);
-            role2 = service.saveRole(role2);
-        } catch (TitaDAOException e) {
-            e.printStackTrace();
-        }
-
         User u1 = new User();
         u1.setDeleted(false);
         u1.setEmail("pberger@tita.at");
