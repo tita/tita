@@ -14,8 +14,6 @@
 
 package at.ac.tuwien.ifs.tita.datasource.domain;
 
-import java.io.Serializable;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,7 +25,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "User")
-public class User extends BaseEntity implements Serializable {
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_user_id")
