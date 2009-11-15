@@ -226,7 +226,7 @@
 							<directory>${basedir}/src/main/java</directory>
 							<targetPath>WEB-INF/classes</targetPath>
 							<includes>
-								<include>**/*.java</include>
+								<include>**/*.html</include>
 							</includes>
 						</resource>
 					</webResources>
