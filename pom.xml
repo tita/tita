@@ -376,7 +376,6 @@
 				<version>${jasperreports.version}</version> </dependency>
 				</dependencies> </plugin>
 			-->
->>>>>>> master:pom.xml
 			
 			<!-- for automatic validating and compiling of jasper jrxml reports 
 			<plugin>
