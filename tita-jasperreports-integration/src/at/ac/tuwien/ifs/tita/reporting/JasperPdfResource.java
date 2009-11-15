@@ -43,6 +43,19 @@ public class JasperPdfResource extends JasperResource {
     }
 
     /**
+     * Construct.
+     * 
+     * @param designFilename name of compiled report file
+     */
+    public JasperPdfResource(String designFilename) {
+        try {
+            this.loadReport(designFilename);
+        } catch (JRException e) {
+            throw new WicketRuntimeException(e);
+        }
+    }
+
+    /**
      * Returns file extension of the resource.
      * 
      * @see JasperResource#getFileExtension()

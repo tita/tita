@@ -47,6 +47,8 @@ public abstract class JasperResource extends DynamicWebResource {
     private Map<String, String> reportParameters;
     /** report filename. */
     private String filename;
+    /** compiled report filename. */
+    private String designFilename;
 
     /**
      * Loads report from compiled report file.
@@ -55,6 +57,17 @@ public abstract class JasperResource extends DynamicWebResource {
      * @throws JRException if file could not be loaded.
      */
     protected void loadReport(File reportFile) throws JRException {
+        setJasperReport((JasperReport) JRLoader.loadObject(reportFile));
+    }
+
+    /**
+     * Loads report from compiled report file.
+     * 
+     * @param designfilename name of compiled report.
+     * @throws JRException if file could not be loaded.
+     */
+    protected void loadReport(String designfilename) throws JRException {
+        File reportFile = new File(designfilename);
         setJasperReport((JasperReport) JRLoader.loadObject(reportFile));
     }
 
@@ -71,7 +84,7 @@ public abstract class JasperResource extends DynamicWebResource {
         if (reportParameters == null) {
             setParameters(new HashMap<String, String>());
         }
-        return JasperFillManager.fillReport(getJasperReport(), getReportParamaters(), getReportDataSource());
+        return JasperFillManager.fillReport(getJasperReport(), getReportParameters(), getReportDataSource());
     }
 
     /**
@@ -175,9 +188,9 @@ public abstract class JasperResource extends DynamicWebResource {
     /**
      * Returns report parameters.
      * 
-     * @return report parameter as Map
+     * @return the reportParameters report parameter as Map
      */
-    public Map<String, String> getReportParamaters() {
+    public Map<String, String> getReportParameters() {
         return reportParameters;
     }
 
@@ -210,4 +223,23 @@ public abstract class JasperResource extends DynamicWebResource {
     public void setFilename(String filename) {
         this.filename = filename;
     }
+
+    /**
+     * Returns filename of compiled report.
+     * 
+     * @return the designFilename
+     */
+    public String getDesignFilename() {
+        return designFilename;
+    }
+
+    /**
+     * sets name of compiled report.
+     * 
+     * @param designFilename the designFilename to set
+     */
+    public void setDesignFilename(String designFilename) {
+        this.designFilename = designFilename;
+    }
+
 }
