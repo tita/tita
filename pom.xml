@@ -171,10 +171,10 @@
 					<include>**/*</include>
 				</includes>
 			</resource>
-			<!-- http://mojo.codehaus.org/jasperreports-maven-plugin/examples/example-1.html -->
+			<!-- http://mojo.codehaus.org/jasperreports-maven-plugin/examples/example-1.html 
 			<resource>
 				<directory>target/jasper</directory>
-			</resource>
+			</resource>-->
 		</resources>
 		<testResources>
 			<testResource>
@@ -469,11 +469,6 @@
 
 			<!-- wicket dependencies -->
 			<dependency>
-				<groupId>org.apache.wicket</groupId>
-				<artifactId>wicket</artifactId>
-				<version>${wicket.version}</version>
-			</dependency>
-			<dependency> 
 				<groupId>org.apache.wicket</groupId>
 				<artifactId>wicket</artifactId>
 				<version>${wicket.version}</version>
