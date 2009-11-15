@@ -53,6 +53,8 @@
 		<!-- Plugin Version -->
 		<docbkx.version>2.0.7</docbkx.version>
 		<maven.plugin.surefire>2.4.3</maven.plugin.surefire>
+		<maven.plugin.checkstyle>2.3</maven.plugin.checkstyle>
+
 
 	</properties>
 
@@ -61,9 +63,12 @@
 	Parent project of all TiTA subprojects. 
   </description>
 
-	<modules>
-
-	</modules>
+ <modules>
+      <module>tita-datasource</module>
+      <module>tita-issuetracker-integration</module>
+      <module></module>
+      <module>tita-wicket</module>
+ </modules>
 
 	<inceptionYear>2009</inceptionYear>
 
@@ -202,6 +207,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>${maven.plugin.surefire}</version>
 				<configuration>
 					<reportSets>
 						<reportSet>
@@ -270,6 +276,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>${maven.plugin.checkstyle}</version>
 				<configuration>
 					<!-- 
 					<configLocation>checkstyle.xml</configLocation>
@@ -468,11 +475,6 @@
 			</dependency>
 
 			<!-- wicket dependencies -->
-			<dependency>
-				<groupId>org.apache.wicket</groupId>
-				<artifactId>wicket</artifactId>
-				<version>${wicket.version}</version>
-			</dependency>
 			<dependency> 
 				<groupId>org.apache.wicket</groupId>
 				<artifactId>wicket</artifactId>
