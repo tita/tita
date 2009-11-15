@@ -54,6 +54,7 @@
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
+      <version>1.2.8</version>
     </dependency>
 
     <!-- test dependencies -->
@@ -61,7 +62,49 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
     </dependency>
+    
+    <!-- mantis connect dependencies -->
+    <dependency>
+      <groupId>javax.xml</groupId>
+      <artifactId>jaxrpc</artifactId>
+      <version>1.1</version>
+	</dependency>
+	
+	<dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.0.4</version>
+	</dependency> 
+	
+	<dependency>
+      <groupId>commons-discovery</groupId>
+      <artifactId>commons-discovery</artifactId>
+      <version>0.2</version>
+	</dependency> 
+	
+	<dependency>
+      <groupId>org.apache.axis</groupId>
+      <artifactId>axis-ant</artifactId>
+      <version>1.4</version>
+	</dependency> 
+	
+	<dependency>
+      <groupId>wsdl4j</groupId>
+      <artifactId>wsdl4j</artifactId>
+      <version>1.5.1</version>
+	</dependency> 
+	
+	<dependency>
+      <groupId>axis</groupId>
+      <artifactId>axis</artifactId>
+      <version>1.4</version>
+	</dependency> 
 
+	<dependency>
+      <groupId>mantisconnect</groupId>
+      <artifactId>mantisconnect</artifactId>
+      <version>1.1.1.0</version>
+	</dependency> 
   </dependencies>
 
 </project>
