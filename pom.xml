@@ -76,7 +76,7 @@
  <modules>
       <module>tita-datasource</module>
       <module>tita-issuetracker-integration</module>
-      <module></module>
+      <module>tita-jasperreports-integration</module>
       <module>tita-wicket</module>
  </modules>
 
@@ -214,6 +214,23 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
+
+           <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<webResources>
+						<resource>
+							<directory>${basedir}/src/main/java</directory>
+							<targetPath>WEB-INF/classes</targetPath>
+							<includes>
+								<include>**/*.java</include>
+							</includes>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-report-plugin</artifactId>

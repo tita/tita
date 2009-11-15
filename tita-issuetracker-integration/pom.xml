@@ -27,9 +27,9 @@
   
 
 
-  <artifactId>tita-issuetracker-generic</artifactId>
+  <artifactId>tita-issuetracker-integration</artifactId>
   <packaging>jar</packaging>
-  <name>tita-issuetracker-generic</name>
+  <name>tita-issuetracker-integration</name>
 
   <description>
     Integration of the issue tracker, generic interface 
