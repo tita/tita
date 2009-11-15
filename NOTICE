@@ -1,0 +1,141 @@
+   =========================================================================
+   ==  NOTICE file for use with the Apache License, Version 2.0,          ==
+   ==  in this case for the the Tiny Time Tracking Assistant distribution.         
+==
+   =========================================================================
+
+   
+   This product contains software developed by
+   The Tiny Time Tracking Assistant Project.
+   
+      Copyright (c) 2009 TiTA Team QSE/IFS, Vienna University of Technology
+   
+=========================================================================
+==  Apache ServiceMix Notice                                           ==
+=========================================================================
+
+This product includes software developed by
+The Apache Software Foundation (http://www.apache.org/).
+
+
+=========================================================================
+==  Spring Notice                                                      ==
+=========================================================================
+
+This product includes software developed by
+the Apache Software Foundation (http://www.apache.org).
+
+This product also includes software developed by
+Clinton Begin (http://www.ibatis.com).
+
+The end-user documentation included with a redistribution, if any,
+must include the following acknowledgement:
+
+ "This product includes software developed by the Spring Framework
+  Project (http://www.springframework.org)."
+
+Alternately, this acknowledgement may appear in the software itself,
+if and wherever such third-party acknowledgements normally appear.
+
+The names "Spring" and "Spring Framework" must not be used to
+endorse or promote products derived from this software without
+prior written permission. For written permission, please contact
+rod.johnson@interface21.com or juergen.hoeller@interface21.com.
+
+=========================================================================
+==  Hibernate Notice
+==
+=========================================================================
+
+This product includes software developed by
+The Red Hat Middleware, LLC (http://www.redhat.com/).
+
+Portions of this software were originally based on the following:
+  - software copyright (c) 2009, Red Hat Middleware, LLC, <http://www.redhat.com/>.
+  - Hibernate: https://www.hibernate.org/ 
+
+=========================================================================
+==  JFreeChart Notice                                           
+==
+=========================================================================
+
+This product includes software developed by
+The JFreeChart Foundation (http://www.jfree.org/jfreechart/).
+
+Distribution under the terms of the GNU Lesser General Public License(LGPL)
+
+Object Refinery Ltd is a small software company creating innovative reporting solutions for the Java(tm) platform. Our software is almost exclusively open source and is used by thousands of companies around the world.
+
+=========================================================================
+==  JasperReport Notice                                           
+==
+=========================================================================
+
+This product includes software developed by
+Jaspersoft (http://jasperforge.org/).
+
+Portions of this software were originally based on the following:
+  - software copyright (c) 2000 - 2009 Jaspersoft Corporation, <http://jasperforge.org/>.
+
+=========================================================================
+==  Mantis Notice                                           
+==
+=========================================================================
+
+This product includes software developed by
+Free Software Foundation, Inc (http://www.fsf.org/).
+
+Distribution under the terms of the GNU Lesser General Public License(LGPL).
+   
+=========================================================================
+==  WSDL4J Notice                                                      ==
+=========================================================================
+
+The Program includes all or portions of the following software which is 
+subject to the Common Public License ("CPL Code").  This software 
+consists of voluntary contributions made by many individuals on behalf of
+the WSDL4J project.
+
+You may download the source version of the WSDL4J component at 
+http://sourceforge.net/projects/wsdl4j
+
+
+=========================================================================
+==  Xerces Notice                                                      ==
+=========================================================================
+
+Portions of this software were originally based on the following:
+  - software copyright (c) 1999, IBM Corporation., http://www.ibm.com.
+  - software copyright (c) 1999, Sun Microsystems., http://www.sun.com.
+  - voluntary contributions made by Paul Eng on behalf of the 
+    Apache Software Foundation that were originally developed at 
+    iClick, Inc., software copyright (c) 1999.
+
+
+=========================================================================
+==  XmlBeans Notice                                                    ==
+=========================================================================
+
+Portions of this software were originally based on the following:
+  - software copyright (c) 2000-2003, BEA Systems, <http://www.bea.com/>.
+
+Aside from contributions to the Apache XMLBeans project, this
+software also includes:
+
+ - one or more source files from the Apache Xerces-J and Apache Axis
+   products, Copyright (c) 1999-2003 Apache Software Foundation
+
+ - W3C XML Schema documents Copyright 2001-2003 (c) World Wide Web
+   Consortium (Massachusetts Institute of Technology, European Research
+   Consortium for Informatics and Mathematics, Keio University)
+
+ - resolver.jar from Apache Xml Commons project,
+   Copyright (c) 2001-2003 Apache Software Foundation
+
+ - Piccolo XML Parser for Java from http://piccolo.sourceforge.net/,
+   Copyright 2002 Yuval Oren under the terms of the Apache Software 
+   License 2.0
+
+
+
+This document and the information contained herein is provided on an "AS IS" basis and OASIS DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
