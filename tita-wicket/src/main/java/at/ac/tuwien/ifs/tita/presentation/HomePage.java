@@ -13,19 +13,19 @@ import at.ac.tuwien.ifs.tita.datasource.service.IUserService;
  */
 public class HomePage extends WebPage {
 
-    @SpringBean(name="userService")
+    @SpringBean(name = "userService")
     private IUserService service;
-    
+
     public HomePage() {
         displayHello();
     }
-    
+
     /**
      * Puts "Hello World" in DB and reads it afterwards.
      */
-    private void displayHello(){
+    private void displayHello() {
         Role helloWorld = initPage();
-        
+
         try {
             Role temp = service.saveRole(helloWorld);
             helloWorld = null;
@@ -35,12 +35,13 @@ public class HomePage extends WebPage {
             add(new Label("message", "Couldn't read data from DB."));
         }
     }
-    
+
     /**
      * Initialise homepage data.
+     * 
      * @return Role "Hello World"
      */
-    private Role initPage(){
+    private Role initPage() {
         Role r = new Role();
         r.setDescription("Hello World.");
         return r;

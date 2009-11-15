@@ -18,10 +18,8 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
-	
-	<!-- setup wicket application -->
-	<bean id="helloApp" class="at.ac.tuwien.ifs.tita.presentation.HelloWorldApplication"/>
-
-	<import resource="persistence-context.xml"/>
-    <import resource="reportApplicationContext.xml"/>
+	<!-- define jasper reports -->
+	<bean id="helloWorldReport" class="at.ac.tuwien.ifs.tita.reporting.JasperResource">
+        <property name="designFilename" value="reports/HelloWorld.jasper" />
+    </bean>
 </beans>
