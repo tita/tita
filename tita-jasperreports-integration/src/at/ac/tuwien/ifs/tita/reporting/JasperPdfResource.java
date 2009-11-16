@@ -13,13 +13,8 @@
  */
 package at.ac.tuwien.ifs.tita.reporting;
 
-import java.io.File;
-
 import net.sf.jasperreports.engine.JRAbstractExporter;
-import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
-
-import org.apache.wicket.WicketRuntimeException;
 
 /**
  * Implementation of pdf resource type.
@@ -30,29 +25,11 @@ import org.apache.wicket.WicketRuntimeException;
 public class JasperPdfResource extends JasperResource {
 
     /**
-     * Construct.
+     * Default Construct.
      * 
-     * @param reportFile compiled report file
      */
-    public JasperPdfResource(File reportFile) {
-        try {
-            this.loadReport(reportFile);
-        } catch (JRException e) {
-            throw new WicketRuntimeException(e);
-        }
-    }
+    public JasperPdfResource() {
 
-    /**
-     * Construct.
-     * 
-     * @param designFilename name of compiled report file
-     */
-    public JasperPdfResource(String designFilename) {
-        try {
-            this.loadReport(designFilename);
-        } catch (JRException e) {
-            throw new WicketRuntimeException(e);
-        }
     }
 
     /**

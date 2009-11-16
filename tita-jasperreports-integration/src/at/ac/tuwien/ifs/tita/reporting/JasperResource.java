@@ -15,6 +15,7 @@ package at.ac.tuwien.ifs.tita.reporting;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,6 +31,7 @@ import net.sf.jasperreports.engine.util.JRLoader;
 
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.markup.html.DynamicWebResource;
+import org.apache.wicket.protocol.http.WebResponse;
 
 /**
  * Base Class for different Resources.
@@ -56,19 +58,18 @@ public abstract class JasperResource extends DynamicWebResource {
      * @param reportFile compiled report file.
      * @throws JRException if file could not be loaded.
      */
-    protected void loadReport(File reportFile) throws JRException {
+    public void loadReport(File reportFile) throws JRException {
         setJasperReport((JasperReport) JRLoader.loadObject(reportFile));
     }
 
     /**
-     * Loads report from compiled report file.
+     * Loads report from inputstream.
      * 
-     * @param designfilename name of compiled report.
-     * @throws JRException if file could not be loaded.
+     * @param is InputStream.
+     * @throws JRException if stream could not be loaded.
      */
-    protected void loadReport(String designfilename) throws JRException {
-        File reportFile = new File(designfilename);
-        setJasperReport((JasperReport) JRLoader.loadObject(reportFile));
+    public void loadReport(InputStream is) throws JRException {
+        setJasperReport((JasperReport) JRLoader.loadObject(is));
     }
 
     /**
@@ -126,6 +127,25 @@ public abstract class JasperResource extends DynamicWebResource {
                 return data.length;
             }
         };
+    }
+
+    /**
+     * Set Headers for file and content type.
+     * 
+     * @param response WebResponse
+     */
+    @Override
+    public void setHeaders(WebResponse response) {
+        super.setHeaders(response);
+
+        response.setDateHeader("Expires", -1);
+        response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
+        response.setHeader("Pragma", "public");
+
+        String name = getFilename();
+        if (name != null) {
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + name + "\"");
+        }
     }
 
     /**
@@ -241,5 +261,4 @@ public abstract class JasperResource extends DynamicWebResource {
     public void setDesignFilename(String designFilename) {
         this.designFilename = designFilename;
     }
-
 }

@@ -46,10 +46,13 @@
 		<wicket.version>1.4.3</wicket.version>
 		<velocity.version>1.4</velocity.version>
 		<jhighlight.version>1.0</jhighlight.version>
-		<cglib.version>2.0.2</cglib.version>
+		<!--<cglib.version>2.0.2</cglib.version> -->
+		<cglib-nodep.version>2.2</cglib-nodep.version>
 		<portlet.version>1.0</portlet.version>
 		<httpunit.version>1.6.1</httpunit.version>
-		
+		<commons-digester.version>2.0</commons-digester.version>
+		<itext.version>2.1.7</itext.version>
+		<commons-collections.version>20040616</commons-collections.version>
 		<!-- Plugin Version -->
 		<docbkx.version>2.0.7</docbkx.version>
 		<maven.plugin.surefire>2.4.3</maven.plugin.surefire>
@@ -171,10 +174,6 @@
 					<include>**/*</include>
 				</includes>
 			</resource>
-			<!-- http://mojo.codehaus.org/jasperreports-maven-plugin/examples/example-1.html 
-			<resource>
-				<directory>target/jasper</directory>
-			</resource>-->
 		</resources>
 		<testResources>
 			<testResource>
@@ -302,29 +301,7 @@
 				<goal>check</goal> </goals> </execution> </executions> </plugin>
 			-->
 			
-			<!-- for automatic validating and compiling of jasper jrxml reports 
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>jasperreports-maven-plugin</artifactId>
-				<configuration>
-				   <outputDirectory>${project.build.directory}/jasper</outputDirectory>
-				</configuration>
-				<executions>
-				  <execution>
-					<goals>
-					  <goal>compile-reports</goal>
-					</goals>
-				  </execution>
-				</executions>-->
-				<!-- do not delete is needed a second time 
-			   <dependencies>
-				 <dependency>
-				   <groupId>jasperreports</groupId>
-				   <artifactId>jasperreports</artifactId>
-				   <version>${jasperreports.version}</version>
-				 </dependency>
-			   </dependencies>
-			</plugin>-->
+			
 		</plugins>
 	</build>
 
@@ -382,11 +359,12 @@
 				<artifactId>spring-jms</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
+			
 			<dependency>
 				<groupId>cglib</groupId>
-				<artifactId>cglib</artifactId>
-				<version>${cglib.version}</version>
-			</dependency>
+				<artifactId>cglib-nodep</artifactId>
+				<version>${cglib-nodep.version}</version>
+			</dependency> 
 
 			<!-- JPA & Hibernate -->
 			<dependency>
@@ -404,7 +382,19 @@
 						<groupId>javax.transaction</groupId>
 						<artifactId>jta</artifactId>
 					</exclusion>
-				</exclusions>
+					<exclusion>
+						<groupId>asm</groupId>
+						<artifactId>asm</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>asm</groupId>
+						<artifactId>asm-attrs</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>cglib</groupId>
+						<artifactId>cglib</artifactId>
+					</exclusion>
+				</exclusions> 
 			</dependency>
 		
 			<dependency>
@@ -529,7 +519,21 @@
 				<version>${portlet.version}</version>
 				<scope>provided</scope>
 			</dependency>
-
+			<dependency>
+			<groupId>commons-digester</groupId>
+			<artifactId>commons-digester</artifactId>
+			<version>${commons-digester.version}</version>
+		</dependency> 
+		<dependency>
+			<groupId>com.lowagie</groupId>
+			<artifactId>itext</artifactId>
+			<version>${itext.version}</version>
+		</dependency> 
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>${commons-collections.version}</version>
+		</dependency> 
 		</dependencies>
 	</dependencyManagement>
 
