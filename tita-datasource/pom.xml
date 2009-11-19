@@ -54,6 +54,18 @@
           <groupId>javax.transaction</groupId>
           <artifactId>jta</artifactId>
         </exclusion>
+		<exclusion>
+			<groupId>asm</groupId>
+			<artifactId>asm</artifactId>
+		</exclusion>
+		<exclusion>
+			<groupId>asm</groupId>
+			<artifactId>asm-attrs</artifactId>
+		</exclusion>
+		<exclusion>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+		</exclusion>
       </exclusions>
     </dependency>
 
@@ -84,9 +96,9 @@
       <artifactId>spring-jms</artifactId>
     </dependency>
     <dependency>
-      <groupId>cglib</groupId>
-      <artifactId>cglib</artifactId>
-    </dependency>
+				<groupId>cglib</groupId>
+				<artifactId>cglib-nodep</artifactId>
+			</dependency>
 
     <!-- logging support -->
     <dependency>

@@ -22,4 +22,5 @@
 	<bean id="helloApp" class="at.ac.tuwien.ifs.tita.presentation.HelloWorldApplication"/>
 
 	<import resource="persistence-context.xml"/>
+    <import resource="reportApplicationContext.xml"/>
 </beans>

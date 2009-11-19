@@ -32,7 +32,7 @@
   <!-- Entity Manager Factory -->
   <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
     <property name="dataSource" ref="dataSource" />
-    <property name="persistenceXmlLocation" value="classpath:/META-INF/persistence.xml" />
+    <property name="persistenceXmlLocation" value="classpath:/META-INF/persistence-test.xml" />
   </bean>
 
   <!-- The data source -->
@@ -64,6 +64,6 @@
   -->
   <tx:annotation-driven />
 
-  <import resource="daos.xml" />
+  <import resource="daos-test.xml" />
 
 </beans>
