@@ -341,6 +341,7 @@
 						<exclude>**/*.pdf</exclude>
 						<exclude>**/*.jpg</exclude>
 						<exclude>**/*.dia</exclude>
+						<exclude>**/*.jasper</exclude>
 						<exclude>**/*.log</exclude>
 						<exclude>**/*.MF</exclude>
 						<exclude>**/*.checkstyle</exclude>
