@@ -34,7 +34,7 @@ import at.ac.tuwien.ifs.tita.timeeffort.domain.TimeEffort;
 import at.ac.tuwien.ifs.tita.timeeffort.service.ITimeEffortService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/persistence-context-test.xml" })
+@ContextConfiguration(locations = { "/timeeffort-context-test.xml" })
 @TransactionConfiguration
 @Transactional
 public class TimeEffortServiceTest extends
@@ -60,6 +60,49 @@ public class TimeEffortServiceTest extends
         try {
             timeEffort = service.saveTimeEffort(timeEffort);
             Assert.assertNotNull(timeEffort.getId());
+        } catch (TitaDAOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testDeleteTimeEffort() {
+        TimeEffort timeEffort = new TimeEffort();
+        timeEffort.setDate(new Date());
+        timeEffort.setDeleted(false);
+        timeEffort.setEndTime(new Date());
+        timeEffort.setStartTime(new Date());
+        timeEffort.setDescription("Das ist die Test TimeEffort 1");
+
+        try {
+            timeEffort = service.saveTimeEffort(timeEffort);
+            Assert.assertNotNull(timeEffort.getId());
+
+            service.deleteTimeEffort(timeEffort);
+            Assert.assertNull(service.getTimeEffortById(timeEffort.getId()));
+        } catch (TitaDAOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testUpdateTimeEffort() {
+        TimeEffort timeEffort = new TimeEffort();
+        timeEffort.setDate(new Date());
+        timeEffort.setDeleted(false);
+        timeEffort.setEndTime(new Date());
+        timeEffort.setStartTime(new Date());
+        timeEffort.setDescription("Das ist die Test TimeEffort 1");
+
+        try {
+            timeEffort = service.saveTimeEffort(timeEffort);
+            Assert.assertNotNull(timeEffort.getId());
+
+            Date newDate = new Date();
+            timeEffort.setDate(newDate);
+            service.updateTimeEffort(timeEffort);
+            Assert.assertEquals(service.getTimeEffortById(timeEffort.getId())
+                    .getDate(), newDate);
         } catch (TitaDAOException e) {
             e.printStackTrace();
         }

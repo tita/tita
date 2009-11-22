@@ -78,6 +78,7 @@
       <module>tita-issuetracker-integration</module>
       <module>tita-jasperreports</module>
       <module>tita-wicket</module>
+      <module>tita-timeeffort</module>
  </modules>
 
 	<inceptionYear>2009</inceptionYear>
