@@ -1,3 +1,5 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!-- 
    Copyright 2009 TiTA Project, Vienna University of Technology
    
@@ -14,13 +16,25 @@
    limitations under the License.
 -->
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" >
-    <head>  
-        <title>Wicket Quickstart Archetype Homepage</title>
-    </head>
-    <body>
-        <strong>Wicket Quickstart Archetype Homepage</strong>
-        <br/><br/>
-        <span wicket:id="message">message will be here</span>
-        <div wicket:id="timeEffortPanel">Time Effort Panel</div>
-    </body>
+<body>
+	<wicket:panel>
+		<h3>Time Efforts</h3>
+		<table>
+			<thead>
+				<tr>
+					<th>Date</th>
+					<th>Description</th>
+					<th>Time length</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr wicket:id="timeEffortList">
+					<td wicket:id="date">[Date]</td>
+					<td wicket:id="description">[Description]</td>
+					<td wicket:id="length">[Time length]</td>
+				</tr>
+			</tbody>
+		</table>
+	</wicket:panel>
+</body>
 </html>
