@@ -16,11 +16,36 @@
    limitations under the License.
 -->
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" >
+<style type="text/css">
+th.date {
+min-width: 50px;
+max-width: 50px;
+}
+th.time {
+min-width: 100px;
+max-width: 100px;
+}
+th.description {
+min-width: 50px;
+max-width: 150px;
+}
+</style>
 <body>
 	<wicket:panel>
 		<h3>Time Efforts</h3>
-		<table>
+		<table border=1>
 			<thead>
+				<tr>
+					<th class="date"><input type="text" wicket:id="dateTextField" size=7/></th>
+					<th class="description"><input type="text" wicket:id="descriptionTextfield" /></th>
+					<th class="time">
+						<input type="text" wicket:id="hourstartTime" size=2/>
+						:<input type="text" wicket:id="minutestartTime" size=2/>
+						/<input type="text" wicket:id="hourendTime" size=2/>
+						:<input type="text" wicket:id="minuteendTime" size=2 />
+					</th>
+					<th><input wicket:id="saveButton" type="submit" value="Save" /></th>
+				</tr>	
 				<tr>
 					<th>Date</th>
 					<th>Description</th>
@@ -31,7 +56,11 @@
 				<tr wicket:id="timeEffortList">
 					<td wicket:id="date">[Date]</td>
 					<td wicket:id="description">[Description]</td>
-					<td wicket:id="length">[Time length]</td>
+					<td align="right" wicket:id="length">[Time length]</td>
+					<td>
+						<input wicket:id="edit" type="submit" value="Edit"/> | 
+						<input wicket:id="delete" type="submit" value="Delete"/>
+					</td>
 				</tr>
 			</tbody>
 		</table>
