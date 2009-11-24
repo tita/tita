@@ -48,6 +48,7 @@ public class TimeEffortAdministrationPanel extends Panel implements GlobalUtils 
 
     @SpringBean(name = "timeEffortService")
     private ITimeEffortService service;
+
     private final Date date = new Date();
 
     // private User user;
@@ -77,7 +78,6 @@ public class TimeEffortAdministrationPanel extends Panel implements GlobalUtils 
             @Override
             public void onSubmit() {
                 info("saveButton.onSubmit executed");
-                System.out.println("Test======");
                 refresh(new ArrayList<TimeEffort>());
             }
         };
@@ -133,6 +133,7 @@ public class TimeEffortAdministrationPanel extends Panel implements GlobalUtils 
         add(endTextField);
     }
 
+    @SuppressWarnings("unchecked")
     private void refresh(List<TimeEffort> list) {
         ((TimeEffortListView<TimeEffort>) this.get("timeEffortList"))
                 .setList(list);
@@ -191,5 +192,12 @@ public class TimeEffortAdministrationPanel extends Panel implements GlobalUtils 
             add(new Label("message", "Couldn't read data from DB."));
         }
         return list;
+    }
+
+    /**
+     * @return the date
+     */
+    public Date getDate() {
+        return date;
     }
 }
