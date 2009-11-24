@@ -14,6 +14,8 @@
 
 package at.ac.tuwien.ifs.tita.datasource.service;
 
+import java.util.List;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import at.ac.tuwien.ifs.tita.datasource.domain.Role;
@@ -107,4 +109,14 @@ public interface IUserService {
      *             if no role was found or another Exception is thrown
      */
     Role getRoleById(Long id) throws TitaDAOException;
+
+    /**
+     * returns a list of roles which match with parameter criteria
+     * 
+     * @param criteria
+     *            the criteria for search
+     * @throws TitaDAOException
+     *             if no role was found or another Exception is thrown
+     */
+    List<Role> searchRole(Role criteria) throws TitaDAOException;
 }

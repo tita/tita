@@ -186,6 +186,7 @@ public class BaseDAO<DomainClass extends BaseEntity> implements
      * @param the
      *            criteria for searching Domain objects
      */
+    @SuppressWarnings("unchecked")
     public List<DomainClass> search(DomainClass criteria)
             throws TitaDAOException {
         if (criteria == null) {
