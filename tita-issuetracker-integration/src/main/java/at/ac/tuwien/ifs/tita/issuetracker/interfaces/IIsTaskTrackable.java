@@ -34,7 +34,8 @@ public interface IIsTaskTrackable {
      * Sets the id of the task to identify it.
      * @param id - the id identifies the task
      */
-    void setId(Long id);
+//  NEVER SET ID OF AN ENTITY
+//    void setId(Long id);
     
     /**
      * Supplies the identifier of the task.
@@ -181,7 +182,7 @@ public interface IIsTaskTrackable {
      * @return project - the project the task is being filed against
      * @see IIsProjectTrackable
      */
-    long getProjectId();
+    Long getProjectId();
     
     /**
      * Sets the comments that are added to the task.

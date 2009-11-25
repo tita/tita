@@ -189,7 +189,6 @@ public class TimeEffortAdministrationPanel extends Panel implements GlobalUtils 
             timeEffort2 = service.saveTimeEffort(timeEffort2);
             list.add(timeEffort2);
         } catch (TitaDAOException e) {
-            add(new Label("message", "Couldn't read data from DB."));
         }
         return list;
     }

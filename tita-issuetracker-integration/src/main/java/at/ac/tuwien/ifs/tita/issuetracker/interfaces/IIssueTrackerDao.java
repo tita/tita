@@ -28,7 +28,7 @@ public interface IIssueTrackerDao {
      * @param projectId - id of the project to find
      * @return project, if one was found, null otherwise
      */
-    IIsProjectTrackable findProject(long projectId);
+    IIsProjectTrackable findProject(Long projectId);
     
     /**
      * Method to find a TrackableProject by the projectName.
@@ -42,20 +42,20 @@ public interface IIssueTrackerDao {
      * @param projectId - id of the project, for which the tasks should be found
      * @return list of all found tasks
      */
-    List<IIsTaskTrackable> findAllTasksForProject(long projectId);
+    List<IIsTaskTrackable> findAllTasksForProject(Long projectId);
     
     /**
      * Method to find a trackableTask by the taskId.
      * @param taskId - id of the task to find
      * @return task, if one was found, null otherwise
      */
-    IIsTaskTrackable findTask(long taskId);
+    IIsTaskTrackable findTask(Long taskId);
     
     /**
      * Method to find all TrackableComments of a task, specified by the taskId.
      * @param taskId - id of the task, for which the comments should be found
      * @return list of all found comments
      */
-    List<IIsCommentTrackable> findAllCommentsForTask(long taskId);
+    List<IIsCommentTrackable> findAllCommentsForTask(Long taskId);
     
 }

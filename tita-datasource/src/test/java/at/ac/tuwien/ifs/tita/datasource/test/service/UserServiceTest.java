@@ -58,4 +58,19 @@ public class UserServiceTest extends
             e.printStackTrace();
         }
     }
+    /*
+     * @Test public void testSearchRole() { Role role1 = new Role();
+     * role1.setDescription("Das ist die Test Rolle 1");
+     * 
+     * try { role1 = service.saveRole(role1);
+     * Assert.assertNotNull(role1.getId()); Role role2 = new Role();
+     * role2.setId(role1.getId()); IBaseCriteria<Role> criteria = new
+     * BaseCriteria<Role>(role2); criteria.setMaxResults(10);
+     * criteria.setOrderAscBy("id"); List<Role> list =
+     * service.searchRole(criteria); Assert.assertNotNull(list);
+     * Assert.assertEquals(list.size(), 1);
+     * Assert.assertEquals(list.get(0).getDescription(), role1
+     * .getDescription()); } catch (TitaDAOException e) { e.printStackTrace(); }
+     * }
+     */
 }

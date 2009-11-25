@@ -14,6 +14,9 @@
 
 package at.ac.tuwien.ifs.tita.datasource.service;
 
+import java.util.List;
+
+import at.ac.tuwien.ifs.tita.datasource.criteria.IBaseCriteria;
 import at.ac.tuwien.ifs.tita.datasource.dao.RoleDAO;
 import at.ac.tuwien.ifs.tita.datasource.dao.UserDAO;
 import at.ac.tuwien.ifs.tita.datasource.domain.Role;
@@ -72,6 +75,12 @@ public class UserService implements IUserService {
     @Override
     public void updateUser(User user) throws TitaDAOException {
         userDAO.update(user);
+    }
+
+    @Override
+    public List<Role> searchRole(IBaseCriteria<Role> criteria)
+            throws TitaDAOException {
+        return roleDAO.search(criteria);
     }
 
 }

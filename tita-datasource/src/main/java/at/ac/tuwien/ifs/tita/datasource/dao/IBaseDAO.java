@@ -14,6 +14,9 @@
 
 package at.ac.tuwien.ifs.tita.datasource.dao;
 
+import java.util.List;
+
+import at.ac.tuwien.ifs.tita.datasource.criteria.IBaseCriteria;
 import at.ac.tuwien.ifs.tita.datasource.domain.BaseEntity;
 import at.ac.tuwien.ifs.tita.datasource.exception.TitaDAOException;
 
@@ -50,5 +53,14 @@ public interface IBaseDAO<DomainClass extends BaseEntity> {
      *            id of the existing object
      */
     DomainClass getById(Class<? extends DomainClass> persistentClass, Long id)
+            throws TitaDAOException;
+
+    /**
+     * Method for search for Domain object with criteria.
+     * 
+     * @param the
+     *            criteria for searching Domain objects
+     */
+    List<DomainClass> search(IBaseCriteria<DomainClass> criteria)
             throws TitaDAOException;
 }

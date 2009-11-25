@@ -16,23 +16,23 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	
+
 	<modelVersion>4.0.0</modelVersion>
 
-  	<parent>
-	    <groupId>at.ac.tuwien.ifs</groupId>
-	    <artifactId>tita-parent</artifactId>
-	    <version>1.0.0-SNAPSHOT</version>
-  	</parent>
+	<parent>
+		<groupId>at.ac.tuwien.ifs</groupId>
+		<artifactId>tita-parent</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
 
-  	<artifactId>tita-wicket</artifactId>
- 	<packaging>war</packaging>
-  	<name>tita-wicket</name>
+	<artifactId>tita-wicket</artifactId>
+	<packaging>war</packaging>
+	<name>tita-wicket</name>
 
 	<description>
 		 Module that offers gui components to create and display the userinterface.
 	</description>
-		 
+
 	<dependencies>
 		<!--  WICKET DEPENDENCIES -->
 		<dependency>
@@ -83,12 +83,12 @@
 			<groupId>httpunit</groupId>
 			<artifactId>httpunit</artifactId>
 		</dependency>
-		<!-- dependency>
-			<groupId>javax.portlet</groupId>
-			<artifactId>portlet-api</artifactId>
-			<scope>provided</scope>
-		</dependency-->
-		
+		<!--
+			dependency> <groupId>javax.portlet</groupId>
+			<artifactId>portlet-api</artifactId> <scope>provided</scope>
+			</dependency
+		-->
+
 		<!-- LOGGING DEPENDENCIES - LOG4J -->
 		<dependency>
 	      <groupId>org.slf4j</groupId>
@@ -98,23 +98,133 @@
 	      <groupId>log4j</groupId>
 	      <artifactId>log4j</artifactId>
 	    </dependency>
+	    
+	    <!-- H2DB -->
 	    <dependency>
-	    	<groupId>at.ac.tuwien.ifs</groupId>
-	    	<artifactId>tita-datasource</artifactId>
-	    	<version>1.0.0-SNAPSHOT</version>
-	    </dependency>
-	    <dependency>
-	    	<groupId>at.ac.tuwien.ifs</groupId>
-	    	<artifactId>tita-timeeffort</artifactId>
-	    	<version>1.0.0-SNAPSHOT</version>
+	      <groupId>com.h2database</groupId>
+	      <artifactId>h2</artifactId>
 	    </dependency>
 
+		<!-- JPA & Hibernate -->
+		<dependency>
+			<groupId>javax.persistence</groupId>
+			<artifactId>persistence-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.transaction</groupId>
+					<artifactId>jta</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>asm</groupId>
+					<artifactId>asm</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>asm</groupId>
+					<artifactId>asm-attrs</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>cglib</groupId>
+					<artifactId>cglib</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+		</dependency>
+
+		<!-- Spring Dependencies -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-digester</groupId>
+			<artifactId>commons-digester</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>at.ac.tuwien.ifs</groupId>
+			<artifactId>tita-datasource</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>at.ac.tuwien.ifs</groupId>
+			<artifactId>tita-jasperreports</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>at.ac.tuwien.ifs</groupId>
+			<artifactId>tita-issuetracker-integration</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>at.ac.tuwien.ifs</groupId>
+			<artifactId>tita-timeeffort</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+
 		<!--  SELENIUM DEPENDENCY FOR TESTING -->
-		<!-- dependency>
-			<groupId>org.selenium</groupId>
-			<artifactId>selenium</artifactId>
-			<version>1.0.1</version>
-			<scope>test</scope>
-		</dependency-->
+		<!--
+			dependency> <groupId>org.selenium</groupId>
+			<artifactId>selenium</artifactId> <version>1.0.1</version>
+			<scope>test</scope> </dependency
+		-->
 	</dependencies>
+
+	<!-- for automatic validating and compiling of jasper jrxml reports -->
+	<!--
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jasperreports-maven-plugin</artifactId>
+				<configuration>
+					<outputDirectory>src/main/webapp/reports</outputDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>compile-reports</goal>
+						</goals>
+					</execution>
+				</executions>-->
+				<!-- do not delete is needed a second time -->
+			<!--
+				<dependencies>
+					<dependency>
+						<groupId>jasperreports</groupId>
+						<artifactId>jasperreports</artifactId>
+						<version>${jasperreports.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>commons-digester</groupId>
+						<artifactId>commons-digester</artifactId>
+						<version>${commons-digester.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>commons-lang</groupId>
+						<artifactId>commons-lang</artifactId>
+						<version>${commons.lang.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>commons-collections</groupId>
+						<artifactId>commons-collections</artifactId>
+						<version>${commons-collections.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>-->
 </project>

@@ -21,6 +21,9 @@
 	<!-- setup wicket application -->
 	<bean id="helloApp" class="at.ac.tuwien.ifs.tita.presentation.HelloWorldApplication"/>
 
-	<import resource="persistence-context.xml"/>
+	<import resource="classpath:persistence-context.xml"/>
+	<import resource="classpath:reportApplicationContext.xml"/>
 	<import resource="classpath:timeeffort-context.xml"/>
+	
+	
 </beans>

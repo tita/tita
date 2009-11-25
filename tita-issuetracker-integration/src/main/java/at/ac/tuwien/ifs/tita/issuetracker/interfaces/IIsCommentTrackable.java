@@ -30,7 +30,8 @@ public interface IIsCommentTrackable {
      * Sets the id of the comment to identify it.
      * @param id - the id identifies the comment
      */
-    void setId(Long id);
+//    NEVER SET ID OF AN ENTITY
+//    void setId(Long id);
     
     /**
      * Supplies the identifier of the comment.

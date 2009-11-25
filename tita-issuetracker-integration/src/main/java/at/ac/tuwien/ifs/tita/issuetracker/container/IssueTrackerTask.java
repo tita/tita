@@ -22,6 +22,7 @@ import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueSeverity;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueStatus;
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IIsCommentTrackable;
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IIsTaskTrackable;
+import at.ac.tuwien.ifs.tita.issuetracker.time.ITimedTask;
 
 /**
  * The container class for task objects from the integrated issue tracker.
@@ -29,23 +30,27 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IIsTaskTrackable;
  * @author Karin
  *
  */
-public class IssueTrackerTask implements IIsTaskTrackable{
+public class IssueTrackerTask implements IIsTaskTrackable, ITimedTask{
+    
     private List<IIsCommentTrackable> comments;
     private Date creationTime;
     private String description;
-    private long id;
+    private Long id;
     private Date lastChange;
     private String owner;
     private IssuePriority priority;
-    private long projectId;
+    private Long projectId;
     private String reporter;
     private IssueResolution resolution;
     private IssueSeverity severity;
     private IssueStatus status;
     private String summary;
+    private Long startTime;
+    private Long duration;
+    private Boolean started;
     
-    public IssueTrackerTask(long id, String description, String owner, Date creationTime,
-            Date lastChange, IssuePriority priority, long projectId,
+    public IssueTrackerTask(Long id, String description, String owner, Date creationTime,
+            Date lastChange, IssuePriority priority, Long projectId,
             List<IIsCommentTrackable> comments, String reporter, IssueResolution resolution, 
             IssueSeverity severity,IssueStatus status ,String summary){
         
@@ -62,8 +67,9 @@ public class IssueTrackerTask implements IIsTaskTrackable{
         this.severity = severity;
         this.status = status;
         this.summary = summary;
-        
+        this.started = false;
     }
+    
     /** {@inheritDoc} */
     public List<IIsCommentTrackable> getComments() {
         return comments;
@@ -93,7 +99,7 @@ public class IssueTrackerTask implements IIsTaskTrackable{
         return priority;
     }
     /** {@inheritDoc} */
-    public long getProjectId() {
+    public Long getProjectId() {
         return projectId;
     }
     /** {@inheritDoc} */
@@ -129,10 +135,10 @@ public class IssueTrackerTask implements IIsTaskTrackable{
         this.description = description; 
     }
     /** {@inheritDoc} */
-    public void setId(Long id) {
-        this.id = id;
-        
-    }
+//    public void setId(Long id) {
+//        this.id = id;
+//        
+//    }
     /** {@inheritDoc} */
     public void setLastChange(Date lastChange) {
         this.lastChange = lastChange;
@@ -168,5 +174,44 @@ public class IssueTrackerTask implements IIsTaskTrackable{
     /** {@inheritDoc} */
     public void setSummary(String summary) {
         this.summary = summary;
+    }
+    
+    /** {@inheritDoc} */
+    @Override
+    public void start() {
+        if(!started){
+            startTime = System.currentTimeMillis();
+            started = true;
+        }
+    }
+    
+    /** {@inheritDoc} */
+    @Override
+    public void stop() {
+        if(started){
+            duration = System.currentTimeMillis() - startTime;
+            started = false;
+        }
+    }
+
+    @Override
+    public Long getDuration() {
+        return duration;
+    }
+
+    @Override
+    public Integer getTimedTaskId() {
+        return id.intValue();
+    }
+
+    /**{@inheritDoc}*/
+    @Override
+    public void splitTime(Integer countRunning) {
+        duration /= countRunning;
+    }
+
+    @Override
+    public Boolean isStopped() {
+        return !started;
     }
 }
