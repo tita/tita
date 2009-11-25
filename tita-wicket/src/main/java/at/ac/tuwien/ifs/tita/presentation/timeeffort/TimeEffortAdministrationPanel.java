@@ -18,6 +18,7 @@ package at.ac.tuwien.ifs.tita.presentation.timeeffort;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.apache.wicket.ajax.AjaxEventBehavior;
@@ -114,8 +115,9 @@ public class TimeEffortAdministrationPanel extends Panel implements GlobalUtils 
      * Displays panel
      */
     private void displayPanel() {
-        // List<TimeEffort> list = getTimeEfforts(10);
-        initData();
+        List<TimeEffort> list = getTimeEfforts(10);
+        // initData();
+
         descriptionTextfield = new TextField<String>("descriptionTextfield",
                 new Model<String>(""));
         descriptionTextfield.setOutputMarkupId(true);
@@ -195,6 +197,23 @@ public class TimeEffortAdministrationPanel extends Panel implements GlobalUtils 
     }
 
     private List<TimeEffort> getTimeEfforts(int maxsize) {
+        GregorianCalendar cal = new GregorianCalendar();
+        TimeEffort te2 = new TimeEffort();
+        cal.set(2009, 10, 10);
+        te2.setDate(cal.getGregorianChange());
+        te2.setDeleted(false);
+        te2.setDescription("Testbeschreibung 2");
+        (cal = new GregorianCalendar()).set(2009, 10, 10, 10, 10, 10);
+        te2.setStartTime(cal.getTime());
+        (cal = new GregorianCalendar()).set(2009, 10, 10, 11, 11, 11);
+        te2.setEndTime(cal.getTime());
+
+        try {
+            te2 = service.saveTimeEffort(te2);
+        } catch (TitaDAOException e) {
+            e.printStackTrace();
+        }
+
         List<TimeEffort> returnValue = null;
         try {
             TimeEffort timeEffort = new TimeEffort();
@@ -203,7 +222,7 @@ public class TimeEffortAdministrationPanel extends Panel implements GlobalUtils 
                     .createCriteria(timeEffort);
 
             timeefcrit.getCriteria().setMaxResults(maxsize);
-            timeefcrit.setOrderAscBy("date");
+            // timeefcrit.setOrderAscBy("date");
             returnValue = service.searchTimeEffort(timeefcrit);
         } catch (TitaDAOException e) {
             e.printStackTrace();
