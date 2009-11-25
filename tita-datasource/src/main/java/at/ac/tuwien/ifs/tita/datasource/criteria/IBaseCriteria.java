@@ -34,13 +34,6 @@ public interface IBaseCriteria<DomainClass extends BaseEntity> {
     Criteria getCriteria();
 
     /**
-     * Restrict max results
-     * 
-     * @param maxResults
-     */
-    void setMaxResults(int maxResults);
-
-    /**
      * Set order by attribute asc
      * 
      * @param attribute

@@ -83,4 +83,10 @@ public class UserService implements IUserService {
         return roleDAO.search(criteria);
     }
 
+    @Override
+    public IBaseCriteria<Role> createCriteria(Role role)
+            throws TitaDAOException {
+        return roleDAO.createCriteria(role);
+    }
+
 }

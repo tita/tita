@@ -15,7 +15,6 @@
 package at.ac.tuwien.ifs.tita.datasource.criteria;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -46,33 +45,30 @@ import at.ac.tuwien.ifs.tita.datasource.exception.TitaDAOException;
 public class BaseCriteria<DomainClass extends BaseEntity> implements
         IBaseCriteria<DomainClass> {
 
-    private EntityManager entityManager;
+    // private EntityManager entityManager;
     protected Criteria criteria;
     protected Example example;
 
     final Logger log = LoggerFactory.getLogger(BaseCriteria.class);
 
-    @PersistenceContext
-    public void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
+    // @PersistenceContext
+    // public void setEntityManager(EntityManager entityManager) {
+    // this.entityManager = entityManager;
+    // }
 
-    public BaseCriteria(DomainClass exampleEntity) throws TitaDAOException {
+    public BaseCriteria(EntityManager entityManager, DomainClass exampleEntity)
+            throws TitaDAOException {
         if (exampleEntity == null) {
             log.debug("Example is null, Exception will be thrown");
             throw new TitaDAOException(
                     "Entity with value null cannot be persisted");
         }
-
-        criteria = ((Session) entityManager.getDelegate())
-                .createCriteria(exampleEntity.getClass());
+        System.out.println("EntityManager = " + entityManager);
+        Session session = (Session) entityManager.getDelegate();
+        System.out.println("Session = " + session);
+        criteria = session.createCriteria(exampleEntity.getClass());
         criteria.add(this.example = Example.create(exampleEntity).ignoreCase()
                 .enableLike());
-    }
-
-    @Override
-    public void setMaxResults(int maxResults) {
-        criteria.setMaxResults(maxResults);
     }
 
     @Override

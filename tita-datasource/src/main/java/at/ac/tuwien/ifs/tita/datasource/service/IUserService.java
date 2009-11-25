@@ -120,4 +120,6 @@ public interface IUserService {
      *             if no role was found or another Exception is thrown
      */
     List<Role> searchRole(IBaseCriteria<Role> criteria) throws TitaDAOException;
+
+    IBaseCriteria<Role> createCriteria(Role role) throws TitaDAOException;
 }

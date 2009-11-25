@@ -36,15 +36,15 @@ max-width: 150px;
 		<table border=1>
 			<thead>
 				<tr>
-					<th class="date"><input type="text" wicket:id="dateTextField" size=7/></th>
-					<th class="description"><input type="text" wicket:id="descriptionTextfield" /></th>
+					<th class="date"><input type="text" wicket:id="dateTextfield" size=7/></th>
+					<th class="description"><input type="text" wicket:id="descriptionTextfield" /></th>					
 					<th class="time">
-						<input type="text" wicket:id="hourstartTime" size=2/>
-						:<input type="text" wicket:id="minutestartTime" size=2/>
-						/<input type="text" wicket:id="hourendTime" size=2/>
-						:<input type="text" wicket:id="minuteendTime" size=2 />
+						<input type="text" wicket:id="starthourTextfield" size=2/>
+						:<input type="text" wicket:id="startminuteTextfield" size=2/>
+						/<input type="text" wicket:id="endhourTextfield" size=2/>
+						:<input type="text" wicket:id="endminuteTextfield" size=2 />
 					</th>
-					<th><input wicket:id="saveButton" type="submit" value="Save" /></th>
+					<th><form wicket:id="saveButtonForm"><input wicket:id="saveButton" type="submit" value="Save" /></form></th>
 				</tr>	
 				<tr>
 					<th>Date</th>
@@ -58,8 +58,10 @@ max-width: 150px;
 					<td wicket:id="description">[Description]</td>
 					<td align="right" wicket:id="length">[Time length]</td>
 					<td>
-						<input wicket:id="edit" type="submit" value="Edit"/> | 
-						<input wicket:id="delete" type="submit" value="Delete"/>
+						<form wicket:id="editdeleteForm">
+							<input wicket:id="edit" type="submit" value="Edit"/>| 
+							<input wicket:id="delete" type="submit" value="Delete"/>
+						</form>
 					</td>
 				</tr>
 			</tbody>

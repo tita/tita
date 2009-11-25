@@ -63,4 +63,7 @@ public interface IBaseDAO<DomainClass extends BaseEntity> {
      */
     List<DomainClass> search(IBaseCriteria<DomainClass> criteria)
             throws TitaDAOException;
+
+    public IBaseCriteria<DomainClass> createCriteria(DomainClass domain)
+            throws TitaDAOException;
 }

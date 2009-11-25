@@ -14,8 +14,11 @@
 
 package at.ac.tuwien.ifs.tita.timeeffort.service;
 
+import java.util.List;
+
 import org.springframework.transaction.annotation.Transactional;
 
+import at.ac.tuwien.ifs.tita.datasource.criteria.IBaseCriteria;
 import at.ac.tuwien.ifs.tita.datasource.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.timeeffort.domain.TimeEffort;
 
@@ -67,4 +70,18 @@ public interface ITimeEffortService {
      *             if no timeEffort was found or another Exception is thrown
      */
     TimeEffort getTimeEffortById(Long id) throws TitaDAOException;
+
+    /**
+     * returns a list of time efforts which match with parameter criteria
+     * 
+     * @param criteria
+     *            the criteria for search
+     * @throws TitaDAOException
+     *             if no role was found or another Exception is thrown
+     */
+    List<TimeEffort> searchTimeEffort(IBaseCriteria<TimeEffort> criteria)
+            throws TitaDAOException;
+
+    IBaseCriteria<TimeEffort> createCriteria(TimeEffort timeEffort)
+            throws TitaDAOException;
 }

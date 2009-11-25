@@ -14,6 +14,9 @@
 
 package at.ac.tuwien.ifs.tita.timeeffort.service;
 
+import java.util.List;
+
+import at.ac.tuwien.ifs.tita.datasource.criteria.IBaseCriteria;
 import at.ac.tuwien.ifs.tita.datasource.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.timeeffort.dao.TimeEffortDAO;
 import at.ac.tuwien.ifs.tita.timeeffort.domain.TimeEffort;
@@ -45,6 +48,18 @@ public class TimeEffortService implements ITimeEffortService {
     @Override
     public void updateTimeEffort(TimeEffort timeEffort) throws TitaDAOException {
         timeEffortDAO.update(timeEffort);
+    }
+
+    @Override
+    public List<TimeEffort> searchTimeEffort(IBaseCriteria<TimeEffort> criteria)
+            throws TitaDAOException {
+        return timeEffortDAO.search(criteria);
+    }
+
+    @Override
+    public IBaseCriteria<TimeEffort> createCriteria(TimeEffort timeEffort)
+            throws TitaDAOException {
+        return timeEffortDAO.createCriteria(timeEffort);
     }
 
 }

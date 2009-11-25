@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import at.ac.tuwien.ifs.tita.datasource.criteria.BaseCriteria;
 import at.ac.tuwien.ifs.tita.datasource.criteria.IBaseCriteria;
 import at.ac.tuwien.ifs.tita.datasource.domain.BaseEntity;
 import at.ac.tuwien.ifs.tita.datasource.exception.TitaDAOException;
@@ -198,10 +199,24 @@ public class BaseDAO<DomainClass extends BaseEntity> implements
         try {
             returnValue = criteria.getCriteria().list();
         } catch (Exception e) {
+            e.printStackTrace();
+            // log.debug("Exception catched while trying to search for Enties");
+            // throw new TitaDAOException("Exception was thrown: \n" + "Cause: "
+            // + e.getCause() + "\n" + "Error: " + e.getMessage());
+        }
+        return returnValue;
+    }
+
+    public IBaseCriteria<DomainClass> createCriteria(DomainClass domain)
+            throws TitaDAOException {
+        BaseCriteria<DomainClass> criteria = null;
+        try {
+            criteria = new BaseCriteria<DomainClass>(this.entityManager, domain);
+        } catch (Exception e) {
             log.debug("Exception catched while trying to search for Enties");
             throw new TitaDAOException("Exception was thrown: \n" + "Cause: "
                     + e.getCause() + "\n" + "Error: " + e.getMessage());
         }
-        return returnValue;
+        return criteria;
     }
 }

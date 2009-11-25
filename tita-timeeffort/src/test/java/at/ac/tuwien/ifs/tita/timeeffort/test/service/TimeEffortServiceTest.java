@@ -15,6 +15,7 @@
 package at.ac.tuwien.ifs.tita.timeeffort.test.service;
 
 import java.util.Date;
+import java.util.List;
 
 import junit.framework.Assert;
 
@@ -29,6 +30,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import at.ac.tuwien.ifs.tita.datasource.criteria.IBaseCriteria;
 import at.ac.tuwien.ifs.tita.datasource.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.timeeffort.domain.TimeEffort;
 import at.ac.tuwien.ifs.tita.timeeffort.service.ITimeEffortService;
@@ -103,6 +105,33 @@ public class TimeEffortServiceTest extends
             service.updateTimeEffort(timeEffort);
             Assert.assertEquals(service.getTimeEffortById(timeEffort.getId())
                     .getDate(), newDate);
+        } catch (TitaDAOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testSearchTimeEffort() {
+        TimeEffort timeEffort = new TimeEffort();
+        timeEffort.setDate(new Date());
+        timeEffort.setDeleted(false);
+        timeEffort.setEndTime(new Date());
+        timeEffort.setStartTime(new Date());
+        timeEffort.setDescription("Das ist die Test TimeEffort 1");
+
+        try {
+            timeEffort = service.saveTimeEffort(timeEffort);
+            Assert.assertNotNull(timeEffort.getId());
+            TimeEffort te2 = new TimeEffort();
+            te2.setId(timeEffort.getId());
+            IBaseCriteria<TimeEffort> tecrit = service.createCriteria(te2);
+            tecrit.getCriteria().setMaxResults(10);
+            tecrit.setOrderAscBy("id");
+            List<TimeEffort> list = service.searchTimeEffort(tecrit);
+            Assert.assertNotNull(list);
+            Assert.assertEquals(list.size(), 1);
+            Assert.assertEquals(list.get(0).getDescription(), timeEffort
+                    .getDescription());
         } catch (TitaDAOException e) {
             e.printStackTrace();
         }
