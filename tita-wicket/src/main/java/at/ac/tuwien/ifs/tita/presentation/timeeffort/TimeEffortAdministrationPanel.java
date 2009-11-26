@@ -167,7 +167,7 @@ public class TimeEffortAdministrationPanel extends Panel implements GlobalUtils 
 
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form1) {
-                // TODO Set border red on textfields which arent filled
+                // TODO Set border red on textfields which are'nt filled
             }
         });
     }
@@ -205,41 +205,25 @@ public class TimeEffortAdministrationPanel extends Panel implements GlobalUtils 
         return timeeffortList;
     }
 
-    // private List<TimeEffort> getTimeEfforts() {
-    // GregorianCalendar cal = new GregorianCalendar();
-    // TimeEffort te2 = new TimeEffort();
-    // cal.set(2009, 10, 10);
-    // te2.setDate(cal.getGregorianChange());
-    // te2.setDeleted(false);
-    // te2.setDescription("Testbeschreibung 2");
-    // (cal = new GregorianCalendar()).set(2009, 10, 10, 10, 10, 10);
-    // te2.setStartTime(cal.getTime());
-    // (cal = new GregorianCalendar()).set(2009, 10, 10, 11, 11, 11);
-    // te2.setEndTime(cal.getTime());
-    //
-    // try {
-    // te2 = service.saveTimeEffort(te2);
-    // } catch (TitaDAOException e) {
-    // e.printStackTrace();
-    // }
-    //
-    // List<TimeEffort> returnValue = null;
-    // try {
-    // TimeEffort timeEffort = new TimeEffort();
-    // timeEffort.setDeleted(false);
-    // // timeEffort.setDate(date);
-    // // IBaseCriteria<TimeEffort> timeefcrit = service
-    // // .createCriteria(timeEffort);
-    // //
-    // // timeefcrit.getCriteria().setMaxResults(maxsize);
-    // // timeefcrit.setOrderAscBy("date");
-    // returnValue = service.searchTimeEffort(timeEffort);
-    // } catch (TitaDAOException e) {
-    // e.printStackTrace();
-    // }
-    //
-    // return returnValue;
-    // }
+    // TODO Search implementation needed
+    private List<TimeEffort> getTimeEfforts() {
+        List<TimeEffort> returnValue = null;
+        try {
+            TimeEffort timeEffort2 = new TimeEffort();
+            timeEffort.setDeleted(false);
+            // timeEffort.setDate(date);
+            // IBaseCriteria<TimeEffort> timeefcrit = service
+            // .createCriteria(timeEffort);
+            //
+            // timeefcrit.getCriteria().setMaxResults(maxsize);
+            // timeefcrit.setOrderAscBy("date");
+            returnValue = service.searchTimeEffort(timeEffort2);
+        } catch (TitaDAOException e) {
+            e.printStackTrace();
+        }
+
+        return returnValue;
+    }
 
     // ============= TIME EFFORT LIST VIEW ===========================
 
