@@ -44,6 +44,7 @@ import org.apache.wicket.validation.validator.StringValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import at.ac.tuwien.ifs.tita.datasource.criteria.IBaseCriteria;
 import at.ac.tuwien.ifs.tita.datasource.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.presentation.utils.GlobalUtils;
 import at.ac.tuwien.ifs.tita.timeeffort.domain.TimeEffort;
@@ -206,18 +207,18 @@ public class TimeEffortAdministrationPanel extends Panel implements GlobalUtils 
     }
 
     // TODO Search implementation needed
-    private List<TimeEffort> getTimeEfforts() {
+    private List<TimeEffort> getTimeEfforts(int maxsize) {
         List<TimeEffort> returnValue = null;
         try {
             TimeEffort timeEffort2 = new TimeEffort();
-            timeEffort.setDeleted(false);
-            // timeEffort.setDate(date);
-            // IBaseCriteria<TimeEffort> timeefcrit = service
-            // .createCriteria(timeEffort);
-            //
-            // timeefcrit.getCriteria().setMaxResults(maxsize);
-            // timeefcrit.setOrderAscBy("date");
-            returnValue = service.searchTimeEffort(timeEffort2);
+            timeEffort2.setDeleted(false);
+            timeEffort2.setDate(date);
+            IBaseCriteria<TimeEffort> timeefcrit = service
+                    .createCriteria(timeEffort2);
+
+            timeefcrit.getCriteria().setMaxResults(maxsize);
+            timeefcrit.setOrderAscBy("date");
+            returnValue = service.searchTimeEffort(timeefcrit);
         } catch (TitaDAOException e) {
             e.printStackTrace();
         }
