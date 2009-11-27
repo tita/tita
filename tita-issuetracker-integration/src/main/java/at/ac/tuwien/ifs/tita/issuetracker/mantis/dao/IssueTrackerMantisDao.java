@@ -83,7 +83,8 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao{
           
     }
     /** {@inheritDoc} */
-    public IIsProjectTrackable findProject(long id){
+    @Override
+    public IIsProjectTrackable findProject(Long id){
         
         IProject project;
         try {
@@ -96,8 +97,10 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao{
         }
         return null;
     }
+    
     /** {@inheritDoc} */
-    public List<IIsTaskTrackable> findAllTasksForProject(long projectId){
+    @Override
+    public List<IIsTaskTrackable> findAllTasksForProject(Long projectId){
         List<IIsTaskTrackable> taskList = new ArrayList<IIsTaskTrackable>();
         
         try {
@@ -116,7 +119,7 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao{
     
     }
     /** {@inheritDoc} */
-    public List<IIsCommentTrackable> findAllCommentsForTask(long taskId){
+    public List<IIsCommentTrackable> findAllCommentsForTask(Long taskId){
         List<IIsCommentTrackable> commentList = new ArrayList<IIsCommentTrackable>();
         
         try {
@@ -135,7 +138,7 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao{
     
     }
     /** {@inheritDoc} */
-    public IIsTaskTrackable findTask(long taskId) {
+    public IIsTaskTrackable findTask(Long taskId) {
         IIssue issue;
         try {
             issue = session.getIssue(taskId);
@@ -179,7 +182,7 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao{
      * @return new IssueTrackerProject
      */
     private IssueTrackerProject createMantisProject(IProject project){
-        long id = project.getId();
+        Long id = project.getId();
         String name = project.getName();
         String description = project.getDescription();
         ProjectStatus status = IssueTrackerMantisEnum.extractProjectStatus(project);
@@ -195,7 +198,7 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao{
      * @return new IssueTrackerTask
      */
     private IssueTrackerTask createMantisTask(IIssue issue){
-        long id= issue.getId();
+        Long id= issue.getId();
         String description = issue.getDescription();
         String owner ="";
         if(issue.getHandler() != null){
@@ -229,7 +232,7 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao{
      * @return new IssueTrackerComment
      */
     private IssueTrackerComment createMantisComment(INote note){
-        long id = note.getId();
+        Long id = note.getId();
         Date creationTime = note.getDateSubmitted();
         Date lastChange = note.getDateLastModified(); 
         String reporter="";
@@ -241,7 +244,5 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao{
                 
         return new IssueTrackerComment(id, creationTime, 
                 lastChange, reporter, text, viewState);
-    }
-
-    
+    }    
 }

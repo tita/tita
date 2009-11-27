@@ -82,9 +82,9 @@ public class IssueTrackerProject implements IIsProjectTrackable {
         this.description = description;
     }
     /** {@inheritDoc} */
-    public void setId(Long id) {
-        this.id = id;
-    }
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
     /** {@inheritDoc} */
     public void setName(String name) {
         this.name = name;

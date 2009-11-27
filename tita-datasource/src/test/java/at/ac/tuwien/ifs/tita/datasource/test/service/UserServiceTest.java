@@ -14,6 +14,8 @@
 
 package at.ac.tuwien.ifs.tita.datasource.test.service;
 
+import java.util.List;
+
 import junit.framework.Assert;
 
 import org.junit.Test;
@@ -54,6 +56,26 @@ public class UserServiceTest extends
         try {
             role1 = service.saveRole(role1);
             Assert.assertNotNull(role1.getId());
+        } catch (TitaDAOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testSearchRole() {
+        Role role1 = new Role();
+        role1.setDescription("Das ist die Test Rolle 1");
+
+        try {
+            role1 = service.saveRole(role1);
+            Assert.assertNotNull(role1.getId());
+            Role role2 = new Role();
+            role2.setId(role1.getId());
+            List<Role> list = service.searchRole(role2);
+            Assert.assertNotNull(list);
+            Assert.assertEquals(list.size(), 1);
+            Assert.assertEquals(list.get(0).getDescription(), role1
+                    .getDescription());
         } catch (TitaDAOException e) {
             e.printStackTrace();
         }

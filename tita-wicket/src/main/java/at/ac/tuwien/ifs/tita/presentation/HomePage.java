@@ -147,8 +147,8 @@ public class HomePage extends WebPage {
 
     /**
      * Loads report and initializes parameters for report.
-     * 
-     * @return JasperPdfResource instance
+     * @param r Role 
+     * @exception JRException on runtime error
      */
     private void initReport(Role r) throws JRException {
         ServletContext context = ((WebApplication) getApplication()).getServletContext();

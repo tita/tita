@@ -31,7 +31,8 @@ public interface IIsProjectTrackable {
      * Sets the id of the project to identify it.
      * @param id - the id identifies the project
      */
-    void setId(Long id);
+//  NEVER SET ID OF AN ENTITY
+//    void setId(Long id);
     
     /**
      * Supplies the identifier of the project.
