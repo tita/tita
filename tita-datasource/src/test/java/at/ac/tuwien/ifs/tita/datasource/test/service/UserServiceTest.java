@@ -16,6 +16,8 @@ package at.ac.tuwien.ifs.tita.datasource.test.service;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import junit.framework.Assert;
 
 import org.junit.Test;
@@ -29,6 +31,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import at.ac.tuwien.ifs.tita.datasource.criteria.IBaseCriteria;
 import at.ac.tuwien.ifs.tita.datasource.domain.Role;
 import at.ac.tuwien.ifs.tita.datasource.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.datasource.service.IUserService;
@@ -46,6 +49,7 @@ public class UserServiceTest extends
     // private ApplicationContext ctx;
 
     @Autowired
+    @Resource
     private IUserService service;
 
     @Test
@@ -71,7 +75,10 @@ public class UserServiceTest extends
             Assert.assertNotNull(role1.getId());
             Role role2 = new Role();
             role2.setId(role1.getId());
-            List<Role> list = service.searchRole(role2);
+            IBaseCriteria<Role> rolecrit = service.createCriteria(role2);
+            rolecrit.getCriteria().setMaxResults(10);
+            rolecrit.setOrderAscBy("id");
+            List<Role> list = service.searchRole(rolecrit);
             Assert.assertNotNull(list);
             Assert.assertEquals(list.size(), 1);
             Assert.assertEquals(list.get(0).getDescription(), role1
@@ -80,4 +87,5 @@ public class UserServiceTest extends
             e.printStackTrace();
         }
     }
+
 }

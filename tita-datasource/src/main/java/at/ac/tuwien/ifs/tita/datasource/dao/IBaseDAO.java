@@ -16,6 +16,7 @@ package at.ac.tuwien.ifs.tita.datasource.dao;
 
 import java.util.List;
 
+import at.ac.tuwien.ifs.tita.datasource.criteria.IBaseCriteria;
 import at.ac.tuwien.ifs.tita.datasource.domain.BaseEntity;
 import at.ac.tuwien.ifs.tita.datasource.exception.TitaDAOException;
 
@@ -60,5 +61,9 @@ public interface IBaseDAO<DomainClass extends BaseEntity> {
      * @param the
      *            criteria for searching Domain objects
      */
-    List<DomainClass> search(DomainClass criteria) throws TitaDAOException;
+    List<DomainClass> search(IBaseCriteria<DomainClass> criteria)
+            throws TitaDAOException;
+
+    public IBaseCriteria<DomainClass> createCriteria(DomainClass domain)
+            throws TitaDAOException;
 }

@@ -17,13 +17,15 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
-	
-	<!-- setup wicket application -->
-	<bean id="helloApp" class="at.ac.tuwien.ifs.tita.presentation.HelloWorldApplication"/>
 
-	<import resource="classpath:persistence-context.xml"/>
-	<import resource="classpath:reportApplicationContext.xml"/>
-	<import resource="classpath:timeeffort-context.xml"/>
-	
-	
+  <!-- The DAO -->
+  <bean id="timeEffortDAO" class="at.ac.tuwien.ifs.tita.timeeffort.dao.TimeEffortDAO" />
+  
+  <!-- The Services -->
+  <bean id="timeEffortService" class="at.ac.tuwien.ifs.tita.timeeffort.service.TimeEffortService" >
+    <property name="timeEffortDAO" ref="timeEffortDAO"/>
+  </bean>
+
+  <import resource="classpath:persistence-context.xml" />
+
 </beans>

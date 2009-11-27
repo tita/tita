@@ -81,6 +81,7 @@
       <module>tita-datasource</module>
       <module>tita-issuetracker-integration</module>
       <module>tita-jasperreports</module>
+      <module>tita-timeeffort</module>
       <module>tita-wicket</module>
  </modules>
 

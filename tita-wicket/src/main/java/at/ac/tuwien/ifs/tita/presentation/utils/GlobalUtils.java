@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+/**
    Copyright 2009 TiTA Project, Vienna University of Technology
    
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,17 +12,22 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
--->
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+   
+ */
+package at.ac.tuwien.ifs.tita.presentation.utils;
 
-<beans>
-	
-	<!-- setup wicket application -->
-	<bean id="helloApp" class="at.ac.tuwien.ifs.tita.presentation.HelloWorldApplication"/>
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
-	<import resource="classpath:persistence-context.xml"/>
-	<import resource="classpath:reportApplicationContext.xml"/>
-	<import resource="classpath:timeeffort-context.xml"/>
-	
-	
-</beans>
+/**
+ * 
+ * @author msiedler
+ * 
+ */
+public interface GlobalUtils {
+
+    public final static DateFormat DATEFORMAT = new SimpleDateFormat(
+            "dd.MM.yyyy");
+    public final static DateFormat TIMELENGTHFORMAT = new SimpleDateFormat(
+            "hh:mm");
+}
