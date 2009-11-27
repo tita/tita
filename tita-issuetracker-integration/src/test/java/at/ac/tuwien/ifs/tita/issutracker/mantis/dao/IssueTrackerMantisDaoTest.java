@@ -98,14 +98,40 @@ public class IssueTrackerMantisDaoTest {
         try {
             projectId = createTestProject("tita_test", "tita_test_description", true, false);
             taskId = createTestTask("tita_test_issue1", "issue_summary1","tita_test" );
-            
-            
+
             IssueTrackerMantisDao dao = new IssueTrackerMantisDao();
             IIsTaskTrackable mantisTask = dao.findTask(taskId);
             assertEquals("tita_test_issue1", mantisTask.getDescription());
             assertEquals("issue_summary1", mantisTask.getSummary());
             assertEquals(IssueResolution.OPEN, mantisTask.getResolution());
             assertEquals(projectId, mantisTask.getProjectId());
+        
+        } catch (Exception e) {
+            assertTrue(false);
+        } finally{
+            deleteTestTask(taskId);
+            deleteTestProject("tita_test");   
+        }
+    }
+    
+    /**
+     * Test: close task
+     */
+    @Test
+    public void closeTask() {
+        long taskId = 0;
+        try {
+            createTestProject("tita_test", "tita_test_description", true, false);
+            taskId = createTestTask("tita_test_issue1", "issue_summary1","tita_test" );
+
+            //close task
+            IssueTrackerMantisDao dao = new IssueTrackerMantisDao();
+            dao.closeTask(taskId);      
+            
+            //check
+            IIssue issue = session.getIssue(taskId);
+            assertEquals("fixed", issue.getResolution().getName());
+            
         
         } catch (Exception e) {
             assertTrue(false);

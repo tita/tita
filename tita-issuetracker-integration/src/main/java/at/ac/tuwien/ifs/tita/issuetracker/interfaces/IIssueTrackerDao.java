@@ -15,6 +15,8 @@ package at.ac.tuwien.ifs.tita.issuetracker.interfaces;
 
 import java.util.List;
 
+import org.mantisbt.connect.MCException;
+
 /**
  * The interface describes the view on comment objects from the integrated issue tracker.
  * The data from the issue tracker is mapped in the implementation of the interface.
@@ -57,5 +59,13 @@ public interface IIssueTrackerDao {
      * @return list of all found comments
      */
     List<IIsCommentTrackable> findAllCommentsForTask(long taskId);
+    
+    /**
+     * Closes the Task with the specified taskId.
+     * @param taskId - id of the task to close
+     * @return true, if closing was successful, false if an error ocurred
+     * @exception MCException - if closing fails
+     */
+    void closeTask(long taskId) throws MCException;
     
 }
