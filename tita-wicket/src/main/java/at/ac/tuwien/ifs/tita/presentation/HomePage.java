@@ -16,11 +16,7 @@
  */
 package at.ac.tuwien.ifs.tita.presentation;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 import javax.servlet.ServletContext;
@@ -31,14 +27,6 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.mantisbt.connect.AccessLevel;
-import org.mantisbt.connect.MCException;
-import org.mantisbt.connect.axis.MCSession;
-import org.mantisbt.connect.model.IIssue;
-import org.mantisbt.connect.model.IProject;
-import org.mantisbt.connect.model.Issue;
-import org.mantisbt.connect.model.MCAttribute;
-import org.mantisbt.connect.model.Project;
 
 import at.ac.tuwien.ifs.tita.datasource.domain.Role;
 import at.ac.tuwien.ifs.tita.datasource.exception.TitaDAOException;
@@ -59,24 +47,24 @@ public class HomePage extends WebPage {
     @SpringBean(name = "helloWorldReport")
     private JasperPdfResource helloWorldReport;
     
-    private MCSession session;
+    /*private MCSession session;
     private String url = "http://localhost/mantisbt-1.1.8/api/soap/mantisconnect.php";
     private String user = "administrator";
-    private String pwd = "root";
+    private String pwd = "root";*/
 
 
     public HomePage() {
         displayHello();
         
         
-        try {
+        /*try {
             URL u = new URL(url);
             session = new MCSession(u, user, pwd);
         } catch (MCException e) {
             assertTrue(false);
         } catch (MalformedURLException e) {
             assertTrue(false);
-        }
+        }*/
         //displayIssueTable();
     }
 
@@ -169,6 +157,7 @@ public class HomePage extends WebPage {
                 roles));
     }
     
+    
     /**
      * Creates a Project on the Mantis-Server.
      * @param projectName - name of the project
@@ -178,7 +167,7 @@ public class HomePage extends WebPage {
      * @return id of the created project
      * @throws MCException - if error occurs, when project is added
      */
-    private long createTestProject(String projectName, String description, boolean enabled,
+   /*private long createTestProject(String projectName, String description, boolean enabled,
             boolean viewStatePrivate) throws MCException{
         
         IProject newProject = new Project();
@@ -190,7 +179,7 @@ public class HomePage extends WebPage {
         long id = session.addProject(newProject);
         session.flush();
         return id;
-    }
+    }*/
     
     /**
      * Creates a task on the Mantis-Server.
@@ -200,7 +189,7 @@ public class HomePage extends WebPage {
      * @return id of the created task
      * @throws MCException - if error occurs, when task is added
      */
-    private long createTestTask(String description, String summary, String projectName)
+   /* private long createTestTask(String description, String summary, String projectName)
         throws MCException{
         
         IIssue newIssue = new Issue();
@@ -215,13 +204,13 @@ public class HomePage extends WebPage {
         long id = session.addIssue(newIssue);
         session.flush();
         return id;
-    }
+    }*/
 
     /**
      * Deletes project on the Mantis-Server.
      * @param projectName - name of the project to delete
      */
-    private void deleteTestProject(String projectName){
+    /*private void deleteTestProject(String projectName){
         IProject old;
         try {
             old = session.getProject(projectName);
@@ -232,17 +221,17 @@ public class HomePage extends WebPage {
         } catch (MCException e) {
             assertTrue(false);
         }
-    }
+    }*/
     /**
      * Deletes task on the Mantis-Server.
      * @param taskId - id of the task to delete
      */
-    private void deleteTestTask(long taskId) {
+    /*private void deleteTestTask(long taskId) {
         try {
             session.deleteIssue(taskId);
             session.flush();
         } catch (MCException e) {
             assertTrue(false);
         }
-    }
+    }*/
 }
