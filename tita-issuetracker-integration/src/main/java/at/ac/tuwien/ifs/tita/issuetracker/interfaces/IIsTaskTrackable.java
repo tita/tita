@@ -14,7 +14,7 @@
 package at.ac.tuwien.ifs.tita.issuetracker.interfaces;
 
 import java.util.Date;
-import java.util.List;
+import java.util.TreeMap;
 
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssuePriority;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueResolution;
@@ -190,14 +190,14 @@ public interface IIsTaskTrackable {
      * @param comments - a list of comments, default null
      * @see IIsCommentTrackable
      */
-    void setComments(List<IIsCommentTrackable> comments);
+    void setComments(TreeMap<Long, IIsCommentTrackable> comments);
     
     /**
      * Returns a list of comments added to the task.
      * @return comments - a list of comments
      * @see IIsCommentTrackable
      */
-    List<IIsCommentTrackable> getComments();
+    TreeMap<Long, IIsCommentTrackable> getComments();
     
     
 

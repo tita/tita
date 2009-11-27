@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TreeMap;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -46,6 +47,9 @@ import org.slf4j.LoggerFactory;
 
 import at.ac.tuwien.ifs.tita.datasource.criteria.IBaseCriteria;
 import at.ac.tuwien.ifs.tita.datasource.exception.TitaDAOException;
+import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IIsProjectTrackable;
+import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IIsTaskTrackable;
+import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IIssueTrackerDao;
 import at.ac.tuwien.ifs.tita.presentation.utils.GlobalUtils;
 import at.ac.tuwien.ifs.tita.timeeffort.domain.TimeEffort;
 import at.ac.tuwien.ifs.tita.timeeffort.service.ITimeEffortService;
@@ -73,6 +77,10 @@ public class TimeEffortAdministrationPanel extends Panel implements GlobalUtils 
 
     // Actual time effort list
     private List<TimeEffort> timeeffortList = new ArrayList<TimeEffort>();
+    
+    //IssueTracker dao
+    @SpringBean(name = "mantisDAO")
+    IIssueTrackerDao issuetrackerDao;
 
     // Wicket Components
 
@@ -96,6 +104,8 @@ public class TimeEffortAdministrationPanel extends Panel implements GlobalUtils 
     public TimeEffortAdministrationPanel(String id) {
         super(id);
         displayPanel();
+        
+        displayTasks();
     }
 
     /**
@@ -169,6 +179,37 @@ public class TimeEffortAdministrationPanel extends Panel implements GlobalUtils 
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form1) {
                 // TODO Set border red on textfields which are'nt filled
+            }
+        });
+    }
+    
+    private void displayTasks(){
+        List<IIsTaskTrackable> allTasks = new ArrayList<IIsTaskTrackable>();
+        //TODO: change so just the 
+        TreeMap<Long, IIsProjectTrackable> projects= 
+            issuetrackerDao.findAccessibleProjects();
+        
+        for (IIsProjectTrackable p : projects.values()) {
+            TreeMap<Long, IIsTaskTrackable> tasks = 
+                issuetrackerDao.findAllTasksForProject(p.getId());
+            
+            for(IIsTaskTrackable t : tasks.values()){
+                allTasks.add(t);
+            }
+        }
+        
+        add(new ListView<IIsTaskTrackable>("tasklist", allTasks) {
+            protected void populateItem(ListItem<IIsTaskTrackable> item) {
+                IIsTaskTrackable task = (IIsTaskTrackable) item.getModelObject();
+                item.add(new Label("number", task.getId().toString()));
+                item.add(new Label("name", task.getDescription()));
+                item.add(new Label("creation", DATEFORMAT.format(task.getCreationTime())));
+                item.add(new Label("lastchange", DATEFORMAT.format(task.getLastChange())));
+                item.add(new Label("owner", task.getOwner()));
+                item.add(new Label("priority", task.getPriority().name()));
+                item.add(new Label("resolution", task.getResolution().name()));
+                item.add(new Label("severity", task.getSeverity().name()));
+                item.add(new Label("status", task.getStatus().name()));
             }
         });
     }

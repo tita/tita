@@ -14,7 +14,7 @@
 package at.ac.tuwien.ifs.tita.issuetracker.interfaces;
 
 import java.net.URL;
-import java.util.List;
+import java.util.TreeMap;
 
 import at.ac.tuwien.ifs.tita.issuetracker.enums.ProjectStatus;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.ViewState;
@@ -95,14 +95,14 @@ public interface IIsProjectTrackable {
      * @param tasks - a list of tasks
      * @see IIsTaskTrackable
      */
-    void setTasks(List<IIsTaskTrackable> tasks);
+    void setTasks(TreeMap<Long, IIsTaskTrackable> tasks);
     
     /**
      * Returns the tasks of the project.
      * @return tasks - reported tasks of the project
      * @see IIsTaskTrackable
      */
-    List<IIsTaskTrackable> getTasks();
+    TreeMap<Long, IIsTaskTrackable> getTasks();
     
     /**
      * Sets the viewState of the project.

@@ -13,7 +13,7 @@
 */
 package at.ac.tuwien.ifs.tita.issuetracker.interfaces;
 
-import java.util.List;
+import java.util.TreeMap;
 
 import org.mantisbt.connect.MCException;
 
@@ -25,6 +25,14 @@ import org.mantisbt.connect.MCException;
  *
  */
 public interface IIssueTrackerDao {
+    
+    /**
+     * Method to find all projects for a User.
+     * @param username - name of the user, whos projects should be found
+     * @return list of found projects
+     */
+    TreeMap<Long, IIsProjectTrackable> findAccessibleProjects();
+    
     /**
      * Method to find a trackableProject by the projectId.
      * @param projectId - id of the project to find
@@ -44,7 +52,7 @@ public interface IIssueTrackerDao {
      * @param projectId - id of the project, for which the tasks should be found
      * @return list of all found tasks
      */
-    List<IIsTaskTrackable> findAllTasksForProject(Long projectId);
+    TreeMap<Long, IIsTaskTrackable> findAllTasksForProject(Long projectId);
     
     /**
      * Method to find a trackableTask by the taskId.
@@ -58,7 +66,7 @@ public interface IIssueTrackerDao {
      * @param taskId - id of the task, for which the comments should be found
      * @return list of all found comments
      */
-    List<IIsCommentTrackable> findAllCommentsForTask(Long taskId);
+    TreeMap<Long, IIsCommentTrackable> findAllCommentsForTask(Long taskId);
     
     /**
      * Closes the Task with the specified taskId.

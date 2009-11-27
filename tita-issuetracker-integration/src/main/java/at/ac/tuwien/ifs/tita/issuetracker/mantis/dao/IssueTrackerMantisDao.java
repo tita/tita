@@ -15,9 +15,8 @@ package at.ac.tuwien.ifs.tita.issuetracker.mantis.dao;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.TreeMap;
 
 import org.mantisbt.connect.Enumeration;
 import org.mantisbt.connect.IMCSession;
@@ -100,14 +99,14 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao{
     
     /** {@inheritDoc} */
     @Override
-    public List<IIsTaskTrackable> findAllTasksForProject(Long projectId){
-        List<IIsTaskTrackable> taskList = new ArrayList<IIsTaskTrackable>();
+    public TreeMap<Long,IIsTaskTrackable> findAllTasksForProject(Long projectId){
+        TreeMap<Long,IIsTaskTrackable> taskList = new TreeMap<Long, IIsTaskTrackable>();
         
         try {
             IIssue[] issues = session.getProjectIssues(projectId);
             for(IIssue issue : issues){
                 IssueTrackerTask task = createMantisTask(issue);
-                taskList.add(task);
+                taskList.put(task.getId(), task);
             }
             return taskList;
         } catch (MCException e) {
@@ -118,15 +117,16 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao{
         return null;
     
     }
+        
     /** {@inheritDoc} */
-    public List<IIsCommentTrackable> findAllCommentsForTask(Long taskId){
-        List<IIsCommentTrackable> commentList = new ArrayList<IIsCommentTrackable>();
+    public TreeMap<Long,IIsCommentTrackable> findAllCommentsForTask(Long taskId){
+        TreeMap<Long,IIsCommentTrackable> commentList = new TreeMap<Long,IIsCommentTrackable>();
         
         try {
             INote[] notes = session.getIssue(taskId).getNotes();
             for(INote note : notes){
                 IssueTrackerComment comment = createMantisComment(note);
-                commentList.add(comment);
+                commentList.put(comment.getId(), comment);
             }
             return commentList;
         } catch (MCException e) {
@@ -186,7 +186,7 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao{
         String name = project.getName();
         String description = project.getDescription();
         ProjectStatus status = IssueTrackerMantisEnum.extractProjectStatus(project);
-        List<IIsTaskTrackable> tasks = findAllTasksForProject(id);
+        TreeMap<Long, IIsTaskTrackable> tasks = findAllTasksForProject(id);
         ViewState viewState = IssueTrackerMantisEnum.extractViewState(project);
         return new IssueTrackerProject(id, name, description, status, tasks, url, viewState);
 
@@ -211,7 +211,7 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao{
         if(issue.getProject() != null){
             projectId = issue.getProject().getId();
         }
-        List<IIsCommentTrackable> comments = findAllCommentsForTask(issue.getId());
+        TreeMap<Long, IIsCommentTrackable> comments = findAllCommentsForTask(issue.getId());
         String reporter="";
         if(issue.getReporter() != null){
             reporter = issue.getReporter().toString();
@@ -244,5 +244,24 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao{
                 
         return new IssueTrackerComment(id, creationTime, 
                 lastChange, reporter, text, viewState);
+    }
+
+    @Override
+    public TreeMap<Long,IIsProjectTrackable> findAccessibleProjects() {
+        //TODO: find password and username for current user 
+        //and connect to mantis
+        TreeMap<Long,IIsProjectTrackable> resultList = new TreeMap<Long, IIsProjectTrackable>();
+        IProject[] projects;
+        try {
+            projects = session.getAccessibleProjects();
+            for(IProject p : projects){
+                IssueTrackerProject mantisProject = createMantisProject(p);
+                resultList.put(mantisProject.getId(), mantisProject);
+            }
+            
+        } catch (MCException e) {
+            e.printStackTrace();
+        }
+        return resultList;
     }    
 }

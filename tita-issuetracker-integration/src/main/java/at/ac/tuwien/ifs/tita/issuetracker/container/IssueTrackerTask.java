@@ -13,8 +13,9 @@
 */
 package at.ac.tuwien.ifs.tita.issuetracker.container;
 
+import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+import java.util.TreeMap;
 
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssuePriority;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueResolution;
@@ -30,9 +31,9 @@ import at.ac.tuwien.ifs.tita.issuetracker.time.ITimedTask;
  * @author Karin
  *
  */
-public class IssueTrackerTask implements IIsTaskTrackable, ITimedTask{
+public class IssueTrackerTask implements IIsTaskTrackable, ITimedTask, Serializable{
     
-    private List<IIsCommentTrackable> comments;
+    private TreeMap<Long, IIsCommentTrackable> comments;
     private Date creationTime;
     private String description;
     private Long id;
@@ -51,7 +52,7 @@ public class IssueTrackerTask implements IIsTaskTrackable, ITimedTask{
     
     public IssueTrackerTask(Long id, String description, String owner, Date creationTime,
             Date lastChange, IssuePriority priority, Long projectId,
-            List<IIsCommentTrackable> comments, String reporter, IssueResolution resolution, 
+            TreeMap<Long, IIsCommentTrackable> comments, String reporter, IssueResolution resolution, 
             IssueSeverity severity,IssueStatus status ,String summary){
         
         this.id = id;
@@ -71,7 +72,7 @@ public class IssueTrackerTask implements IIsTaskTrackable, ITimedTask{
     }
     
     /** {@inheritDoc} */
-    public List<IIsCommentTrackable> getComments() {
+    public TreeMap<Long, IIsCommentTrackable> getComments() {
         return comments;
     }
     /** {@inheritDoc} */
@@ -123,7 +124,7 @@ public class IssueTrackerTask implements IIsTaskTrackable, ITimedTask{
         return summary;
     }
     /** {@inheritDoc} */
-    public void setComments(List<IIsCommentTrackable> comments) {
+    public void setComments(TreeMap<Long, IIsCommentTrackable> comments) {
         this.comments = comments;
     }
     /** {@inheritDoc} */

@@ -14,7 +14,7 @@
 package at.ac.tuwien.ifs.tita.issuetracker.container;
 
 import java.net.URL;
-import java.util.List;
+import java.util.TreeMap;
 
 import at.ac.tuwien.ifs.tita.issuetracker.enums.ProjectStatus;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.ViewState;
@@ -32,12 +32,12 @@ public class IssueTrackerProject implements IIsProjectTrackable {
     private String name;
     private String description; 
     private ProjectStatus status;
-    private List<IIsTaskTrackable> tasks;
+    private TreeMap<Long, IIsTaskTrackable> tasks;
     private URL url; 
     private ViewState viewState;
     
     public IssueTrackerProject(long id, String name, String description, 
-            ProjectStatus status, List<IIsTaskTrackable> tasks, URL url, 
+            ProjectStatus status, TreeMap<Long, IIsTaskTrackable> tasks, URL url, 
             ViewState viewState){
         this.id = id;
         this.name = name;
@@ -66,7 +66,7 @@ public class IssueTrackerProject implements IIsProjectTrackable {
         return status;
     }
 
-    public List<IIsTaskTrackable> getTasks() {
+    public TreeMap<Long, IIsTaskTrackable> getTasks() {
         return tasks;
     }
     /** {@inheritDoc} */
@@ -94,7 +94,7 @@ public class IssueTrackerProject implements IIsProjectTrackable {
         this.status = projectStatus;
     }
     /** {@inheritDoc} */
-    public void setTasks(List<IIsTaskTrackable> tasks) {
+    public void setTasks(TreeMap<Long, IIsTaskTrackable> tasks) {
         this.tasks = tasks;
     }
     /** {@inheritDoc} */

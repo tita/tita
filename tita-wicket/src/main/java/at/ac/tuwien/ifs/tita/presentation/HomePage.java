@@ -47,25 +47,10 @@ public class HomePage extends WebPage {
     @SpringBean(name = "helloWorldReport")
     private JasperPdfResource helloWorldReport;
     
-    /*private MCSession session;
-    private String url = "http://localhost/mantisbt-1.1.8/api/soap/mantisconnect.php";
-    private String user = "administrator";
-    private String pwd = "root";*/
-
 
     public HomePage() {
         displayHello();
         
-        
-        /*try {
-            URL u = new URL(url);
-            session = new MCSession(u, user, pwd);
-        } catch (MCException e) {
-            assertTrue(false);
-        } catch (MalformedURLException e) {
-            assertTrue(false);
-        }*/
-        //displayIssueTable();
     }
 
     /**
@@ -90,40 +75,7 @@ public class HomePage extends WebPage {
         }
     }
     
-    /*private void displayIssueTable(){
-        long taskId = 0;
-        long projectId = 0;
-        try {
-            projectId = createTestProject("tita_test", "tita_test_description", true, false);
-            taskId = createTestTask("tita_test_issue1", "issue_summary1","tita_test" );
 
-            IssueTrackerMantisDao dao = new IssueTrackerMantisDao();
-            List<IIsTaskTrackable> mantisTask = dao.findAllTasksForProject(projectId);
-            
-            final DataView dataView = new DataView("simple", new ListDataProvider(
-                    list)) {
-                public void populateItem(final Item item) {
-                    final IIssue user = (IIssue) item.getModelObject();
-                 
-                    item.add(new Label("id", Integer.())));
-                }
-            };
-
-             dataView.setItemsPerPage(10);
-            
-            add(dataView);
-
-            add(new PagingNavigator("navigator", dataView));
-
-        
-        } catch (Exception e) {
-            assertTrue(false);
-        } finally{
-            deleteTestTask(taskId);
-            deleteTestProject("tita_test");   
-        }
-    }
-*/
     /**
      * Initialize homepage data.
      * 
@@ -156,82 +108,4 @@ public class HomePage extends WebPage {
         helloWorldReport.setReportDataSource(new JRBeanCollectionDataSource(
                 roles));
     }
-    
-    
-    /**
-     * Creates a Project on the Mantis-Server.
-     * @param projectName - name of the project
-     * @param description - description of the project
-     * @param enabled - status of the project
-     * @param viewStatePrivate - private or public
-     * @return id of the created project
-     * @throws MCException - if error occurs, when project is added
-     */
-   /*private long createTestProject(String projectName, String description, boolean enabled,
-            boolean viewStatePrivate) throws MCException{
-        
-        IProject newProject = new Project();
-        newProject.setName(projectName);
-        newProject.setAccessLevelMin(AccessLevel.DEVELOPER);
-        newProject.setDesription(description);
-        newProject.setEnabled(enabled); //ProjectStatus: Open
-        newProject.setPrivate(viewStatePrivate); //ViewState:Public
-        long id = session.addProject(newProject);
-        session.flush();
-        return id;
-    }*/
-    
-    /**
-     * Creates a task on the Mantis-Server.
-     * @param description - description of the project
-     * @param summary - summary of the project
-     * @param projectName - name of the project of the task
-     * @return id of the created task
-     * @throws MCException - if error occurs, when task is added
-     */
-   /* private long createTestTask(String description, String summary, String projectName)
-        throws MCException{
-        
-        IIssue newIssue = new Issue();
-        newIssue.setDescription(description);
-        //newIssue.setHandler(new Account(100, "test", "test", "test@test"));
-        newIssue.setPriority(session.getDefaultIssuePriority());
-        newIssue.setSummary(summary);
-        newIssue.setSeverity(session.getDefaultIssueSeverity());
-        //newIssue.setReporter(new Account(101, "rep1", "rep1", "rep@rep"));  
-        IProject p = session.getProject(projectName);
-        newIssue.setProject(new MCAttribute(p.getId(), p.getName()));
-        long id = session.addIssue(newIssue);
-        session.flush();
-        return id;
-    }*/
-
-    /**
-     * Deletes project on the Mantis-Server.
-     * @param projectName - name of the project to delete
-     */
-    /*private void deleteTestProject(String projectName){
-        IProject old;
-        try {
-            old = session.getProject(projectName);
-            if(old != null){
-                session.deleteProject(old.getId());
-                session.flush();
-            }
-        } catch (MCException e) {
-            assertTrue(false);
-        }
-    }*/
-    /**
-     * Deletes task on the Mantis-Server.
-     * @param taskId - id of the task to delete
-     */
-    /*private void deleteTestTask(long taskId) {
-        try {
-            session.deleteIssue(taskId);
-            session.flush();
-        } catch (MCException e) {
-            assertTrue(false);
-        }
-    }*/
 }
