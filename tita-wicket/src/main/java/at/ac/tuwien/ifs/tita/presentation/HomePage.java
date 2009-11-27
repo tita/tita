@@ -24,7 +24,6 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.markup.html.link.ResourceLink;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -63,17 +62,17 @@ public class HomePage extends WebPage {
             Role temp = service.saveRole(helloWorld);
             helloWorld = null;
             helloWorld = service.getRoleById(temp.getId());
-            initReport(helloWorld);
+            // initReport(helloWorld);
             // add(new Label("message", helloWorld.getDescription()));
             add(new TimeEffortAdministrationPanel("timeEffortPanel"));
             // add(new JasperResourceLink("linkToPdf", helloWorldReport));
-            add(new ResourceLink("linkToPdf", helloWorldReport));
+            // add(new ResourceLink("linkToPdf", helloWorldReport));
         } catch (TitaDAOException e) {
             // add(new Label("message", "Couldn't read data from DB."));
-        } catch (JRException e) {
-            // add(new Label("message", "Couldn't generate pdf file."));
-            e.printStackTrace();
-        }
+        }/*
+          * catch (JRException e) { // add(new Label("message",
+          * "Couldn't generate pdf file.")); e.printStackTrace(); }
+          */
     }
     
 

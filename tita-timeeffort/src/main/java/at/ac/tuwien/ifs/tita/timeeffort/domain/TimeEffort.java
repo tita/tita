@@ -23,10 +23,18 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
+
 import at.ac.tuwien.ifs.tita.datasource.domain.BaseEntity;
 
 @Entity
 @Table(name = "TimeEffort")
+@NamedQueries( {
+        @NamedQuery(name = "timeffort.by.day", query = "select te from TimeEffort te where YEAR(te.date) = :year "
+                + " and MONTH(te.date)= :month and DAY(te.date)= :day"),
+        @NamedQuery(name = "timeffort.by.month", query = "select te from TimeEffort te where YEAR(te.date) = :year "
+                + " and MONTH(te.date)= :month") })
 public class TimeEffort extends BaseEntity {
 
     @Id
@@ -60,8 +68,7 @@ public class TimeEffort extends BaseEntity {
     }
 
     /**
-     * @param date
-     *            the date to set
+     * @param date the date to set
      */
     public void setDate(Date date) {
         this.date = date;
@@ -75,8 +82,7 @@ public class TimeEffort extends BaseEntity {
     }
 
     /**
-     * @param startTime
-     *            the startTime to set
+     * @param startTime the startTime to set
      */
     public void setStartTime(Date startTime) {
         this.startTime = startTime;
@@ -90,8 +96,7 @@ public class TimeEffort extends BaseEntity {
     }
 
     /**
-     * @param endTime
-     *            the endTime to set
+     * @param endTime the endTime to set
      */
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
@@ -105,8 +110,7 @@ public class TimeEffort extends BaseEntity {
     }
 
     /**
-     * @param description
-     *            the description to set
+     * @param description the description to set
      */
     public void setDescription(String description) {
         this.description = description;
@@ -120,8 +124,7 @@ public class TimeEffort extends BaseEntity {
     }
 
     /**
-     * @param deleted
-     *            the deleted to set
+     * @param deleted the deleted to set
      */
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;

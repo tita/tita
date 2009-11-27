@@ -65,7 +65,7 @@ import at.ac.tuwien.ifs.tita.timeeffort.service.ITimeEffortService;
  * @author msiedler
  * 
  */
-public class TimeEffortAdministrationPanel extends Panel implements GlobalUtils {
+public class TimeEffortAdministrationPanel extends Panel {
 
     @SpringBean(name = "timeEffortService")
     private ITimeEffortService service;
@@ -76,8 +76,7 @@ public class TimeEffortAdministrationPanel extends Panel implements GlobalUtils 
     private final Date date = new Date();
 
     // Logger
-    final Logger log = LoggerFactory
-            .getLogger(TimeEffortAdministrationPanel.class);
+    final Logger log = LoggerFactory.getLogger(TimeEffortAdministrationPanel.class);
 
     // Actual time effort list
     private List<TimeEffort> timeeffortList = new ArrayList<TimeEffort>();
@@ -121,8 +120,7 @@ public class TimeEffortAdministrationPanel extends Panel implements GlobalUtils 
 
         timeEffort = new TimeEffort();
 
-        form = new Form<TimeEffort>("timeeffortForm",
-                new CompoundPropertyModel<TimeEffort>(timeEffort));
+        form = new Form<TimeEffort>("timeeffortForm", new CompoundPropertyModel<TimeEffort>(timeEffort));
         add(form);
         form.setOutputMarkupId(true);
 
@@ -132,36 +130,30 @@ public class TimeEffortAdministrationPanel extends Panel implements GlobalUtils 
         timeeffortContainer.setOutputMarkupPlaceholderTag(true);
         add(timeeffortContainer);
 
-        listView = new TimeEffortListView<TimeEffort>("timeEffortList",
-                timeeffortList);
+        listView = new TimeEffortListView<TimeEffort>("timeEffortList", timeeffortList);
         listView.setOutputMarkupId(true);
         timeeffortContainer.add(listView);
 
-        descriptionTextfield = new RequiredTextField<String>("description",
-                new Model<String>(""));
+        descriptionTextfield = new RequiredTextField<String>("description", new Model<String>(""));
         descriptionTextfield.add(StringValidator.maximumLength(50));
         form.add(descriptionTextfield);
 
-        dateTextField = new DateTextField("tedate", new PropertyModel<Date>(
-                this, "date"), new StyleDateConverter("S-", true));
+        dateTextField = new DateTextField("tedate", new PropertyModel<Date>(this, "date"), new StyleDateConverter("S-",
+                true));
         dateTextField.add(new DatePicker());
 
         form.add(dateTextField);
 
-        startHourTextfield = new RequiredTextField<Integer>("startHour",
-                new Model<Integer>());
+        startHourTextfield = new RequiredTextField<Integer>("startHour", new Model<Integer>());
         startHourTextfield.setType(Integer.class);
 
-        startMinuteTextfield = new RequiredTextField<Integer>("startMinute",
-                new Model<Integer>());
+        startMinuteTextfield = new RequiredTextField<Integer>("startMinute", new Model<Integer>());
         startMinuteTextfield.setType(Integer.class);
 
-        endHourTextfield = new RequiredTextField<Integer>("endHour",
-                new Model<Integer>());
+        endHourTextfield = new RequiredTextField<Integer>("endHour", new Model<Integer>());
         endHourTextfield.setType(Integer.class);
 
-        endMinuteTextfield = new RequiredTextField<Integer>("endMinute",
-                new Model<Integer>());
+        endMinuteTextfield = new RequiredTextField<Integer>("endMinute", new Model<Integer>());
         endMinuteTextfield.setType(Integer.class);
 
         form.add(startHourTextfield);
@@ -266,8 +258,7 @@ public class TimeEffortAdministrationPanel extends Panel implements GlobalUtils 
             TimeEffort timeEffort2 = new TimeEffort();
             timeEffort2.setDeleted(false);
             timeEffort2.setDate(date);
-            IBaseCriteria<TimeEffort> timeefcrit = service
-                    .createCriteria(timeEffort2);
+            IBaseCriteria<TimeEffort> timeefcrit = service.createCriteria(timeEffort2);
 
             timeefcrit.getCriteria().setMaxResults(maxsize);
             timeefcrit.setOrderAscBy("date");
@@ -297,15 +288,12 @@ public class TimeEffortAdministrationPanel extends Panel implements GlobalUtils 
         @Override
         protected void populateItem(ListItem<TimeEffort> item) {
             TimeEffort timeEffort2 = item.getModelObject();
-            Label lbDate = new Label("date", DATEFORMAT.format(timeEffort2
-                    .getDate()));
+            Label lbDate = new Label("date", GlobalUtils.DATEFORMAT.format(timeEffort2.getDate()));
 
-            Label lbDescription = new Label("description", timeEffort2
-                    .getDescription());
+            Label lbDescription = new Label("description", timeEffort2.getDescription());
 
             Label lbLength = new Label("length", ""
-                    + TIMELENGTHFORMAT.format(new Date(timeEffort2.getEndTime()
-                            .getTime()
+                    + GlobalUtils.TIMELENGTHFORMAT.format(new Date(timeEffort2.getEndTime().getTime()
                             - timeEffort2.getStartTime().getTime() - 3600000)));
 
             lbDate.setOutputMarkupId(true);

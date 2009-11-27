@@ -14,6 +14,11 @@
 
 package at.ac.tuwien.ifs.tita.timeeffort.dao;
 
+import java.util.Calendar;
+import java.util.List;
+
+import javax.persistence.Query;
+
 import org.springframework.stereotype.Repository;
 
 import at.ac.tuwien.ifs.tita.datasource.dao.BaseDAO;
@@ -21,5 +26,31 @@ import at.ac.tuwien.ifs.tita.timeeffort.domain.TimeEffort;
 
 @Repository
 public class TimeEffortDAO extends BaseDAO<TimeEffort> {
-    // emtpy because of BaseDAO
+
+    /**
+     * Gets a view for a month.
+     * 
+     * @param cal calenderdates which are selected
+     * @return list of timefforts that match dates
+     */
+    public List<TimeEffort> getTimeEffortsMonthlyView(Calendar cal) {
+        Query q = entityManager.createNamedQuery("timeffort.by.month");
+        q.setParameter("year", cal.get(cal.YEAR));
+        q.setParameter("month", cal.get(cal.MONTH));
+        return q.getResultList();
+    }
+
+    /**
+     * Gets a view for a day.
+     * 
+     * @param cal calenderdates which are selected
+     * @return list of timefforts that match dates
+     */
+    public List<TimeEffort> getTimeEffortsDailyView(Calendar cal) {
+        Query q = entityManager.createNamedQuery("timeffort.by.day");
+        q.setParameter("year", cal.get(cal.YEAR));
+        q.setParameter("month", cal.get(cal.MONTH));
+        q.setParameter("day", cal.get(cal.DAY_OF_MONTH));
+        return q.getResultList();
+    }
 }

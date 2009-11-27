@@ -20,14 +20,13 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 /**
+ * GlobalUtils.
  * 
  * @author msiedler
  * 
  */
-public interface GlobalUtils {
+public final class GlobalUtils {
 
-    public final static DateFormat DATEFORMAT = new SimpleDateFormat(
-            "dd.MM.yyyy");
-    public final static DateFormat TIMELENGTHFORMAT = new SimpleDateFormat(
-            "hh:mm");
+    public static final DateFormat DATEFORMAT = new SimpleDateFormat("dd.MM.yyyy");
+    public static final DateFormat TIMELENGTHFORMAT = new SimpleDateFormat("hh:mm");
 }

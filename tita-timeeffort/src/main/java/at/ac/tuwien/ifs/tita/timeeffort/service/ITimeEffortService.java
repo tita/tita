@@ -14,16 +14,18 @@
 
 package at.ac.tuwien.ifs.tita.timeeffort.service;
 
-import org.springframework.transaction.annotation.Transactional;
-
+import java.util.Calendar;
 import java.util.List;
+
+import org.springframework.transaction.annotation.Transactional;
 
 import at.ac.tuwien.ifs.tita.datasource.criteria.IBaseCriteria;
 import at.ac.tuwien.ifs.tita.datasource.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.timeeffort.domain.TimeEffort;
 
 /**
- * ITimeEffortService encapsulates all TimeEffort-concerning Database operations
+ * ITimeEffortService encapsulates all TimeEffort-concerning Database
+ * operations.
  * 
  * @author ASE Group 10 - TiTA
  * 
@@ -34,54 +36,65 @@ public interface ITimeEffortService {
     /**
      * Saves a new timeEffort or updates an existing one
      * 
-     * @param timeEffort
-     *            the timeEffort to be saved
-     * @throws TitaDAOException
-     *             if Parameter is null or another Exception is thrown
+     * @param timeEffort the timeEffort to be saved
+     * @throws TitaDAOException if Parameter is null or another Exception is
+     *         thrown
      */
     TimeEffort saveTimeEffort(TimeEffort timeEffort) throws TitaDAOException;
 
     /**
      * Updates an existing TimeEffort
      * 
-     * @param timeEffort
-     *            the timeEffort to be updated
-     * @throws TitaDAOException
-     *             if Parameter is null or another Exception is thrown
+     * @param timeEffort the timeEffort to be updated
+     * @throws TitaDAOException if Parameter is null or another Exception is
+     *         thrown
      */
     void updateTimeEffort(TimeEffort timeEffort) throws TitaDAOException;
 
     /**
      * deletes an existing timeEffort
      * 
-     * @param timeEffort
-     *            the timeEffort to be deleted
-     * @throws TitaDAOException
-     *             if Parameter is null or another Exception is thrown
+     * @param timeEffort the timeEffort to be deleted
+     * @throws TitaDAOException if Parameter is null or another Exception is
+     *         thrown
      */
     void deleteTimeEffort(TimeEffort timeEffort) throws TitaDAOException;
 
     /**
      * returns a specific TimeEffort found to the id given
      * 
-     * @param id
-     *            the unique identifier of an timeEffort
-     * @throws TitaDAOException
-     *             if no timeEffort was found or another Exception is thrown
+     * @param id the unique identifier of an timeEffort
+     * @throws TitaDAOException if no timeEffort was found or another Exception
+     *         is thrown
      */
     TimeEffort getTimeEffortById(Long id) throws TitaDAOException;
 
     /**
      * returns a list of time efforts which match with parameter criteria
      * 
-     * @param criteria
-     *            the criteria for search
-     * @throws TitaDAOException
-     *             if no role was found or another Exception is thrown
+     * @param criteria the criteria for search
+     * @throws TitaDAOException if no role was found or another Exception is
+     *         thrown
      */
-    List<TimeEffort> searchTimeEffort(IBaseCriteria<TimeEffort> criteria)
-            throws TitaDAOException;
+    List<TimeEffort> searchTimeEffort(IBaseCriteria<TimeEffort> criteria) throws TitaDAOException;
 
-    IBaseCriteria<TimeEffort> createCriteria(TimeEffort timeEffort)
-            throws TitaDAOException;
+    IBaseCriteria<TimeEffort> createCriteria(TimeEffort timeEffort) throws TitaDAOException;
+
+    /**
+     * Gets a view for a day.
+     * 
+     * @param cal calender dates which are selected
+     * @return list of timefforts that match dates
+     * @throws TitaDAOException if anything goes wrong with db access.
+     */
+    List<TimeEffort> getTimeEffortsDailyView(Calendar cal) throws TitaDAOException;
+
+    /**
+     * Gets a view for a month.
+     * 
+     * @param cal calender dates which are selected
+     * @return list of timefforts that match dates
+     * @throws TitaDAOException if anything goes wrong with db access.
+     */
+    List<TimeEffort> getTimeEffortsMonthlyView(Calendar cal) throws TitaDAOException;
 }

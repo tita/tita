@@ -14,6 +14,7 @@
 
 package at.ac.tuwien.ifs.tita.timeeffort.service;
 
+import java.util.Calendar;
 import java.util.List;
 
 import at.ac.tuwien.ifs.tita.datasource.criteria.IBaseCriteria;
@@ -40,8 +41,7 @@ public class TimeEffortService implements ITimeEffortService {
     }
 
     @Override
-    public TimeEffort saveTimeEffort(TimeEffort timeEffort)
-            throws TitaDAOException {
+    public TimeEffort saveTimeEffort(TimeEffort timeEffort) throws TitaDAOException {
         return timeEffortDAO.save(timeEffort);
     }
 
@@ -51,15 +51,28 @@ public class TimeEffortService implements ITimeEffortService {
     }
 
     @Override
-    public List<TimeEffort> searchTimeEffort(IBaseCriteria<TimeEffort> criteria)
-            throws TitaDAOException {
+    public List<TimeEffort> searchTimeEffort(IBaseCriteria<TimeEffort> criteria) throws TitaDAOException {
         return timeEffortDAO.search(criteria);
     }
 
     @Override
-    public IBaseCriteria<TimeEffort> createCriteria(TimeEffort timeEffort)
-            throws TitaDAOException {
+    public IBaseCriteria<TimeEffort> createCriteria(TimeEffort timeEffort) throws TitaDAOException {
         return timeEffortDAO.createCriteria(timeEffort);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<TimeEffort> getTimeEffortsDailyView(Calendar cal) throws TitaDAOException {
+        return timeEffortDAO.getTimeEffortsDailyView(cal);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<TimeEffort> getTimeEffortsMonthlyView(Calendar cal) throws TitaDAOException {
+        return timeEffortDAO.getTimeEffortsMonthlyView(cal);
+    }
 }

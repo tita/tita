@@ -14,7 +14,13 @@
 
 package at.ac.tuwien.ifs.tita.timeeffort.test.service;
 
+import static org.junit.Assert.assertTrue;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import junit.framework.Assert;
 
@@ -38,8 +44,7 @@ import at.ac.tuwien.ifs.tita.timeeffort.service.ITimeEffortService;
 @ContextConfiguration(locations = { "/timeeffort-context-test.xml" })
 @TransactionConfiguration
 @Transactional
-public class TimeEffortServiceTest extends
-        AbstractTransactionalJUnit4SpringContextTests {
+public class TimeEffortServiceTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     final Logger log = LoggerFactory.getLogger(TimeEffortServiceTest.class);
 
@@ -102,8 +107,7 @@ public class TimeEffortServiceTest extends
             Date newDate = new Date();
             timeEffort.setDate(newDate);
             service.updateTimeEffort(timeEffort);
-            Assert.assertEquals(service.getTimeEffortById(timeEffort.getId())
-                    .getDate(), newDate);
+            Assert.assertEquals(service.getTimeEffortById(timeEffort.getId()).getDate(), newDate);
         } catch (TitaDAOException e) {
             e.printStackTrace();
         }
@@ -129,10 +133,135 @@ public class TimeEffortServiceTest extends
             List<TimeEffort> list = service.searchTimeEffort(tecrit);
             Assert.assertNotNull(list);
             Assert.assertEquals(list.size(), 1);
-            Assert.assertEquals(list.get(0).getDescription(), timeEffort
-                    .getDescription());
+            Assert.assertEquals(list.get(0).getDescription(), timeEffort.getDescription());
         } catch (TitaDAOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Test: Get TimeEffort by day with named query.
+     */
+    @Test
+    public void testGetTimeEffortByDay() {
+        String strdate1 = "18.10.2009";
+        String strdate2 = "25.05.2009";
+        DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+        Date date1 = null;
+        Date date2 = null;
+        try {
+            date1 = formatter.parse(strdate1);
+            date2 = formatter.parse(strdate2);
+        } catch (ParseException e1) {
+            assertTrue(false);
+        }
+
+        GregorianCalendar cal1 = new GregorianCalendar();
+        cal1.set(2009, 10, 18);
+
+        GregorianCalendar cal2 = new GregorianCalendar();
+        cal2.set(2009, 5, 25);
+
+        TimeEffort timeEffort1 = new TimeEffort();
+        timeEffort1.setDate(date1);
+        timeEffort1.setDeleted(false);
+        timeEffort1.setEndTime(new Date());
+        timeEffort1.setStartTime(new Date());
+        timeEffort1.setDescription("Das ist die Test TimeEffort by date");
+
+        TimeEffort timeEffort2 = new TimeEffort();
+        timeEffort2.setDate(date2);
+        timeEffort2.setDeleted(false);
+        timeEffort2.setEndTime(new Date());
+        timeEffort2.setStartTime(new Date());
+        timeEffort2.setDescription("Das ist die Test TimeEffort by date");
+
+        TimeEffort timeEffort3 = new TimeEffort();
+        timeEffort3.setDate(date1);
+        timeEffort3.setDeleted(false);
+        timeEffort3.setEndTime(new Date());
+        timeEffort3.setStartTime(new Date());
+        timeEffort3.setDescription("Das ist die Test TimeEffort by date");
+
+        List<TimeEffort> list = null;
+        try {
+            timeEffort1 = service.saveTimeEffort(timeEffort1);
+            timeEffort2 = service.saveTimeEffort(timeEffort2);
+            timeEffort3 = service.saveTimeEffort(timeEffort3);
+
+            list = service.getTimeEffortsDailyView(cal1);
+            Assert.assertNotNull(list);
+            Assert.assertEquals(2, list.size());
+
+            service.deleteTimeEffort(timeEffort1);
+            service.deleteTimeEffort(timeEffort2);
+            service.deleteTimeEffort(timeEffort3);
+        } catch (TitaDAOException e) {
+            assertTrue(false);
+        }
+
+    }
+
+    /**
+     * Test: Get TimeEffort by month with named query.
+     */
+    @Test
+    public void testGetTimeEffortByMonth() {
+        String strdate1 = "18.10.2009";
+        String strdate2 = "25.10.2009";
+        DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+        Date date1 = null;
+        Date date2 = null;
+        try {
+            date1 = formatter.parse(strdate1);
+            date2 = formatter.parse(strdate2);
+        } catch (ParseException e1) {
+            assertTrue(false);
+        }
+
+        GregorianCalendar cal1 = new GregorianCalendar();
+        cal1.set(2009, 10, 18);
+
+        GregorianCalendar cal2 = new GregorianCalendar();
+        cal2.set(2009, 10, 25);
+
+        TimeEffort timeEffort1 = new TimeEffort();
+        timeEffort1.setDate(date1);
+        timeEffort1.setDeleted(false);
+        timeEffort1.setEndTime(new Date());
+        timeEffort1.setStartTime(new Date());
+        timeEffort1.setDescription("Das ist die Test TimeEffort by date");
+
+        TimeEffort timeEffort2 = new TimeEffort();
+        timeEffort2.setDate(date2);
+        timeEffort2.setDeleted(false);
+        timeEffort2.setEndTime(new Date());
+        timeEffort2.setStartTime(new Date());
+        timeEffort2.setDescription("Das ist die Test TimeEffort by date");
+
+        TimeEffort timeEffort3 = new TimeEffort();
+        timeEffort3.setDate(date1);
+        timeEffort3.setDeleted(false);
+        timeEffort3.setEndTime(new Date());
+        timeEffort3.setStartTime(new Date());
+        timeEffort3.setDescription("Das ist die Test TimeEffort by date");
+
+        List<TimeEffort> list = null;
+        try {
+            timeEffort1 = service.saveTimeEffort(timeEffort1);
+            timeEffort2 = service.saveTimeEffort(timeEffort2);
+            timeEffort3 = service.saveTimeEffort(timeEffort3);
+
+            list = service.getTimeEffortsMonthlyView(cal1);
+            Assert.assertNotNull(list);
+            Assert.assertEquals(3, list.size());
+
+            service.deleteTimeEffort(timeEffort1);
+            service.deleteTimeEffort(timeEffort2);
+            service.deleteTimeEffort(timeEffort3);
+        } catch (TitaDAOException e) {
+            assertTrue(false);
+        }
+
     }
 }

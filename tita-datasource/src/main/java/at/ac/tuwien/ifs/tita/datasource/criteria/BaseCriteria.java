@@ -33,17 +33,15 @@ import at.ac.tuwien.ifs.tita.datasource.exception.TitaDAOException;
  * 
  * @author ASE Group 10 - TiTA
  * 
- * @param <DomainClass>
- *            Specifies a Wild-card, that allows all sub-types of the BaseEntity
+ * @param <DomainClass> Specifies a Wild-card, that allows all sub-types of the
+ *        BaseEntity
  * 
- *            BaseCriteria is the base class to setting criteria for searching
- *            for entities with superclass BaseEntity. If additional
- *            functionality is needed simply extend this class and implement the
- *            needed Methods.
+ *        BaseCriteria is the base class to setting criteria for searching for
+ *        entities with superclass BaseEntity. If additional functionality is
+ *        needed simply extend this class and implement the needed Methods.
  */
 @Repository
-public class BaseCriteria<DomainClass extends BaseEntity> implements
-        IBaseCriteria<DomainClass> {
+public class BaseCriteria<DomainClass extends BaseEntity> implements IBaseCriteria<DomainClass> {
 
     // private EntityManager entityManager;
     protected Criteria criteria;
@@ -56,19 +54,16 @@ public class BaseCriteria<DomainClass extends BaseEntity> implements
     // this.entityManager = entityManager;
     // }
 
-    public BaseCriteria(EntityManager entityManager, DomainClass exampleEntity)
-            throws TitaDAOException {
+    public BaseCriteria(EntityManager entityManager, DomainClass exampleEntity) throws TitaDAOException {
         if (exampleEntity == null) {
             log.debug("Example is null, Exception will be thrown");
-            throw new TitaDAOException(
-                    "Entity with value null cannot be persisted");
+            throw new TitaDAOException("Entity with value null cannot be persisted");
         }
         System.out.println("EntityManager = " + entityManager);
         Session session = (Session) entityManager.getDelegate();
         System.out.println("Session = " + session);
         criteria = session.createCriteria(exampleEntity.getClass());
-        criteria.add(this.example = Example.create(exampleEntity).ignoreCase()
-                .enableLike());
+        criteria.add(this.example = Example.create(exampleEntity).ignoreCase().enableLike());
     }
 
     @Override

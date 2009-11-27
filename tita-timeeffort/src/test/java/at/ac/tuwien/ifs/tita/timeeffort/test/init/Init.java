@@ -26,16 +26,13 @@ import at.ac.tuwien.ifs.tita.timeeffort.service.ITimeEffortService;
 public class Init {
 
     /**
-     * @param args
-     *            no args
+     * @param args no args
      */
     public static void main(String[] args) {
 
-        ApplicationContext ctx = new ClassPathXmlApplicationContext(
-                "timeeffort-context.xml");
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("timeeffort-context.xml");
 
-        ITimeEffortService service = (ITimeEffortService) ctx
-                .getBean("timeEffortService");
+        ITimeEffortService service = (ITimeEffortService) ctx.getBean("timeEffortService");
 
         GregorianCalendar cal = new GregorianCalendar();
 
