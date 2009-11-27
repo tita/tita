@@ -25,6 +25,6 @@
   
 	<!-- define jasper reports -->
 	<bean id="helloWorldReport" class="at.ac.tuwien.ifs.tita.reporting.JasperPdfResource">
-        <property name="designFilename" value="/reports/HelloWorld.jasper" />
+        <property name="designFilename" value="/reports/HelloWorld.jrxml" />
     </bean>
 </beans>

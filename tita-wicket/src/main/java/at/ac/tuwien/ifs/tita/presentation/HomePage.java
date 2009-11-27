@@ -16,7 +16,6 @@
  */
 package at.ac.tuwien.ifs.tita.presentation;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import javax.servlet.ServletContext;
@@ -25,6 +24,7 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.link.ResourceLink;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -33,7 +33,6 @@ import at.ac.tuwien.ifs.tita.datasource.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.datasource.service.IUserService;
 import at.ac.tuwien.ifs.tita.presentation.timeeffort.TimeEffortAdministrationPanel;
 import at.ac.tuwien.ifs.tita.reporting.JasperPdfResource;
-import at.ac.tuwien.ifs.tita.reporting.JasperResourceLink;
 
 
 /**
@@ -67,11 +66,13 @@ public class HomePage extends WebPage {
             initReport(helloWorld);
             // add(new Label("message", helloWorld.getDescription()));
             add(new TimeEffortAdministrationPanel("timeEffortPanel"));
-            add(new JasperResourceLink("linkToPdf", helloWorldReport));
+            // add(new JasperResourceLink("linkToPdf", helloWorldReport));
+            add(new ResourceLink("linkToPdf", helloWorldReport));
         } catch (TitaDAOException e) {
             // add(new Label("message", "Couldn't read data from DB."));
         } catch (JRException e) {
             // add(new Label("message", "Couldn't generate pdf file."));
+            e.printStackTrace();
         }
     }
     
@@ -90,22 +91,16 @@ public class HomePage extends WebPage {
     /**
      * Loads report and initializes parameters for report.
      * 
-     * @param r
-     *            Role
-     * @exception JRException
-     *                on runtime error
+     * @param r Role
+     * @exception JRException on runtime error
      */
     private void initReport(Role r) throws JRException {
-        ServletContext context = ((WebApplication) getApplication())
-                .getServletContext();
-        File reportFile = new File(context.getRealPath(helloWorldReport
-                .getDesignFilename()));
+        ServletContext context = ((WebApplication) getApplication()).getServletContext();
 
         ArrayList<Role> roles = new ArrayList<Role>();
         roles.add(r);
 
-        helloWorldReport.loadReport(reportFile);
-        helloWorldReport.setReportDataSource(new JRBeanCollectionDataSource(
-                roles));
+        helloWorldReport.loadReport(context.getRealPath(helloWorldReport.getDesignFilename()));
+        helloWorldReport.setReportDataSource(new JRBeanCollectionDataSource(roles));
     }
 }

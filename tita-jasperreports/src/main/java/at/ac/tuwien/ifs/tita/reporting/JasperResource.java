@@ -28,8 +28,6 @@
 package at.ac.tuwien.ifs.tita.reporting;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,10 +36,10 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.util.JRLoader;
 
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.markup.html.DynamicWebResource;
@@ -69,21 +67,21 @@ public abstract class JasperResource extends DynamicWebResource {
     /**
      * Loads report from compiled report file.
      * 
-     * @param reportFile compiled report file.
+     * @param filepath filepath to report file.
      * @throws JRException if file could not be loaded.
      */
-    public void loadReport(File reportFile) throws JRException {
-        setJasperReport((JasperReport) JRLoader.loadObject(reportFile));
+    public void loadReport(String filepath) throws JRException {
+        compileReport(filepath);
     }
 
     /**
-     * Loads report from inputstream.
+     * Compiles report on the fly.
      * 
-     * @param is InputStream.
-     * @throws JRException if stream could not be loaded.
+     * @param filepath filepath to report file.
+     * @throws JRException if file could not be loaded.
      */
-    public void loadReport(InputStream is) throws JRException {
-        setJasperReport((JasperReport) JRLoader.loadObject(is));
+    private void compileReport(String filepath) throws JRException {
+        setJasperReport(JasperCompileManager.compileReport(filepath));
     }
 
     /**
@@ -152,13 +150,10 @@ public abstract class JasperResource extends DynamicWebResource {
     public void setHeaders(WebResponse response) {
         super.setHeaders(response);
 
-        response.setDateHeader("Expires", -1);
-        response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
-        response.setHeader("Pragma", "public");
-
         String name = getFilename();
         if (name != null) {
             response.setHeader("Content-Disposition", "attachment; filename=\"" + name + "\"");
+
         }
     }
 
