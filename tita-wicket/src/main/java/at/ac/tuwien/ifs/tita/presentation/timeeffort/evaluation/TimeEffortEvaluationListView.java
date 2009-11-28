@@ -16,6 +16,7 @@ package at.ac.tuwien.ifs.tita.presentation.timeeffort.evaluation;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -61,9 +62,10 @@ public class TimeEffortEvaluationListView<T> extends ListView<TimeEffort> {
         Label lbStartTime = new Label("starttime", startTime);
         Label lbEndTime = new Label("endtime", endTime);
 
+        GlobalUtils.TIMEFORMAT24HOURS.setTimeZone(TimeZone.getTimeZone("GMT"));
         Label lbLength = new Label("length", ""
-                + GlobalUtils.TIMELENGTHFORMAT.format(new Date(timeEffort.getEndTime().getTime()
-                        - timeEffort.getStartTime().getTime() - SUBTRACTTIME)));
+                + GlobalUtils.TIMEFORMAT24HOURS.format(GlobalUtils.getTimeDifference(timeEffort.getStartTime(),
+                        timeEffort.getEndTime())));
 
         lbDate.setOutputMarkupId(true);
         lbDescription.setOutputMarkupId(true);

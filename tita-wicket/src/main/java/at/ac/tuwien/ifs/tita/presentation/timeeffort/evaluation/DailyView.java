@@ -45,9 +45,8 @@ public class DailyView extends WebPage {
     private final Date date = new Date();
 
     public DailyView() {
-        initPage();
         // addInitialTimeEfforts();
-        // initTable();
+        initPage();
     }
 
     /**
@@ -121,12 +120,12 @@ public class DailyView extends WebPage {
      */
     private void addInitialTimeEfforts() {
         GregorianCalendar cal1 = new GregorianCalendar();
-        cal1.set(Calendar.AM_PM, Calendar.AM);
-        cal1.set(2009, 11, 28, 10, 0);
+        cal1.set(Calendar.AM_PM, Calendar.PM);
+        cal1.set(2009, 11, 28, 14, 33);
 
         GregorianCalendar cal2 = new GregorianCalendar();
         cal2.set(Calendar.AM_PM, Calendar.PM);
-        cal2.set(2009, 11, 28, 14, 0);
+        cal2.set(2009, 11, 28, 15, 46);
 
         TimeEffort timeEffort = new TimeEffort();
         timeEffort.setDate(new Date());
@@ -136,12 +135,12 @@ public class DailyView extends WebPage {
         timeEffort.setDescription("Das ist die Test TimeEffort 1");
 
         cal1 = new GregorianCalendar();
-        cal1.set(Calendar.AM_PM, Calendar.AM);
-        cal1.set(2009, 11, 28, 8, 0);
+        cal1.set(Calendar.AM_PM, Calendar.PM);
+        cal1.set(2009, 11, 28, 16, 11);
 
         cal2 = new GregorianCalendar();
-        cal2.set(Calendar.AM_PM, Calendar.AM);
-        cal2.set(2009, 11, 28, 10, 0);
+        cal2.set(Calendar.AM_PM, Calendar.PM);
+        cal2.set(2009, 11, 28, 17, 1);
 
         TimeEffort timeEffort2 = new TimeEffort();
         timeEffort2.setDate(new Date());

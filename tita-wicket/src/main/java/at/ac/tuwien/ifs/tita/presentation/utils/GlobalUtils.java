@@ -32,7 +32,8 @@ public final class GlobalUtils {
 
     public static final DateFormat DATEFORMAT = new SimpleDateFormat("dd.MM.yyyy");
     public static final DateFormat TIMELENGTHFORMAT = new SimpleDateFormat("hh:mm");
-    
+    public static final DateFormat TIMEFORMAT24HOURS = new SimpleDateFormat("HH:mm");
+
     /**
      * Converts date into Calendar.
      * 
@@ -44,5 +45,16 @@ public final class GlobalUtils {
         cal.setTime(d);
         cal.set(Calendar.MONTH, cal.get(Calendar.MONTH) + 1);
         return cal;
+    }
+
+    /**
+     * Calculates the difference between to dates.
+     * 
+     * @param d1 startdate
+     * @param d2 enddate
+     * @return difference as
+     */
+    public static Date getTimeDifference(Date d1, Date d2) {
+        return new Date(d2.getTime() - d1.getTime());
     }
 }
