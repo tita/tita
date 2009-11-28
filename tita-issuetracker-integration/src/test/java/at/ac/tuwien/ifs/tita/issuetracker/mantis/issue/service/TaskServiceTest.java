@@ -84,18 +84,22 @@ public class TaskServiceTest extends MantisBaseTest {
      * @throws ProjectNotFoundException
      */
     @Test
-    public void updateAll_shouldFetchAllIssueForTheProjects() throws ProjectNotFoundException {
+    public void updateAll_shouldFetchAllIssueForTheProjects()
+            throws ProjectNotFoundException {
 
         try {
 
             Long taskid = 0L;
 
             // Adding one task to each project to issue tracker
-            taskid = createTestTask("tita_test_issue_new0", "issue_summary_new", "projectName0");
+            taskid = createTestTask("tita_test_issue_new0",
+                    "issue_summary_new", "projectName0");
             this.taskIds.add(taskid);
-            taskid = createTestTask("tita_test_issue_new1", "issue_summary_new", "projectName1");
+            taskid = createTestTask("tita_test_issue_new1",
+                    "issue_summary_new", "projectName1");
             this.taskIds.add(taskid);
-            taskid = createTestTask("tita_test_issue_new2", "issue_summary_new", "projectName2");
+            taskid = createTestTask("tita_test_issue_new2",
+                    "issue_summary_new", "projectName2");
             this.taskIds.add(taskid);
 
             this.log.info("Starting update");
@@ -106,10 +110,15 @@ public class TaskServiceTest extends MantisBaseTest {
             this.log.info("End of update");
             this.log.info("Duration:" + duration / 1000 + " sec.");
 
-            assertEquals(this.numberOfProjects, this.taskService.getProjects().size());
-            assertEquals(this.numberOfTasksForEachProject + 1, this.taskService.getTasks(
-                    this.taskService.getProjects().get(this.projectIds.get(0)), IssueStatus.NEW).size());
-            assertNotNull(this.taskService.getIssueTrackerDao().findProject("projectName0"));
+            assertEquals(this.numberOfProjects, this.taskService.getProjects()
+                    .size());
+            assertEquals(this.numberOfTasksForEachProject + 1, this.taskService
+                    .getTasks(
+                            this.taskService.getProjects().get(
+                                    this.projectIds.get(0)), IssueStatus.NEW)
+                    .size());
+            assertNotNull(this.taskService.getIssueTrackerDao().findProject(
+                    "projectName0"));
 
         } catch (MCException e) {
             fail("Creating or deleting projects and issues failed.");
@@ -131,21 +140,26 @@ public class TaskServiceTest extends MantisBaseTest {
             Long taskid = 0L;
 
             // Adding a task to the project in the issue tracker
-            taskid = createTestTask("tita_test_issue_new0", "issue_summary_new", "projectName0");
+            taskid = createTestTask("tita_test_issue_new0",
+                    "issue_summary_new", "projectName0");
             this.taskIds.add(taskid);
 
             this.log.info("Starting update");
             long starttime = System.currentTimeMillis();
-            this.taskService.updateProject(this.taskService.getProjects().get(this.projectIds.get(0)));
+            this.taskService.updateProject(this.taskService.getProjects().get(
+                    this.projectIds.get(0)));
             long endtime = System.currentTimeMillis();
             long duration = endtime - starttime;
             this.log.info("End of update");
             this.log.info("Duration:" + duration / 1000 + " sec.");
 
-            IProjectTrackable pro = this.taskService.getIssueTrackerDao().findProject(this.projectIds.get(0));
+            IProjectTrackable pro = this.taskService.getIssueTrackerDao()
+                    .findProject(this.projectIds.get(0));
 
-            assertEquals(this.numberOfProjects, this.taskService.getProjects().size());
-            assertEquals(this.numberOfTasksForEachProject + 1, this.taskService.getTasks(pro, IssueStatus.NEW).size());
+            assertEquals(this.numberOfProjects, this.taskService.getProjects()
+                    .size());
+            assertEquals(this.numberOfTasksForEachProject + 1, this.taskService
+                    .getTasks(pro, IssueStatus.NEW).size());
 
         } catch (MCException e) {
             fail("Creating or deleting projects and issues failed.");
@@ -159,7 +173,8 @@ public class TaskServiceTest extends MantisBaseTest {
      * @throws ProjectNotFoundException
      */
     @Test(expected = ProjectNotFoundException.class)
-    public void getTasks_shouldThrowProjectNotFoundException() throws ProjectNotFoundException {
+    public void getTasks_shouldThrowProjectNotFoundException()
+            throws ProjectNotFoundException {
 
         this.taskService = new TaskService();
         this.taskService.getTasks(null, IssueStatus.NEW);
@@ -179,7 +194,8 @@ public class TaskServiceTest extends MantisBaseTest {
     public void getTasks() throws ProjectNotFoundException {
 
         this.taskService = new TaskService();
-        IProjectTrackable project = this.taskService.getIssueTrackerDao().findProject(this.projectIds.get(0));
+        IProjectTrackable project = this.taskService.getIssueTrackerDao()
+                .findProject(this.projectIds.get(0));
 
         assertNull(this.taskService.getTasks(project, IssueStatus.ASSIGNED));
 
@@ -189,12 +205,13 @@ public class TaskServiceTest extends MantisBaseTest {
      * The method creates a setup in mantis to evaluate the performance and the
      * update mechanism from TiTA.
      * 
-     * @param numberOfProjects
-     * @param numberOfTasksForEachProject
+     * @param amountOfProjects
+     * @param amountOfTasksForEachProject
      * @throws MCException
      * @throws ProjectNotFoundException
      */
-    private void createSetup(int numberOfProjects, int numberOfTasksForEachProject) throws MCException,
+    private void createSetup(int amountOfProjects,
+            int amountOfTasksForEachProject) throws MCException,
             ProjectNotFoundException {
         List<Long> taskids = new ArrayList<Long>();
         List<Long> projectids = new ArrayList<Long>();
@@ -205,12 +222,14 @@ public class TaskServiceTest extends MantisBaseTest {
         Long id = 1L;
         Long taskid = 1L;
 
-        for (int i = 0; i < numberOfProjects; i++) {
-            id = createTestProject("projectName" + i, "description" + i, true, false);
+        for (int i = 0; i < amountOfProjects; i++) {
+            id = createTestProject("projectName" + i, "description" + i, true,
+                    false);
             projectids.add(id);
 
-            for (int j = 0; j < numberOfTasksForEachProject; j++) {
-                taskid = createTestTask("tita_test_issue" + i + j, "issue_summary" + i + j, "projectName" + i);
+            for (int j = 0; j < amountOfTasksForEachProject; j++) {
+                taskid = createTestTask("tita_test_issue" + i + j,
+                        "issue_summary" + i + j, "projectName" + i);
                 taskids.add(taskid);
             }
         }
@@ -221,9 +240,9 @@ public class TaskServiceTest extends MantisBaseTest {
 
         this.taskService = new TaskService();
 
-        assertEquals(numberOfProjects, this.taskService.getProjects().size());
-        assertEquals(numberOfTasksForEachProject, this.taskService.getTasks(this.taskService.getProjects().get(id),
-                IssueStatus.NEW).size());
+        assertEquals(amountOfProjects, this.taskService.getProjects().size());
+        assertEquals(amountOfTasksForEachProject, this.taskService.getTasks(
+                this.taskService.getProjects().get(id), IssueStatus.NEW).size());
 
         long endtime_setup = System.currentTimeMillis();
         long duration_setup = endtime_setup - starttime_setup;
@@ -258,6 +277,7 @@ public class TaskServiceTest extends MantisBaseTest {
         duration_deleting = endtime_deleting - starttime_deleting;
 
         this.log.info("End of Deleting");
-        this.log.info("Duration Deleting:" + duration_deleting / 1000 + " sec.");
+        this.log
+                .info("Duration Deleting:" + duration_deleting / 1000 + " sec.");
     }
 }
