@@ -24,7 +24,7 @@ import at.ac.tuwien.ifs.tita.issuetracker.enums.ViewState;
  * @author Christoph
  *
  */
-public interface IIsCommentTrackable {
+public interface ICommentTrackable {
     
     /**
      * Sets the id of the comment to identify it.

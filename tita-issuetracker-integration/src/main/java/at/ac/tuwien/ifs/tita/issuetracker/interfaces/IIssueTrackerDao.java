@@ -10,52 +10,71 @@
    See the License for the specific language governing permissions and
    limitations under the License.
   
-*/
+ */
 package at.ac.tuwien.ifs.tita.issuetracker.interfaces;
 
-import java.util.List;
+import java.util.Map;
 
 /**
- * The interface describes the view on comment objects from the integrated issue tracker.
- * The data from the issue tracker is mapped in the implementation of the interface.
+ * The interface describes the view on comment objects from the integrated issue
+ * tracker. The data from the issue tracker is mapped in the implementation of
+ * the interface.
  * 
  * @author Karin
- *
+ * 
  */
 public interface IIssueTrackerDao {
     /**
      * Method to find a trackableProject by the projectId.
-     * @param projectId - id of the project to find
+     * 
+     * @param projectId
+     *            - id of the project to find
      * @return project, if one was found, null otherwise
      */
-    IIsProjectTrackable findProject(Long projectId);
-    
+    IProjectTrackable findProject(Long projectId);
+
     /**
      * Method to find a TrackableProject by the projectName.
-     * @param projectName - name of the Project to find
+     * 
+     * @param projectName
+     *            - name of the Project to find
      * @return project, if one was found, null otherwise
      */
-    IIsProjectTrackable findProject(String projectName);
-    
+    IProjectTrackable findProject(String projectName);
+
     /**
-     * Method to find all TrackableTaks of a project, specified by the projectId.
-     * @param projectId - id of the project, for which the tasks should be found
-     * @return list of all found tasks
+     * Method to find all trackable projects from the issue tracker.
+     * 
+     * @return map of all accessible projects.
      */
-    List<IIsTaskTrackable> findAllTasksForProject(Long projectId);
-    
+    Map<Long, IProjectTrackable> getAllAccessibleProjects();
+
+    /**
+     * Method to find all TrackableTaks of a project, specified by the
+     * projectId.
+     * 
+     * @param projectId
+     *            - id of the project, for which the tasks should be found
+     * @return map of all found tasks for the project
+     */
+    Map<Long, ITaskTrackable> findAllTasksForProject(Long projectId);
+
     /**
      * Method to find a trackableTask by the taskId.
-     * @param taskId - id of the task to find
+     * 
+     * @param taskId
+     *            - id of the task to find
      * @return task, if one was found, null otherwise
      */
-    IIsTaskTrackable findTask(Long taskId);
-    
+    ITaskTrackable findTask(Long taskId);
+
     /**
      * Method to find all TrackableComments of a task, specified by the taskId.
-     * @param taskId - id of the task, for which the comments should be found
-     * @return list of all found comments
+     * 
+     * @param taskId
+     *            - id of the task, for which the comments should be found
+     * @return map of all found comments
      */
-    List<IIsCommentTrackable> findAllCommentsForTask(Long taskId);
-    
+    Map<Long, ICommentTrackable> findAllCommentsForTask(Long taskId);
+
 }

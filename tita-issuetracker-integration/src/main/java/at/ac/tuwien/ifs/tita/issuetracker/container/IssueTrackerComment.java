@@ -18,7 +18,7 @@ package at.ac.tuwien.ifs.tita.issuetracker.container;
 import java.util.Date;
 
 import at.ac.tuwien.ifs.tita.issuetracker.enums.ViewState;
-import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IIsCommentTrackable;
+import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ICommentTrackable;
 
 /**
  * The container class for comment objects from the integrated issue tracker.
@@ -26,7 +26,7 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IIsCommentTrackable;
  * @author Karin
  *
  */
-public class IssueTrackerComment implements IIsCommentTrackable {
+public class IssueTrackerComment implements ICommentTrackable {
     private Date creationTime;
     private long id;
     private Date lastChange;
