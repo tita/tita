@@ -19,12 +19,12 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.hibernate.Session;
-import org.hibernate.criterion.Example;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import at.ac.tuwien.ifs.tita.datasource.criteria.BaseCriteria;
+import at.ac.tuwien.ifs.tita.datasource.criteria.IBaseCriteria;
 import at.ac.tuwien.ifs.tita.datasource.domain.BaseEntity;
 import at.ac.tuwien.ifs.tita.datasource.exception.TitaDAOException;
 
@@ -187,7 +187,7 @@ public class BaseDAO<DomainClass extends BaseEntity> implements
      *            criteria for searching Domain objects
      */
     @SuppressWarnings("unchecked")
-    public List<DomainClass> search(DomainClass criteria)
+    public List<DomainClass> search(IBaseCriteria criteria)
             throws TitaDAOException {
         if (criteria == null) {
             log.debug("Criteria is null, Exception will be thrown");
@@ -195,21 +195,28 @@ public class BaseDAO<DomainClass extends BaseEntity> implements
                     "Entities cannot be search, because criteria is null");
         }
         List<DomainClass> returnValue = null;
-        Session session = null;
 
         try {
-            session = (Session) entityManager.getDelegate();
+            returnValue = criteria.getCriteria().list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            // log.debug("Exception catched while trying to search for Enties");
+            // throw new TitaDAOException("Exception was thrown: \n" + "Cause: "
+            // + e.getCause() + "\n" + "Error: " + e.getMessage());
+        }
+        return returnValue;
+    }
 
-            Example example = Example.create(criteria).ignoreCase()
-                    .enableLike();
-
-            returnValue = session.createCriteria(criteria.getClass()).add(
-                    example).list();
+    public IBaseCriteria<DomainClass> createCriteria(DomainClass domain)
+            throws TitaDAOException {
+        BaseCriteria<DomainClass> criteria = null;
+        try {
+            criteria = new BaseCriteria<DomainClass>(this.entityManager, domain);
         } catch (Exception e) {
             log.debug("Exception catched while trying to search for Enties");
             throw new TitaDAOException("Exception was thrown: \n" + "Cause: "
                     + e.getCause() + "\n" + "Error: " + e.getMessage());
         }
-        return returnValue;
+        return criteria;
     }
 }

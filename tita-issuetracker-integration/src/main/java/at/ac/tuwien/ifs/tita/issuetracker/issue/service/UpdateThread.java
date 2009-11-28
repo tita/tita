@@ -40,6 +40,10 @@ public class UpdateThread extends Thread {
     private boolean applicationIsRunning = true;
     private Map<Long, IProjectTrackable> projects;
 
+    /**
+     * Constructor for the automatic update thread
+     * @param projects - map of projects that are accessbile from the issue trackers.
+     */
     public UpdateThread(Map<Long, IProjectTrackable> projects) {
         super("automatic update");
         this.projects = projects;
@@ -76,6 +80,9 @@ public class UpdateThread extends Thread {
         }
     }
 
+    /**
+     * Shutdown the automatic update thread.
+     */
     @SuppressWarnings("deprecation")
     public void shutdown() {
         this.applicationIsRunning = false;

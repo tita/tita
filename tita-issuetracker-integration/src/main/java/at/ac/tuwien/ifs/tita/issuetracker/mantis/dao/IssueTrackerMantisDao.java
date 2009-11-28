@@ -19,10 +19,12 @@ import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.mantisbt.connect.Enumeration;
 import org.mantisbt.connect.IMCSession;
 import org.mantisbt.connect.MCException;
 import org.mantisbt.connect.axis.MCSession;
 import org.mantisbt.connect.model.IIssue;
+import org.mantisbt.connect.model.IMCAttribute;
 import org.mantisbt.connect.model.INote;
 import org.mantisbt.connect.model.IProject;
 import org.slf4j.Logger;
@@ -83,7 +85,7 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
         } catch (MalformedURLException e) {
             this.log.error("URL " + this.url.getPath() + " is malformed!");
         }
-
+        
     }
 
     /**
@@ -181,8 +183,9 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
         return null;
     }
 
+    /** {@inheritDoc} */
     @Override
-    public Map<Long, IProjectTrackable> getAllAccessibleProjects() {
+    public Map<Long, IProjectTrackable> findAccessibleProjects() {
         IProject[] projects;
         Map<Long, IProjectTrackable> mapOfProjects = new TreeMap<Long, IProjectTrackable>();
 
@@ -201,6 +204,18 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
         return null;
     }
 
+
+    
+
+    /** {@inheritDoc} */
+    public void closeTask(long taskId) throws MCException{
+        IIssue issue = session.getIssue(taskId);
+        IMCAttribute[] resolutions = session.getEnum(Enumeration.RESOLUTIONS);
+        issue.setResolution(resolutions[1]);//fixed
+        session.updateIssue(issue);
+        session.flush();
+    }
+    
     /**
      * Copies all values from a Mantis-Project-Object to an IssueTrackerProject.
      * 
@@ -282,5 +297,4 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
         return new IssueTrackerComment(id, creationTime, lastChange, reporter,
                 text, viewState);
     }
-
 }

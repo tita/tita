@@ -221,7 +221,6 @@ public interface ITaskTrackable {
      * @see ICommentTrackable
      */
     void setComments(Map<Long, ICommentTrackable> comments);
-
     /**
      * Returns a list of comments added to the task.
      * 

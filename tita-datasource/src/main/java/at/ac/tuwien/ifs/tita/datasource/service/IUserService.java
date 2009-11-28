@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import at.ac.tuwien.ifs.tita.datasource.criteria.IBaseCriteria;
 import at.ac.tuwien.ifs.tita.datasource.domain.Role;
 import at.ac.tuwien.ifs.tita.datasource.domain.User;
 import at.ac.tuwien.ifs.tita.datasource.exception.TitaDAOException;
@@ -118,5 +119,7 @@ public interface IUserService {
      * @throws TitaDAOException
      *             if no role was found or another Exception is thrown
      */
-    List<Role> searchRole(Role criteria) throws TitaDAOException;
+    List<Role> searchRole(IBaseCriteria<Role> criteria) throws TitaDAOException;
+
+    IBaseCriteria<Role> createCriteria(Role role) throws TitaDAOException;
 }

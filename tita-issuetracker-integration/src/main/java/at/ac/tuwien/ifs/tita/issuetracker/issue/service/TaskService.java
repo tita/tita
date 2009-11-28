@@ -25,6 +25,14 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IProjectTrackable;
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
 import at.ac.tuwien.ifs.tita.issuetracker.mantis.dao.IssueTrackerMantisDao;
 
+/**
+ * The TaskService manage the synchronization between mantis and TiTA.
+ * Therefore are two methods that starts the update functions.
+ * In addition you can fetch the updated tasks from a project an status.
+ * 
+ * @author Christoph
+ *
+ */
 public class TaskService implements ITaskService {
 
     private IIssueTrackerDao dao;
@@ -35,7 +43,7 @@ public class TaskService implements ITaskService {
 
     public TaskService() {
         this.dao = new IssueTrackerMantisDao();
-        this.projects = this.dao.getAllAccessibleProjects();
+        this.projects = this.dao.findAccessibleProjects();
     }
 
     public IIssueTrackerDao getIssueTrackerDao() {
@@ -50,10 +58,11 @@ public class TaskService implements ITaskService {
         return this.projects;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void updateAll() {
         this.dao = new IssueTrackerMantisDao();
-        this.projects = this.dao.getAllAccessibleProjects();
+        this.projects = this.dao.findAccessibleProjects();
 
         dispatcher = new DispatcherThread(this.projects);
         dispatcher.start();
@@ -61,12 +70,14 @@ public class TaskService implements ITaskService {
 
     }
 
+    /** {@inheritDoc} */
     @Override
     public void updateProject(IProjectTrackable project) {
         worker = new WorkerThread(project);
         worker.start();
     }
 
+    /** {@inheritDoc} */
     @Override
     public Map<Long, ITaskTrackable> getTasks(IProjectTrackable project, IssueStatus status)
             throws ProjectNotFoundException {

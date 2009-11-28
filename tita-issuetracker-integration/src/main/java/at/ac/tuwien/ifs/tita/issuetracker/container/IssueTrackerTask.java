@@ -13,8 +13,10 @@
  */
 package at.ac.tuwien.ifs.tita.issuetracker.container;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
+
 
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssuePriority;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueResolution;
@@ -30,8 +32,8 @@ import at.ac.tuwien.ifs.tita.issuetracker.time.ITimedTask;
  * @author Karin
  * 
  */
-public class IssueTrackerTask implements ITaskTrackable, ITimedTask {
-
+public class IssueTrackerTask implements ITaskTrackable, ITimedTask, Serializable {
+    
     private Map<Long, ICommentTrackable> comments;
     private Date creationTime;
     private String description;
@@ -151,11 +153,6 @@ public class IssueTrackerTask implements ITaskTrackable, ITimedTask {
         this.description = description;
     }
 
-    /** {@inheritDoc} */
-    // public void setId(Long id) {
-    // this.id = id;
-    //        
-    // }
     /** {@inheritDoc} */
     public void setLastChange(Date lastChange) {
         this.lastChange = lastChange;

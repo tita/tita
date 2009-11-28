@@ -14,6 +14,9 @@
 package at.ac.tuwien.ifs.tita.issuetracker.interfaces;
 
 import java.util.Map;
+import java.util.TreeMap;
+
+import org.mantisbt.connect.MCException;
 
 /**
  * The interface describes the view on comment objects from the integrated issue
@@ -24,6 +27,14 @@ import java.util.Map;
  * 
  */
 public interface IIssueTrackerDao {
+    
+    /**
+     * Method to find all projects for a User.
+     * @param username - name of the user, whos projects should be found
+     * @return list of found projects
+     */
+    Map<Long, IProjectTrackable> findAccessibleProjects();
+    
     /**
      * Method to find a trackableProject by the projectId.
      * 
@@ -41,13 +52,6 @@ public interface IIssueTrackerDao {
      * @return project, if one was found, null otherwise
      */
     IProjectTrackable findProject(String projectName);
-
-    /**
-     * Method to find all trackable projects from the issue tracker.
-     * 
-     * @return map of all accessible projects.
-     */
-    Map<Long, IProjectTrackable> getAllAccessibleProjects();
 
     /**
      * Method to find all TrackableTaks of a project, specified by the
@@ -77,4 +81,11 @@ public interface IIssueTrackerDao {
      */
     Map<Long, ICommentTrackable> findAllCommentsForTask(Long taskId);
 
+    /**
+     * Closes the Task with the specified taskId.
+     * @param taskId - id of the task to close
+     * @return true, if closing was successful, false if an error ocurred
+     * @exception MCException - if closing fails
+     */
+    void closeTask(long taskId) throws MCException;
 }

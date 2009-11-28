@@ -18,6 +18,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
+import org.mantisbt.connect.model.IIssue;
 
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueResolution;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.ProjectStatus;
@@ -89,6 +90,33 @@ public class IssueTrackerMantisDaoTest extends MantisBaseTest {
     }
 
     /**
+     * Test: close task
+     */
+    @Test
+    public void closeTask() {
+        long taskId = 0;
+        try {
+            createTestProject("tita_test", "tita_test_description", true, false);
+            taskId = createTestTask("tita_test_issue1", "issue_summary1","tita_test" );
+
+            //close task
+            IssueTrackerMantisDao dao = new IssueTrackerMantisDao();
+            dao.closeTask(taskId);      
+            
+            //check
+            IIssue issue = session.getIssue(taskId);
+            assertEquals("fixed", issue.getResolution().getName());
+            
+        
+        } catch (Exception e) {
+            assertTrue(false);
+        } finally{
+            deleteTestTask(taskId);
+            deleteTestProject("tita_test");   
+        }
+    }
+    
+    /**
      * Test: find comment by commentId.
      */
     @Test
@@ -125,7 +153,7 @@ public class IssueTrackerMantisDaoTest extends MantisBaseTest {
      * one.
      */
     @Test
-    public void getAllAccessibleProjects_shouldFindCorrectAmountOfProjects() {
+    public void findAccessibleProjects_shouldFindCorrectAmountOfProjects() {
         Long projectId = 4L;
 
         try {
@@ -134,14 +162,14 @@ public class IssueTrackerMantisDaoTest extends MantisBaseTest {
 
             // Create connection
             IssueTrackerMantisDao dao = new IssueTrackerMantisDao();
-            assertEquals(1, dao.getAllAccessibleProjects().size());
+            assertEquals(1, dao.findAccessibleProjects().size());
 
             projectId = createTestProject("tita_test2",
                     "tita_test_description", true, false);
 
             // Close the session because it is already running
             IssueTrackerMantisDao dao_current = new IssueTrackerMantisDao();
-            assertEquals(2, dao_current.getAllAccessibleProjects().size());
+            assertEquals(2, dao_current.findAccessibleProjects().size());
 
             deleteTestProject("tita_test1");
             deleteTestProject("tita_test2");
@@ -149,7 +177,7 @@ public class IssueTrackerMantisDaoTest extends MantisBaseTest {
             // Explicit close for the connection
             dao_current.disconnect();
             IssueTrackerMantisDao dao_current2 = new IssueTrackerMantisDao();
-            assertEquals(0, dao_current2.getAllAccessibleProjects().size());
+            assertEquals(0, dao_current2.findAccessibleProjects().size());
         } catch (Exception e) {
             fail("Creating projects or creating session failed!");
         }

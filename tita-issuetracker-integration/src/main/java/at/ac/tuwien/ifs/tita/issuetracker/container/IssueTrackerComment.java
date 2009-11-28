@@ -73,10 +73,7 @@ public class IssueTrackerComment implements ICommentTrackable {
     public void setCreationTime(Date creationTime) {
         this.creationTime = creationTime;
     }
-    /** {@inheritDoc} */
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
+
     /** {@inheritDoc} */
     public void setLastChange(Date lastChange) {
         this.lastChange = lastChange;

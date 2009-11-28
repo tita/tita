@@ -25,6 +25,12 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IProjectTrackable;
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
 import at.ac.tuwien.ifs.tita.issuetracker.mantis.dao.IssueTrackerMantisDao;
 
+/**
+ * The worker thread updates the tasks from a single project using the MantisDao.
+ * 
+ * @author Christoph
+ *
+ */
 public class WorkerThread extends Thread {
 
     private IProjectTrackable project;
@@ -32,7 +38,12 @@ public class WorkerThread extends Thread {
 
     Logger log = LoggerFactory.getLogger(WorkerThread.class);
 
+    /**
+     * Constructs a worker thread with a project.
+     * @param project - project, from where the tasks should be fetched from mantis.
+     */
     public WorkerThread(IProjectTrackable project) {
+    	super("Worker");
         this.dao = new IssueTrackerMantisDao();
         this.project = project;
     }

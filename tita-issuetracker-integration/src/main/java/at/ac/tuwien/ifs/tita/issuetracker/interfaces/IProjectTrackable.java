@@ -106,8 +106,7 @@ public interface IProjectTrackable {
      * @see ITaskTrackable
      */
     void setTasks(Map<Long, ITaskTrackable> tasks);
-
-    /**
+/**
      * Returns the tasks of the project.
      * 
      * @return tasks - reported tasks of the project

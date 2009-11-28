@@ -63,6 +63,9 @@ public class DispatcherThread extends Thread {
         }
     }
 
+    /**
+     * Close the thread pool for the worker threads and the running loop.
+     */
     public void close() {
         this.listening = false;
 
