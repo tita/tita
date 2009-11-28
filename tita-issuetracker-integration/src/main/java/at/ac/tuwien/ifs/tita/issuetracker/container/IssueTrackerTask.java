@@ -10,29 +10,29 @@
    See the License for the specific language governing permissions and
    limitations under the License.
   
-*/
+ */
 package at.ac.tuwien.ifs.tita.issuetracker.container;
 
 import java.util.Date;
-import java.util.List;
+import java.util.Map;
 
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssuePriority;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueResolution;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueSeverity;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueStatus;
-import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IIsCommentTrackable;
-import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IIsTaskTrackable;
+import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ICommentTrackable;
+import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
 import at.ac.tuwien.ifs.tita.issuetracker.time.ITimedTask;
 
 /**
  * The container class for task objects from the integrated issue tracker.
  * 
  * @author Karin
- *
+ * 
  */
-public class IssueTrackerTask implements IIsTaskTrackable, ITimedTask{
-    
-    private List<IIsCommentTrackable> comments;
+public class IssueTrackerTask implements ITaskTrackable, ITimedTask {
+
+    private Map<Long, ICommentTrackable> comments;
     private Date creationTime;
     private String description;
     private Long id;
@@ -48,12 +48,13 @@ public class IssueTrackerTask implements IIsTaskTrackable, ITimedTask{
     private Long startTime;
     private Long duration;
     private Boolean started;
-    
-    public IssueTrackerTask(Long id, String description, String owner, Date creationTime,
-            Date lastChange, IssuePriority priority, Long projectId,
-            List<IIsCommentTrackable> comments, String reporter, IssueResolution resolution, 
-            IssueSeverity severity,IssueStatus status ,String summary){
-        
+
+    public IssueTrackerTask(Long id, String description, String owner,
+            Date creationTime, Date lastChange, IssuePriority priority,
+            Long projectId, Map<Long, ICommentTrackable> comments,
+            String reporter, IssueResolution resolution,
+            IssueSeverity severity, IssueStatus status, String summary) {
+
         this.id = id;
         this.description = description;
         this.owner = owner;
@@ -69,149 +70,173 @@ public class IssueTrackerTask implements IIsTaskTrackable, ITimedTask{
         this.summary = summary;
         this.started = false;
     }
-    
+
     /** {@inheritDoc} */
-    public List<IIsCommentTrackable> getComments() {
-        return comments;
+    public Map<Long, ICommentTrackable> getComments() {
+        return this.comments;
     }
+
     /** {@inheritDoc} */
     public Date getCreationTime() {
-        return creationTime;
+        return this.creationTime;
     }
+
     /** {@inheritDoc} */
     public String getDescription() {
-        return description;
+        return this.description;
     }
+
     /** {@inheritDoc} */
     public Long getId() {
-        return id;
+        return this.id;
     }
+
     /** {@inheritDoc} */
     public Date getLastChange() {
-        return lastChange;
+        return this.lastChange;
     }
+
     /** {@inheritDoc} */
     public String getOwner() {
-        return owner;
+        return this.owner;
     }
+
     /** {@inheritDoc} */
     public IssuePriority getPriority() {
-        return priority;
+        return this.priority;
     }
+
     /** {@inheritDoc} */
     public Long getProjectId() {
-        return projectId;
+        return this.projectId;
     }
+
     /** {@inheritDoc} */
     public String getReporter() {
-        return reporter;
+        return this.reporter;
     }
+
     /** {@inheritDoc} */
     public IssueResolution getResolution() {
-        return resolution;
+        return this.resolution;
     }
+
     /** {@inheritDoc} */
     public IssueSeverity getSeverity() {
-        return severity;
+        return this.severity;
     }
+
     /** {@inheritDoc} */
     public IssueStatus getStatus() {
-        return status;
+        return this.status;
     }
+
     /** {@inheritDoc} */
     public String getSummary() {
-        return summary;
+        return this.summary;
     }
+
     /** {@inheritDoc} */
-    public void setComments(List<IIsCommentTrackable> comments) {
+    public void setComments(Map<Long, ICommentTrackable> comments) {
         this.comments = comments;
     }
+
     /** {@inheritDoc} */
     public void setCreationTime(Date creationTime) {
         this.creationTime = creationTime;
     }
+
     /** {@inheritDoc} */
     public void setDescription(String description) {
-        this.description = description; 
+        this.description = description;
     }
+
     /** {@inheritDoc} */
-//    public void setId(Long id) {
-//        this.id = id;
-//        
-//    }
+    // public void setId(Long id) {
+    // this.id = id;
+    //        
+    // }
     /** {@inheritDoc} */
     public void setLastChange(Date lastChange) {
         this.lastChange = lastChange;
     }
+
     /** {@inheritDoc} */
     public void setOwner(String owner) {
         this.owner = owner;
     }
+
     /** {@inheritDoc} */
     public void setPriority(IssuePriority priority) {
         this.priority = priority;
     }
+
     /** {@inheritDoc} */
     public void setProjectId(long projectId) {
         this.projectId = projectId;
     }
+
     /** {@inheritDoc} */
     public void setReporter(String reporter) {
         this.reporter = reporter;
     }
+
     /** {@inheritDoc} */
     public void setResolution(IssueResolution resolution) {
         this.resolution = resolution;
     }
+
     /** {@inheritDoc} */
     public void setSeverity(IssueSeverity severity) {
         this.severity = severity;
     }
+
     /** {@inheritDoc} */
     public void setStatus(IssueStatus status) {
         this.status = status;
     }
+
     /** {@inheritDoc} */
     public void setSummary(String summary) {
         this.summary = summary;
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public void start() {
-        if(!started){
-            startTime = System.currentTimeMillis();
-            started = true;
+        if (!this.started) {
+            this.startTime = System.currentTimeMillis();
+            this.started = true;
         }
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public void stop() {
-        if(started){
-            duration = System.currentTimeMillis() - startTime;
-            started = false;
+        if (this.started) {
+            this.duration = System.currentTimeMillis() - this.startTime;
+            this.started = false;
         }
     }
 
     @Override
     public Long getDuration() {
-        return duration;
+        return this.duration;
     }
 
     @Override
     public Integer getTimedTaskId() {
-        return id.intValue();
+        return this.id.intValue();
     }
 
-    /**{@inheritDoc}*/
+    /** {@inheritDoc} */
     @Override
     public void splitTime(Integer countRunning) {
-        duration /= countRunning;
+        this.duration /= countRunning;
     }
 
     @Override
     public Boolean isStopped() {
-        return !started;
+        return !this.started;
     }
 }

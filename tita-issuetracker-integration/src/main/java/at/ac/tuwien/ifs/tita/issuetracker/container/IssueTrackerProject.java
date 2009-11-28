@@ -10,35 +10,35 @@
    See the License for the specific language governing permissions and
    limitations under the License.
   
-*/
+ */
 package at.ac.tuwien.ifs.tita.issuetracker.container;
 
 import java.net.URL;
-import java.util.List;
+import java.util.Map;
 
 import at.ac.tuwien.ifs.tita.issuetracker.enums.ProjectStatus;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.ViewState;
-import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IIsProjectTrackable;
-import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IIsTaskTrackable;
+import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IProjectTrackable;
+import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
 
 /**
  * The container class for project objects from the integrated issue tracker.
  * 
  * @author Karin
- *
+ * 
  */
-public class IssueTrackerProject implements IIsProjectTrackable {
+public class IssueTrackerProject implements IProjectTrackable {
     private long id;
     private String name;
-    private String description; 
+    private String description;
     private ProjectStatus status;
-    private List<IIsTaskTrackable> tasks;
-    private URL url; 
+    private Map<Long, ITaskTrackable> tasks;
+    private URL url;
     private ViewState viewState;
-    
-    public IssueTrackerProject(long id, String name, String description, 
-            ProjectStatus status, List<IIsTaskTrackable> tasks, URL url, 
-            ViewState viewState){
+
+    public IssueTrackerProject(long id, String name, String description,
+            ProjectStatus status, Map<Long, ITaskTrackable> tasks, URL url,
+            ViewState viewState) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -50,57 +50,67 @@ public class IssueTrackerProject implements IIsProjectTrackable {
 
     /** {@inheritDoc} */
     public String getDescription() {
-        return description;
-    }
-    /** {@inheritDoc} */
-    public Long getId() {
-        return id;
-    }
-    
-    /** {@inheritDoc} */
-    public String getName() {
-        return name;
-    }
-    /** {@inheritDoc} */
-    public ProjectStatus getStatus() {
-        return status;
+        return this.description;
     }
 
-    public List<IIsTaskTrackable> getTasks() {
-        return tasks;
+    /** {@inheritDoc} */
+    public Long getId() {
+        return this.id;
     }
+
+    /** {@inheritDoc} */
+    public String getName() {
+        return this.name;
+    }
+
+    /** {@inheritDoc} */
+    public ProjectStatus getStatus() {
+        return this.status;
+    }
+
+    public Map<Long, ITaskTrackable> getTasks() {
+        return this.tasks;
+    }
+
     /** {@inheritDoc} */
     public URL getUrl() {
-        return url;
+        return this.url;
     }
+
     /** {@inheritDoc} */
     public ViewState getViewState() {
-        return viewState;
+        return this.viewState;
     }
+
     /** {@inheritDoc} */
     public void setDescription(String description) {
         this.description = description;
     }
+
     /** {@inheritDoc} */
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
+    // public void setId(Long id) {
+    // this.id = id;
+    // }
     /** {@inheritDoc} */
     public void setName(String name) {
         this.name = name;
     }
+
     /** {@inheritDoc} */
     public void setStatus(ProjectStatus projectStatus) {
         this.status = projectStatus;
     }
+
     /** {@inheritDoc} */
-    public void setTasks(List<IIsTaskTrackable> tasks) {
+    public void setTasks(Map<Long, ITaskTrackable> tasks) {
         this.tasks = tasks;
     }
+
     /** {@inheritDoc} */
     public void setUrl(URL url) {
         this.url = url;
     }
+
     /** {@inheritDoc} */
     public void setViewState(ViewState viewState) {
         this.viewState = viewState;

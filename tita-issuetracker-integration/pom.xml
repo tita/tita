@@ -36,6 +36,11 @@
   </description>
 
   <dependencies>
+    <dependency>
+      <groupId>at.ac.tuwien.ifs</groupId>
+      <artifactId>tita-datasource</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+    </dependency>
     <!-- Springframework dependencies -->
     <dependency>
       <groupId>org.springframework</groupId>
