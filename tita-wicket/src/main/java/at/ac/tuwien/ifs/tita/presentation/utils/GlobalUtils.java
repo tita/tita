@@ -43,7 +43,6 @@ public final class GlobalUtils {
     public static Calendar getCalendarFromDate(Date d) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(d);
-        cal.set(Calendar.MONTH, cal.get(Calendar.MONTH) + 1);
         return cal;
     }
 
