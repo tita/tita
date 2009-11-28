@@ -13,6 +13,7 @@
  */
 package at.ac.tuwien.ifs.tita.presentation.timeeffort.evaluation;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -52,16 +53,49 @@ public class TimeEffortEvaluationListView<T> extends ListView<TimeEffort> {
 
         Label lbDescription = new Label("description", timeEffort.getDescription());
 
+        String startTime = GlobalUtils.TIMELENGTHFORMAT.format(timeEffort.getStartTime()) + " "
+                + isAMorPM(timeEffort.getStartTime());
+        String endTime = GlobalUtils.TIMELENGTHFORMAT.format(timeEffort.getEndTime()) + " "
+                + isAMorPM(timeEffort.getEndTime());
+
+        Label lbStartTime = new Label("starttime", startTime);
+        Label lbEndTime = new Label("endtime", endTime);
+
         Label lbLength = new Label("length", ""
                 + GlobalUtils.TIMELENGTHFORMAT.format(new Date(timeEffort.getEndTime().getTime()
                         - timeEffort.getStartTime().getTime() - SUBTRACTTIME)));
 
         lbDate.setOutputMarkupId(true);
         lbDescription.setOutputMarkupId(true);
+        lbStartTime.setOutputMarkupId(true);
+        lbEndTime.setOutputMarkupId(true);
         lbLength.setOutputMarkupId(true);
 
         item.add(lbDate);
         item.add(lbDescription);
+        item.add(lbStartTime);
+        item.add(lbEndTime);
         item.add(lbLength);
+    }
+
+    /**
+     * Checks if date is am or pm.
+     * 
+     * @param d date to check
+     * @return am or pm as string
+     */
+    private String isAMorPM(Date d) {
+        String amorpm = "";
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(d);
+
+        if (cal.get(Calendar.AM_PM) == Calendar.AM) {
+            amorpm = "am";
+        } else if (cal.get(Calendar.AM_PM) == Calendar.PM) {
+            amorpm = "pm";
+        }
+
+        return amorpm;
     }
 }

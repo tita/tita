@@ -18,15 +18,31 @@ package at.ac.tuwien.ifs.tita.presentation.utils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * GlobalUtils.
  * 
  * @author msiedler
+ * @author rene
  * 
  */
 public final class GlobalUtils {
 
     public static final DateFormat DATEFORMAT = new SimpleDateFormat("dd.MM.yyyy");
     public static final DateFormat TIMELENGTHFORMAT = new SimpleDateFormat("hh:mm");
+    
+    /**
+     * Converts date into Calendar.
+     * 
+     * @param d date to convert
+     * @return calendar with date
+     */
+    public static Calendar getCalendarFromDate(Date d) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(d);
+        cal.set(Calendar.MONTH, cal.get(Calendar.MONTH) + 1);
+        return cal;
+    }
 }

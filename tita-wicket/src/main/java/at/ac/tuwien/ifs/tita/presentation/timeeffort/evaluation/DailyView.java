@@ -20,12 +20,18 @@ import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.datetime.StyleDateConverter;
+import org.apache.wicket.datetime.markup.html.form.DateTextField;
+import org.apache.wicket.extensions.yui.calendar.DatePicker;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import at.ac.tuwien.ifs.tita.datasource.exception.TitaDAOException;
+import at.ac.tuwien.ifs.tita.presentation.utils.GlobalUtils;
 import at.ac.tuwien.ifs.tita.timeeffort.domain.TimeEffort;
 import at.ac.tuwien.ifs.tita.timeeffort.service.ITimeEffortService;
 
@@ -36,27 +42,43 @@ public class DailyView extends WebPage {
     @SpringBean(name = "timeEffortService")
     private ITimeEffortService service;
 
-    private TimeEffortEvaluationListView<TimeEffort> listView = null;
+    private final Date date = new Date();
 
     public DailyView() {
-        initForm();
+        initPage();
         // addInitialTimeEfforts();
-        initTable();
+        // initTable();
     }
 
     /**
-     * Inits Form.
+     * Inits Page.
      */
-    private void initForm() {
+    private void initPage() {
         Form<TimeEffort> form = new Form<TimeEffort>("dailyviewform", new CompoundPropertyModel<TimeEffort>(
                 new TimeEffort()));
         add(form);
         form.setOutputMarkupId(true);
 
+        final DateTextField dateTextField = new DateTextField("tedate", new PropertyModel<Date>(this, "date"),
+                new StyleDateConverter("S-", true));
+        dateTextField.add(new DatePicker());
+        form.add(dateTextField);
+
+        final TimeEffortEvaluationListView<TimeEffort> listView = new TimeEffortEvaluationListView<TimeEffort>(
+                "dailyList", getTimeEffortsDailyView(new Date()));
+        listView.setOutputMarkupId(true);
+
+        final WebMarkupContainer timeeffortContainer = new WebMarkupContainer("timeeffortContainer");
+        timeeffortContainer.setOutputMarkupId(true);
+        timeeffortContainer.setOutputMarkupPlaceholderTag(true);
+        add(timeeffortContainer);
+        timeeffortContainer.add(listView);
+
         form.add(new AjaxButton("btnShowDaily", form) {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
-
+                listView.setList(getTimeEffortsDailyView(dateTextField.getModelObject()));
+                target.addComponent(timeeffortContainer);
             }
 
             @Override
@@ -67,28 +89,17 @@ public class DailyView extends WebPage {
     }
 
     /**
-     * Inits timeeffort table.
-     */
-    private void initTable() {
-        GregorianCalendar cal = new GregorianCalendar();
-        cal.set(2009, 11, 27);
-
-        listView = new TimeEffortEvaluationListView<TimeEffort>("dailyList", getTimeEffortsDailyView(cal));
-        listView.setOutputMarkupId(true);
-        add(listView);
-    }
-
-    /**
      * Gets time effort data by date.
      * 
-     * @param cal date of timeeffort entry
+     * @param d date of timeeffort entry
      * @return all timeefforts that match the date
      */
-    private List<TimeEffort> getTimeEffortsDailyView(Calendar cal) {
+    private List<TimeEffort> getTimeEffortsDailyView(Date d) {
+        Calendar cal = GlobalUtils.getCalendarFromDate(d);
+
         List<TimeEffort> list = null;
         try {
             list = service.getTimeEffortsDailyView(cal);
-            System.out.println(list.size());
         } catch (TitaDAOException e) {
             e.printStackTrace();
         }
@@ -97,21 +108,46 @@ public class DailyView extends WebPage {
     }
 
     /**
-     * Adds Iniital Time Efforts.
+     * Returns date for datePicker.
+     * 
+     * @return the date
+     */
+    public Date getDate() {
+        return date;
+    }
+
+    /**
+     * Adds Iniital Time Efforts. will be removed later.
      */
     private void addInitialTimeEfforts() {
+        GregorianCalendar cal1 = new GregorianCalendar();
+        cal1.set(Calendar.AM_PM, Calendar.AM);
+        cal1.set(2009, 11, 28, 10, 0);
+
+        GregorianCalendar cal2 = new GregorianCalendar();
+        cal2.set(Calendar.AM_PM, Calendar.PM);
+        cal2.set(2009, 11, 28, 14, 0);
+
         TimeEffort timeEffort = new TimeEffort();
         timeEffort.setDate(new Date());
         timeEffort.setDeleted(false);
-        timeEffort.setEndTime(new Date());
-        timeEffort.setStartTime(new Date());
+        timeEffort.setEndTime(cal2.getTime());
+        timeEffort.setStartTime(cal1.getTime());
         timeEffort.setDescription("Das ist die Test TimeEffort 1");
+
+        cal1 = new GregorianCalendar();
+        cal1.set(Calendar.AM_PM, Calendar.AM);
+        cal1.set(2009, 11, 28, 8, 0);
+
+        cal2 = new GregorianCalendar();
+        cal2.set(Calendar.AM_PM, Calendar.AM);
+        cal2.set(2009, 11, 28, 10, 0);
 
         TimeEffort timeEffort2 = new TimeEffort();
         timeEffort2.setDate(new Date());
         timeEffort2.setDeleted(false);
-        timeEffort2.setEndTime(new Date());
-        timeEffort2.setStartTime(new Date());
+        timeEffort2.setEndTime(cal2.getTime());
+        timeEffort2.setStartTime(cal1.getTime());
         timeEffort2.setDescription("Das ist die Test TimeEffort 2");
 
         try {

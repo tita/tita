@@ -22,13 +22,17 @@
 </head>
 <body>
 <form wicket:id="dailyviewform">
+    <input type="text" wicket:id="tedate" />
     <input wicket:id="btnShowDaily" type="submit" value="Show" />
 </form>
+<div wicket:id="timeeffortContainer"> 
     <table border="1">
       <thead>
           <tr>
               <th>Date</th>
               <th>Description</th>
+              <th>Start time</th>
+              <th>End time</th>
               <th>Time length</th>
           </tr>
       </thead>
@@ -36,9 +40,12 @@
           <tr wicket:id="dailyList">
               <td wicket:id="date">[Date]</td>
               <td wicket:id="description">[Description]</td>
-              <td align="right" wicket:id="length">[Time length]</td>
+              <td wicket:id="starttime" style="text-align:center">[Description]</td>
+              <td wicket:id="endtime" style="text-align:center">[Description]</td>
+              <td wicket:id="length" style="text-align:right">[Time length]</td>
           </tr>
       </tbody>
   </table>
+</div>
 </body>
 </html>
