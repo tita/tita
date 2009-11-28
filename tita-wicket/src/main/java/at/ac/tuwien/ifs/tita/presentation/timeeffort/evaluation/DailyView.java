@@ -117,33 +117,44 @@ public class DailyView extends WebPage {
     /**
      * Adds Inital Time Efforts. will be removed later.
      */
-    /*
-     * private void addInitialTimeEfforts() { GregorianCalendar cal1 = new
-     * GregorianCalendar(); cal1.set(Calendar.AM_PM, Calendar.PM);
-     * cal1.set(2009, 11, 28, 14, 33);
-     * 
-     * GregorianCalendar cal2 = new GregorianCalendar();
-     * cal2.set(Calendar.AM_PM, Calendar.PM); cal2.set(2009, 11, 28, 15, 46);
-     * 
-     * TimeEffort timeEffort = new TimeEffort(); timeEffort.setDate(new Date());
-     * timeEffort.setDeleted(false); timeEffort.setEndTime(cal2.getTime());
-     * timeEffort.setStartTime(cal1.getTime());
-     * timeEffort.setDescription("Das ist die Test TimeEffort 1");
-     * 
-     * cal1 = new GregorianCalendar(); cal1.set(Calendar.AM_PM, Calendar.PM);
-     * cal1.set(2009, 11, 28, 16, 11);
-     * 
-     * cal2 = new GregorianCalendar(); cal2.set(Calendar.AM_PM, Calendar.PM);
-     * cal2.set(2009, 11, 28, 17, 1);
-     * 
-     * TimeEffort timeEffort2 = new TimeEffort(); timeEffort2.setDate(new
-     * Date()); timeEffort2.setDeleted(false);
-     * timeEffort2.setEndTime(cal2.getTime());
-     * timeEffort2.setStartTime(cal1.getTime());
-     * timeEffort2.setDescription("Das ist die Test TimeEffort 2");
-     * 
-     * try { service.saveTimeEffort(timeEffort);
-     * service.saveTimeEffort(timeEffort2); } catch (TitaDAOException e) {
-     * e.printStackTrace(); } }
-     */
+
+    // private void addInitialTimeEfforts() {
+    // GregorianCalendar cal1 = new GregorianCalendar();
+    // cal1.set(Calendar.AM_PM, Calendar.PM);
+    // cal1.set(2009, 11, 28, 14, 33);
+    //
+    // GregorianCalendar cal2 = new GregorianCalendar();
+    // cal2.set(Calendar.AM_PM, Calendar.PM);
+    // cal2.set(2009, 11, 28, 15, 46);
+    //
+    // TimeEffort timeEffort = new TimeEffort();
+    // timeEffort.setDate(new Date());
+    // timeEffort.setDeleted(false);
+    // timeEffort.setEndTime(cal2.getTime());
+    // timeEffort.setStartTime(cal1.getTime());
+    // timeEffort.setDescription("Das ist die Test TimeEffort 1");
+    //
+    // cal1 = new GregorianCalendar();
+    // cal1.set(Calendar.AM_PM, Calendar.PM);
+    // cal1.set(2009, 11, 28, 16, 11);
+    //
+    // cal2 = new GregorianCalendar();
+    // cal2.set(Calendar.AM_PM, Calendar.PM);
+    // cal2.set(2009, 11, 28, 17, 1);
+    //
+    // TimeEffort timeEffort2 = new TimeEffort();
+    // timeEffort2.setDate(new Date());
+    // timeEffort2.setDeleted(false);
+    // timeEffort2.setEndTime(cal2.getTime());
+    // timeEffort2.setStartTime(cal1.getTime());
+    // timeEffort2.setDescription("Das ist die Test TimeEffort 2");
+    //
+    // try {
+    // service.saveTimeEffort(timeEffort);
+    // service.saveTimeEffort(timeEffort2);
+    // } catch (TitaDAOException e) {
+    // e.printStackTrace();
+    // }
+    // }
+
 }

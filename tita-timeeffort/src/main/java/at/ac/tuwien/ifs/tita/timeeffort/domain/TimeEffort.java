@@ -20,20 +20,26 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.NamedQueries;
-import org.hibernate.annotations.NamedQuery;
-
 import at.ac.tuwien.ifs.tita.datasource.domain.BaseEntity;
 
+/**
+ * TimeEffort Entity.
+ * 
+ * @author markus
+ * @author rene
+ * 
+ */
 @Entity
 @Table(name = "TimeEffort")
 @NamedQueries( {
-        @NamedQuery(name = "timeffort.by.day", query = "select te from TimeEffort te where YEAR(te.date) = :year "
+        @NamedQuery(name = "timeeffort.daily.view", query = "select te from TimeEffort te where YEAR(te.date) = :year "
                 + " and MONTH(te.date)= :month and DAY(te.date)= :day"),
-        @NamedQuery(name = "timeffort.by.month", query = "select te from TimeEffort te where YEAR(te.date) = :year "
+        @NamedQuery(name = "timeeffort.monthly.view", query = "select te from TimeEffort te where YEAR(te.date) = :year "
                 + " and MONTH(te.date)= :month") })
 public class TimeEffort extends BaseEntity {
 

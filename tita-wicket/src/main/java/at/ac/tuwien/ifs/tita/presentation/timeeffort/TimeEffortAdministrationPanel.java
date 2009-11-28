@@ -21,7 +21,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -80,8 +79,8 @@ public class TimeEffortAdministrationPanel extends Panel {
 
     // Actual time effort list
     private List<TimeEffort> timeeffortList = new ArrayList<TimeEffort>();
-    
-    //IssueTracker dao
+
+    // IssueTracker dao
     @SpringBean(name = "mantisDAO")
     IIssueTrackerDao issuetrackerDao;
 
@@ -107,7 +106,7 @@ public class TimeEffortAdministrationPanel extends Panel {
     public TimeEffortAdministrationPanel(String id) {
         super(id);
         displayPanel();
-        
+
         displayTasks();
     }
 
@@ -178,37 +177,39 @@ public class TimeEffortAdministrationPanel extends Panel {
             }
         });
     }
-    
-    private void displayTasks(){
+
+    private void displayTasks() {
         List<ITaskTrackable> allTasks = new ArrayList<ITaskTrackable>();
-        //TODO: change so just the 
+        // TODO: change so just the
         TaskService taskService = new TaskService();
-        
-        Map<Long, IProjectTrackable> projects= taskService.getProjects();
-        
-        for (IProjectTrackable p : projects.values()) {
-        	
-        	
-            Map<Long, ITaskTrackable> tasks;
-			try {
-				tasks = taskService.getTasks(p, IssueStatus.NEW);
-				
-	            for(ITaskTrackable t : tasks.values()){
-	                allTasks.add(t);
-	            }
-			} catch (ProjectNotFoundException e) {
-				// TODO show user information
-				e.printStackTrace();
-			}
+
+        Map<Long, IProjectTrackable> projects = taskService.getProjects();
+
+        if (projects != null) {
+            for (IProjectTrackable p : projects.values()) {
+
+                Map<Long, ITaskTrackable> tasks;
+                try {
+                    tasks = taskService.getTasks(p, IssueStatus.NEW);
+
+                    for (ITaskTrackable t : tasks.values()) {
+                        allTasks.add(t);
+                    }
+                } catch (ProjectNotFoundException e) {
+                    // TODO show user information
+                    e.printStackTrace();
+                }
+            }
         }
-        
+
         add(new ListView<ITaskTrackable>("tasklist", allTasks) {
+            @Override
             protected void populateItem(ListItem<ITaskTrackable> item) {
-                ITaskTrackable task = (ITaskTrackable) item.getModelObject();
+                ITaskTrackable task = item.getModelObject();
                 item.add(new Label("number", task.getId().toString()));
                 item.add(new Label("name", task.getDescription()));
-                item.add(new Label("creation", DATEFORMAT.format(task.getCreationTime())));
-                item.add(new Label("lastchange", DATEFORMAT.format(task.getLastChange())));
+                item.add(new Label("creation", GlobalUtils.DATEFORMAT.format(task.getCreationTime())));
+                item.add(new Label("lastchange", GlobalUtils.DATEFORMAT.format(task.getLastChange())));
                 item.add(new Label("owner", task.getOwner()));
                 item.add(new Label("priority", task.getPriority().name()));
                 item.add(new Label("resolution", task.getResolution().name()));

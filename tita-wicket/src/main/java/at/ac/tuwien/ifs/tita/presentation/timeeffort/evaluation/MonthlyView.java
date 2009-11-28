@@ -98,7 +98,6 @@ public class MonthlyView extends WebPage {
      * @return all timeefforts that match the date
      */
     private List<TimeEffort> getTimeEffortsMonthlyView(Calendar cal) {
-        System.out.println(cal.get(cal.MONTH));
         List<TimeEffort> list = null;
         try {
             list = service.getTimeEffortsMonthlyView(cal);
