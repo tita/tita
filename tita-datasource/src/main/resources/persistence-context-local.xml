@@ -22,7 +22,7 @@
   <!--
     NOTE: Autowire option above declares, that Spring looks for Dependencies automatically by a given Name
   -->
-
+ 
   <!-- The Entity Manager -->
   <!--
     NOTE: 1. JPA needs a persistence.xml, which is not specified here, JPA automatically looks for
@@ -32,7 +32,7 @@
   <!-- Entity Manager Factory -->
   <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
     <property name="dataSource" ref="dataSource" />
-    <property name="persistenceXmlLocation" value="classpath:/META-INF/persistence-test.xml" />
+    <property name="persistenceXmlLocation" value="classpath:persistence.xml" />
   </bean>
 
   <!-- The data source -->
@@ -48,7 +48,7 @@
 
   <!-- Autowired to the EntityManagerFactory -->
   <!--
-    Transactionmanager looks for @Transactional Annotations to manage the Transactiosn for the DB-Access
+    Transactionmanager looks for @Transactional Annotations to manage the Transactions for the DB-Access
   -->
   <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager" />
 
@@ -59,11 +59,5 @@
   <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
 
   <!-- Declares Annotationbased Transactiondeclaration -->
-  <!--
-    NOTE: 1. transactionManager is Autowired by name here 2. Transactions will be based on @Transactional Annotations
-  -->
   <tx:annotation-driven />
-
-  <import resource="daos-test.xml" />
-
 </beans>

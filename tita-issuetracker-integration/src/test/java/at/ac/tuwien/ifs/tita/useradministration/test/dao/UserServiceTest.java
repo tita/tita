@@ -12,11 +12,9 @@
    
  */
 
-package at.ac.tuwien.ifs.tita.datasource.test.service;
+package at.ac.tuwien.ifs.tita.useradministration.test.dao;
 
 import java.util.List;
-
-import javax.annotation.Resource;
 
 import junit.framework.Assert;
 
@@ -29,19 +27,15 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
-import at.ac.tuwien.ifs.tita.datasource.criteria.IBaseCriteria;
-import at.ac.tuwien.ifs.tita.datasource.domain.Role;
 import at.ac.tuwien.ifs.tita.datasource.exception.TitaDAOException;
-import at.ac.tuwien.ifs.tita.datasource.service.IUserService;
+import at.ac.tuwien.ifs.tita.useradministration.domain.Role;
+import at.ac.tuwien.ifs.tita.useradministration.service.IUserService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/persistence-context-test.xml" })
+@ContextConfiguration(locations = { "classpath:issueTrackerIntegrationContext-test.xml" })
 @TransactionConfiguration
-@Transactional
-public class UserServiceTest extends
-        AbstractTransactionalJUnit4SpringContextTests {
+public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     final Logger log = LoggerFactory.getLogger(UserServiceTest.class);
 
@@ -49,7 +43,6 @@ public class UserServiceTest extends
     // private ApplicationContext ctx;
 
     @Autowired
-    @Resource
     private IUserService service;
 
     @Test
@@ -65,27 +58,23 @@ public class UserServiceTest extends
         }
     }
 
-    @Test
-    public void testSearchRole() {
-        Role role1 = new Role();
-        role1.setDescription("Das ist die Test Rolle 1");
+	@Test
+	public void testSearchRole() {
+		Role role1 = new Role();
+		role1.setDescription("Das ist die Test Rolle 1");
 
-        try {
-            role1 = service.saveRole(role1);
-            Assert.assertNotNull(role1.getId());
-            Role role2 = new Role();
-            role2.setId(role1.getId());
-            IBaseCriteria<Role> rolecrit = service.createCriteria(role2);
-            rolecrit.getCriteria().setMaxResults(10);
-            rolecrit.setOrderAscBy("id");
-            List<Role> list = service.searchRole(rolecrit);
-            Assert.assertNotNull(list);
-            Assert.assertEquals(list.size(), 1);
-            Assert.assertEquals(list.get(0).getDescription(), role1
-                    .getDescription());
-        } catch (TitaDAOException e) {
-            e.printStackTrace();
-        }
-    }
-
+		try {
+			role1 = service.saveRole(role1);
+			Assert.assertNotNull(role1.getId());
+			Role role2 = new Role();
+			role2.setId(role1.getId());
+			List<Role> list = service.searchRole(service.createCriteria(role2));
+			Assert.assertNotNull(list);
+			Assert.assertTrue(list.size() > 0);
+			Assert.assertEquals(list.get(0).getDescription(), role1
+					.getDescription());
+		} catch (TitaDAOException e) {
+			e.printStackTrace();
+		}
+	}
 }

@@ -12,7 +12,7 @@
    
  */
 
-package at.ac.tuwien.ifs.tita.datasource.domain;
+package at.ac.tuwien.ifs.tita.useradministration.domain;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -22,6 +22,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import at.ac.tuwien.ifs.tita.datasource.domain.BaseEntity;
 
 @Entity
 @Table(name = "User")
@@ -59,8 +61,7 @@ public class User extends BaseEntity {
     }
 
     /**
-     * @param firstName
-     *            the firstName to set
+     * @param firstName the firstName to set
      */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -74,8 +75,7 @@ public class User extends BaseEntity {
     }
 
     /**
-     * @param lastName
-     *            the lastName to set
+     * @param lastName the lastName to set
      */
     public void setLastName(String lastName) {
         this.lastName = lastName;
@@ -89,8 +89,7 @@ public class User extends BaseEntity {
     }
 
     /**
-     * @param userName
-     *            the userName to set
+     * @param userName the userName to set
      */
     public void setUserName(String userName) {
         this.userName = userName;
@@ -104,8 +103,7 @@ public class User extends BaseEntity {
     }
 
     /**
-     * @param password
-     *            the password to set
+     * @param password the password to set
      */
     public void setPassword(String password) {
         this.password = password;
@@ -119,8 +117,7 @@ public class User extends BaseEntity {
     }
 
     /**
-     * @param email
-     *            the email to set
+     * @param email the email to set
      */
     public void setEmail(String email) {
         this.email = email;
@@ -134,8 +131,7 @@ public class User extends BaseEntity {
     }
 
     /**
-     * @param deleted
-     *            the deleted to set
+     * @param deleted the deleted to set
      */
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
@@ -149,8 +145,7 @@ public class User extends BaseEntity {
     }
 
     /**
-     * @param role
-     *            the role to set
+     * @param role the role to set
      */
     public void setRole(Role role) {
         this.role = role;

@@ -20,9 +20,10 @@
 	<persistence-unit name="titaDataSource" transaction-type="RESOURCE_LOCAL">
     <!-- Add Classes that are ment to be persisted here -->
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
-    <class>at.ac.tuwien.ifs.tita.datasource.domain.User</class>
-    <class>at.ac.tuwien.ifs.tita.datasource.domain.Role</class>
-    <!--  <class>at.ac.tuwien.ifs.tita.timeeffort.domain.TimeEffort</class> -->
+    <non-jta-data-source>jdbc/titaDatasource</non-jta-data-source>
+    
+    <class>at.ac.tuwien.ifs.tita.useradministration.domain.User</class>
+    <class>at.ac.tuwien.ifs.tita.useradministration.domain.Role</class>
     <properties>
       <property name="hibernate.archive.autodetection" value="class, hbm" />
       <property name="hibernate.hbm2ddl.auto" value="update" />

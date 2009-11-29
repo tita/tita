@@ -12,7 +12,7 @@
    
  */
 
-package at.ac.tuwien.ifs.tita.datasource.domain;
+package at.ac.tuwien.ifs.tita.useradministration.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,6 +20,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import at.ac.tuwien.ifs.tita.datasource.domain.BaseEntity;
 
 @Entity
 @Table(name = "Role")
@@ -49,8 +51,7 @@ public class Role extends BaseEntity {
     }
 
     /**
-     * @param description
-     *            the description to set
+     * @param description the description to set
      */
     public void setDescription(String description) {
         this.description = description;

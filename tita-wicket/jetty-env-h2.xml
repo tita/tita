@@ -36,12 +36,12 @@
 		<Ref id="plusConfig"></Ref>
 	</Set>
 
-	<New id="edikur" class="org.mortbay.jetty.plus.naming.Resource">
-		<Arg>jdbc/supDatasource</Arg>
+	<New id="titaDataSource" class="org.mortbay.jetty.plus.naming.Resource">
+		<Arg>jdbc/titaDatasource</Arg>
 		<Arg>
 			<New class="org.apache.commons.dbcp.BasicDataSource">
 				<Set name="driverClassName">org.h2.Driver</Set>
-				<Set name="url">jdbc:h2:mem:edikurServer</Set>
+				<Set name="url">jdbc:h2:mem:titaDataSource</Set>
 				<Set name="username">sa</Set>
 				<Set name="password"></Set>
 			</New>

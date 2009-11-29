@@ -24,7 +24,7 @@
 	<import resource="classpath:persistence-context.xml"/>
 	<import resource="classpath:reportApplicationContext.xml"/>
 	<import resource="classpath:timeeffort-context.xml"/>
-	<import resource="classpath:issuetracker-context.xml"/>
+	<import resource="classpath:issueTrackerIntegrationContext.xml"/>
 	
 	
 </beans>

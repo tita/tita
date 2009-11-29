@@ -1,7 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
-    "http://www.springframework.org/dtd/spring-beans.dtd">
-<!-- 
+/**
    Copyright 2009 TiTA Project, Vienna University of Technology
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -12,17 +9,17 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- -->
- 
-<beans>
-	<!-- The DAOs -->
-	<bean id="userDAO" class="at.ac.tuwien.ifs.tita.datasource.dao.UserDAO" />
-	<bean id="roleDAO" class="at.ac.tuwien.ifs.tita.datasource.dao.RoleDAO" />
-  
-  <!-- The Services -->
-  <bean id="userService" class="at.ac.tuwien.ifs.tita.datasource.service.UserService" >
-    <property name="userDAO" ref="userDAO"/>
-    <property name="roleDAO" ref="roleDAO"/>
-  </bean>
+   
+ */
 
-</beans>
+package at.ac.tuwien.ifs.tita.useradministration.dao;
+
+import org.springframework.stereotype.Repository;
+
+import at.ac.tuwien.ifs.tita.datasource.dao.BaseDAO;
+import at.ac.tuwien.ifs.tita.useradministration.domain.User;
+
+@Repository
+public class UserDAO extends BaseDAO<User> {
+    // emtpy because of BaseDAO
+}

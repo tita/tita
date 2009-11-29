@@ -32,23 +32,20 @@
   <!-- Entity Manager Factory -->
   <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
     <property name="dataSource" ref="dataSource" />
-    <property name="persistenceXmlLocation" value="classpath:/META-INF/persistence.xml" />
+    <property name="persistenceXmlLocation" value="classpath:persistence.xml" />
   </bean>
 
   <!-- The data source -->
   <!-- 
-	   Datasource is a H2DB
+	   Datasource will be fetched from jndi
 	 -->
-  <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-    <property name="driverClassName" value="org.h2.Driver" />
-    <property name="url" value="jdbc:h2:db/main1" />
-    <property name="username" value="sa" />
-    <property name="password" value="" />
+  <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+    <property name="jndiName" value="jdbc/titaDatasource" />
   </bean>
 
   <!-- Autowired to the EntityManagerFactory -->
   <!--
-    Transactionmanager looks for @Transactional Annotations to manage the Transactiosn for the DB-Access
+    Transactionmanager looks for @Transactional Annotations to manage the Transactions for the DB-Access
   -->
   <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager" />
 
@@ -59,11 +56,6 @@
   <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
 
   <!-- Declares Annotationbased Transactiondeclaration -->
-  <!--
-    NOTE: 1. transactionManager is Autowired by name here 2. Transactions will be based on @Transactional Annotations
-  -->
   <tx:annotation-driven />
-
-  <import resource="daos.xml" />
 
 </beans>

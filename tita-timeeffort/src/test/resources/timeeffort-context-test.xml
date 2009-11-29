@@ -26,6 +26,6 @@
     <property name="timeEffortDAO" ref="timeEffortDAO"/>
   </bean>
 
-  <import resource="classpath:persistence-context.xml" />
+  <import resource="classpath:persistence-context-local.xml" />
     
 </beans>

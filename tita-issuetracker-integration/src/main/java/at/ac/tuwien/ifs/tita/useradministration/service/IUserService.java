@@ -12,16 +12,16 @@
    
  */
 
-package at.ac.tuwien.ifs.tita.datasource.service;
+package at.ac.tuwien.ifs.tita.useradministration.service;
 
 import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
 import at.ac.tuwien.ifs.tita.datasource.criteria.IBaseCriteria;
-import at.ac.tuwien.ifs.tita.datasource.domain.Role;
-import at.ac.tuwien.ifs.tita.datasource.domain.User;
 import at.ac.tuwien.ifs.tita.datasource.exception.TitaDAOException;
+import at.ac.tuwien.ifs.tita.useradministration.domain.Role;
+import at.ac.tuwien.ifs.tita.useradministration.domain.User;
 
 /**
  * IUserService encapsulates all User-concerning Database operations

@@ -27,11 +27,11 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import at.ac.tuwien.ifs.tita.datasource.domain.Role;
 import at.ac.tuwien.ifs.tita.datasource.exception.TitaDAOException;
-import at.ac.tuwien.ifs.tita.datasource.service.IUserService;
 import at.ac.tuwien.ifs.tita.presentation.timeeffort.TimeEffortAdministrationPanel;
 import at.ac.tuwien.ifs.tita.reporting.JasperPdfResource;
+import at.ac.tuwien.ifs.tita.useradministration.domain.Role;
+import at.ac.tuwien.ifs.tita.useradministration.service.IUserService;
 
 
 /**
