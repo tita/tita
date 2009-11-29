@@ -1,3 +1,19 @@
+/**
+   Copyright 2009 TiTA Project, Vienna University of Technology
+   
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+   
+       http://www.apache.org/licenses/LICENSE\-2.0
+       
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+   
+ */
 package at.ac.tuwien.ifs.tita.presentation.timeeffort.evaluation;
 
 import java.util.Arrays;
@@ -36,10 +52,10 @@ public class MonthlyView extends WebPage {
         String year = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
         int month = Calendar.getInstance().get(Calendar.MONTH);
 
-        selectedYear = new SelectOption(year, year);
+        this.selectedYear = new SelectOption(year, year);
 
         initMonths();
-        selectedMonth = new SelectOption(months.get(month).getKey(), months.get(month).getValue());
+        this.selectedMonth = new SelectOption(this.months.get(month).getKey(), this.months.get(month).getValue());
 
         initPage();
     }
@@ -79,7 +95,8 @@ public class MonthlyView extends WebPage {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
                 Calendar cal = Calendar.getInstance();
-                cal.set(Integer.valueOf(selectedYear.toString()), Integer.valueOf(selectedMonth.toString()), 1);
+                cal.set(Integer.valueOf(MonthlyView.this.selectedYear.toString()), Integer
+                        .valueOf(MonthlyView.this.selectedMonth.toString()), 1);
                 listView.setList(getTimeEffortsMonthlyView(cal));
                 target.addComponent(timeeffortContainer);
             }
@@ -94,13 +111,14 @@ public class MonthlyView extends WebPage {
     /**
      * Gets time effort data by date.
      * 
-     * @param cal date of timeeffort entry
+     * @param cal
+     *            date of timeeffort entry
      * @return all timeefforts that match the date
      */
     private List<TimeEffort> getTimeEffortsMonthlyView(Calendar cal) {
         List<TimeEffort> list = null;
         try {
-            list = service.getTimeEffortsMonthlyView(cal);
+            list = this.service.getTimeEffortsMonthlyView(cal);
         } catch (TitaDAOException e) {
             e.printStackTrace();
         }
@@ -113,11 +131,11 @@ public class MonthlyView extends WebPage {
      * 
      */
     private void initMonths() {
-        months = Arrays.asList(new SelectOption("0", "January"), new SelectOption("1", "February"), new SelectOption(
-                "2", "March"), new SelectOption("3", "April"), new SelectOption("4", "May"), new SelectOption("5",
-                "June"), new SelectOption("6", "July"), new SelectOption("7", "August"), new SelectOption("8",
-                "September"), new SelectOption("9", "October"), new SelectOption("10", "November"), new SelectOption(
-                "11", "December"));
+        this.months = Arrays.asList(new SelectOption("0", "January"), new SelectOption("1", "February"),
+                new SelectOption("2", "March"), new SelectOption("3", "April"), new SelectOption("4", "May"),
+                new SelectOption("5", "June"), new SelectOption("6", "July"), new SelectOption("7", "August"),
+                new SelectOption("8", "September"), new SelectOption("9", "October"),
+                new SelectOption("10", "November"), new SelectOption("11", "December"));
     }
 
     /**
@@ -126,13 +144,14 @@ public class MonthlyView extends WebPage {
      * @return the months
      */
     public List<SelectOption> getMonths() {
-        return months;
+        return this.months;
     }
 
     /**
      * Set Months.
      * 
-     * @param months the months to set
+     * @param months
+     *            the months to set
      */
     public void setMonths(List<SelectOption> months) {
         this.months = months;
@@ -144,13 +163,14 @@ public class MonthlyView extends WebPage {
      * @return the selectedYear
      */
     public SelectOption getSelectedYear() {
-        return selectedYear;
+        return this.selectedYear;
     }
 
     /**
      * Sets selected year.
      * 
-     * @param selectedYear the selectedYear to set
+     * @param selectedYear
+     *            the selectedYear to set
      */
     public void setSelectedYear(SelectOption selectedYear) {
         this.selectedYear = selectedYear;
@@ -162,13 +182,14 @@ public class MonthlyView extends WebPage {
      * @return the selectedMonth
      */
     public SelectOption getSelectedMonth() {
-        return selectedMonth;
+        return this.selectedMonth;
     }
 
     /**
      * Sets selected month.
      * 
-     * @param selectedMonth the selectedMonth to set
+     * @param selectedMonth
+     *            the selectedMonth to set
      */
     public void setSelectedMonth(SelectOption selectedMonth) {
         this.selectedMonth = selectedMonth;

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+   Copyright 2009 TiTA Project, Vienna University of Technology
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+   
+       http://www.apache.org/licenses/LICENSE\-2.0
+       
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+ -->
+ 
+<!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://jetty.mortbay.org/configure.dtd">
+
+	<!--
+		Configuration file for the jetty run configuration. This file
+		represents the environment for the server it should be started at. To
+		use it move it to the head of the integration project.
+	-->
+
+<Configure class="org.mortbay.jetty.webapp.WebAppContext">
+
+	<Array id="plusConfig" type="java.lang.String">
+		<Item>org.mortbay.jetty.webapp.WebInfConfiguration</Item>
+		<Item>org.mortbay.jetty.plus.webapp.EnvConfiguration</Item>
+		<Item>org.mortbay.jetty.plus.webapp.Configuration</Item>
+		<Item>org.mortbay.jetty.webapp.JettyWebXmlConfiguration</Item>
+		<Item>org.mortbay.jetty.webapp.TagLibConfiguration</Item>
+	</Array>
+
+	<Set name="configurationClasses">
+		<Ref id="plusConfig"></Ref>
+	</Set>
+
+	<New id="edikur" class="org.mortbay.jetty.plus.naming.Resource">
+		<Arg>jdbc/supDatasource</Arg>
+		<Arg>
+			<New class="org.apache.commons.dbcp.BasicDataSource">
+				<Set name="driverClassName">org.h2.Driver</Set>
+				<Set name="url">jdbc:h2:mem:edikurServer</Set>
+				<Set name="username">sa</Set>
+				<Set name="password"></Set>
+			</New>
+		</Arg>
+	</New>
+
+</Configure>
