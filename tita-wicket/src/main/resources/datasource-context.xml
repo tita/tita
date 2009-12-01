@@ -24,12 +24,15 @@
   	<constructor-arg value="at.ac.tuwien.ifs.tita.datasource.entity.Role"/>
   </bean>
   <bean id="timeEffortDAO" class="at.ac.tuwien.ifs.tita.datasource.dao.TimeEffortDao"/>
-	<bean id="mantisDAO" class="at.ac.tuwien.ifs.tita.issuetracker.mantis.dao.IssueTrackerMantisDao" />
 
   <!-- The Services -->
   <bean id="userService" class="at.ac.tuwien.ifs.tita.datasource.service.user.UserService">
     <property name="userDAO" ref="userDAO" />
     <property name="roleDAO" ref="roleDAO" />
   </bean>
+   <bean id="timeEffortService" class="at.ac.tuwien.ifs.tita.datasource.service.time.TimeEffortService">
+    <property name="timeEffortDao" ref="timeEffortDAO"/>
+  </bean>
+  
   <import resource="classpath:persistence-context-local.xml"/>
 </beans>
