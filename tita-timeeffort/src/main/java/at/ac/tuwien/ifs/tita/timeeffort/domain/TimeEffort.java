@@ -40,7 +40,8 @@ import at.ac.tuwien.ifs.tita.datasource.domain.BaseEntity;
         @NamedQuery(name = "timeeffort.daily.view", query = "select te from TimeEffort te where YEAR(te.date) = :year "
                 + " and MONTH(te.date)= :month and DAY(te.date)= :day"),
         @NamedQuery(name = "timeeffort.monthly.view", query = "select te from TimeEffort te where YEAR(te.date) = :year "
-                + " and MONTH(te.date)= :month") })
+                + " and MONTH(te.date)= :month"),
+        @NamedQuery(name = "timeeffort.actual.view", query = "select te from TimeEffort te order by te.endTime") })
 public class TimeEffort extends BaseEntity {
 
     @Id
@@ -74,7 +75,8 @@ public class TimeEffort extends BaseEntity {
     }
 
     /**
-     * @param date the date to set
+     * @param date
+     *            the date to set
      */
     public void setDate(Date date) {
         this.date = date;
@@ -88,7 +90,8 @@ public class TimeEffort extends BaseEntity {
     }
 
     /**
-     * @param startTime the startTime to set
+     * @param startTime
+     *            the startTime to set
      */
     public void setStartTime(Date startTime) {
         this.startTime = startTime;
@@ -102,7 +105,8 @@ public class TimeEffort extends BaseEntity {
     }
 
     /**
-     * @param endTime the endTime to set
+     * @param endTime
+     *            the endTime to set
      */
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
@@ -116,7 +120,8 @@ public class TimeEffort extends BaseEntity {
     }
 
     /**
-     * @param description the description to set
+     * @param description
+     *            the description to set
      */
     public void setDescription(String description) {
         this.description = description;
@@ -130,7 +135,8 @@ public class TimeEffort extends BaseEntity {
     }
 
     /**
-     * @param deleted the deleted to set
+     * @param deleted
+     *            the deleted to set
      */
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;

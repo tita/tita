@@ -37,7 +37,8 @@ public class TimeEffortDAO extends BaseDAO<TimeEffort> {
     /**
      * Gets a view for a month.
      * 
-     * @param cal calenderdates which are selected
+     * @param cal
+     *            calenderdates which are selected
      * @return list of timefforts that match dates
      */
     public List<TimeEffort> getTimeEffortsMonthlyView(Calendar cal) {
@@ -50,7 +51,8 @@ public class TimeEffortDAO extends BaseDAO<TimeEffort> {
     /**
      * Gets a view for a day.
      * 
-     * @param cal calenderdates which are selected
+     * @param cal
+     *            calenderdates which are selected
      * @return list of timefforts that match dates
      */
     public List<TimeEffort> getTimeEffortsDailyView(Calendar cal) {
@@ -58,6 +60,19 @@ public class TimeEffortDAO extends BaseDAO<TimeEffort> {
         q.setParameter("year", cal.get(cal.YEAR));
         q.setParameter("month", cal.get(cal.MONTH) + 1);
         q.setParameter("day", cal.get(cal.DAY_OF_MONTH));
+        return q.getResultList();
+    }
+
+    /**
+     * Gets a view for the last time efforts.
+     * 
+     * @param maxresults
+     *            sets the max results value for the query
+     * @return list of timefforts that match dates
+     */
+    public List<TimeEffort> getActualTimeEfforts(int maxresults) {
+        Query q = entityManager.createNamedQuery("timeeffort.actual.view");
+        q.setMaxResults(maxresults);
         return q.getResultList();
     }
 }

@@ -20,41 +20,37 @@
 	<wicket:panel>
 		<!-- <div wicket:id="feedback">[[ feedback ]]</div>-->
 		<h3>Time Efforts</h3>
-		<form wicket:id="timeeffortForm">
-			<table>
-				<tr>
-					<th class="date"><input type="text" wicket:id="tedate" size=7/></th>
-					<th class="description"><input type="text" wicket:id="description" /></th>					
-					<th class="time">
-						<input type="text" wicket:id="startHour" size=2/>
-						:<input type="text" wicket:id="startMinute" size=2/>
-						/<input type="text" wicket:id="endHour" size=2/>
-						:<input type="text" wicket:id="endMinute" size=2 />
-					</th>
-					<th><input wicket:id="saveButton" type="submit" value="Save" /></th>
-
-				</tr>
-			</table>
-		</form>		
+	
 		<div wicket:id="timeeffortContainer"> 
            	<div id="timeeffortContainer"> 
 				<table border=1>
+					<colgroup>
+						<col width="90"></col>
+						<col width="300"></col>
+						<col width="70"></col>
+						<col width="70"></col>
+						<col width="50"></col>
+						<col width="120"></col>
+					</colgroup>
 					<thead>
 						<tr>
 							<th>Date</th>
 							<th>Description</th>
+							<th>Start Time</th>
+							<th>End Time</th>							
 							<th>Time length</th>
 						</tr>
-		
 					</thead>
 					<tbody>
 						<tr wicket:id="timeEffortList">
 							<td wicket:id="date">[Date]</td>
 							<td wicket:id="description">[Description]</td>
-							<td align="right" wicket:id="length">[Time length]</td>
+			              	<td wicket:id="starttime" style="text-align:center">[Start Time]</td>
+			              	<td wicket:id="endtime" style="text-align:center">[End Time]</td>
+			              	<td wicket:id="length" style="text-align:right">[Time length]</td>
 							<td>
-									<input wicket:id="edit" type="submit" value="Edit"/>| 
-									<input wicket:id="delete" type="submit" value="Delete"/>
+								<input wicket:id="edit" type="submit" value="Edit"/>| 
+								<input wicket:id="delete" type="submit" value="Delete"/>
 							</td>
 						</tr>
 					</tbody>
@@ -62,6 +58,33 @@
 			</div>
 		</div>
 		
+		<form wicket:id="timeeffortForm">
+			<table>
+				<colgroup>
+					<col width="90"></col>
+					<col width="300"></col>
+					<col width="70"></col>
+					<col width="70"></col>
+					<col width="50"></col>
+					<col width="120"></col>
+				</colgroup>
+				<tr>
+					<th class="date"><input type="text" wicket:id="tedate" size=7/></th>
+					<th class="description"><input type="text" wicket:id="description" size="40"/></th>					
+					<th class="start">
+						<input type="text" wicket:id="startHour" size=2/>
+						:<input type="text" wicket:id="startMinute" size=2/>
+
+					</th>
+					<th class="end">						
+						<input type="text" wicket:id="endHour" size=2/>
+						:<input type="text" wicket:id="endMinute" size=2 />
+					</th>
+					<th/>
+					<th><input wicket:id="saveButton" type="submit" value="Save" style="align:left"/></th>
+				</tr>
+			</table>
+		</form>	
 		
 		<h3>Mantis - Issues</h3>
 		<table border=1>
