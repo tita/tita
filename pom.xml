@@ -80,7 +80,6 @@
       <module>tita-datasource</module>
       <module>tita-issuetracker-integration</module>
       <module>tita-jasperreports</module>
-      <module>tita-timeeffort</module>
       <module>tita-wicket</module>
  </modules>
 
@@ -341,6 +340,7 @@
 						<exclude>**/*.pdf</exclude>
 						<exclude>**/*.jpg</exclude>
 						<exclude>**/*.dia</exclude>
+						<exclude>**/*.zargo</exclude>
 						<exclude>**/*.jasper</exclude>
 						<exclude>**/*.log</exclude>
 						<exclude>**/*.MF</exclude>
