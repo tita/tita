@@ -45,8 +45,9 @@ import org.apache.wicket.validation.validator.StringValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import at.ac.tuwien.ifs.tita.datasource.criteria.IBaseCriteria;
+import at.ac.tuwien.ifs.tita.datasource.entity.TimeEffort;
 import at.ac.tuwien.ifs.tita.datasource.exception.TitaDAOException;
+import at.ac.tuwien.ifs.tita.datasource.service.time.ITimeEffortService;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueStatus;
 import at.ac.tuwien.ifs.tita.issuetracker.exceptions.ProjectNotFoundException;
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IIssueTrackerDao;
@@ -54,8 +55,6 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IProjectTrackable;
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
 import at.ac.tuwien.ifs.tita.issuetracker.issue.service.TaskService;
 import at.ac.tuwien.ifs.tita.presentation.utils.GlobalUtils;
-import at.ac.tuwien.ifs.tita.timeeffort.domain.TimeEffort;
-import at.ac.tuwien.ifs.tita.timeeffort.service.ITimeEffortService;
 
 /**
  * 
@@ -232,12 +231,12 @@ public class TimeEffortAdministrationPanel extends Panel {
             cal.setTime(date);
             cal.set(Calendar.HOUR_OF_DAY, startHourTextfield.getModelObject());
             cal.set(Calendar.MINUTE, startMinuteTextfield.getModelObject());
-            timeEffort.setStartTime(cal.getTime());
+//            timeEffort.setStartTime(cal.getTime());
             cal.clear();
             cal.setTime(date);
             cal.set(Calendar.HOUR_OF_DAY, endHourTextfield.getModelObject());
             cal.set(Calendar.MINUTE, endMinuteTextfield.getModelObject());
-            timeEffort.setEndTime(cal.getTime());
+//            timeEffort.setEndTime(cal.getTime());
             timeEffort.setDeleted(false);
 
             service.saveTimeEffort(timeEffort);
@@ -253,23 +252,23 @@ public class TimeEffortAdministrationPanel extends Panel {
     }
 
     // TODO Search implementation needed
-    private List<TimeEffort> getTimeEfforts(int maxsize) {
-        List<TimeEffort> returnValue = null;
-        try {
-            TimeEffort timeEffort2 = new TimeEffort();
-            timeEffort2.setDeleted(false);
-            timeEffort2.setDate(date);
-            IBaseCriteria<TimeEffort> timeefcrit = service.createCriteria(timeEffort2);
-
-            timeefcrit.getCriteria().setMaxResults(maxsize);
-            timeefcrit.setOrderAscBy("date");
-            returnValue = service.searchTimeEffort(timeefcrit);
-        } catch (TitaDAOException e) {
-            e.printStackTrace();
-        }
-
-        return returnValue;
-    }
+//    private List<TimeEffort> getTimeEfforts(int maxsize) {
+//        List<TimeEffort> returnValue = null;
+//        try {
+//            TimeEffort timeEffort2 = new TimeEffort();
+//            timeEffort2.setDeleted(false);
+//            timeEffort2.setDate(date);
+//            IBaseCriteria<TimeEffort> timeefcrit = service.createCriteria(timeEffort2);
+//
+//            timeefcrit.getCriteria().setMaxResults(maxsize);
+//            timeefcrit.setOrderAscBy("date");
+//            returnValue = service.searchTimeEffort(timeefcrit);
+//        } catch (TitaDAOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return returnValue;
+//    }
 
     // ============= TIME EFFORT LIST VIEW ===========================
 
@@ -293,13 +292,13 @@ public class TimeEffortAdministrationPanel extends Panel {
 
             Label lbDescription = new Label("description", timeEffort2.getDescription());
 
-            Label lbLength = new Label("length", ""
-                    + GlobalUtils.TIMELENGTHFORMAT.format(new Date(timeEffort2.getEndTime().getTime()
-                            - timeEffort2.getStartTime().getTime() - 3600000)));
+            Label lbLength = new Label("length", "");
+//                    + GlobalUtils.TIMELENGTHFORMAT.format(new Date(timeEffort2.getEndTime().getTime()
+//                            - timeEffort2.getStartTime().getTime() - 3600000)));
 
             lbDate.setOutputMarkupId(true);
             lbDescription.setOutputMarkupId(true);
-            lbLength.setOutputMarkupId(true);
+//            lbLength.setOutputMarkupId(true);
 
             item.add(lbDate);
             item.add(lbDescription);
@@ -342,12 +341,12 @@ public class TimeEffortAdministrationPanel extends Panel {
         cal.setTime(date);
         cal.set(Calendar.HOUR_OF_DAY, 10);
         cal.set(Calendar.MINUTE, 10);
-        timeEffort2.setStartTime(cal.getTime());
+//        timeEffort2.setStartTime(cal.getTime());
         cal.clear();
         cal.setTime(date);
         cal.set(Calendar.HOUR_OF_DAY, 11);
         cal.set(Calendar.MINUTE, 11);
-        timeEffort2.setEndTime(cal.getTime());
+//        timeEffort2.setEndTime(cal.getTime());
         timeeffortList.add(timeEffort2);
 
     }

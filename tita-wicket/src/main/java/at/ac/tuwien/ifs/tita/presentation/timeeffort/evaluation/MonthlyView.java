@@ -31,10 +31,10 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import at.ac.tuwien.ifs.tita.datasource.entity.TimeEffort;
 import at.ac.tuwien.ifs.tita.datasource.exception.TitaDAOException;
+import at.ac.tuwien.ifs.tita.datasource.service.time.ITimeEffortService;
 import at.ac.tuwien.ifs.tita.presentation.utils.SelectOption;
-import at.ac.tuwien.ifs.tita.timeeffort.domain.TimeEffort;
-import at.ac.tuwien.ifs.tita.timeeffort.service.ITimeEffortService;
 
 /**
  * Monthly evaluation.

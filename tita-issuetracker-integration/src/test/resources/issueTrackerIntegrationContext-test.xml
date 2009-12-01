@@ -17,11 +17,16 @@
   default-autowire="byName">
 
   <!-- The DAOs -->
-  <bean id="userDAO" class="at.ac.tuwien.ifs.tita.useradministration.dao.UserDAO" />
-  <bean id="roleDAO" class="at.ac.tuwien.ifs.tita.useradministration.dao.RoleDAO" />
+  <bean id="userDAO" class="at.ac.tuwien.ifs.tita.datasource.dao.GenericHibernateDao">
+	<constructor-arg value="at.ac.tuwien.ifs.tita.datasource.entity.User"/>
+  </bean>
+  <bean id="roleDAO" class="at.ac.tuwien.ifs.tita.datasource.dao.GenericHibernateDao">
+  	<constructor-arg value="at.ac.tuwien.ifs.tita.datasource.entity.Role"/>
+  </bean>
+  <bean id="timeEffortDAO" class="at.ac.tuwien.ifs.tita.datasource.dao.TimeEffortDao"/>
 
   <!-- The Services -->
-  <bean id="userService" class="at.ac.tuwien.ifs.tita.useradministration.service.UserService">
+  <bean id="userService" class="at.ac.tuwien.ifs.tita.datasource.service.user.UserService">
     <property name="userDAO" ref="userDAO" />
     <property name="roleDAO" ref="roleDAO" />
   </bean>

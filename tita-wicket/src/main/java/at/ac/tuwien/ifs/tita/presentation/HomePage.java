@@ -27,11 +27,11 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import at.ac.tuwien.ifs.tita.datasource.entity.Role;
 import at.ac.tuwien.ifs.tita.datasource.exception.TitaDAOException;
+import at.ac.tuwien.ifs.tita.datasource.service.user.IUserService;
 import at.ac.tuwien.ifs.tita.presentation.timeeffort.TimeEffortAdministrationPanel;
 import at.ac.tuwien.ifs.tita.reporting.JasperPdfResource;
-import at.ac.tuwien.ifs.tita.useradministration.domain.Role;
-import at.ac.tuwien.ifs.tita.useradministration.service.IUserService;
 
 
 /**
@@ -59,9 +59,10 @@ public class HomePage extends WebPage {
         Role helloWorld = initPage();
 
         try {
-            Role temp = service.saveRole(helloWorld);
+            service.saveRole(helloWorld);
+            Role h2 = helloWorld;
             helloWorld = null;
-            helloWorld = service.getRoleById(temp.getId());
+            helloWorld = service.getRoleById(h2.getId());
             // initReport(helloWorld);
             // add(new Label("message", helloWorld.getDescription()));
             add(new TimeEffortAdministrationPanel("timeEffortPanel"));

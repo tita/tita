@@ -17,14 +17,13 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 
-
+import at.ac.tuwien.ifs.tita.datasource.entity.BaseTimeEffort;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssuePriority;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueResolution;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueSeverity;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueStatus;
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ICommentTrackable;
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
-import at.ac.tuwien.ifs.tita.issuetracker.time.ITimedTask;
 
 /**
  * The container class for task objects from the integrated issue tracker.
@@ -32,12 +31,11 @@ import at.ac.tuwien.ifs.tita.issuetracker.time.ITimedTask;
  * @author Karin
  * 
  */
-public class IssueTrackerTask implements ITaskTrackable, ITimedTask, Serializable {
+public class IssueTrackerTask extends BaseTimeEffort implements ITaskTrackable, Serializable {
     
     private Map<Long, ICommentTrackable> comments;
     private Date creationTime;
     private String description;
-    private Long id;
     private Date lastChange;
     private String owner;
     private IssuePriority priority;
@@ -47,16 +45,13 @@ public class IssueTrackerTask implements ITaskTrackable, ITimedTask, Serializabl
     private IssueSeverity severity;
     private IssueStatus status;
     private String summary;
-    private Long startTime;
-    private Long duration;
-    private Boolean started;
 
     public IssueTrackerTask(Long id, String description, String owner,
             Date creationTime, Date lastChange, IssuePriority priority,
             Long projectId, Map<Long, ICommentTrackable> comments,
             String reporter, IssueResolution resolution,
             IssueSeverity severity, IssueStatus status, String summary) {
-
+        super();
         this.id = id;
         this.description = description;
         this.owner = owner;
@@ -70,7 +65,6 @@ public class IssueTrackerTask implements ITaskTrackable, ITimedTask, Serializabl
         this.severity = severity;
         this.status = status;
         this.summary = summary;
-        this.started = false;
     }
 
     /** {@inheritDoc} */
@@ -196,44 +190,5 @@ public class IssueTrackerTask implements ITaskTrackable, ITimedTask, Serializabl
     /** {@inheritDoc} */
     public void setSummary(String summary) {
         this.summary = summary;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void start() {
-        if (!this.started) {
-            this.startTime = System.currentTimeMillis();
-            this.started = true;
-        }
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void stop() {
-        if (this.started) {
-            this.duration = System.currentTimeMillis() - this.startTime;
-            this.started = false;
-        }
-    }
-
-    @Override
-    public Long getDuration() {
-        return this.duration;
-    }
-
-    @Override
-    public Integer getTimedTaskId() {
-        return this.id.intValue();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void splitTime(Integer countRunning) {
-        this.duration /= countRunning;
-    }
-
-    @Override
-    public Boolean isStopped() {
-        return !this.started;
     }
 }

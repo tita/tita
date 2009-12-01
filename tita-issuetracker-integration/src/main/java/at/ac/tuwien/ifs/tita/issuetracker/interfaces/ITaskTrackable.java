@@ -29,7 +29,7 @@ import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueStatus;
  * @author Christoph
  * 
  */
-public interface ITaskTrackable {
+public interface ITaskTrackable{
 
     /**
      * Supplies the identifier of the task.

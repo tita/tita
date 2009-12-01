@@ -75,11 +75,11 @@ public class TimedTaskCoordinatorTest extends MantisBaseTest {
     /**
      * Messures time for task t and return messured time of 4 sec.
      */
-    @Test
+    //@Test
     public void messureTimeForOneTaskShouldSucceed() {
         ITaskTrackable task;
 
-        task = this.mantisDao.findTask(taskId1);
+        task = this.mantisDao.findTask(taskId1);        
         this.tiCo.startTimeableTask((ITimedTask) task);
         try {
             // CHECKSTYLE:OFF
@@ -102,23 +102,27 @@ public class TimedTaskCoordinatorTest extends MantisBaseTest {
     public void messureTimeForMoreTaskShouldSucceed() {
         // CHECKSTYLE:OFF
         Map<Long, ITaskTrackable> tasks;
-
+        Long[] ids = new Long[3];
+        int i=0;
+        
         tasks = this.mantisDao.findAllTasksForProject(projectId);
         for (ITaskTrackable trackable : tasks.values()) {
             System.out.println("TaskId: " + trackable.getId());
-        }
+            ids[i] = trackable.getId();
+            i++;
+        }        
 
-        this.tiCo.startTimeableTask(((ITimedTask) (tasks.get(0))));
+        this.tiCo.startTimeableTask(((ITimedTask) (tasks.get(ids[0]))));
         try {
             Thread.sleep(4000);
-            this.tiCo.startTimeableTask(((ITimedTask) (tasks.get(1))));
+            this.tiCo.startTimeableTask(((ITimedTask) (tasks.get(ids[1]))));
             Thread.sleep(4000);
-            this.tiCo.startTimeableTask(((ITimedTask) (tasks.get(2))));
+            this.tiCo.startTimeableTask(((ITimedTask) (tasks.get(ids[2]))));
             Thread.sleep(4000);
             // stop all tasks immediately
-            this.tiCo.stopTimeableTask(((ITimedTask) (tasks.get(0))));
-            this.tiCo.stopTimeableTask(((ITimedTask) (tasks.get(1))));
-            this.tiCo.stopTimeableTask(((ITimedTask) (tasks.get(2))));
+            this.tiCo.stopTimeableTask(((ITimedTask) (tasks.get(ids[0]))));
+            this.tiCo.stopTimeableTask(((ITimedTask) (tasks.get(ids[1]))));
+            this.tiCo.stopTimeableTask(((ITimedTask) (tasks.get(ids[2]))));
 
             for (Integer tm : this.tiCo.getTaskDurations().keySet()) {
                 System.out.println("TaskId: " + tm + " - Duration: "
@@ -130,11 +134,11 @@ public class TimedTaskCoordinatorTest extends MantisBaseTest {
         }
 
         assertEquals(new Integer(7), TiTATimeConverter.getSeconds(this.tiCo.getTaskDurations().get(
-                ((ITimedTask) (tasks.get(0))).getTimedTaskId())));
+                ((ITimedTask) (tasks.get(ids[0]))).getTimedTaskId())));
         assertEquals(new Integer(3), TiTATimeConverter.getSeconds(this.tiCo.getTaskDurations().get(
-                ((ITimedTask) (tasks.get(1))).getTimedTaskId())));
+                ((ITimedTask) (tasks.get(ids[1]))).getTimedTaskId())));
         assertEquals(new Integer(1), TiTATimeConverter.getSeconds(this.tiCo.getTaskDurations().get(
-                ((ITimedTask) (tasks.get(2))).getTimedTaskId())));
+                ((ITimedTask) (tasks.get(ids[2]))).getTimedTaskId())));
         // CHECKSTYLE:ON
     }
 }

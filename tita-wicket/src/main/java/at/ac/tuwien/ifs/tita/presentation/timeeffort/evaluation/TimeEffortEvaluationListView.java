@@ -22,8 +22,8 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 
+import at.ac.tuwien.ifs.tita.datasource.entity.TimeEffort;
 import at.ac.tuwien.ifs.tita.presentation.utils.GlobalUtils;
-import at.ac.tuwien.ifs.tita.timeeffort.domain.TimeEffort;
 
 /**
  * Time efforts are displayed in a table list.
@@ -54,18 +54,18 @@ public class TimeEffortEvaluationListView<T> extends ListView<TimeEffort> {
 
         Label lbDescription = new Label("description", timeEffort.getDescription());
 
-        String startTime = GlobalUtils.TIMELENGTHFORMAT.format(timeEffort.getStartTime()) + " "
-                + isAMorPM(timeEffort.getStartTime());
-        String endTime = GlobalUtils.TIMELENGTHFORMAT.format(timeEffort.getEndTime()) + " "
-                + isAMorPM(timeEffort.getEndTime());
+//        String startTime = GlobalUtils.TIMELENGTHFORMAT.format(timeEffort.getStartTime()) + " "
+//                + isAMorPM(timeEffort.getStartTime());
+//        String endTime = GlobalUtils.TIMELENGTHFORMAT.format(timeEffort.getEndTime()) + " "
+//                + isAMorPM(timeEffort.getEndTime());
 
-        Label lbStartTime = new Label("starttime", startTime);
-        Label lbEndTime = new Label("endtime", endTime);
+        Label lbStartTime = new Label("starttime", ""); // startTime);
+        Label lbEndTime = new Label("endtime", ""); //endTime);
 
         GlobalUtils.TIMEFORMAT24HOURS.setTimeZone(TimeZone.getTimeZone("GMT"));
-        Label lbLength = new Label("length", ""
-                + GlobalUtils.TIMEFORMAT24HOURS.format(GlobalUtils.getTimeDifference(timeEffort.getStartTime(),
-                        timeEffort.getEndTime())));
+        Label lbLength = new Label("length", "");
+//                + GlobalUtils.TIMEFORMAT24HOURS.format(GlobalUtils.getTimeDifference(timeEffort.getStartTime(),
+//                        timeEffort.getEndTime())));
 
         lbDate.setOutputMarkupId(true);
         lbDescription.setOutputMarkupId(true);
