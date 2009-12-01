@@ -39,7 +39,7 @@ public interface IPersistenceContextProvider {
     
     
     /**
-     * Flushes the session und clears the session completely.
+     * Flushes the session and clears the session completely.
      * Evict all loaded instances and cancel all pending saves, updates and deletions.
      * 
      */
