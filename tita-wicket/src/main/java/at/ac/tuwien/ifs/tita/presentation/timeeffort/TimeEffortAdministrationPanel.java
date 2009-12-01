@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.datetime.StyleDateConverter;
 import org.apache.wicket.datetime.markup.html.form.DateTextField;
@@ -31,7 +32,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -48,6 +48,8 @@ import org.slf4j.LoggerFactory;
 import at.ac.tuwien.ifs.tita.datasource.entity.TimeEffort;
 import at.ac.tuwien.ifs.tita.datasource.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.datasource.service.time.ITimeEffortService;
+import at.ac.tuwien.ifs.tita.datasource.time.ITimer;
+import at.ac.tuwien.ifs.tita.datasource.util.TiTATimeConverter;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueStatus;
 import at.ac.tuwien.ifs.tita.issuetracker.exceptions.ProjectNotFoundException;
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IIssueTrackerDao;
@@ -67,7 +69,10 @@ public class TimeEffortAdministrationPanel extends Panel {
 
     @SpringBean(name = "timeEffortService")
     private ITimeEffortService service;
-
+    
+    @SpringBean(name = "generalTimer")
+    private ITimer generalTimer;
+    
     private TimeEffort timeEffort = null;
 
     // Actual Date
@@ -85,16 +90,14 @@ public class TimeEffortAdministrationPanel extends Panel {
 
     // Wicket Components
 
-    private Form<TimeEffort> form = null;
-
-    final FeedbackPanel feedback = new FeedbackPanel("feedback");
+    private Form form = null;
+    private Form timerForm = null;
+    
+    final FeedbackPanel feedback = new FeedbackPanel("feedbackPanel");
 
     private TextField<String> descriptionTextfield = null;
     private DateTextField dateTextField = null;
-    private TextField<Integer> startHourTextfield = null;
-    private TextField<Integer> startMinuteTextfield = null;
-    private TextField<Integer> endHourTextfield = null;
-    private TextField<Integer> endMinuteTextfield = null;
+    private TextField<String> txtTimeLength = null;
     private TimeEffortListView<TimeEffort> listView = null;
 
     private WebMarkupContainer timeeffortContainer = null;
@@ -118,10 +121,18 @@ public class TimeEffortAdministrationPanel extends Panel {
 
         timeEffort = new TimeEffort();
 
-        form = new Form<TimeEffort>("timeeffortForm", new CompoundPropertyModel<TimeEffort>(timeEffort));
+        form = new Form<TimeEffort>("timeeffortForm", 
+                                    new CompoundPropertyModel<TimeEffort>(timeEffort));
         add(form);
         form.setOutputMarkupId(true);
-
+//        add(feedback);
+//        feedback.setOutputMarkupId(true);
+        
+        //timer Form
+        timerForm = new Form("timerForm");
+        add(timerForm);
+        form.setOutputMarkupId(true);
+        
         // add form components to the form as usual
         timeeffortContainer = new WebMarkupContainer("timeeffortContainer");
         timeeffortContainer.setOutputMarkupId(true);
@@ -132,32 +143,25 @@ public class TimeEffortAdministrationPanel extends Panel {
         listView.setOutputMarkupId(true);
         timeeffortContainer.add(listView);
 
-        descriptionTextfield = new RequiredTextField<String>("description", new Model<String>(""));
+        descriptionTextfield = new TextField<String>("description", new Model<String>(""));
         descriptionTextfield.add(StringValidator.maximumLength(50));
         form.add(descriptionTextfield);
 
-        dateTextField = new DateTextField("tedate", new PropertyModel<Date>(this, "date"), new StyleDateConverter("S-",
-                true));
+        dateTextField = new DateTextField("tedate", new PropertyModel<Date>(this, "date"), 
+                        new StyleDateConverter("S-",true));
         dateTextField.add(new DatePicker());
 
         form.add(dateTextField);
 
-        startHourTextfield = new RequiredTextField<Integer>("startHour", new Model<Integer>());
-        startHourTextfield.setType(Integer.class);
-
-        startMinuteTextfield = new RequiredTextField<Integer>("startMinute", new Model<Integer>());
-        startMinuteTextfield.setType(Integer.class);
-
-        endHourTextfield = new RequiredTextField<Integer>("endHour", new Model<Integer>());
-        endHourTextfield.setType(Integer.class);
-
-        endMinuteTextfield = new RequiredTextField<Integer>("endMinute", new Model<Integer>());
-        endMinuteTextfield.setType(Integer.class);
-
-        form.add(startHourTextfield);
-        form.add(startMinuteTextfield);
-        form.add(endHourTextfield);
-        form.add(endMinuteTextfield);
+        txtTimeLength = new TextField<String>("timeLength", new Model<String>(""));
+        txtTimeLength.setType(String.class);
+        txtTimeLength.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+            } 
+        });
+        
+        form.add(txtTimeLength);
 
         // AjaxFormValidatingBehavior.addToAllFormComponents(form, "onkeyup",
         // Duration.ONE_SECOND);
@@ -172,7 +176,27 @@ public class TimeEffortAdministrationPanel extends Panel {
 
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form1) {
-                // TODO Set border red on textfields which are'nt filled
+//                target.addComponent(form.getPage().get("feedbackPanel"));
+            }
+        });
+        
+        timerForm.add(new AjaxButton("startTimer", timerForm){
+
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
+                generalTimer.start();
+            }
+        });
+        
+        timerForm.add(new AjaxButton("stopTimer", timerForm){
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
+                generalTimer.stop();
+                //for setting the value of the textfield
+                txtTimeLength.setModelObject(TiTATimeConverter.Duration2String(
+                                            generalTimer.getDuration()));
+                txtTimeLength.setOutputMarkupId(true);
+                target.addComponent(txtTimeLength);
             }
         });
     }
@@ -227,16 +251,17 @@ public class TimeEffortAdministrationPanel extends Panel {
             timeEffort.setDate(dateTextField.getModelObject());
             timeEffort.setDescription(descriptionTextfield.getModelObject());
 
-            cal.clear();
-            cal.setTime(date);
-            cal.set(Calendar.HOUR_OF_DAY, startHourTextfield.getModelObject());
-            cal.set(Calendar.MINUTE, startMinuteTextfield.getModelObject());
+//            cal.clear();
+//            cal.setTime(date);
+//            cal.set(Calendar.HOUR_OF_DAY, startHourTextfield.getModelObject());
+//            cal.set(Calendar.MINUTE, startMinuteTextfield.getModelObject());
 //            timeEffort.setStartTime(cal.getTime());
-            cal.clear();
-            cal.setTime(date);
-            cal.set(Calendar.HOUR_OF_DAY, endHourTextfield.getModelObject());
-            cal.set(Calendar.MINUTE, endMinuteTextfield.getModelObject());
+//            cal.clear();
+//            cal.setTime(date);
+//            cal.set(Calendar.HOUR_OF_DAY, endHourTextfield.getModelObject());
+//            cal.set(Calendar.MINUTE, endMinuteTextfield.getModelObject());
 //            timeEffort.setEndTime(cal.getTime());
+            timeEffort.setDuration(generalTimer.getDuration());
             timeEffort.setDeleted(false);
 
             service.saveTimeEffort(timeEffort);
@@ -292,13 +317,11 @@ public class TimeEffortAdministrationPanel extends Panel {
 
             Label lbDescription = new Label("description", timeEffort2.getDescription());
 
-            Label lbLength = new Label("length", "");
-//                    + GlobalUtils.TIMELENGTHFORMAT.format(new Date(timeEffort2.getEndTime().getTime()
-//                            - timeEffort2.getStartTime().getTime() - 3600000)));
-
+            Label lbLength = new Label("length", (timeEffort2.getDuration() == null ? "" : 
+                                     TiTATimeConverter.Duration2String(timeEffort2.getDuration())));
             lbDate.setOutputMarkupId(true);
             lbDescription.setOutputMarkupId(true);
-//            lbLength.setOutputMarkupId(true);
+            lbLength.setOutputMarkupId(true);
 
             item.add(lbDate);
             item.add(lbDescription);

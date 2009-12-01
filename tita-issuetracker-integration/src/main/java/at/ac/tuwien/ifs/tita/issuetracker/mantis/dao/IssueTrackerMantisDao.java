@@ -116,7 +116,6 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
     @Override
     public Map<Long, ITaskTrackable> findAllTasksForProject(Long projectId) {
         Map<Long, ITaskTrackable> taskList = new TreeMap<Long, ITaskTrackable>();
-
         try {
             IIssue[] issues = this.session.getProjectIssues(projectId);
             for (IIssue issue : issues) {

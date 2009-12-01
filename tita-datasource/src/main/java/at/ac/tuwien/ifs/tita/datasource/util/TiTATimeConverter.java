@@ -12,7 +12,10 @@
    
  */
 
-package at.ac.tuwien.ifs.tita.issuetracker.time;
+package at.ac.tuwien.ifs.tita.datasource.util;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Class for converting Long times to hours, minutes, seconds.
@@ -21,6 +24,7 @@ package at.ac.tuwien.ifs.tita.issuetracker.time;
  * 
  */
 public class TiTATimeConverter {
+    private static final SimpleDateFormat C_SDF = new SimpleDateFormat("hh:mm");
     private static final Integer C_THOUSAND = 1000;
     private static final Integer C_SIXTY = 60;
 
@@ -55,5 +59,14 @@ public class TiTATimeConverter {
      */
     public static Integer getSeconds(Long time) {
         return (time.intValue() / C_THOUSAND);
+    }
+    
+    /**
+     * Converts a time duration to hours and minutes.
+     * @param time Long
+     * @return String value of time
+     */
+    public static String Duration2String(Long time){
+        return C_SDF.format(new Date(time));
     }
 }

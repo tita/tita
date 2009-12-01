@@ -12,7 +12,7 @@
    
  */
 
-package at.ac.tuwien.ifs.tita.issuetracker.time;
+package at.ac.tuwien.ifs.tita.datasource.time;
 
 /**
  * Interface for TimerCoordinator.
@@ -27,12 +27,12 @@ public interface ITimedTaskCoordinator {
      * 
      * @param t ITimeabletask
      */
-    void startTimeableTask(ITimedTask t);
+    void startTimeableTask(ITimer t);
 
     /**
      * Removes a timeable task from coordinators task list, but stops it before.
      * 
      * @param t ITimeabletask
      */
-    void stopTimeableTask(ITimedTask t);
+    void stopTimeableTask(ITimer t);
 }

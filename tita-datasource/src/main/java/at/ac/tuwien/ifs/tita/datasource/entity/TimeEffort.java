@@ -100,4 +100,8 @@ public class TimeEffort extends BaseTimeEffort{
         this.deleted = deleted;
     }
 
+    public void setDuration(Long duration) {
+        this.duration = duration;
+    }
+
 }

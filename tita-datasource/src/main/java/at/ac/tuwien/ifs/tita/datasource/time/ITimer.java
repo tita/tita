@@ -12,7 +12,7 @@
    
  */
 
-package at.ac.tuwien.ifs.tita.issuetracker.time;
+package at.ac.tuwien.ifs.tita.datasource.time;
 
 /**
  * Timer interface for proper defining timer's tasks start and stop.
@@ -20,7 +20,7 @@ package at.ac.tuwien.ifs.tita.issuetracker.time;
  * @author herbert
  * 
  */
-public interface ITimedTask {
+public interface ITimer {
 
     /**
      * Starts timer's function for messuring efforted time of task/issue.

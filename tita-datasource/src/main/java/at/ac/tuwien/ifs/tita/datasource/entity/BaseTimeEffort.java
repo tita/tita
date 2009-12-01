@@ -15,6 +15,8 @@
  */
 package at.ac.tuwien.ifs.tita.datasource.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,14 +27,14 @@ import javax.persistence.SequenceGenerator;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
-import at.ac.tuwien.ifs.tita.issuetracker.time.ITimedTask;
+import at.ac.tuwien.ifs.tita.datasource.time.ITimer;
 
 @MappedSuperclass
-public abstract class BaseTimeEffort implements ITimedTask{
+public abstract class BaseTimeEffort implements ITimer, Serializable{
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_timeeffort_id")
-    @SequenceGenerator(name = "seq_timeeffort_id", sequenceName = "seq_timeeffort_id")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "TIME_EFFORT_ID_GEN")
+    @SequenceGenerator(name = "TIME_EFFORT_ID_GEN", sequenceName = "TIME_EFFORT_ID_SEQ")
     @Column(name = "ID")
     protected Long id;
     

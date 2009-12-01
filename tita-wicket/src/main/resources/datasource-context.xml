@@ -34,5 +34,7 @@
     <property name="timeEffortDao" ref="timeEffortDAO"/>
   </bean>
   
-  <import resource="classpath:persistence-context-local.xml"/>
+  <bean id="generalTimer" class="at.ac.tuwien.ifs.tita.datasource.util.GeneralTimer"/>
+  
+  <import resource="classpath:persistence-context.xml"/>
 </beans>

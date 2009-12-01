@@ -12,7 +12,7 @@
    
  */
 
-package at.ac.tuwien.ifs.tita.issuetracker.time;
+package at.ac.tuwien.ifs.tita.datasource.time;
 
 import java.util.Map;
 import java.util.TreeMap;
@@ -25,44 +25,44 @@ import java.util.TreeMap;
  * 
  */
 public class TimedTaskCoordinator implements ITimedTaskCoordinator {
-    private final Map<Integer, ITimedTask> tasks;
-
+    private Map<Integer, ITimer> tasks;
     // only for testing and MR2
-    private final Map<Integer, Long> durationTime;
+    private Map<Integer, Long> durationTime;
 
     public TimedTaskCoordinator() {
-        this.tasks = new TreeMap<Integer, ITimedTask>();
+        this.tasks = new TreeMap<Integer, ITimer>();
         this.durationTime = new TreeMap<Integer, Long>();
     }
 
     /** {@inheritDoc} */
     @Override
-    public synchronized void startTimeableTask(ITimedTask t) {
+    public synchronized void startTimeableTask(ITimer t) {
         if (t != null) {
-            stopTasksAndBalance(null);
+            stopTasks();
+            balanceTasks();
             tasks.put(t.getTimedTaskId(), t);
             startTasks();
         }
     }
-
+    
     /**
-     * Stops all currently running tasks and persists their duration, because it
-     * need to be split for several tasks.
-     * 
-     * @param tToStop is the current task to stop, or null if no task is to stop
+     * Stops all current available Tasks in task list.
      */
-    private void stopTasksAndBalance(ITimedTask tToStop) {
+    private void stopTasks(){
+        for (ITimer task : tasks.values()) {
+            task.stop();
+        }        
+    }
+    
+    /**
+     * Balances all current available Tasks in task list by splitting their consumed time.
+     */
+    private void balanceTasks(){
         Integer tasksCount = tasks.size();
         Long durTask = null;
         Long splitTime = null;
-
-        for (ITimedTask t : tasks.values()) {
-            t.stop();
-            if (tToStop != null) {
-                if (t.getTimedTaskId().equals(tToStop.getTimedTaskId())) {
-                    tasks.remove(t.getTimedTaskId());
-                }
-            }
+        
+        for(ITimer t : tasks.values()){
             // TODO: persist here in Database
             // duration currently for test purposes stored in durationTime
             if (durationTime.containsKey(t.getTimedTaskId())) {
@@ -76,25 +76,24 @@ public class TimedTaskCoordinator implements ITimedTaskCoordinator {
             }
         }
     }
-
+    
     /**
-     * Starts or resumes all current available Tasks in task list.
+     * Starts all current available Tasks in task list.
      */
     private void startTasks() {
-        for (ITimedTask task : tasks.values()) {
+        for (ITimer task : tasks.values()) {
             task.start();
         }
     }
 
     /** {@inheritDoc} */
     @Override
-    public synchronized void stopTimeableTask(ITimedTask t) {
-        ITimedTask task;
-
+    public synchronized void stopTimeableTask(ITimer t) {
         if (t != null) {
             if (tasks.containsKey(t.getTimedTaskId())) {
-                task = tasks.get(t.getTimedTaskId().intValue());
-                stopTasksAndBalance(task);
+                stopTasks();
+                balanceTasks();
+                tasks.remove(t.getTimedTaskId().intValue());
                 startTasks();
             }
         }

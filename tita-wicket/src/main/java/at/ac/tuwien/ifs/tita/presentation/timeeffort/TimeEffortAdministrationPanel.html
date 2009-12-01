@@ -20,22 +20,31 @@
 	<wicket:panel>
 		<!-- <div wicket:id="feedback">[[ feedback ]]</div>-->
 		<h3>Time Efforts</h3>
+		<form wicket:id="timerForm">
+			<table>
+				<tr colspan="2">
+					<th>General Timer</th>
+				</tr>
+				<tr>
+					<td><input wicket:id="startTimer" type="submit" value="Start"/></td>
+					<td><input wicket:id="stopTimer" type="submit" value="Stop"/></td>
+				</tr>
+			</table>
+			<p></p>
+		</form>
+		<!-- div wicket:id="length"/-->
 		<form wicket:id="timeeffortForm">
 			<table>
 				<tr>
-					<th class="date"><input type="text" wicket:id="tedate" size=7/></th>
-					<th class="description"><input type="text" wicket:id="description" /></th>					
-					<th class="time">
-						<input type="text" wicket:id="startHour" size=2/>
-						:<input type="text" wicket:id="startMinute" size=2/>
-						/<input type="text" wicket:id="endHour" size=2/>
-						:<input type="text" wicket:id="endMinute" size=2 />
-					</th>
-					<th><input wicket:id="saveButton" type="submit" value="Save" /></th>
+					<td class="date"><input type="text" wicket:id="tedate" size=7/></td>
+					<td class="description"><input type="text" wicket:id="description" /></td>					
+					<td class="time"><input type="text" wicket:id="timeLength" size=5/></td>
+					<td><input wicket:id="saveButton" type="submit" value="Save" /></td>
 
 				</tr>
 			</table>
-		</form>		
+		</form>
+		<!-- div wicket:id="feedbackPanel"/-->
 		<div wicket:id="timeeffortContainer"> 
            	<div id="timeeffortContainer"> 
 				<table border=1>
@@ -53,9 +62,9 @@
 							<td wicket:id="description">[Description]</td>
 							<td align="right" wicket:id="length">[Time length]</td>
 							<td>
-									<input wicket:id="edit" type="submit" value="Edit"/>| 
-									<input wicket:id="delete" type="submit" value="Delete"/>
-							</td>
+									<input wicket:id="edit" type="submit" value="Edit"/> </td>
+							<td>
+									<input wicket:id="delete" type="submit" value="Delete"/></td>
 						</tr>
 					</tbody>
 				</table>
