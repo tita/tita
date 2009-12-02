@@ -103,4 +103,6 @@ public class HomePage extends WebPage {
         helloWorldReport.loadReport(context.getRealPath(helloWorldReport.getDesignFilename()));
         helloWorldReport.setReportDataSource(new JRBeanCollectionDataSource(roles));
     }
+    
+    
 }

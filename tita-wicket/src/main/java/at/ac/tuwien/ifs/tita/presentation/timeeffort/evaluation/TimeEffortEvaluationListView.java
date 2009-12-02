@@ -54,18 +54,16 @@ public class TimeEffortEvaluationListView<T> extends ListView<TimeEffort> {
 
         Label lbDescription = new Label("description", timeEffort.getDescription());
 
-//        String startTime = GlobalUtils.TIMELENGTHFORMAT.format(timeEffort.getStartTime()) + " "
-//                + isAMorPM(timeEffort.getStartTime());
-//        String endTime = GlobalUtils.TIMELENGTHFORMAT.format(timeEffort.getEndTime()) + " "
-//                + isAMorPM(timeEffort.getEndTime());
+        String startTime = GlobalUtils.TIMELENGTHFORMAT.format(GlobalUtils.getDateFromLong(timeEffort.getStartTime())) + " "
+                + isAMorPM(timeEffort.getStartTime());
+        String endTime = GlobalUtils.TIMELENGTHFORMAT.format(GlobalUtils.getDateFromLong(timeEffort.getEndTime())) + " "
+                + isAMorPM(timeEffort.getEndTime());
 
-        Label lbStartTime = new Label("starttime", ""); // startTime);
-        Label lbEndTime = new Label("endtime", ""); //endTime);
+        Label lbStartTime = new Label("starttime", startTime);
+        Label lbEndTime = new Label("endtime", endTime);
 
         GlobalUtils.TIMEFORMAT24HOURS.setTimeZone(TimeZone.getTimeZone("GMT"));
-        Label lbLength = new Label("length", "");
-//                + GlobalUtils.TIMEFORMAT24HOURS.format(GlobalUtils.getTimeDifference(timeEffort.getStartTime(),
-//                        timeEffort.getEndTime())));
+        Label lbLength = new Label("length", "" + GlobalUtils.TIMEFORMAT24HOURS.format(GlobalUtils.getDateFromLong(timeEffort.getDuration())));
 
         lbDate.setOutputMarkupId(true);
         lbDescription.setOutputMarkupId(true);
@@ -91,6 +89,21 @@ public class TimeEffortEvaluationListView<T> extends ListView<TimeEffort> {
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(d);
+
+        if (cal.get(Calendar.AM_PM) == Calendar.AM) {
+            amorpm = "am";
+        } else if (cal.get(Calendar.AM_PM) == Calendar.PM) {
+            amorpm = "pm";
+        }
+
+        return amorpm;
+    }
+    
+    private String isAMorPM(Long d) {
+        String amorpm = "";
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(d);
 
         if (cal.get(Calendar.AM_PM) == Calendar.AM) {
             amorpm = "am";

@@ -94,4 +94,8 @@ public abstract class BaseTimeEffort implements ITimer, Serializable{
     public Long getStartTime() {
         return startTime;
     }
+    
+    public void setStartTime(Long startTime) { 
+    	this.startTime = startTime;
+    }
 }

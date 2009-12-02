@@ -103,5 +103,9 @@ public class TimeEffort extends BaseTimeEffort{
     public void setDuration(Long duration) {
         this.duration = duration;
     }
+    
+    public Long getEndTime() {
+    	return this.startTime + this.duration;
+    }
 
 }

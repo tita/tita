@@ -263,7 +263,7 @@ public class TimeEffortAdministrationPanel extends Panel {
 //            timeEffort.setEndTime(cal.getTime());
             timeEffort.setDuration(generalTimer.getDuration());
             timeEffort.setDeleted(false);
-
+            timeEffort.setStartTime(generalTimer.getStartTime());
             service.saveTimeEffort(timeEffort);
 
             timeeffortList.add(0, timeEffort);
@@ -356,21 +356,21 @@ public class TimeEffortAdministrationPanel extends Panel {
 
     // temp method
     private void initData() {
-        TimeEffort timeEffort2 = new TimeEffort();
-        timeEffort2.setDate(new Date());
-        timeEffort2.setDescription("Das ist eine Testbeschreibung");
-        Calendar cal = Calendar.getInstance();
-        cal.clear();
-        cal.setTime(date);
-        cal.set(Calendar.HOUR_OF_DAY, 10);
-        cal.set(Calendar.MINUTE, 10);
-//        timeEffort2.setStartTime(cal.getTime());
-        cal.clear();
-        cal.setTime(date);
-        cal.set(Calendar.HOUR_OF_DAY, 11);
-        cal.set(Calendar.MINUTE, 11);
-//        timeEffort2.setEndTime(cal.getTime());
-        timeeffortList.add(timeEffort2);
+//        TimeEffort timeEffort2 = new TimeEffort();
+//        timeEffort2.setDate(new Date());
+//        timeEffort2.setDescription("Das ist eine Testbeschreibung");
+//        Calendar cal = Calendar.getInstance();
+//        cal.clear();
+//        cal.setTime(date);
+//        cal.set(Calendar.HOUR_OF_DAY, 10);
+//        cal.set(Calendar.MINUTE, 10);
+////        timeEffort2.setStartTime(cal.getTime());
+//        cal.clear();
+//        cal.setTime(date);
+//        cal.set(Calendar.HOUR_OF_DAY, 11);
+//        cal.set(Calendar.MINUTE, 11);
+////        timeEffort2.setEndTime(cal.getTime());
+//        timeeffortList.add(timeEffort2);
 
     }
 

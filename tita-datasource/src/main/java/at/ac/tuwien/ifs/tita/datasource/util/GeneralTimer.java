@@ -75,4 +75,9 @@ public class GeneralTimer implements ITimer {
         }
     }
 
+	@Override
+	public Long getStartTime() {
+		return this.startTime;
+	}
+
 }

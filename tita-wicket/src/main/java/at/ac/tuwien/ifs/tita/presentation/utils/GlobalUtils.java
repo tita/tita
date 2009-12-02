@@ -56,4 +56,8 @@ public final class GlobalUtils {
     public static Date getTimeDifference(Date d1, Date d2) {
         return new Date(d2.getTime() - d1.getTime());
     }
+    
+    public static Date getDateFromLong(Long t1) {
+    	return new Date(t1);
+    }
 }

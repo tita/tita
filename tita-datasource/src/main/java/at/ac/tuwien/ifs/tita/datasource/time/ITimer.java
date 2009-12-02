@@ -59,4 +59,6 @@ public interface ITimer {
      * @return Long duration
      */
     Long getDuration();
+    
+    Long getStartTime();
 }
