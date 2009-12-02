@@ -15,6 +15,7 @@
 package at.ac.tuwien.ifs.tita.datasource.util;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -24,11 +25,14 @@ import java.util.Date;
  * 
  */
 public class TiTATimeConverter {
-    private static final SimpleDateFormat C_SDF = new SimpleDateFormat("hh:mm");
+    private static final SimpleDateFormat C_SDF = new SimpleDateFormat("hh:mm:ss");
     private static final Integer C_THOUSAND = 1000;
     private static final Integer C_SIXTY = 60;
 
     public TiTATimeConverter() {
+
+    	
+    	
     }
 
     /**
@@ -67,6 +71,20 @@ public class TiTATimeConverter {
      * @return String value of time
      */
     public static String Duration2String(Long time){
-        return C_SDF.format(new Date(time));
+    	String hours = String.valueOf(TiTATimeConverter.getHours(time));
+    	String minutes = String.valueOf(TiTATimeConverter.getMinutes(time));
+    	String secondes = String.valueOf(TiTATimeConverter.getSeconds(time));
+    	
+    	if(hours.length() < 2){
+    		hours = "0" + hours;
+    	}
+    	if(minutes.length() < 2){
+    		minutes = "0" + minutes;
+    	}
+    	if(secondes.length() < 2){
+    		secondes = "0" + secondes;
+    	}
+    	
+        return hours + ":" +  minutes + ":" + secondes; 
     }
 }

@@ -116,7 +116,7 @@ public class TimeEffortAdministrationPanel extends Panel {
      * Displays panel
      */
     private void displayPanel() {
-        // List<TimeEffort> list = getTimeEfforts();
+        // List<TimeEffort> list
         initData();
 
         timeEffort = new TimeEffort();
@@ -194,7 +194,11 @@ public class TimeEffortAdministrationPanel extends Panel {
                 generalTimer.stop();
                 //for setting the value of the textfield
                 txtTimeLength.setModelObject(TiTATimeConverter.Duration2String(
+                        generalTimer.getDuration()));
+                
+                System.out.println(TiTATimeConverter.Duration2String(
                                             generalTimer.getDuration()));
+
                 txtTimeLength.setOutputMarkupId(true);
                 target.addComponent(txtTimeLength);
             }
