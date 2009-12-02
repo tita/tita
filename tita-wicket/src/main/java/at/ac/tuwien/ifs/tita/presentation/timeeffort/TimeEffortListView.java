@@ -34,6 +34,8 @@ import at.ac.tuwien.ifs.tita.timeeffort.domain.TimeEffort;
  */
 public class TimeEffortListView<T> extends ListView<TimeEffort> {
 
+    private static final Integer SUBTRACTTIME = 3600000;
+
     public TimeEffortListView(String id, List<TimeEffort> list) {
         super(id, list);
     }
@@ -54,15 +56,18 @@ public class TimeEffortListView<T> extends ListView<TimeEffort> {
         Label lbDescription = new Label("description", timeEffort
                 .getDescription());
 
+        GlobalUtils.TIMEFORMAT24HOURS.setTimeZone(TimeZone.getTimeZone("GMT"));
+
         String startTime = GlobalUtils.TIMEFORMAT24HOURS.format(timeEffort
-                .getStartTime());
+                .getStartTime().getTime()
+                + SUBTRACTTIME);
         String endTime = GlobalUtils.TIMEFORMAT24HOURS.format(timeEffort
-                .getEndTime());
+                .getEndTime().getTime()
+                + SUBTRACTTIME);
 
         Label lbStartTime = new Label("starttime", startTime);
         Label lbEndTime = new Label("endtime", endTime);
 
-        GlobalUtils.TIMEFORMAT24HOURS.setTimeZone(TimeZone.getTimeZone("GMT"));
         Label lbLength = new Label("length", ""
                 + GlobalUtils.TIMEFORMAT24HOURS.format(GlobalUtils
                         .getTimeDifference(timeEffort.getStartTime(),
