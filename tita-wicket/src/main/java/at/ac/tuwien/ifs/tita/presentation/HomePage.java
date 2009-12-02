@@ -26,10 +26,13 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.mantisbt.connect.MCException;
 
 import at.ac.tuwien.ifs.tita.datasource.entity.Role;
 import at.ac.tuwien.ifs.tita.datasource.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.datasource.service.user.IUserService;
+import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IIssueTrackerDao;
+import at.ac.tuwien.ifs.tita.issuetracker.mantis.dao.IssueTrackerMantisDao;
 import at.ac.tuwien.ifs.tita.presentation.timeeffort.TimeEffortAdministrationPanel;
 import at.ac.tuwien.ifs.tita.reporting.JasperPdfResource;
 
@@ -47,7 +50,9 @@ public class HomePage extends WebPage {
     
 
     public HomePage() {
-        displayHello();
+
+    	displayHello();
+        
         
     }
 
@@ -59,6 +64,7 @@ public class HomePage extends WebPage {
         Role helloWorld = initPage();
 
         try {
+            initMantisIssue();
             service.saveRole(helloWorld);
             Role h2 = helloWorld;
             helloWorld = null;
@@ -73,7 +79,10 @@ public class HomePage extends WebPage {
         }/*
           * catch (JRException e) { // add(new Label("message",
           * "Couldn't generate pdf file.")); e.printStackTrace(); }
-          */
+          */ catch (JRException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     
 
@@ -104,5 +113,18 @@ public class HomePage extends WebPage {
         helloWorldReport.setReportDataSource(new JRBeanCollectionDataSource(roles));
     }
     
-    
+    private void initMantisIssue() throws JRException {
+    	IssueTrackerMantisDao mantisDao = new IssueTrackerMantisDao();
+    	
+    	try {
+			mantisDao.createTestProject("MantisProject", "First Project", true, false);
+			
+			mantisDao.createTestTask("First Task in Mantis", "MR2", "MantisProject");
+			mantisDao.createTestTask("Second Task in Mantis", "MR2", "MantisProject");
+		} catch (MCException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    }
 }
