@@ -24,12 +24,14 @@ import java.util.Map;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.datetime.StyleDateConverter;
 import org.apache.wicket.datetime.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.NavigatorLabel;
 import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -37,6 +39,9 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
@@ -45,6 +50,7 @@ import org.apache.wicket.validation.validator.StringValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import at.ac.tuwien.ifs.tita.datasource.entity.BaseTimeEffort;
 import at.ac.tuwien.ifs.tita.datasource.entity.TimeEffort;
 import at.ac.tuwien.ifs.tita.datasource.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.datasource.service.time.ITimeEffortService;
@@ -101,11 +107,11 @@ public class TimeEffortAdministrationPanel extends Panel {
 
     final FeedbackPanel feedback = new FeedbackPanel("feedbackPanel");
 
-    private TextField<String> descriptionTextfield = null;
-    private DateTextField dateTextField = null;
-    private TextField<String> txtTimeLength = null;
-    private TextField<String> txtStartTime = null;
-    private TextField<String> txtEndTime = null;
+    private TextField<String> teDescription = null;
+    private DateTextField teDate = null;
+    private TextField<String> teTimeLength = null;
+    private TextField<String> teStartTime = null;
+    private TextField<String> teEndTime = null;
 
     private WebMarkupContainer timeeffortContainer = null;
 
@@ -150,14 +156,21 @@ public class TimeEffortAdministrationPanel extends Panel {
             protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
                 generalTimer.stop();
                 // for setting the value of the textfield
-                txtTimeLength.setModelObject(TiTATimeConverter
+                teTimeLength.setModelObject(TiTATimeConverter
                         .Duration2String(generalTimer.getDuration()));
+                teTimeLength.setOutputMarkupId(true);
+                target.addComponent(teTimeLength);
 
-                System.out.println(TiTATimeConverter
-                        .Duration2String(generalTimer.getDuration()));
+                teStartTime.setModelObject(GlobalUtils.TIMEFORMAT24HOURS
+                        .format(generalTimer.getStartTime()));
+                teStartTime.setOutputMarkupId(true);
+                target.addComponent(teStartTime);
 
-                txtTimeLength.setOutputMarkupId(true);
-                target.addComponent(txtTimeLength);
+                teEndTime.setModelObject(GlobalUtils.TIMEFORMAT24HOURS
+                        .format(generalTimer.getStartTime()
+                                + generalTimer.getDuration()));
+                teEndTime.setOutputMarkupId(true);
+                target.addComponent(teEndTime);
             }
         });
     }
@@ -184,45 +197,44 @@ public class TimeEffortAdministrationPanel extends Panel {
         teProvider = new TitaDataProvider<TimeEffort>(timeEffortList, SORT,
                 false);
 
-        descriptionTextfield = new TextField<String>("tedescription",
+        teDescription = new TextField<String>("tedescription",
                 new Model<String>(""));
-        descriptionTextfield.add(StringValidator.maximumLength(50));
-        form.add(descriptionTextfield);
+        teDescription.add(StringValidator.maximumLength(50));
+        form.add(teDescription);
 
-        dateTextField = new DateTextField("tedate", new PropertyModel<Date>(
-                this, "date"), new StyleDateConverter("S-", true));
-        dateTextField.add(new DatePicker());
+        teDate = new DateTextField("tedate", new PropertyModel<Date>(this,
+                "date"), new StyleDateConverter("S-", true));
+        teDate.add(new DatePicker());
+        form.add(teDate);
 
-        form.add(dateTextField);
-
-        txtTimeLength = new TextField<String>("tetimelength",
-                new Model<String>(""));
-        txtTimeLength.setType(String.class);
-        txtTimeLength.add(new AjaxFormComponentUpdatingBehavior("onchange") {
-            @Override
-            protected void onUpdate(AjaxRequestTarget target) {
-            }
-        });
-        form.add(txtTimeLength);
-
-        txtStartTime = new TextField<String>("testarttime", new Model<String>(
+        teTimeLength = new TextField<String>("tetimelength", new Model<String>(
                 ""));
-        txtStartTime.setType(String.class);
-        txtStartTime.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+        teTimeLength.setType(String.class);
+        teTimeLength.add(new AjaxFormComponentUpdatingBehavior("onchange") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
             }
         });
-        form.add(txtStartTime);
+        form.add(teTimeLength);
 
-        txtEndTime = new TextField<String>("teendtime", new Model<String>(""));
-        txtEndTime.setType(String.class);
-        txtEndTime.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+        teStartTime = new TextField<String>("testarttime",
+                new Model<String>(""));
+        teStartTime.setType(String.class);
+        teStartTime.add(new AjaxFormComponentUpdatingBehavior("onchange") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
             }
         });
-        form.add(txtEndTime);
+        form.add(teStartTime);
+
+        teEndTime = new TextField<String>("teendtime", new Model<String>(""));
+        teEndTime.setType(String.class);
+        teEndTime.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+            }
+        });
+        form.add(teEndTime);
 
         // form.add(new OrderByLink("sortName", "name", dataProvider));
         // form.add(new OrderByLink("sortAlter", "alter", dataProvider));
@@ -311,8 +323,8 @@ public class TimeEffortAdministrationPanel extends Panel {
         try {
             timeEffort = new TimeEffort();
 
-            timeEffort.setDate(dateTextField.getModelObject());
-            timeEffort.setDescription(descriptionTextfield.getModelObject());
+            timeEffort.setDate(teDate.getModelObject());
+            timeEffort.setDescription(teDescription.getModelObject());
 
             timeEffort.setDuration(generalTimer.getDuration());
             timeEffort.setDeleted(false);
@@ -347,7 +359,117 @@ public class TimeEffortAdministrationPanel extends Panel {
         return list;
     }
 
-    // ============= TIME EFFORT LIST VIEW ===========================
+    private void deleteTimeEffort(TimeEffort timeEffort) {
+        try {
+            service.deleteTimeEffort(timeEffort);
+        } catch (TitaDAOException e) {
+            log.error("Deleting TimeEffort with id " + timeEffort.getId()
+                    + " failed.");
+        }
+    }
+
+    // ============= TIME EFFORT DATA VIEW ===========================
+
+    public class TimeEffortDataView extends DataView<TimeEffort> {
+
+        protected TimeEffortDataView(String id,
+                IDataProvider<TimeEffort> dataProvider) {
+            super(id, dataProvider);
+        }
+
+        @Override
+        protected void populateItem(Item<TimeEffort> item) {
+
+            if (item.getIndex() % 2 == 0) {
+                item.add(new SimpleAttributeModifier("class", "even"));
+            } else {
+                item.add(new SimpleAttributeModifier("class", "odd"));
+            }
+
+            item.setDefaultModel(new CompoundPropertyModel<BaseTimeEffort>(item
+                    .getModel()));
+            TimeEffort timeEffort = (TimeEffort) item.getModelObject();
+
+            Label lbDate = new Label("date", GlobalUtils.DATEFORMAT
+                    .format(timeEffort.getDate()));
+
+            Label lbDescription = new Label("description", timeEffort
+                    .getDescription());
+
+            Label lbStarttime = new Label("starttime", (timeEffort
+                    .getStartTime() == null ? ""
+                    : GlobalUtils.TIMEFORMAT24HOURS.format(timeEffort
+                            .getStartTime())));
+
+            Label lbEndtime = new Label("endtime",
+                    (timeEffort.getEndTime() == null ? ""
+                            : GlobalUtils.TIMEFORMAT24HOURS.format(timeEffort
+                                    .getEndTime())));
+
+            Label lbLength = new Label("length",
+                    (timeEffort.getDuration() == null ? "" : TiTATimeConverter
+                            .Duration2String(timeEffort.getDuration())));
+            lbDate.setOutputMarkupId(true);
+            lbDescription.setOutputMarkupId(true);
+            lbLength.setOutputMarkupId(true);
+
+            item.add(lbDate);
+            item.add(lbDescription);
+            item.add(lbStarttime);
+            item.add(lbEndtime);
+            item.add(lbLength);
+
+            item.add(getEditButton(timeEffort));
+            item.add(getDeleteButton(timeEffort));
+        }
+
+        private Button getEditButton(final TimeEffort timeEffort) {
+            AjaxButton editButton = new AjaxButton("edit") {
+                @Override
+                protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
+                    teDescription.setModelObject(timeEffort.getDescription());
+                    teDescription.setOutputMarkupId(true);
+                    target.addComponent(teDescription);
+
+                    teDate.setModelObject(timeEffort.getDate());
+                    teDate.setOutputMarkupId(true);
+                    target.addComponent(teDate);
+
+                    teTimeLength.setModelObject(TiTATimeConverter
+                            .Duration2String(timeEffort.getDuration()));
+                    teTimeLength.setOutputMarkupId(true);
+                    target.addComponent(teTimeLength);
+
+                    teStartTime.setModelObject(GlobalUtils.TIMEFORMAT24HOURS
+                            .format(timeEffort.getStartTime()));
+                    teStartTime.setOutputMarkupId(true);
+                    target.addComponent(teStartTime);
+
+                    teEndTime.setModelObject(GlobalUtils.TIMEFORMAT24HOURS
+                            .format(timeEffort.getStartTime()
+                                    + timeEffort.getDuration()));
+                    teEndTime.setOutputMarkupId(true);
+                    target.addComponent(teEndTime);
+                }
+            };
+            editButton.setOutputMarkupId(true);
+            return editButton;
+        }
+
+        private Button getDeleteButton(final TimeEffort timeEffort) {
+            AjaxButton deleteButton = new AjaxButton("delete") {
+                @Override
+                public void onSubmit(AjaxRequestTarget target, Form<?> form1) {
+                    deleteTimeEffort(timeEffort);
+                    teProvider.setList(timeeffortList);
+                    teProvider.setSort(SORT, false);
+                    target.addComponent(timeeffortContainer);
+                }
+            };
+            deleteButton.setOutputMarkupId(true);
+            return deleteButton;
+        }
+    }
 
     /**
      * @return the date

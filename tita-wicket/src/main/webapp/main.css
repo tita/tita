@@ -21,14 +21,15 @@ h2 {font-size:1.875em}
 p {font-size:0.875em}
 
 /* Table Style */
-table.th {
-	border:none;
+table {
+	border:thin;
+	border-bottom-color:#003;
 }
 tr.odd {
-	background-color:#C5CBFF;
+	background-color:#DBE1F3;
 	color:#000;
 }
 tr.even {
-	background-color:#036;
+	background-color:#039;
 	color:#FFF;
 }
