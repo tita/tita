@@ -14,9 +14,6 @@
 
 package at.ac.tuwien.ifs.tita.datasource.util;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Class for converting Long times to hours, minutes, seconds.
@@ -25,20 +22,19 @@ import java.util.Date;
  * 
  */
 public class TiTATimeConverter {
-    private static final SimpleDateFormat C_SDF = new SimpleDateFormat("hh:mm:ss");
+
     private static final Integer C_THOUSAND = 1000;
     private static final Integer C_SIXTY = 60;
 
     public TiTATimeConverter() {
 
-    	
-    	
     }
 
     /**
      * Return hours for a given time.
      * 
-     * @param time Long
+     * @param time
+     *            Long
      * @return Integer hours
      */
     public static Integer getHours(Long time) {
@@ -48,7 +44,8 @@ public class TiTATimeConverter {
     /**
      * Return minutes for a given time.
      * 
-     * @param time Long
+     * @param time
+     *            Long
      * @return Integer minutes
      */
     public static Integer getMinutes(Long time) {
@@ -58,33 +55,36 @@ public class TiTATimeConverter {
     /**
      * Return seconds for a given time.
      * 
-     * @param time Long
+     * @param time
+     *            Long
      * @return Integer seconds
      */
     public static Integer getSeconds(Long time) {
         return (time.intValue() / C_THOUSAND);
     }
-    
+
     /**
      * Converts a time duration to hours and minutes.
-     * @param time Long
+     * 
+     * @param time
+     *            Long
      * @return String value of time
      */
-    public static String Duration2String(Long time){
-    	String hours = String.valueOf(TiTATimeConverter.getHours(time));
-    	String minutes = String.valueOf(TiTATimeConverter.getMinutes(time));
-    	String secondes = String.valueOf(TiTATimeConverter.getSeconds(time));
-    	
-    	if(hours.length() < 2){
-    		hours = "0" + hours;
-    	}
-    	if(minutes.length() < 2){
-    		minutes = "0" + minutes;
-    	}
-    	if(secondes.length() < 2){
-    		secondes = "0" + secondes;
-    	}
-    	
-        return hours + ":" +  minutes + ":" + secondes; 
+    public static String Duration2String(Long time) {
+        String hours = String.valueOf(TiTATimeConverter.getHours(time));
+        String minutes = String.valueOf(TiTATimeConverter.getMinutes(time));
+        String secondes = String.valueOf(TiTATimeConverter.getSeconds(time));
+
+        if (hours.length() < 2) {
+            hours = "0" + hours;
+        }
+        if (minutes.length() < 2) {
+            minutes = "0" + minutes;
+        }
+        if (secondes.length() < 2) {
+            secondes = "0" + secondes;
+        }
+
+        return hours + ":" + minutes + ":" + secondes;
     }
 }

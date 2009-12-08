@@ -31,11 +31,9 @@ import org.mantisbt.connect.MCException;
 import at.ac.tuwien.ifs.tita.datasource.entity.Role;
 import at.ac.tuwien.ifs.tita.datasource.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.datasource.service.user.IUserService;
-import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IIssueTrackerDao;
 import at.ac.tuwien.ifs.tita.issuetracker.mantis.dao.IssueTrackerMantisDao;
 import at.ac.tuwien.ifs.tita.presentation.timeeffort.TimeEffortAdministrationPanel;
 import at.ac.tuwien.ifs.tita.reporting.JasperPdfResource;
-
 
 /**
  * Homepage of Hello World Application.
@@ -47,13 +45,11 @@ public class HomePage extends WebPage {
 
     @SpringBean(name = "helloWorldReport")
     private JasperPdfResource helloWorldReport;
-    
 
     public HomePage() {
 
-    	displayHello();
-        
-        
+        displayHello();
+
     }
 
     /**
@@ -79,12 +75,11 @@ public class HomePage extends WebPage {
         }/*
           * catch (JRException e) { // add(new Label("message",
           * "Couldn't generate pdf file.")); e.printStackTrace(); }
-          */ catch (JRException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+          */catch (JRException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
-    
 
     /**
      * Initialize homepage data.
@@ -100,31 +95,39 @@ public class HomePage extends WebPage {
     /**
      * Loads report and initializes parameters for report.
      * 
-     * @param r Role
-     * @exception JRException on runtime error
+     * @param r
+     *            Role
+     * @exception JRException
+     *                on runtime error
      */
     private void initReport(Role r) throws JRException {
-        ServletContext context = ((WebApplication) getApplication()).getServletContext();
+        ServletContext context = ((WebApplication) getApplication())
+                .getServletContext();
 
         ArrayList<Role> roles = new ArrayList<Role>();
         roles.add(r);
 
-        helloWorldReport.loadReport(context.getRealPath(helloWorldReport.getDesignFilename()));
-        helloWorldReport.setReportDataSource(new JRBeanCollectionDataSource(roles));
+        helloWorldReport.loadReport(context.getRealPath(helloWorldReport
+                .getDesignFilename()));
+        helloWorldReport.setReportDataSource(new JRBeanCollectionDataSource(
+                roles));
     }
-    
+
     private void initMantisIssue() throws JRException {
-    	IssueTrackerMantisDao mantisDao = new IssueTrackerMantisDao();
-    	
-    	try {
-			mantisDao.createTestProject("MantisProject", "First Project", true, false);
-			
-			mantisDao.createTestTask("First Task in Mantis", "MR2", "MantisProject");
-			mantisDao.createTestTask("Second Task in Mantis", "MR2", "MantisProject");
-		} catch (MCException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
+        IssueTrackerMantisDao mantisDao = new IssueTrackerMantisDao();
+
+        try {
+            mantisDao.createTestProject("MantisProject", "First Project", true,
+                    false);
+
+            mantisDao.createTestTask("First Task in Mantis", "MR2",
+                    "MantisProject");
+            mantisDao.createTestTask("Second Task in Mantis", "MR2",
+                    "MantisProject");
+        } catch (MCException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
     }
 }

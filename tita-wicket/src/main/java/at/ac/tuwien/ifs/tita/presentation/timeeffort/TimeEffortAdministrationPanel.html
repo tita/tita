@@ -22,7 +22,7 @@
 		<h3>Time Efforts</h3>
 		<form wicket:id="timerForm">
 			<table>
-				<tr colspan="2">
+				<tr>
 					<th>General Timer</th>
 				</tr>
 				<tr>
@@ -31,47 +31,61 @@
 				</tr>
 			</table>
 			<p></p>
-		</form>
-		<!-- div wicket:id="length"/-->
-		<form wicket:id="timeeffortForm">
-			<table>
-				<tr>
-					<td class="date"><input type="text" wicket:id="tedate" size=7/></td>
-					<td class="description"><input type="text" wicket:id="description" /></td>					
-					<td class="time"><input type="text" wicket:id="timeLength" size=5/></td>
-					<td><input wicket:id="saveButton" type="submit" value="Save" /></td>
-
-				</tr>
-			</table>
-		</form>
-		<!-- div wicket:id="feedbackPanel"/-->
+		</form>	
 		<div wicket:id="timeeffortContainer"> 
-           	<div id="timeeffortContainer"> 
-				<table border=1>
-					<thead>
-						<tr>
-							<th>Date</th>
-							<th>Description</th>
-							<th>Time length</th>
-						</tr>
-		
-					</thead>
-					<tbody>
-						<tr wicket:id="timeEffortList">
-							<td wicket:id="date">[Date]</td>
-							<td wicket:id="description">[Description]</td>
-							<td align="right" wicket:id="length">[Time length]</td>
-							<td>
-									<input wicket:id="edit" type="submit" value="Edit"/> </td>
-							<td>
-									<input wicket:id="delete" type="submit" value="Delete"/></td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-		
-		
+		    <form wicket:id="timeeffortForm">
+		      <table border = 0px>
+		      	<colgroup>
+					<col width="90"></col>
+					<col width="300"></col>
+					<col width="70"></col>
+					<col width="70"></col>
+					<col width="70"></col>
+					<col width="30"></col>
+					<col width="30"></col>				
+				</colgroup>
+		        <thead>
+		          <tr>
+		            <td colspan="3">
+		              <span wicket:id="label"></span>
+		              <span wicket:id="navigator"></span>
+		            </td>
+		          </tr>
+		          <!-- 
+		          <tr>
+		            <th>Vorname</th>
+		            <th><a wicket:id="sortName">Name</a></th>
+		            <th><a wicket:id="sortAlter">Alter</a></th>
+		          </tr>
+		          -->
+
+		        </thead>
+		        <tbody>
+		          <tr wicket:id="dataView">
+		            <td><span wicket:id="date"></span></td>
+		            <td><span wicket:id="description"></span></td>
+		            <td><span wicket:id="starttime"></span></td>
+		            <td><span wicket:id="endtime"></span></td>
+		            <td><span wicket:id="length"></span></td>
+		            <td><button wicket:id="edit" type="button"><img src="images/bt-edit.png"></button></td>
+					<td><button wicket:id="delete" type="button"><img src="images/bt-delete.png"></button></td>
+		          </tr>
+		        </tbody>
+		        <tfoot>
+		        	<tr>
+			          	<th><input wicket:id="tedate" size="7"></th>
+			            <th><input wicket:id="tedescription" size="40"></th>
+			            <th><input wicket:id="testarttime" size="5"></th>
+			            <th><input wicket:id="teendtime" size="5"></th>
+			            <th><input wicket:id="tetimelength" size="8"></th>
+						<th><button wicket:id="saveButton" type="button" align="left"><img src="images/bt-add.png"></button></th>
+		          </tr>	   
+		        </tfoot>
+		      </table>
+		 
+		    </form>
+	    </div>
+	
 		<h3>Mantis - Issues</h3>
 		<table border=1>
 		  <thead>

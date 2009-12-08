@@ -45,7 +45,8 @@ public class TimeEffortService implements ITimeEffortService {
     }
 
     @Override
-    public TimeEffort updateTimeEffort(TimeEffort timeEffort) throws TitaDAOException {
+    public TimeEffort updateTimeEffort(TimeEffort timeEffort)
+            throws TitaDAOException {
         return timeEffortDao.merge(timeEffort);
     }
 
@@ -53,7 +54,8 @@ public class TimeEffortService implements ITimeEffortService {
      * {@inheritDoc}
      */
     @Override
-    public List<TimeEffort> getTimeEffortsDailyView(Calendar cal) throws TitaDAOException {
+    public List<TimeEffort> getTimeEffortsDailyView(Calendar cal)
+            throws TitaDAOException {
         return timeEffortDao.getTimeEffortsDailyView(cal);
     }
 
@@ -61,7 +63,17 @@ public class TimeEffortService implements ITimeEffortService {
      * {@inheritDoc}
      */
     @Override
-    public List<TimeEffort> getTimeEffortsMonthlyView(Calendar cal) throws TitaDAOException {
+    public List<TimeEffort> getTimeEffortsMonthlyView(Calendar cal)
+            throws TitaDAOException {
         return timeEffortDao.getTimeEffortsMonthlyView(cal);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<TimeEffort> getActualTimeEfforts(int maxresults)
+            throws TitaDAOException {
+        return timeEffortDao.getActualTimeEfforts(maxresults);
     }
 }

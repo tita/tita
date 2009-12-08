@@ -35,25 +35,26 @@ import javax.persistence.Table;
         @NamedQuery(name = "timeeffort.daily.view", query = "select te from TimeEffort te where YEAR(te.date) = :year "
                 + " and MONTH(te.date)= :month and DAY(te.date)= :day"),
         @NamedQuery(name = "timeeffort.monthly.view", query = "select te from TimeEffort te where YEAR(te.date) = :year "
-                + " and MONTH(te.date)= :month") })
-public class TimeEffort extends BaseTimeEffort{
+                + " and MONTH(te.date)= :month"),
+        @NamedQuery(name = "timeeffort.actual.view", query = "select te from TimeEffort te order by te.startTime desc") })
+public class TimeEffort extends BaseTimeEffort {
 
     @Column(name = "DATE")
     private Date date;
-    
+
     @Column(name = "DESCRIPTION")
     private String description;
-    
+
     @Column(name = "DELETED")
     private boolean deleted;
 
     // @ManyToOne(cascade = CascadeType.ALL, targetEntity = Role.class)
     // private Role role;
 
-    public TimeEffort(){
+    public TimeEffort() {
         super();
     }
-    
+
     public Long getId() {
         return id;
     }
@@ -66,7 +67,8 @@ public class TimeEffort extends BaseTimeEffort{
     }
 
     /**
-     * @param date the date to set
+     * @param date
+     *            the date to set
      */
     public void setDate(Date date) {
         this.date = date;
@@ -80,7 +82,8 @@ public class TimeEffort extends BaseTimeEffort{
     }
 
     /**
-     * @param description the description to set
+     * @param description
+     *            the description to set
      */
     public void setDescription(String description) {
         this.description = description;
@@ -94,7 +97,8 @@ public class TimeEffort extends BaseTimeEffort{
     }
 
     /**
-     * @param deleted the deleted to set
+     * @param deleted
+     *            the deleted to set
      */
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
@@ -103,9 +107,9 @@ public class TimeEffort extends BaseTimeEffort{
     public void setDuration(Long duration) {
         this.duration = duration;
     }
-    
+
     public Long getEndTime() {
-    	return this.startTime + this.duration;
+        return this.startTime + this.duration;
     }
 
 }

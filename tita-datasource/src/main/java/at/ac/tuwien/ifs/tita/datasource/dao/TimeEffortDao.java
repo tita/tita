@@ -32,14 +32,15 @@ import at.ac.tuwien.ifs.tita.datasource.entity.TimeEffort;
  */
 public class TimeEffortDao extends GenericHibernateDao<TimeEffort, Long> {
 
-    public TimeEffortDao(){
+    public TimeEffortDao() {
         super(TimeEffort.class);
     }
-    
+
     /**
      * Gets a view for a month.
      * 
-     * @param cal calenderdates which are selected
+     * @param cal
+     *            calenderdates which are selected
      * @return list of timefforts that match dates
      */
     @SuppressWarnings("unchecked")
@@ -53,7 +54,8 @@ public class TimeEffortDao extends GenericHibernateDao<TimeEffort, Long> {
     /**
      * Gets a view for a day.
      * 
-     * @param cal calenderdates which are selected
+     * @param cal
+     *            calenderdates which are selected
      * @return list of timefforts that match dates
      */
     @SuppressWarnings("unchecked")
@@ -62,6 +64,19 @@ public class TimeEffortDao extends GenericHibernateDao<TimeEffort, Long> {
         q.setParameter("year", cal.get(Calendar.YEAR));
         q.setParameter("month", cal.get(Calendar.MONTH) + 1);
         q.setParameter("day", cal.get(Calendar.DAY_OF_MONTH));
+        return q.getResultList();
+    }
+
+    /**
+     * Gets a view for the last time efforts.
+     * 
+     * @param maxresults
+     *            sets the max results value for the query
+     * @return list of timefforts that match dates
+     */
+    public List<TimeEffort> getActualTimeEfforts(int maxresults) {
+        Query q = em.createNamedQuery("timeeffort.actual.view");
+        q.setMaxResults(maxresults);
         return q.getResultList();
     }
 }

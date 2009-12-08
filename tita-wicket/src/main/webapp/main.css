@@ -1,4 +1,4 @@
-<!-- 
+/*
    Copyright 2009 TiTA Project, Vienna University of Technology
    
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,21 +12,23 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
--->
-<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" >
-    <head>  
-        <title>TiTA</title>
-        <link rel="stylesheet" type="text/css" href="main.css"/>
-    </head>
-    <body>
-        <strong>T   i   T   A</strong>
-        <br/><br/>
-        <div>
-			<ul>
-			 <li><wicket:link><a href="timeeffort/evaluation/DailyView.html">daily view</a></wicket:link></li> 
-			 <li><wicket:link><a href="timeeffort/evaluation/MonthlyView.html">monthly view</a></wicket:link></li> 
-			</ul>
-		</div>
-        <div wicket:id="timeEffortPanel">Time Effort Panel</div>
-   </body>
-</html>
+*/
+
+/* Global Style */
+body {font-size:100%}
+h1 {font-size:2.5em}
+h2 {font-size:1.875em}
+p {font-size:0.875em}
+
+/* Table Style */
+table.th {
+	border:none;
+}
+tr.odd {
+	background-color:#C5CBFF;
+	color:#000;
+}
+tr.even {
+	background-color:#036;
+	color:#FFF;
+}
