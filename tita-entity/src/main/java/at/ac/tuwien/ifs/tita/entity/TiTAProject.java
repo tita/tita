@@ -31,11 +31,11 @@ public class TiTAProject implements IBaseEntity<Long> {
     @Column(name="DESCRIPTION")
     private String description;
     
-    @OneToMany(mappedBy="project")
+    @OneToMany
     @JoinColumn(name="PROJECT_ID")
     private Set<TiTATask> titaTasks;
     
-    @OneToMany(mappedBy="project")
+    @OneToMany
     @JoinColumn(name="PROJECT_ID")
     private Set<IssueTrackerProject> issueTrackerProjects;
     

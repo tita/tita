@@ -34,7 +34,7 @@ public class TiTATask implements IBaseEntity<Long> {
     @Column(name="PROJECT_ID")
     private Long projectId;
     
-    @OneToMany(mappedBy="tita_task")
+    @OneToMany
     @JoinColumn(name="TITA_TASK_ID")
     private Set<Effort> titaEfforts;
     

@@ -39,7 +39,7 @@ public class IssueTrackerProject implements IBaseEntity<Long> {
 //    private String description;
         
     
-    @OneToMany(mappedBy="issue_tracker_project")
+    @OneToMany
     @JoinColumn(name="ISST_PROJECT_ID")
     private Set<IssueTrackerTask> issueTrackerTasks;
     

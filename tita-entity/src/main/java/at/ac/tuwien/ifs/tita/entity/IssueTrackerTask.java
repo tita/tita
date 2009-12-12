@@ -28,7 +28,7 @@ public class IssueTrackerTask implements IBaseEntity<Long> {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="seq_issue_task")
     private Long id;   
         
-    @OneToMany(mappedBy="issue_tracker_task")
+    @OneToMany
     @JoinColumn(name="ISSUET_TASK_ID")
     private Set<Effort> issueTEfforts;
     
