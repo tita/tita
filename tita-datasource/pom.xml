@@ -120,6 +120,12 @@
       <artifactId>junit</artifactId>
     </dependency>
 
+	<!-- project dependencies -->
+	<dependency>
+		<groupId>at.ac.tuwien.ifs</groupId>
+		<artifactId>tita-entity</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</dependency>
   </dependencies>
 
 </project>

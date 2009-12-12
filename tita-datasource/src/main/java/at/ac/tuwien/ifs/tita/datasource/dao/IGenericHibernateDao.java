@@ -81,7 +81,7 @@ public interface IGenericHibernateDao<T, ID extends Serializable>
     
     /**
      * Find all entities which are like example instance.
-     * @param exampleInstance  
+     * @param exampleInstance  T 
      * @param excludeProps all properties(attributes of exampleInstance) 
      *                     that will be excluded from search
      * @return (empty) list of entities 
@@ -90,19 +90,19 @@ public interface IGenericHibernateDao<T, ID extends Serializable>
 
     /**
      * Find all entities which are like example instance.
-     * @param exampleInstance  
+     * @param exampleInstance  T
      * @param excludeProps all properties(attributes of exampleInstance) 
      *                     that will be excluded from search
      * @return a scrollable result (cursor)
      */
     Iterator<T> findByExampleScrollable(T exampleInstance, String... excludeProps);
 
-    
     /**
-     * Stores an entity of type T the first time.
+     * Stores an entity of type T the first time or merges an entity if it is allready in database.
      * @param entity to persist.
+     * @return new merged entity in session
      */
-    void persist(T entity);
+    T save(T entity); 
 
     /**
      * Deletes an entity.
@@ -117,20 +117,10 @@ public interface IGenericHibernateDao<T, ID extends Serializable>
     void delete(ID id);
 
     /**
-     * Merges an entity into session and returns an instance of this entity, which is 
-     * different from passed entity.
-     * @param entity to merge
-     * @return new merged entity in session
-     */
-    T merge(T entity);
-
-
-    /**
      * Deletes an entity from session cache without storing information in Db.
      * @param entity to delete
      */
     void evict(T entity);
-
 
     /**
      * Refresh the specified entity's content from the database. 

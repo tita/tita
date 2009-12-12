@@ -49,10 +49,15 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import at.ac.tuwien.ifs.tita.datasource.exception.TitaDAOException;
-
+import at.ac.tuwien.ifs.tita.entity.IBaseEntity;
 
 /**
- * {@inheritDoc}
+ * Concrete implementation of IGenericHibernateDao Interface.
+ * 
+ * @author herbert
+ *
+ * @param <T> class of entity
+ * @param <ID> class of associated key (Long, Integer, ...)
  */
 public class GenericHibernateDao<T,ID extends Serializable> extends PersistenceContextProvider
                                          implements IGenericHibernateDao<T,ID> {
@@ -129,7 +134,6 @@ public class GenericHibernateDao<T,ID extends Serializable> extends PersistenceC
 
         return myList;
     }
-
 
     /** {@inheritDoc} */ 
     @SuppressWarnings("unchecked")
@@ -225,10 +229,25 @@ public class GenericHibernateDao<T,ID extends Serializable> extends PersistenceC
         return new ScrollableWrapper<T>(myList);
     }
 
-    
-    
     /** {@inheritDoc} */ 
-    public void persist(T entity) {
+    @SuppressWarnings("unchecked")
+    public T save(T entity){
+        T persistedEntity = null;
+        
+        persistedEntity = findById(((IBaseEntity<ID>)entity).getId());
+        if(persistedEntity != null){
+            return merge(entity);
+        }else{
+            persist(entity);
+            return entity;
+        }
+    }
+    
+    /**
+     * Stores an entity of type T the first time.
+     * @param entity to persist.
+     */
+    private void persist(T entity) {
         try {
             getSession().persist(entity);
         } catch (Exception e) {
@@ -258,10 +277,14 @@ public class GenericHibernateDao<T,ID extends Serializable> extends PersistenceC
                                             e.getMessage(), e);
         }
     }
-
-    /** {@inheritDoc} */ 
-    @SuppressWarnings("unchecked")
-    public T merge(T entity) {
+  
+    /**
+     * Merges an entity into session and returns an instance of this entity, which is 
+     * different from passed entity.
+     * @param entity to merge
+     * @return new merged entity in session
+     */
+    private T merge(T entity) {
         T mergedEntity = null;
         try {
             mergedEntity =  (T)getSession().merge(entity);
@@ -329,6 +352,7 @@ public class GenericHibernateDao<T,ID extends Serializable> extends PersistenceC
      * @param exceptionKeyString for clear exception handling
      * @param criterion random criterias
      * @return entitiy or null
+     * @exception TitaDAOException e
      */
     protected T findRecordByUniqueKeyCriteria(String exceptionKeyString, Criterion... criterion) 
         throws TitaDAOException{
