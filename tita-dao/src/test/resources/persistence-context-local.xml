@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+   Copyright 2009 TiTA Project, Vienna University of Technology
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+       http://www.apache.org/licenses/LICENSE\-2.0
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+ -->
+ 
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:tx="http://www.springframework.org/schema/tx"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd"
+  default-autowire="byName">
+  <!--
+    NOTE: Autowire option above declares, that Spring looks for Dependencies automatically by a given Name
+  -->
+ 
+  <!-- The Entity Manager -->
+  <!--
+    NOTE: 1. JPA needs a persistence.xml, which is not specified here, JPA automatically looks for
+    'META-INF/persistence.xml' 2. persistence.xml is empty, because Hibernate is used as JPA-Provider 3. The dataSource
+    is auto-wired by name
+  -->
+  <!-- Entity Manager Factory -->
+  <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+    <property name="dataSource" ref="dataSource" />
+    <property name="persistenceXmlLocation" value="classpath*:persistence.xml" />
+  </bean>
+
+  <!-- The data source -->
+  <!-- 
+	   Datasource is a H2DB
+	 -->
+  <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <property name="driverClassName" value="org.h2.Driver" />
+    <property name="url" value="jdbc:h2:db/main1" />
+    <property name="username" value="sa" />
+    <property name="password" value="" />
+  </bean>
+
+  <!-- Autowired to the EntityManagerFactory -->
+  <!--
+    Transactionmanager looks for @Transactional Annotations to manage the Transactions for the DB-Access
+  -->
+  <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager" />
+
+  <!-- JPA Support -->
+  <!-- 
+	   Spring looks for @Resource Annotations for Exception Translation
+	 -->
+  <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+
+  <!-- Declares Annotationbased Transactiondeclaration -->
+  <tx:annotation-driven />
+</beans>

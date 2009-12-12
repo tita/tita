@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -18,6 +20,15 @@ import javax.persistence.Table;
 @Entity
 @Table(name="EFFORT")
 @SequenceGenerator(name = "seq_effort", sequenceName = "EEFORT_ID_SEQ", allocationSize = 1)
+@NamedQueries( {
+        @NamedQuery(name = "timeeffort.daily.view", 
+                query = "select te from Effort te where YEAR(te.startTime) = :year "
+                        + " and MONTH(te.startTime)= :month and DAY(te.startTime)= :day"),
+        @NamedQuery(name = "timeeffort.monthly.view", 
+                query = "select te from Effort te where YEAR(te.startTime) = :year "
+                        + " and MONTH(te.startTime)= :month"),
+        @NamedQuery(name = "timeeffort.actual.view", 
+                query = "select te from Effort te order by te.startTime desc") })
 public class Effort implements IBaseEntity<Long> {
     
     @Id
