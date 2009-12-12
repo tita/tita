@@ -1,0 +1,75 @@
+package at.ac.tuwien.ifs.tita.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+/**
+ * Entity for storing time producer's effort of his/her assigned tasks.
+ * @author herbert
+ *
+ */
+@Entity
+@Table(name="EFFORT")
+@SequenceGenerator(name = "seq_effort", sequenceName = "EEFORT_ID_SEQ", allocationSize = 1)
+public class Effort implements IBaseEntity<Long> {
+    
+    @Column(name="ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="seq_effort")
+    private Long id;   
+    
+    @Column(name="TITA_TASK_ID")
+    private Long titaTaskId;
+    
+    @Column(name="ISSUET_TASK_ID")
+    private Long issueTTaskId;
+    
+    @Column(name="START_TIME")
+    private Date startTime;
+    
+    @Column(name="END_TIME")
+    private Date endTime;
+    
+    @Column(name="DURATION")
+    private Long duration;
+    
+    @Column(name="DESCRIPTION")
+    private String description;
+    
+    public Effort() {
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public Long getDuration() {
+        return duration;
+    }
+
+    public Long getTitaTaskId() {
+        return titaTaskId;
+    }
+
+    public Long getIssueTTaskId() {
+        return issueTTaskId;
+    }
+}
