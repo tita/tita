@@ -18,7 +18,6 @@ package at.ac.tuwien.ifs.tita.jetty;
 
 import java.io.File;
 
-import at.ac.tuwien.ifs.tita.configuration.JettyStartManager;
 
 /**
  * Class to start the web development environment directly from code and allow
@@ -28,7 +27,9 @@ import at.ac.tuwien.ifs.tita.configuration.JettyStartManager;
 public class JettyStart {
 
     /**
-     * Starts a jetty server
+     * Starts a jetty server.
+     * @param args String[]
+     * @throws Exception e
      */
     public static void main(final String[] args) throws Exception {
         new JettyStartManager("/", "src/main/webapp", new File("jetty-env-h2.xml")).start();

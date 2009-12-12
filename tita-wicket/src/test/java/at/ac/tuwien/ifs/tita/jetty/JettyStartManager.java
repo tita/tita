@@ -13,7 +13,7 @@
    limitations under the License.
    
  */
-package at.ac.tuwien.ifs.tita.configuration;
+package at.ac.tuwien.ifs.tita.jetty;
 
 import java.io.File;
 import java.io.FileInputStream;
