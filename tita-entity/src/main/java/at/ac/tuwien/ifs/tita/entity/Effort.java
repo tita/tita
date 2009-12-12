@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -19,6 +20,7 @@ import javax.persistence.Table;
 @SequenceGenerator(name = "seq_effort", sequenceName = "EEFORT_ID_SEQ", allocationSize = 1)
 public class Effort implements IBaseEntity<Long> {
     
+    @Id
     @Column(name="ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="seq_effort")
     private Long id;   
@@ -42,6 +44,18 @@ public class Effort implements IBaseEntity<Long> {
     private String description;
     
     public Effort() {
+    }
+    
+    public Effort(Long id, Long titaTaskId, Long issueTTaskId, Date startTime,
+            Date endTime, Long duration, String description) {
+        super();
+        this.id = id;
+        this.titaTaskId = titaTaskId;
+        this.issueTTaskId = issueTTaskId;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.duration = duration;
+        this.description = description;
     }
 
     @Override
@@ -71,5 +85,17 @@ public class Effort implements IBaseEntity<Long> {
 
     public Long getIssueTTaskId() {
         return issueTTaskId;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public void setDuration(Long duration) {
+        this.duration = duration;
     }
 }

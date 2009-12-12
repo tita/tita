@@ -29,11 +29,11 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.mantisbt.connect.MCException;
 
 import at.ac.tuwien.ifs.tita.datasource.entity.Role;
-import at.ac.tuwien.ifs.tita.datasource.exception.TitaDAOException;
-import at.ac.tuwien.ifs.tita.datasource.service.user.IUserService;
+import at.ac.tuwien.ifs.tita.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.issuetracker.mantis.dao.IssueTrackerMantisDao;
 import at.ac.tuwien.ifs.tita.presentation.timeeffort.TimeEffortAdministrationPanel;
 import at.ac.tuwien.ifs.tita.reporting.JasperPdfResource;
+import at.ac.tuwien.ifs.tita.service.user.IUserService;
 
 /**
  * Homepage of Hello World Application.

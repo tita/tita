@@ -32,16 +32,16 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import at.ac.tuwien.ifs.tita.datasource.entity.TimeEffort;
-import at.ac.tuwien.ifs.tita.datasource.exception.TitaDAOException;
-import at.ac.tuwien.ifs.tita.datasource.service.time.ITimeEffortService;
+import at.ac.tuwien.ifs.tita.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.presentation.utils.SelectOption;
+import at.ac.tuwien.ifs.tita.service.time.IEffortService;
 
 /**
  * Monthly evaluation.
  */
 public class MonthlyView extends WebPage {
     @SpringBean(name = "timeEffortService")
-    private ITimeEffortService service;
+    private IEffortService service;
 
     private SelectOption selectedYear;
     private SelectOption selectedMonth;

@@ -78,6 +78,7 @@
  <modules>
       <module>tita-jetty-configuration</module>
       <module>tita-entity</module>
+      <module>tita-common</module>
       <module>tita-datasource</module>
       <module>tita-issuetracker-integration</module>
       <module>tita-jasperreports</module>

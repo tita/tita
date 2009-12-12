@@ -52,10 +52,9 @@ import org.slf4j.LoggerFactory;
 
 import at.ac.tuwien.ifs.tita.datasource.entity.BaseTimeEffort;
 import at.ac.tuwien.ifs.tita.datasource.entity.TimeEffort;
-import at.ac.tuwien.ifs.tita.datasource.exception.TitaDAOException;
-import at.ac.tuwien.ifs.tita.datasource.service.time.ITimeEffortService;
 import at.ac.tuwien.ifs.tita.datasource.time.ITimer;
 import at.ac.tuwien.ifs.tita.datasource.util.TiTATimeConverter;
+import at.ac.tuwien.ifs.tita.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueStatus;
 import at.ac.tuwien.ifs.tita.issuetracker.exceptions.ProjectNotFoundException;
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IIssueTrackerDao;
@@ -64,6 +63,7 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
 import at.ac.tuwien.ifs.tita.issuetracker.issue.service.TaskService;
 import at.ac.tuwien.ifs.tita.presentation.TitaDataProvider;
 import at.ac.tuwien.ifs.tita.presentation.utils.GlobalUtils;
+import at.ac.tuwien.ifs.tita.service.time.IEffortService;
 
 /**
  * 
@@ -75,7 +75,7 @@ import at.ac.tuwien.ifs.tita.presentation.utils.GlobalUtils;
 public class TimeEffortAdministrationPanel extends Panel {
 
     @SpringBean(name = "timeEffortService")
-    private ITimeEffortService service;
+    private IEffortService service;
 
     @SpringBean(name = "generalTimer")
     private ITimer generalTimer;

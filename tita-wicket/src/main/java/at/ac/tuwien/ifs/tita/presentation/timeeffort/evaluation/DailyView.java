@@ -30,16 +30,16 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import at.ac.tuwien.ifs.tita.datasource.entity.TimeEffort;
-import at.ac.tuwien.ifs.tita.datasource.exception.TitaDAOException;
-import at.ac.tuwien.ifs.tita.datasource.service.time.ITimeEffortService;
+import at.ac.tuwien.ifs.tita.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.presentation.utils.GlobalUtils;
+import at.ac.tuwien.ifs.tita.service.time.IEffortService;
 
 /**
  * Daily evaluation.
  */
 public class DailyView extends WebPage {
     @SpringBean(name = "timeEffortService")
-    private ITimeEffortService service;
+    private IEffortService service;
 
     private final Date date = new Date();
 
