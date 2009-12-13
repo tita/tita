@@ -36,11 +36,9 @@ public class IssueTrackerProject implements IProjectTrackable {
     private URL url;
     private ViewState viewState;
 
-
-    
-    public IssueTrackerProject(long id, String name, String description, 
-            ProjectStatus status, Map<Long, ITaskTrackable> tasks, URL url, 
-            ViewState viewState){
+    public IssueTrackerProject(long id, String name, String description,
+            ProjectStatus status, Map<Long, ITaskTrackable> tasks, URL url,
+            ViewState viewState) {
         this.id = id;
         this.name = name;
         this.description = description;

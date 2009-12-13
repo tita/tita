@@ -14,6 +14,8 @@
 
 package at.ac.tuwien.ifs.tita.util.time;
 
+import at.ac.tuwien.ifs.tita.entity.ITimer;
+
 /**
  * Interface for TimerCoordinator.
  * 

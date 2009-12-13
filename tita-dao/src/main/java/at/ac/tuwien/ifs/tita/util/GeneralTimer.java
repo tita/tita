@@ -15,7 +15,9 @@
  */
 package at.ac.tuwien.ifs.tita.util;
 
-import at.ac.tuwien.ifs.tita.util.time.ITimer;
+import java.util.Date;
+
+import at.ac.tuwien.ifs.tita.entity.ITimer;
 
 
 /**
@@ -28,6 +30,7 @@ public class GeneralTimer implements ITimer {
     private Long duration;
     private Boolean started;
     private Long startTime;
+    private Long endTime;
     
     public GeneralTimer() {
         super();
@@ -38,12 +41,6 @@ public class GeneralTimer implements ITimer {
     @Override
     public Long getDuration() {
         return duration;
-    }
-
-    /**{@inheritDoc}*/
-    @Override
-    public Integer getTimedTaskId() {
-        return null;
     }
     
     /**{@inheritDoc}*/
@@ -70,13 +67,19 @@ public class GeneralTimer implements ITimer {
     @Override
     public void stop() {
         if (this.started) {
-            this.duration = System.currentTimeMillis() - this.startTime;
+            this.endTime = System.currentTimeMillis();
+            this.duration = endTime - this.startTime;
             this.started = false;
         }
     }
 
     @Override
-    public Long getStartTime() {
-        return this.startTime;
+    public Date getStartTime() {
+        return new Date(this.startTime);
+    }
+
+    @Override
+    public Date getEndTime() {
+        return new Date(this.endTime);
     }
 }

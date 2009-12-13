@@ -73,8 +73,8 @@ public class MantisBaseTest {
      * @throws MCException
      *             - if error occurs, when project is added
      */
-    protected Long createTestProject(String projectName, String description, Boolean enabled, Boolean viewStatePrivate)
-            throws MCException {
+    protected Long createTestProject(String projectName, String description,
+            Boolean enabled, Boolean viewStatePrivate) throws MCException {
 
         IProject newProject = new Project();
         newProject.setName(projectName);
@@ -100,7 +100,8 @@ public class MantisBaseTest {
      * @throws MCException
      *             - if error occurs, when task is added
      */
-    protected Long createTestTask(String description, String summary, String projectName) throws MCException {
+    protected Long createTestTask(String description, String summary,
+            String projectName) throws MCException {
 
         IIssue newIssue = new Issue();
         newIssue.setDescription(description);
@@ -129,7 +130,8 @@ public class MantisBaseTest {
      * @throws MCException
      *             - MCException - if error occurs, when comment is added
      */
-    protected Long createTestComment(String text, boolean isPrivate, long issueId) throws MCException {
+    protected Long createTestComment(String text, boolean isPrivate,
+            long issueId) throws MCException {
         INote newNote = new Note();
         newNote.setText(text);
         newNote.setPrivate(isPrivate);

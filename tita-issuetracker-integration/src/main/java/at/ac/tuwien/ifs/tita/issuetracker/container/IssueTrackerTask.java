@@ -17,7 +17,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 
-import at.ac.tuwien.ifs.tita.datasource.entity.BaseTimeEffort;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssuePriority;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueResolution;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueSeverity;
@@ -31,8 +30,9 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
  * @author Karin
  * 
  */
-public class IssueTrackerTask extends BaseTimeEffort implements ITaskTrackable, Serializable {
-    
+public class IssueTrackerTask implements ITaskTrackable, Serializable {
+
+    private Long id;
     private Map<Long, ICommentTrackable> comments;
     private Date creationTime;
     private String description;

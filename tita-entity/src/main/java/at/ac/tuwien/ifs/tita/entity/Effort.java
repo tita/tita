@@ -31,7 +31,7 @@ import javax.persistence.Table;
                         + " and MONTH(te.startTime)= :month"),
         @NamedQuery(name = "timeeffort.actual.view", 
                 query = "select te from Effort te order by te.startTime desc") })
-public class Effort implements IBaseEntity<Long> {
+public class Effort implements IBaseEntity<Long>{
     
     @Id
     @Column(name="ID")
@@ -87,18 +87,6 @@ public class Effort implements IBaseEntity<Long> {
         return description;
     }
 
-    public Date getStartTime() {
-        return startTime;
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public Long getDuration() {
-        return duration;
-    }
-
     public Long getTitaTaskId() {
         return titaTaskId;
     }
@@ -147,5 +135,19 @@ public class Effort implements IBaseEntity<Long> {
         this.description = description;
     }
     
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public Long getDuration() {
+        return duration;
+    }
     
+    public Boolean isTiTAEffort(){
+        return (titaTaskId != null);
+    }
 }

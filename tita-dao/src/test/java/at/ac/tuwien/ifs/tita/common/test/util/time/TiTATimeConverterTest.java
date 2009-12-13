@@ -12,13 +12,13 @@
    
  */
 
-package at.ac.tuwien.ifs.tita.issuetracker.mantis.time;
+package at.ac.tuwien.ifs.tita.common.test.util.time;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import at.ac.tuwien.ifs.tita.datasource.util.TiTATimeConverter;
+import at.ac.tuwien.ifs.tita.util.TiTATimeConverter;
 
 /**
  * Tests for class TiTATimeConverter.
@@ -56,7 +56,8 @@ public class TiTATimeConverterTest {
     @Test
     public void testSeconds() {
         // CHECKSTYLE:OFF
-        assertEquals(new Integer(10800), TiTATimeConverter.getSeconds(10800000L));
+        assertEquals(new Integer(10800), TiTATimeConverter
+                .getSeconds(10800000L));
         System.out.println(TiTATimeConverter.getSeconds(10800000L));
         // CHECKSTYLE:ON
     }

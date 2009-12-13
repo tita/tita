@@ -30,7 +30,6 @@ public interface IIssueTrackerDao {
     /**
      * Method to find all projects for a User.
      * 
-     * @param username
      *            - name of the user, whos projects should be found
      * @return list of found projects
      */
@@ -87,7 +86,6 @@ public interface IIssueTrackerDao {
      * 
      * @param taskId
      *            - id of the task to close
-     * @return true, if closing was successful, false if an error ocurred
      * @exception MCException
      *                - if closing fails
      */

@@ -15,6 +15,11 @@
  */
 package at.ac.tuwien.ifs.tita.issuetracker.exceptions;
 
+/**
+ * An exception is thrown, if project was not found in issuetracker.
+ * @author herbert
+ *
+ */
 public class ProjectNotFoundException extends Exception {
     public ProjectNotFoundException(String message) {
         super(message);

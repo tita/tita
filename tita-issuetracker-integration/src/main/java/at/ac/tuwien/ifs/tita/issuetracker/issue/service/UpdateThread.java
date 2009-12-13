@@ -34,21 +34,24 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IProjectTrackable;
  */
 public class UpdateThread extends Thread {
 
-    Logger log = LoggerFactory.getLogger(UpdateThread.class);
+    private final Logger log = LoggerFactory.getLogger(UpdateThread.class);
 
     private int timeout;
     private boolean applicationIsRunning = true;
     private Map<Long, IProjectTrackable> projects;
 
     /**
-     * Constructor for the automatic update thread
-     * @param projects - map of projects that are accessbile from the issue trackers.
+     * Constructor for the automatic update thread.
+     * 
+     * @param projects
+     *            - map of projects that are accessbile from the issue trackers.
      */
     public UpdateThread(Map<Long, IProjectTrackable> projects) {
         super("automatic update");
         this.projects = projects;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void run() {
 
@@ -71,12 +74,14 @@ public class UpdateThread extends Thread {
                 new DispatcherThread(this.projects).start();
                 this.log.debug("Automatic update was succesful.");
                 this.log.debug("Waiting until timeout is over.");
+                //CHECKSTYLE:OFF
                 Thread.sleep(this.timeout * 60 * 1000);
+                //CHECKSTYLE:ON
             }
 
         } catch (InterruptedException e) {
             this.log.error("Automatic update failed.");
-            e.printStackTrace();
+            throw new RuntimeException("Automatic update failed.");
         }
     }
 

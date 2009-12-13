@@ -12,7 +12,9 @@
    
  */
 
-package at.ac.tuwien.ifs.tita.util.time;
+package at.ac.tuwien.ifs.tita.entity;
+
+import java.util.Date;
 
 /**
  * Timer interface for proper defining timer's tasks start and stop.
@@ -31,13 +33,6 @@ public interface ITimer {
      * Stops timer's messuring function.
      */
     void stop();
-
-    /**
-     * Returns proper id of task.
-     * 
-     * @return Long TasksId
-     */
-    Integer getTimedTaskId();
 
     /**
      * Splits the time for a given number of currently running tasks.
@@ -62,7 +57,13 @@ public interface ITimer {
     
     /**
      * Returns start time of task.
-     * @return Long startTime
+     * @return Date startTime
      */
-    Long getStartTime();
+    Date getStartTime();
+    
+    /**
+     * Returns end time of task.
+     * @return Date startTime
+     */
+    Date getEndTime();
 }

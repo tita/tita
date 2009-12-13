@@ -10,7 +10,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
   
-*/
+ */
 package at.ac.tuwien.ifs.tita.issuetracker.mantis.dao;
 
 import org.mantisbt.connect.model.IIssue;
@@ -25,15 +25,15 @@ import at.ac.tuwien.ifs.tita.issuetracker.enums.ProjectStatus;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.ViewState;
 
 /**
- * Class for mapping the Mantis-specific values (like priority or status) to 
- * the defined Enums used in IssueTrackerComment, IssueTrackerProject and 
+ * Class for mapping the Mantis-specific values (like priority or status) to the
+ * defined Enums used in IssueTrackerComment, IssueTrackerProject and
  * IssueTrackerTask.
  * 
  * @author Karin
- *
+ * 
  */
 public final class IssueTrackerMantisEnum {
-    
+
     public static final String PRIORITY_NONE = "none";
     public static final String PRIORITY_LOW = "low";
     public static final String PRIORITY_NORMAL = "normal";
@@ -52,7 +52,7 @@ public final class IssueTrackerMantisEnum {
     public static final String RESOLUTION_NOTFIXABLE = "not fixable";
     public static final String RESOLUTION_NOCHANGEREQUIRED = "no change required";
     public static final String RESOLUTION_SUSPENDED = "suspended";
-    
+
     public static final String SEVERITY_FEATURE = "feature";
     public static final String SEVERITY_TRIVIAL = "trivial";
     public static final String SEVERITY_TEXT = "text";
@@ -61,19 +61,21 @@ public final class IssueTrackerMantisEnum {
     public static final String SEVERITY_MAJOR = "major";
     public static final String SEVERITY_CRASH = "crash";
     public static final String SEVERITY_BLOCK = "block";
-    
+
     public static final String ISSUE_STATUS_NEW = "new";
     public static final String ISSUE_STATUS_ASSIGNED = "assigned";
     public static final String ISSUE_STATUS_CLOSED = "closed";
-    
+
     /**
      * Creates an IssuePriority out of the Mantis-Issue.
-     * @param issue - specific issue
+     * 
+     * @param issue
+     *            - specific issue
      * @return - extracted IssuePriority.
      */
-    public static IssuePriority extractIssuePriority(IIssue issue){
+    public static IssuePriority extractIssuePriority(IIssue issue) {
         String priority = issue.getPriority().getName();
-        
+
         if (priority.equalsIgnoreCase(PRIORITY_NONE)) {
             return IssuePriority.NONE;
         } else if (priority.equalsIgnoreCase(PRIORITY_LOW)) {
@@ -87,18 +89,20 @@ public final class IssueTrackerMantisEnum {
         } else if (priority.equalsIgnoreCase(PRIORITY_IMMEDIATE)) {
             return IssuePriority.IMMEDIATE;
         }
-        
+
         return null;
     }
-    
+
     /**
      * Creates an IssueResolution out of the Mantis-Issue.
-     * @param issue - specific issue
+     * 
+     * @param issue
+     *            - specific issue
      * @return - extracted IssueResolution.
      */
-    public static IssueResolution extractIssueResolution(IIssue issue){
+    public static IssueResolution extractIssueResolution(IIssue issue) {
         String resolution = issue.getResolution().getName();
-        
+
         if (resolution.equalsIgnoreCase(RESOLUTION_OPEN)) {
             return IssueResolution.OPEN;
         } else if (resolution.equalsIgnoreCase(RESOLUTION_REOPENED)) {
@@ -124,15 +128,17 @@ public final class IssueTrackerMantisEnum {
         }
         return null;
     }
-    
+
     /**
      * Creates an IssueSeverity out of the Mantis-Issue.
-     * @param issue - specific issue
+     * 
+     * @param issue
+     *            - specific issue
      * @return - extracted IssueSeverity.
      */
-    public static IssueSeverity extractIssueSeverity(IIssue issue){
+    public static IssueSeverity extractIssueSeverity(IIssue issue) {
         String severity = issue.getSeverity().getName();
-        
+
         if (severity.equalsIgnoreCase(SEVERITY_FEATURE)) {
             return IssueSeverity.FEATURE;
         } else if (severity.equalsIgnoreCase(SEVERITY_TRIVIAL)) {
@@ -152,13 +158,15 @@ public final class IssueTrackerMantisEnum {
         }
         return null;
     }
-    
+
     /**
      * Creates an IssueStatus out of the Mantis-Issue.
-     * @param issue - specific issue
+     * 
+     * @param issue
+     *            - specific issue
      * @return - extracted IssueStatus.
      */
-    public static IssueStatus extractIssueStatus(IIssue issue){
+    public static IssueStatus extractIssueStatus(IIssue issue) {
         String status = issue.getStatus().getName();
 
         if (status.equalsIgnoreCase(ISSUE_STATUS_NEW)) {
@@ -170,44 +178,50 @@ public final class IssueTrackerMantisEnum {
         }
         return null;
     }
-    
+
     /**
      * Creates a ProjectStatus out of the Mantis-Project.
-     * @param project - specific project
+     * 
+     * @param project
+     *            - specific project
      * @return - extracted ProjectStatus.
      */
-    public static ProjectStatus extractProjectStatus(IProject project){
+    public static ProjectStatus extractProjectStatus(IProject project) {
         if (project.isEnabled()) {
             return ProjectStatus.OPEN;
-        } else{
+        } else {
             return ProjectStatus.CLOSED;
         }
     }
-    
+
     /**
      * Creates a ViewState out of the Mantis-Project.
-     * @param project - specific project
+     * 
+     * @param project
+     *            - specific project
      * @return - extracted ViewState.
      */
-    public static ViewState extractViewState(IProject project){
-        if ( project.isPrivate()) {
+    public static ViewState extractViewState(IProject project) {
+        if (project.isPrivate()) {
             return ViewState.PRIVATE;
-        } else{
+        } else {
             return ViewState.PUBLIC;
-        } 
+        }
     }
-    
+
     /**
      * Creates a ViewState out of the Mantis-Note.
-     * @param note - specific note
+     * 
+     * @param note
+     *            - specific note
      * @return - extracted ViewState.
      */
-    public static ViewState extractViewState(INote note){
-        if ( note.isPrivate()) {
+    public static ViewState extractViewState(INote note) {
+        if (note.isPrivate()) {
             return ViewState.PRIVATE;
-        } else{
+        } else {
             return ViewState.PUBLIC;
-        } 
+        }
     }
-    
+
 }

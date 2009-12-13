@@ -18,7 +18,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
-import at.ac.tuwien.ifs.tita.dao.time.TimeEffortDao;
+import at.ac.tuwien.ifs.tita.dao.time.EffortDao;
 import at.ac.tuwien.ifs.tita.entity.Effort;
 
 /**
@@ -28,9 +28,9 @@ import at.ac.tuwien.ifs.tita.entity.Effort;
  */
 public class EffortService implements IEffortService {
 
-    private TimeEffortDao timeEffortDao;
+    private EffortDao timeEffortDao;
 
-    public void setTimeEffortDao(TimeEffortDao timeEffortDao) {
+    public void setTimeEffortDao(EffortDao timeEffortDao) {
         this.timeEffortDao = timeEffortDao;
     }
 
