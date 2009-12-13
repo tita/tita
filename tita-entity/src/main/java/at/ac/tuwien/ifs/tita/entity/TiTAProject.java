@@ -8,10 +8,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
+import at.ac.tuwien.ifs.inv.conv.ProjectStatus;
 
 /**
  * Entity for storing projects that are associated with an issue tracker.
@@ -31,6 +36,16 @@ public class TiTAProject implements IBaseEntity<Long> {
     @Column(name="DESCRIPTION")
     private String description;
     
+    @Column(name="NAME")
+    private String name;
+    
+    @Column(name="DELETED")
+    private Boolean deleted;
+    
+    @ManyToOne
+    @JoinColumn(name="STATUS_ID", referencedColumnName="ID")
+    private ProjectStatus projectStatus;
+    
     @OneToMany
     @JoinColumn(name="PROJECT_ID")
     private Set<TiTATask> titaTasks;
@@ -38,6 +53,12 @@ public class TiTAProject implements IBaseEntity<Long> {
     @OneToMany
     @JoinColumn(name="PROJECT_ID")
     private Set<IssueTrackerProject> issueTrackerProjects;
+    
+    @ManyToMany
+    @JoinTable(name = "USER_PROJECT",    
+            joinColumns = { @JoinColumn(name = "PROJECT_ID")},  
+            inverseJoinColumns={@JoinColumn(name="USER_ID")}) 
+    private Set<User> users;
     
     @SuppressWarnings("unused")
     @Column(name="MODIFICATION_VERSION")
@@ -63,4 +84,38 @@ public class TiTAProject implements IBaseEntity<Long> {
     public Set<IssueTrackerProject> getIssueTrackerProjects() {
         return issueTrackerProjects;
     }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public ProjectStatus getProjectStatus() {
+        return projectStatus;
+    }
+
+    public void setProjectStatus(ProjectStatus projectStatus) {
+        this.projectStatus = projectStatus;
+    }
+
+    public Set<TiTATask> getTitaTasks() {
+        return titaTasks;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+    
+    
 }

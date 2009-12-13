@@ -76,7 +76,6 @@
   </description>
 
  <modules>
-      <module>tita-jetty-configuration</module>
       <module>tita-entity</module>
       <module>tita-dao</module>
       <module>tita-business</module>

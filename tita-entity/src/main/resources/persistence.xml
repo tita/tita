@@ -22,11 +22,16 @@
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
     <non-jta-data-source>jdbc/titaDatasource</non-jta-data-source>
     
+    <class>at.ac.tuwien.ifs.tita.conv.IssueTracker</class>
+    <class>at.ac.tuwien.ifs.tita.conv.ProjectStatus</class>
+    <class>at.ac.tuwien.ifs.tita.conv.Role</class>
     <class>at.ac.tuwien.ifs.tita.entity.TiTATask</class>
     <class>at.ac.tuwien.ifs.tita.entity.IssueTrackerProject</class>
     <class>at.ac.tuwien.ifs.tita.entity.IssueTrackerTask</class>
+    <class>at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin</class>
     <class>at.ac.tuwien.ifs.tita.entity.TiTAProject</class>
     <class>at.ac.tuwien.ifs.tita.entity.Effort</class>
+    <class>at.ac.tuwien.ifs.tita.entity.User</class>
     <properties>
       <property name="hibernate.archive.autodetection" value="class, hbm" />
       <property name="hibernate.hbm2ddl.auto" value="update" />

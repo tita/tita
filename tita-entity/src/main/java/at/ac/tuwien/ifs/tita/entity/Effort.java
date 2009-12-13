@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
@@ -53,6 +55,13 @@ public class Effort implements IBaseEntity<Long> {
     
     @Column(name="DESCRIPTION")
     private String description;
+    
+    @Column(name="DELETED")
+    private Boolean deleted;
+    
+    @ManyToOne
+    @JoinColumn(name="USER_ID", referencedColumnName="ID")
+    private User user;
     
     public Effort() {
     }
@@ -109,4 +118,34 @@ public class Effort implements IBaseEntity<Long> {
     public void setDuration(Long duration) {
         this.duration = duration;
     }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setTitaTaskId(Long titaTaskId) {
+        this.titaTaskId = titaTaskId;
+    }
+
+    public void setIssueTTaskId(Long issueTTaskId) {
+        this.issueTTaskId = issueTTaskId;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
+    
 }

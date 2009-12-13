@@ -50,15 +50,19 @@ public class IssueTrackerProject implements IBaseEntity<Long> {
     
     public IssueTrackerProject() {
     }
+    
+    public IssueTrackerProject(Long id, Long projectId, Long isstProjectId) {
+        super();
+        this.id = id;
+        this.projectId = projectId;
+        this.isstProjectId = isstProjectId;
+    }
 
     @Override
     public Long getId() {
         return id;
     }
 
-//    public String getDescription() {
-//        return description;
-//    }
 
     public Long getProjectId() {
         return projectId;

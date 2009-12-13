@@ -27,6 +27,9 @@ public class IssueTrackerTask implements IBaseEntity<Long> {
     @Column(name="ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="seq_issue_task")
     private Long id;   
+    
+    @Column(name="ISST_TASK_ID")
+    private Long isstTaskId;
         
     @OneToMany
     @JoinColumn(name="ISSUET_TASK_ID")
@@ -39,6 +42,7 @@ public class IssueTrackerTask implements IBaseEntity<Long> {
     
     public IssueTrackerTask() {
     }
+      
 
     @Override
     public Long getId() {
@@ -48,4 +52,13 @@ public class IssueTrackerTask implements IBaseEntity<Long> {
     public Set<Effort> getIssueTEfforts() {
         return issueTEfforts;
     }
+
+    public Long getIsstTaskId() {
+        return isstTaskId;
+    }
+
+    public void setIsstTaskId(Long isstTaskId) {
+        this.isstTaskId = isstTaskId;
+    }
+
 }
