@@ -66,15 +66,11 @@ public class Effort implements IBaseEntity<Long>{
     public Effort() {
     }
     
-    public Effort(Long id, Long titaTaskId, Long issueTTaskId, Date startTime,
-            Date endTime, Long duration, String description) {
+    public Effort(Long id, Long titaTaskId, Long issueTTaskId, String description) {
         super();
         this.id = id;
         this.titaTaskId = titaTaskId;
         this.issueTTaskId = issueTTaskId;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.duration = duration;
         this.description = description;
     }
 
