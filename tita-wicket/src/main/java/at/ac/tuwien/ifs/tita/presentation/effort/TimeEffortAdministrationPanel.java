@@ -250,7 +250,6 @@ public class TimeEffortAdministrationPanel extends Panel {
         timeeffortContainer.add(form);
     }
 
-    //
     // private void displayTasks() {
     // List<ITaskTrackable> allTasks = new ArrayList<ITaskTrackable>();
     // // TODO: change so just the
@@ -294,6 +293,7 @@ public class TimeEffortAdministrationPanel extends Panel {
     // });
     // }
     //
+
     // =========== DB METHODS ================================================
 
     // /**

@@ -35,6 +35,6 @@
   </bean>
   
   <bean id="generalTimer" class="at.ac.tuwien.ifs.tita.entity.util.GeneralTimer"/>
-  
+
   <import resource="classpath:persistence-context.xml"/>
 </beans>

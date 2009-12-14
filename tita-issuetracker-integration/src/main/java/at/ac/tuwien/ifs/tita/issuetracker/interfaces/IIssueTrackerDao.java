@@ -30,7 +30,6 @@ public interface IIssueTrackerDao {
     /**
      * Method to find all projects for a User.
      * 
-     * 
      * @return list of found projects
      */
     Map<Long, IProjectTrackable> findAccessibleProjects();
