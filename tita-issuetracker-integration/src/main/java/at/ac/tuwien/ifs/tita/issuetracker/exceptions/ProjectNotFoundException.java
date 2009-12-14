@@ -15,6 +15,12 @@
  */
 package at.ac.tuwien.ifs.tita.issuetracker.exceptions;
 
+/**
+ * TODO: write javadoc.
+ * 
+ * @author x
+ * 
+ */
 public class ProjectNotFoundException extends Exception {
     public ProjectNotFoundException(String message) {
         super(message);

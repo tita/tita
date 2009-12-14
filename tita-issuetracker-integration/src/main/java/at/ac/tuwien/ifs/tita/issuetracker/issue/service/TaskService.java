@@ -26,28 +26,28 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
 import at.ac.tuwien.ifs.tita.issuetracker.mantis.dao.IssueTrackerMantisDao;
 
 /**
- * The TaskService manage the synchronization between mantis and TiTA.
- * Therefore are two methods that starts the update functions.
- * In addition you can fetch the updated tasks from a project an status.
+ * The TaskService manage the synchronization between mantis and TiTA. Therefore
+ * are two methods that starts the update functions. In addition you can fetch
+ * the updated tasks from a project an status.
  * 
  * @author Christoph
- *
+ * 
  */
 public class TaskService implements ITaskService {
-
-    private IIssueTrackerDao dao;
-    private Map<Long, IProjectTrackable> projects;
 
     private static DispatcherThread dispatcher = null;
     private static WorkerThread worker = null;
 
+    private IIssueTrackerDao dao;
+    private Map<Long, IProjectTrackable> projects;
+
     public TaskService() {
-        this.dao = new IssueTrackerMantisDao();
-        this.projects = this.dao.findAccessibleProjects();
+        dao = new IssueTrackerMantisDao();
+        projects = dao.findAccessibleProjects();
     }
 
     public IIssueTrackerDao getIssueTrackerDao() {
-        return this.dao;
+        return dao;
     }
 
     public void setProjects(Map<Long, IProjectTrackable> projects) {
@@ -55,16 +55,16 @@ public class TaskService implements ITaskService {
     }
 
     public Map<Long, IProjectTrackable> getProjects() {
-        return this.projects;
+        return projects;
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateAll() {
-        this.dao = new IssueTrackerMantisDao();
-        this.projects = this.dao.findAccessibleProjects();
+        dao = new IssueTrackerMantisDao();
+        projects = dao.findAccessibleProjects();
 
-        dispatcher = new DispatcherThread(this.projects);
+        dispatcher = new DispatcherThread(projects);
         dispatcher.start();
         dispatcher.close();
 
@@ -82,9 +82,10 @@ public class TaskService implements ITaskService {
     public Map<Long, ITaskTrackable> getTasks(IProjectTrackable project, IssueStatus status)
             throws ProjectNotFoundException {
 
-        if (project == null)
+        if (project == null) {
             throw new ProjectNotFoundException("No project was set.");
-
+        }
+        
         Map<Long, ITaskTrackable> tasks = project.getTasks();
         Map<Long, ITaskTrackable> statusTasks = new TreeMap<Long, ITaskTrackable>();
 
@@ -96,9 +97,10 @@ public class TaskService implements ITaskService {
             }
         }
 
-        if (statusTasks.size() == 0)
+        if (statusTasks.size() == 0) {
             return null;
-
+        }
+        
         return statusTasks;
     }
 }

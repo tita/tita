@@ -17,19 +17,19 @@
   default-autowire="byName">
 
   <!-- The DAOs -->
-  <bean id="userDAO" class="at.ac.tuwien.ifs.tita.datasource.dao.GenericHibernateDao">
-	<constructor-arg value="at.ac.tuwien.ifs.tita.datasource.entity.User"/>
+  <bean id="userDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
+	<constructor-arg value="at.ac.tuwien.ifs.tita.entity.User"/>
   </bean>
-  <bean id="roleDAO" class="at.ac.tuwien.ifs.tita.datasource.dao.GenericHibernateDao">
-  	<constructor-arg value="at.ac.tuwien.ifs.tita.datasource.entity.Role"/>
+  <bean id="roleDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
+    <constructor-arg value="at.ac.tuwien.ifs.inv.conv.Role"/>
   </bean>
-  <bean id="timeEffortDAO" class="at.ac.tuwien.ifs.tita.datasource.dao.TimeEffortDao"/>
+  <bean id="timeEffortDAO" class="at.ac.tuwien.ifs.tita.dao.time.TimeEffortDao"/>
 	<bean id="mantisDAO" class="at.ac.tuwien.ifs.tita.issuetracker.mantis.dao.IssueTrackerMantisDao" />
 
   <!-- The Services -->
-  <bean id="userService" class="at.ac.tuwien.ifs.tita.datasource.service.user.UserService">
-    <property name="userDAO" ref="userDAO" />
-    <property name="roleDAO" ref="roleDAO" />
+  <bean id="userService" class="at.ac.tuwien.ifs.tita.service.user.UserService">
+    <!--  <property name="userDAO" ref="userDAO" />
+    <property name="roleDAO" ref="roleDAO" />-->
   </bean>
   <import resource="classpath:persistence-context-local.xml"/>
 </beans>

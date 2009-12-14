@@ -28,13 +28,14 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 
 /**
+ * TODO: write javadoc.
  * 
  * @author msiedler
- * 
+ * @param <T> x
  */
 public class TitaDataProvider<T> extends SortableDataProvider<T> {
 
-    List<T> list = new ArrayList<T>();
+    private List<T> list = new ArrayList<T>();
 
     public TitaDataProvider(List<T> list, String sort, boolean asc) {
 
@@ -43,6 +44,13 @@ public class TitaDataProvider<T> extends SortableDataProvider<T> {
         this.list = list;
     }
 
+    /**
+     * TODO: write javadoc.
+     * 
+     * @param first x
+     * @param count x
+     * @return x
+     */
     public Iterator<T> iterator(int first, int count) {
         List<T> newList = new ArrayList<T>();
         newList.addAll(list.subList(first, first + count));
@@ -54,19 +62,17 @@ public class TitaDataProvider<T> extends SortableDataProvider<T> {
 
             @SuppressWarnings("unchecked")
             public int compare(Object obj1, Object obj2) {
-                PropertyModel<Object> model1 = new PropertyModel<Object>(obj1,
-                        sortColumn);
-                PropertyModel<Object> model2 = new PropertyModel<Object>(obj2,
-                        sortColumn);
+                PropertyModel<Object> model1 = new PropertyModel<Object>(obj1, sortColumn);
+                PropertyModel<Object> model2 = new PropertyModel<Object>(obj2, sortColumn);
 
                 Object modelObject1 = model1.getObject();
                 Object modelObject2 = model2.getObject();
 
-                int compare = ((Comparable<Object>) modelObject1)
-                        .compareTo(modelObject2);
+                int compare = ((Comparable<Object>) modelObject1).compareTo(modelObject2);
 
-                if (!ascending)
+                if (!ascending) {
                     compare *= -1;
+                }
 
                 return compare;
             }
@@ -75,16 +81,33 @@ public class TitaDataProvider<T> extends SortableDataProvider<T> {
         return newList.iterator();
     }
 
+    /**
+     * TODO: write javadoc.
+     * 
+     * @return x
+     */
     public int size() {
         return list.size();
     }
 
+    /**
+     * TODO: write javadoc.
+     * 
+     * @param list x
+     */
     public void setList(List<T> list) {
         this.list = list;
     }
 
+    /**
+     * TODO: write javadoc.
+     * 
+     * @param object x
+     * @return x
+     */
     public IModel<T> model(final T object) {
         return new AbstractReadOnlyModel<T>() {
+            @Override
             public T getObject() {
                 return object;
             }

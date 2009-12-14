@@ -23,12 +23,12 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IProjectTrackable;
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
 
 /**
- * The TaskService manage the synchronization between mantis and TiTA.
- * Therefore are two methods that starts the update functions.
- * In addition you can fetch the updated tasks from a project an status.
+ * The TaskService manage the synchronization between mantis and TiTA. Therefore
+ * are two methods that starts the update functions. In addition you can fetch
+ * the updated tasks from a project an status.
  * 
  * @author Christoph
- *
+ * 
  */
 public interface ITaskService {
 
@@ -36,26 +36,22 @@ public interface ITaskService {
      * Method returns a map of all tasks for the chosen project and status. If
      * the method returns null, no elements found for the project or status.
      * 
-     * @param project
-     *            - the project, from where the issues are wanted
-     * @param status
-     *            - defines the state of the issues, that are supplied.
+     * @param project - the project, from where the issues are wanted
+     * @param status - defines the state of the issues, that are supplied.
      * @return a map of tasks from the chosen project and status.
-     * @throws ProjectNotFoundException
-     *             if project is null
+     * @throws ProjectNotFoundException if project is null
      */
     Map<Long, ITaskTrackable> getTasks(IProjectTrackable project, IssueStatus status) throws ProjectNotFoundException;
 
     /**
      * Method makes a update of a single project.
      * 
-     * @param project
-     *            - the chosen project
+     * @param project - the chosen project
      */
     void updateProject(IProjectTrackable project);
 
     /**
-     * Method to update all projects
+     * Method to update all projects.
      */
     void updateAll();
 

@@ -34,48 +34,55 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IProjectTrackable;
  */
 public class UpdateThread extends Thread {
 
-    Logger log = LoggerFactory.getLogger(UpdateThread.class);
+    private static final Integer TIME1 = 60;
+    private static final Integer TIME2 = 1000;
+
+    private Logger log = LoggerFactory.getLogger(UpdateThread.class);
 
     private int timeout;
     private boolean applicationIsRunning = true;
     private Map<Long, IProjectTrackable> projects;
 
     /**
-     * Constructor for the automatic update thread
-     * @param projects - map of projects that are accessbile from the issue trackers.
+     * Constructor for the automatic update thread.
+     * 
+     * @param projects - map of projects that are accessbile from the issue
+     *        trackers.
      */
     public UpdateThread(Map<Long, IProjectTrackable> projects) {
         super("automatic update");
         this.projects = projects;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void run() {
 
         try {
             Properties prop = new Properties();
             try {
-                prop.load(ClassLoader.getSystemClassLoader()
-                        .getResourceAsStream("system.properties"));
-                this.timeout = Integer.valueOf(prop.getProperty("timeout"));
-                this.log.debug("Timeout: " + this.timeout + "minutes.");
+                prop.load(ClassLoader.getSystemClassLoader().getResourceAsStream("system.properties"));
+                timeout = Integer.valueOf(prop.getProperty("timeout"));
+                log.debug("Timeout: " + timeout + "minutes.");
 
             } catch (IOException e) {
-                this.log.error("Get timeout from properties failed.");
+                log.error("Get timeout from properties failed.");
                 e.getStackTrace();
             }
 
-            while (this.applicationIsRunning) {
+            while (applicationIsRunning) {
 
-                this.log.debug("Starting automatic update.");
-                new DispatcherThread(this.projects).start();
-                this.log.debug("Automatic update was succesful.");
-                this.log.debug("Waiting until timeout is over.");
-                Thread.sleep(this.timeout * 60 * 1000);
+                log.debug("Starting automatic update.");
+                new DispatcherThread(projects).start();
+                log.debug("Automatic update was succesful.");
+                log.debug("Waiting until timeout is over.");
+                Thread.sleep(timeout * TIME1 * TIME2);
             }
 
         } catch (InterruptedException e) {
-            this.log.error("Automatic update failed.");
+            log.error("Automatic update failed.");
             e.printStackTrace();
         }
     }
@@ -85,7 +92,7 @@ public class UpdateThread extends Thread {
      */
     @SuppressWarnings("deprecation")
     public void shutdown() {
-        this.applicationIsRunning = false;
+        applicationIsRunning = false;
         this.stop();
     }
 }

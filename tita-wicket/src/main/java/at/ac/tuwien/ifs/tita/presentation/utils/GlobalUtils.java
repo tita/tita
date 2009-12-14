@@ -51,13 +51,19 @@ public final class GlobalUtils {
      * 
      * @param d1 startdate
      * @param d2 enddate
-     * @return difference as
+     * @return difference as date
      */
     public static Date getTimeDifference(Date d1, Date d2) {
         return new Date(d2.getTime() - d1.getTime());
     }
-    
+
+    /**
+     * Converts milliseconds to Long.
+     * 
+     * @param t1 time in milliseconds
+     * @return converted date
+     */
     public static Date getDateFromLong(Long t1) {
-    	return new Date(t1);
+        return new Date(t1);
     }
 }

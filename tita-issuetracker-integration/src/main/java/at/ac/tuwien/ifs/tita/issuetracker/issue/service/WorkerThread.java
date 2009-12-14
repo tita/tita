@@ -26,36 +26,42 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
 import at.ac.tuwien.ifs.tita.issuetracker.mantis.dao.IssueTrackerMantisDao;
 
 /**
- * The worker thread updates the tasks from a single project using the MantisDao.
+ * The worker thread updates the tasks from a single project using the
+ * MantisDao.
  * 
  * @author Christoph
- *
+ * 
  */
 public class WorkerThread extends Thread {
 
     private IProjectTrackable project;
     private IIssueTrackerDao dao;
 
-    Logger log = LoggerFactory.getLogger(WorkerThread.class);
+    private Logger log = LoggerFactory.getLogger(WorkerThread.class);
 
     /**
      * Constructs a worker thread with a project.
-     * @param project - project, from where the tasks should be fetched from mantis.
+     * 
+     * @param project - project, from where the tasks should be fetched from
+     *        mantis.
      */
     public WorkerThread(IProjectTrackable project) {
-    	super("Worker");
-        this.dao = new IssueTrackerMantisDao();
+        super("Worker");
+        dao = new IssueTrackerMantisDao();
         this.project = project;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void run() {
 
-        this.log.info("Fetching all Tasks for the chosen project.");
-        Map<Long, ITaskTrackable> tasklist = this.dao.findAllTasksForProject(this.project.getId());
+        log.info("Fetching all Tasks for the chosen project.");
+        Map<Long, ITaskTrackable> tasklist = dao.findAllTasksForProject(project.getId());
 
-        this.project.setTasks(tasklist);
-        this.log.info("Stopping the worker thread.");
+        project.setTasks(tasklist);
+        log.info("Stopping the worker thread.");
         this.stop();
     }
 

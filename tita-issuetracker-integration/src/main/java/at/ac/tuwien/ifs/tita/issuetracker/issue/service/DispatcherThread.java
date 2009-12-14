@@ -37,29 +37,32 @@ public class DispatcherThread extends Thread {
     private boolean listening = true;
     private Map<Long, IProjectTrackable> projects;
 
-    Logger log = LoggerFactory.getLogger(DispatcherThread.class);
+    private Logger log = LoggerFactory.getLogger(DispatcherThread.class);
 
     public DispatcherThread(Map<Long, IProjectTrackable> projects) {
         super("Dispatcher");
         this.projects = projects;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void run() {
 
         try {
-            this.log.info("Connection opened for update.");
-            this.pool = Executors.newCachedThreadPool();
-            for (IProjectTrackable project : this.projects.values()) {
+            log.info("Connection opened for update.");
+            pool = Executors.newCachedThreadPool();
+            for (IProjectTrackable project : projects.values()) {
 
-                while (this.listening) {
-                    this.pool.execute(new WorkerThread(project));
+                while (listening) {
+                    pool.execute(new WorkerThread(project));
                 }
             }
 
         } catch (Exception ex) {
-            this.log.error("Connection error while data update.");
-            this.pool.shutdown();
+            log.error("Connection error while data update.");
+            pool.shutdown();
         }
     }
 
@@ -67,10 +70,10 @@ public class DispatcherThread extends Thread {
      * Close the thread pool for the worker threads and the running loop.
      */
     public void close() {
-        this.listening = false;
+        listening = false;
 
-        if (this.pool != null) {
-            this.pool.shutdown();
+        if (pool != null) {
+            pool.shutdown();
         }
     }
 }

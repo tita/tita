@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- 
+   Copyright 2009 TiTA Project, Vienna University of Technology
+   
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+   
+       http://www.apache.org/licenses/LICENSE\-2.0
+       
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" >
+<body>
+	<wicket:panel>
+		<!-- <div wicket:id="feedback">[[ feedback ]]</div>-->
+		<h3>Time Efforts</h3>
+		<form wicket:id="timerForm">
+			<table>
+				<tr>
+					<th>General Timer</th>
+				</tr>
+				<tr>
+					<td><input wicket:id="startTimer" type="submit" value="Start"/></td>
+					<td><input wicket:id="stopTimer" type="submit" value="Stop"/></td>
+				</tr>
+			</table>
+			<p></p>
+		</form>	
+		<div wicket:id="timeeffortContainer"> 
+		    <form wicket:id="timeeffortForm">
+		      <table border = 0px>
+		      	<colgroup>
+					<col width="90"></col>
+					<col width="300"></col>
+					<col width="70"></col>
+					<col width="70"></col>
+					<col width="70"></col>
+					<col width="30"></col>
+					<col width="30"></col>				
+				</colgroup>
+		        <thead>
+		          <tr>
+		            <td colspan="3">
+		              <span wicket:id="label"></span>
+		              <span wicket:id="navigator"></span>
+		            </td>
+		          </tr>
+		          <!-- 
+		          <tr>
+		            <th>Vorname</th>
+		            <th><a wicket:id="sortName">Name</a></th>
+		            <th><a wicket:id="sortAlter">Alter</a></th>
+		          </tr>
+		          -->
+
+		        </thead>
+		        <tbody>
+		          <tr wicket:id="dataView">
+		            <td><span wicket:id="date"></span></td>
+		            <td><span wicket:id="description"></span></td>
+		            <td><span wicket:id="starttime"></span></td>
+		            <td><span wicket:id="endtime"></span></td>
+		            <td><span wicket:id="length"></span></td>
+		            <td><button wicket:id="edit" type="button"><img src="images/bt-edit.png"></button></td>
+					<td><button wicket:id="delete" type="button"><img src="images/bt-delete.png"></button></td>
+		          </tr>
+		        </tbody>
+		        <tfoot>
+		        	<tr>
+			          	<th><input wicket:id="tedate" size="7"></th>
+			            <th><input wicket:id="tedescription" size="40"></th>
+			            <th><input wicket:id="testarttime" size="5"></th>
+			            <th><input wicket:id="teendtime" size="5"></th>
+			            <th><input wicket:id="tetimelength" size="8"></th>
+						<th><button wicket:id="saveButton" type="button" align="left"><img src="images/bt-add.png"></button></th>
+		          </tr>	   
+		        </tfoot>
+		      </table>
+		 
+		    </form>
+	    </div>
+	
+		<h3>Mantis - Issues</h3>
+		<table border=1>
+		  <thead>
+               <tr>
+                   <th>Id</th>
+                   <th>Description</th>
+                   <th>Creation time</th>
+                   <th>Last Change</th>
+                   <th>Owner</th>
+                   <th>Priority</th>
+                   <th>Resolution</th>
+                   <th>Severity</th>
+                   <th>Status</th>
+               </tr>
+           </thead>
+		  <tr wicket:id="tasklist">
+		    <td><span wicket:id="number"></span></td>
+		    <td><span wicket:id="name"></span></td>
+		    <td><span wicket:id="creation"></span></td>
+		    <td><span wicket:id="lastchange"></span></td>
+		    <td><span wicket:id="owner"></span></td>
+		    <td><span wicket:id="priority"></span></td>
+		    <td><span wicket:id="resolution"></span></td>
+		    <td><span wicket:id="severity"></span></td>
+		    <td><span wicket:id="status"></span></td>
+		  </tr>
+		</table>
+
+		
+	</wicket:panel>
+</body>
+</html>
