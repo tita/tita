@@ -30,7 +30,7 @@ public interface IIssueTrackerDao {
     /**
      * Method to find all projects for a User.
      * 
-     *            - name of the user, whos projects should be found
+     * 
      * @return list of found projects
      */
     Map<Long, IProjectTrackable> findAccessibleProjects();
@@ -38,8 +38,7 @@ public interface IIssueTrackerDao {
     /**
      * Method to find a trackableProject by the projectId.
      * 
-     * @param projectId
-     *            - id of the project to find
+     * @param projectId - id of the project to find
      * @return project, if one was found, null otherwise
      */
     IProjectTrackable findProject(Long projectId);
@@ -47,8 +46,7 @@ public interface IIssueTrackerDao {
     /**
      * Method to find a TrackableProject by the projectName.
      * 
-     * @param projectName
-     *            - name of the Project to find
+     * @param projectName - name of the Project to find
      * @return project, if one was found, null otherwise
      */
     IProjectTrackable findProject(String projectName);
@@ -57,8 +55,7 @@ public interface IIssueTrackerDao {
      * Method to find all TrackableTaks of a project, specified by the
      * projectId.
      * 
-     * @param projectId
-     *            - id of the project, for which the tasks should be found
+     * @param projectId - id of the project, for which the tasks should be found
      * @return map of all found tasks for the project
      */
     Map<Long, ITaskTrackable> findAllTasksForProject(Long projectId);
@@ -66,8 +63,7 @@ public interface IIssueTrackerDao {
     /**
      * Method to find a trackableTask by the taskId.
      * 
-     * @param taskId
-     *            - id of the task to find
+     * @param taskId - id of the task to find
      * @return task, if one was found, null otherwise
      */
     ITaskTrackable findTask(Long taskId);
@@ -75,8 +71,7 @@ public interface IIssueTrackerDao {
     /**
      * Method to find all TrackableComments of a task, specified by the taskId.
      * 
-     * @param taskId
-     *            - id of the task, for which the comments should be found
+     * @param taskId - id of the task, for which the comments should be found
      * @return map of all found comments
      */
     Map<Long, ICommentTrackable> findAllCommentsForTask(Long taskId);
@@ -84,10 +79,8 @@ public interface IIssueTrackerDao {
     /**
      * Closes the Task with the specified taskId.
      * 
-     * @param taskId
-     *            - id of the task to close
-     * @exception MCException
-     *                - if closing fails
+     * @param taskId - id of the task to close
+     * @exception MCException - if closing fails
      */
     void closeTask(long taskId) throws MCException;
 }

@@ -56,8 +56,7 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
  */
 public class IssueTrackerMantisDao implements IIssueTrackerDao {
 
-    private final Logger log = LoggerFactory
-            .getLogger(IssueTrackerMantisDao.class);
+    private final Logger log = LoggerFactory.getLogger(IssueTrackerMantisDao.class);
 
     private URL url;
     private String user;
@@ -66,10 +65,10 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
 
     public IssueTrackerMantisDao() {
         // TODO: read values from DB
-        this.user = "administrator";
-        this.pwd = "root";
+        user = "administrator";
+        pwd = "root";
 
-        if (this.session != null) {
+        if (session != null) {
             disconnect();
         }
         connect();
@@ -81,13 +80,12 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
     private void connect() {
         try {
             // TODO: read values from DB
-            this.url = new URL(
-                    "http://localhost/mantisbt-1.1.8/api/soap/mantisconnect.php");
-            this.session = new MCSession(this.url, this.user, this.pwd);
+            url = new URL("http://localhost/mantisbt-1.1.8/api/soap/mantisconnect.php");
+            session = new MCSession(url, user, pwd);
         } catch (MCException e) {
-            this.log.error("Connection to Mantis-Server failed!");
+            log.error("Connection to Mantis-Server failed!");
         } catch (MalformedURLException e) {
-            this.log.error("URL " + this.url.getPath() + " is malformed!");
+            log.error("URL " + url.getPath() + " is malformed!");
         }
 
     }
@@ -96,7 +94,7 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
      * Close a Session to the Mantis-Server.
      */
     public void disconnect() {
-        this.session = null;
+        session = null;
     }
 
     /** {@inheritDoc} */
@@ -105,13 +103,12 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
 
         IProject project;
         try {
-            project = this.session.getProject(id);
+            project = session.getProject(id);
             IssueTrackerProject mantisProject = createMantisProject(project);
             return mantisProject;
 
         } catch (MCException e) {
-            this.log.error("Reading Project with Id " + id
-                    + " from Mantis-Server failed!");
+            log.error("Reading Project with Id " + id + " from Mantis-Server failed!");
         }
         return null;
     }
@@ -121,15 +118,14 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
     public Map<Long, ITaskTrackable> findAllTasksForProject(Long projectId) {
         Map<Long, ITaskTrackable> taskList = new TreeMap<Long, ITaskTrackable>();
         try {
-            IIssue[] issues = this.session.getProjectIssues(projectId);
+            IIssue[] issues = session.getProjectIssues(projectId);
             for (IIssue issue : issues) {
                 IssueTrackerTask task = createMantisTask(issue);
                 taskList.put(task.getId(), task);
             }
             return taskList;
         } catch (MCException e) {
-            this.log.error("Reading Project Issues with projectId " + projectId
-                    + " from Mantis-Server failed!");
+            log.error("Reading Project Issues with projectId " + projectId + " from Mantis-Server failed!");
         }
 
         return null;
@@ -141,15 +137,14 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
         Map<Long, ICommentTrackable> commentList = new TreeMap<Long, ICommentTrackable>();
 
         try {
-            INote[] notes = this.session.getIssue(taskId).getNotes();
+            INote[] notes = session.getIssue(taskId).getNotes();
             for (INote note : notes) {
                 IssueTrackerComment comment = createMantisComment(note);
                 commentList.put(comment.getId(), comment);
             }
             return commentList;
         } catch (MCException e) {
-            this.log.error("Reading Comments from Task with taskId " + taskId
-                    + " from Mantis-Server failed!");
+            log.error("Reading Comments from Task with taskId " + taskId + " from Mantis-Server failed!");
         }
 
         return null;
@@ -160,13 +155,12 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
     public ITaskTrackable findTask(Long taskId) {
         IIssue issue;
         try {
-            issue = this.session.getIssue(taskId);
+            issue = session.getIssue(taskId);
             IssueTrackerTask mantisTask = createMantisTask(issue);
             return mantisTask;
 
         } catch (MCException e) {
-            this.log.error("Reading Task with taskId " + taskId
-                    + " from Mantis-Server failed!");
+            log.error("Reading Task with taskId " + taskId + " from Mantis-Server failed!");
         }
         return null;
     }
@@ -175,13 +169,12 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
     public IProjectTrackable findProject(String projectName) {
         IProject project;
         try {
-            project = this.session.getProject(projectName);
+            project = session.getProject(projectName);
             IssueTrackerProject mantisProject = createMantisProject(project);
             return mantisProject;
 
         } catch (MCException e) {
-            this.log.error("Reading project with projectName " + projectName
-                    + " from Mantis-Server failed!");
+            log.error("Reading project with projectName " + projectName + " from Mantis-Server failed!");
         }
         return null;
     }
@@ -193,7 +186,7 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
         Map<Long, IProjectTrackable> mapOfProjects = new TreeMap<Long, IProjectTrackable>();
 
         try {
-            projects = this.session.getAccessibleProjects();
+            projects = session.getAccessibleProjects();
             for (IProject project : projects) {
                 IssueTrackerProject mantisProject = createMantisProject(project);
                 mapOfProjects.put(project.getId(), mantisProject);
@@ -201,8 +194,7 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
             return mapOfProjects;
 
         } catch (MCException e) {
-            this.log
-                    .error("Reading accessible projects from Mantis-Server failed!");
+            log.error("Reading accessible projects from Mantis-Server failed!");
         }
         return null;
     }
@@ -219,28 +211,24 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
     /**
      * Copies all values from a Mantis-Project-Object to an IssueTrackerProject.
      * 
-     * @param project
-     *            - Project to copy
+     * @param project - Project to copy
      * @return new IssueTrackerProject
      */
     public IssueTrackerProject createMantisProject(IProject project) {
         Long id = project.getId();
         String name = project.getName();
         String description = project.getDescription();
-        ProjectStatus status = IssueTrackerMantisEnum
-                .extractProjectStatus(project);
+        ProjectStatus status = IssueTrackerMantisEnum.extractProjectStatus(project);
         Map<Long, ITaskTrackable> tasks = findAllTasksForProject(id);
         ViewState viewState = IssueTrackerMantisEnum.extractViewState(project);
-        return new IssueTrackerProject(id, name, description, status, tasks,
-                this.url, viewState);
+        return new IssueTrackerProject(id, name, description, status, tasks, url, viewState);
 
     }
 
     /**
      * Copies all values from a Mantis-Issue-Object to an IssueTrackerTask.
      * 
-     * @param issue
-     *            - Issue to copy
+     * @param issue - Issue to copy
      * @return new IssueTrackerTask
      */
     public IssueTrackerTask createMantisTask(IIssue issue) {
@@ -252,35 +240,29 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
         }
         Date creationTime = issue.getDateSubmitted();
         Date lastChange = issue.getDateLastUpdated();
-        IssuePriority priority = IssueTrackerMantisEnum
-                .extractIssuePriority(issue);
+        IssuePriority priority = IssueTrackerMantisEnum.extractIssuePriority(issue);
         Long projectId = null;
         if (issue.getProject() != null) {
             projectId = issue.getProject().getId();
         }
-        Map<Long, ICommentTrackable> comments = findAllCommentsForTask(issue
-                .getId());
+        Map<Long, ICommentTrackable> comments = findAllCommentsForTask(issue.getId());
         String reporter = "";
         if (issue.getReporter() != null) {
             reporter = issue.getReporter().getName();
         }
-        IssueResolution resolution = IssueTrackerMantisEnum
-                .extractIssueResolution(issue);
-        IssueSeverity severity = IssueTrackerMantisEnum
-                .extractIssueSeverity(issue);
+        IssueResolution resolution = IssueTrackerMantisEnum.extractIssueResolution(issue);
+        IssueSeverity severity = IssueTrackerMantisEnum.extractIssueSeverity(issue);
         IssueStatus status = IssueTrackerMantisEnum.extractIssueStatus(issue);
         String summary = issue.getSummary();
 
-        return new IssueTrackerTask(id, description, owner, creationTime,
-                lastChange, priority, projectId, comments, reporter,
-                resolution, severity, status, summary);
+        return new IssueTrackerTask(id, description, owner, creationTime, lastChange, priority, projectId, comments,
+                reporter, resolution, severity, status, summary);
     }
 
     /**
      * Copies all values from a Mantis-Note-Object to an IssueTrackerComment.
      * 
-     * @param note
-     *            - note to copy
+     * @param note - note to copy
      * @return new IssueTrackerComment
      */
     public IssueTrackerComment createMantisComment(INote note) {
@@ -294,21 +276,21 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
         String text = note.getText();
         ViewState viewState = IssueTrackerMantisEnum.extractViewState(note);
 
-        return new IssueTrackerComment(id, creationTime, lastChange, reporter,
-                text, viewState);
+        return new IssueTrackerComment(id, creationTime, lastChange, reporter, text, viewState);
     }
 
     /**
      * Creates a test project in mantis.
+     * 
      * @param projectName String
      * @param description String
-     * @param enabled Boolean 
-     * @param viewStatePrivate Boolean 
+     * @param enabled Boolean
+     * @param viewStatePrivate Boolean
      * @return Long id
      * @throws MCException mce
      */
-    public Long createTestProject(String projectName, String description,
-            Boolean enabled, Boolean viewStatePrivate) throws MCException {
+    public Long createTestProject(String projectName, String description, Boolean enabled, Boolean viewStatePrivate)
+            throws MCException {
 
         IProject newProject = new Project();
         newProject.setName(projectName);
@@ -316,38 +298,33 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
         newProject.setDesription(description);
         newProject.setEnabled(enabled); // ProjectStatus: Open
         newProject.setPrivate(viewStatePrivate); // ViewState:Public
-        Long id = this.session.addProject(newProject);
-        this.session.flush();
+        Long id = session.addProject(newProject);
+        session.flush();
         return id;
     }
 
     /**
      * Creates a task on the Mantis-Server.
      * 
-     * @param description
-     *            - description of the project
-     * @param summary
-     *            - summary of the project
-     * @param projectName
-     *            - name of the project of the task
+     * @param description - description of the project
+     * @param summary - summary of the project
+     * @param projectName - name of the project of the task
      * @return id of the created task
-     * @throws MCException
-     *             - if error occurs, when task is added
+     * @throws MCException - if error occurs, when task is added
      */
-    public Long createTestTask(String description, String summary,
-            String projectName) throws MCException {
+    public Long createTestTask(String description, String summary, String projectName) throws MCException {
 
         IIssue newIssue = new Issue();
         newIssue.setDescription(description);
         // newIssue.setHandler(new Account(100, "test", "test", "test@test"));
-        newIssue.setPriority(this.session.getDefaultIssuePriority());
+        newIssue.setPriority(session.getDefaultIssuePriority());
         newIssue.setSummary(summary);
-        newIssue.setSeverity(this.session.getDefaultIssueSeverity());
+        newIssue.setSeverity(session.getDefaultIssueSeverity());
         // newIssue.setReporter(new Account(101, "rep1", "rep1", "rep@rep"));
-        IProject p = this.session.getProject(projectName);
+        IProject p = session.getProject(projectName);
         newIssue.setProject(new MCAttribute(p.getId(), p.getName()));
-        long id = this.session.addIssue(newIssue);
-        this.session.flush();
+        long id = session.addIssue(newIssue);
+        session.flush();
         return id;
     }
 }

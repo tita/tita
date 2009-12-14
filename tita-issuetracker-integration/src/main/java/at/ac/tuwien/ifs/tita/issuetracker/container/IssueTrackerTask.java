@@ -46,11 +46,9 @@ public class IssueTrackerTask implements ITaskTrackable, Serializable {
     private IssueStatus status;
     private String summary;
 
-    public IssueTrackerTask(Long id, String description, String owner,
-            Date creationTime, Date lastChange, IssuePriority priority,
-            Long projectId, Map<Long, ICommentTrackable> comments,
-            String reporter, IssueResolution resolution,
-            IssueSeverity severity, IssueStatus status, String summary) {
+    public IssueTrackerTask(Long id, String description, String owner, Date creationTime, Date lastChange,
+            IssuePriority priority, Long projectId, Map<Long, ICommentTrackable> comments, String reporter,
+            IssueResolution resolution, IssueSeverity severity, IssueStatus status, String summary) {
         super();
         this.id = id;
         this.description = description;
@@ -69,67 +67,67 @@ public class IssueTrackerTask implements ITaskTrackable, Serializable {
 
     /** {@inheritDoc} */
     public Map<Long, ICommentTrackable> getComments() {
-        return this.comments;
+        return comments;
     }
 
     /** {@inheritDoc} */
     public Date getCreationTime() {
-        return this.creationTime;
+        return creationTime;
     }
 
     /** {@inheritDoc} */
     public String getDescription() {
-        return this.description;
+        return description;
     }
 
     /** {@inheritDoc} */
     public Long getId() {
-        return this.id;
+        return id;
     }
 
     /** {@inheritDoc} */
     public Date getLastChange() {
-        return this.lastChange;
+        return lastChange;
     }
 
     /** {@inheritDoc} */
     public String getOwner() {
-        return this.owner;
+        return owner;
     }
 
     /** {@inheritDoc} */
     public IssuePriority getPriority() {
-        return this.priority;
+        return priority;
     }
 
     /** {@inheritDoc} */
     public Long getProjectId() {
-        return this.projectId;
+        return projectId;
     }
 
     /** {@inheritDoc} */
     public String getReporter() {
-        return this.reporter;
+        return reporter;
     }
 
     /** {@inheritDoc} */
     public IssueResolution getResolution() {
-        return this.resolution;
+        return resolution;
     }
 
     /** {@inheritDoc} */
     public IssueSeverity getSeverity() {
-        return this.severity;
+        return severity;
     }
 
     /** {@inheritDoc} */
     public IssueStatus getStatus() {
-        return this.status;
+        return status;
     }
 
     /** {@inheritDoc} */
     public String getSummary() {
-        return this.summary;
+        return summary;
     }
 
     /** {@inheritDoc} */

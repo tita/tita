@@ -42,25 +42,23 @@ public class WorkerThread extends Thread {
     /**
      * Constructs a worker thread with a project.
      * 
-     * @param project
-     *            - project, from where the tasks should be fetched from mantis.
+     * @param project - project, from where the tasks should be fetched from
+     *        mantis.
      */
     public WorkerThread(IProjectTrackable project) {
         super("Worker");
-        this.dao = new IssueTrackerMantisDao();
+        dao = new IssueTrackerMantisDao();
         this.project = project;
     }
 
     /** {@inheritDoc} */
     @Override
     public void run() {
+        log.info("Fetching all Tasks for the chosen project.");
+        Map<Long, ITaskTrackable> tasklist = dao.findAllTasksForProject(project.getId());
 
-        this.log.info("Fetching all Tasks for the chosen project.");
-        Map<Long, ITaskTrackable> tasklist = this.dao
-                .findAllTasksForProject(this.project.getId());
-
-        this.project.setTasks(tasklist);
-        this.log.info("Stopping the worker thread.");
+        project.setTasks(tasklist);
+        log.info("Stopping the worker thread.");
         this.stop();
     }
 
