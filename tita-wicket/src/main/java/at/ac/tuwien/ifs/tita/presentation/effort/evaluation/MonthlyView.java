@@ -23,7 +23,6 @@ import java.util.List;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
@@ -33,6 +32,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.Effort;
+import at.ac.tuwien.ifs.tita.presentation.HeaderPage;
 import at.ac.tuwien.ifs.tita.presentation.controls.dropdown.SelectOption;
 import at.ac.tuwien.ifs.tita.presentation.controls.listview.EffortEvaluationListView;
 import at.ac.tuwien.ifs.tita.service.time.IEffortService;
@@ -40,7 +40,7 @@ import at.ac.tuwien.ifs.tita.service.time.IEffortService;
 /**
  * Monthly evaluation.
  */
-public class MonthlyView extends WebPage {
+public class MonthlyView extends HeaderPage {
     @SpringBean(name = "timeEffortService")
     private IEffortService service;
 
