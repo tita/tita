@@ -51,7 +51,9 @@ public class WorkerThread extends Thread {
         this.project = project;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void run() {
         log.info("Fetching all Tasks for the chosen project.");

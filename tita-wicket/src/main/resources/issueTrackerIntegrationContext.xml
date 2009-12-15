@@ -21,15 +21,15 @@
 	<constructor-arg value="at.ac.tuwien.ifs.tita.entity.User"/>
   </bean>
   <bean id="roleDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
-   <constructor-arg value="at.ac.tuwien.ifs.tita.entity.conv.Role"/>
-  </bean>
+  <constructor-arg value="at.ac.tuwien.ifs.tita.entity.conv.Role"/>
+</bean>
   <bean id="timeEffortDAO" class="at.ac.tuwien.ifs.tita.dao.time.EffortDao"/>
 	<bean id="mantisDAO" class="at.ac.tuwien.ifs.tita.issuetracker.mantis.dao.IssueTrackerMantisDao" />
 
   <!-- The Services -->
   <bean id="userService" class="at.ac.tuwien.ifs.tita.business.service.user.UserService">
- <!--  <property name="userDAO" ref="userDAO" />
-    <property name="roleDAO" ref="roleDAO" />-->
+<!--  <property name="userDAO" ref="userDAO" />
+ <property name="roleDAO" ref="roleDAO" />-->
   </bean>
   <import resource="classpath:persistence-context-local.xml"/>
 </beans>
