@@ -1,0 +1,62 @@
+<!-- 
+   Copyright 2009 TiTA Project, Vienna University of Technology
+   
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+   
+       http://www.apache.org/licenses/LICENSE\-2.0
+       
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" >
+    <body>
+        <wicket:extend>
+            <div id="header">
+            <div id="title_left">
+                <strong>Ti</strong>ny 
+                <strong>T</strong>ime 
+                <strong>T</strong>racking
+                <strong>A</strong>ssistent
+            </div>
+            <div id="title_right">
+                <span wicket:id="showUser">[User]</span>
+                <wicket:link><a href="#">Signout</a></wicket:link>
+            </div>
+            </div>
+            <div id="contents">
+                <hr/><hr/>
+                <div id="navigation">
+                   <wicket:link>
+                       <!-- <div wicket:id="timeConsumerGroup"> -->
+                           <a href="effort/EffortsPage.html">Efforts</a>
+                           <a href="effort/evaluation/DailyView.html">Daily View</a>
+                           <a href="effort/evaluation/MonthlyView.html">Monthly View</a>
+                      <!-- </div> -->
+                      <!-- <div wicket:id="timeControllerGroup"> -->
+                           <a href="#">Target/Actual time comparison</a>
+                           <a href="#">multiple projects evaluation</a>
+                           <a href="#">personal time evaluation</a>
+                      <!-- </div> -->
+                      <!-- <div wicket:id="administratorGroup"> -->
+                           <a href="#">New User</a>
+                           <a href="#">New Project</a>
+                           <a href="#">Administrate Users</a>
+                           <a href="#">Administrate Projects</a>
+                           <a href="#">Permissions</a>
+                      <!-- </div>-->
+                   </wicket:link>
+                </div>
+                <hr/>
+                <div id="main">
+                    <wicket:child />
+                </div>
+                <div id="taskBar">TaskBar</div>
+           </div>
+        </wicket:extend>
+    </body>
+</html>
