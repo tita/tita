@@ -1,0 +1,67 @@
+<!-- 
+   Copyright 2009 TiTA Project, Vienna University of Technology
+   
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+   
+       http://www.apache.org/licenses/LICENSE\-2.0
+       
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" >
+    <body>
+        <wicket:extend>
+         <form wicket:id="multipleProjectsForm">
+           <div>
+                 <label for="projectSelection">Projects</label>
+                 <select wicket:id="projectSelection" id="projectSelection">
+                   <option>Project 1</option>
+                   <option>Project 2</option>
+                 </select>
+           </div>
+           <div>
+                 <label for="timeConsumerSelection">Time Consumers</label>
+                 <select wicket:id="timeConsumerSelection" id="timeConsumerSelection">
+                   <option>TimeConsumer 1</option>
+                   <option>TimeConsumer 2</option>
+                 </select>
+           </div>      
+           <div>
+            <label for="timeSpanSelection">TimeSpan</label>
+                 <select wicket:id="timeSpanSelection" id="timeSpanSelection">
+                   <option value="daily">Daily</option>
+                   <option value="monthly">Monthly</option>
+                 </select>
+           </div>
+           <button wicket:id="btnShowMultipleProjects" type="button">Show</button>
+           </form>
+           <div>
+                   <table border="1">
+                     <thead>
+                         <tr>
+                             <th>Project ID</th>
+                             <th>Project Description</th>
+                             <th>First name</th>
+                             <th>Last name</th>
+                             <th>...</th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                         <tr wicket:id="multipleProjectList" >
+                             <td wicket:id="projectID">[]</td>
+                             <td wicket:id="projectDescription">[]</td>
+                             <td wicket:id="firstName" style="text-align:center">[]</td>
+                             <td wicket:id="lastName" style="text-align:center">[]</td>
+                             <td wicket:id="..." style="text-align:right">[]</td>
+                         </tr>
+                     </tbody>
+                 </table>
+            </div>
+        </wicket:extend>
+    </body>
+</html>

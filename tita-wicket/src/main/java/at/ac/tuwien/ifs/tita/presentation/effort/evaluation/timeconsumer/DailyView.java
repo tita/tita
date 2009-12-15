@@ -11,7 +11,7 @@
    limitations under the License.
   
  */
-package at.ac.tuwien.ifs.tita.presentation.effort.evaluation;
+package at.ac.tuwien.ifs.tita.presentation.effort.evaluation.timeconsumer;
 
 import java.util.Calendar;
 import java.util.Date;
