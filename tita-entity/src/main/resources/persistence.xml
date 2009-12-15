@@ -22,9 +22,9 @@
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
     <non-jta-data-source>jdbc/titaDatasource</non-jta-data-source>
     
-    <class>at.ac.tuwien.ifs.inv.conv.IssueTracker</class> 
-    <class>at.ac.tuwien.ifs.inv.conv.ProjectStatus</class>
-    <class>at.ac.tuwien.ifs.inv.conv.Role</class>
+    <class>at.ac.tuwien.ifs.tita.entity.conv.IssueTracker</class> 
+    <class>at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus</class>
+    <class>at.ac.tuwien.ifs.tita.entity.conv.Role</class>
     <class>at.ac.tuwien.ifs.tita.entity.TiTATask</class>
     <class>at.ac.tuwien.ifs.tita.entity.IssueTrackerProject</class>
     <class>at.ac.tuwien.ifs.tita.entity.IssueTrackerTask</class>
