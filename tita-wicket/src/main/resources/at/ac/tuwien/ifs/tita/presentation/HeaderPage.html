@@ -32,23 +32,27 @@
                 <hr/><hr/>
                 <div id="navigation">
                    <wicket:link>
-                       <!-- <div wicket:id="timeConsumerGroup"> -->
+                        <div wicket:id="timeConsumerGroup"> 
                            <a href="effort/EffortsPage.html">Efforts</a>
                            <a href="effort/evaluation/DailyView.html">Daily View</a>
                            <a href="effort/evaluation/MonthlyView.html">Monthly View</a>
-                      <!-- </div> -->
-                      <!-- <div wicket:id="timeControllerGroup"> -->
+                       </div> 
+                       <div wicket:id="timeControllerGroup"> 
                            <a href="#">Target/Actual time comparison</a>
                            <a href="#">multiple projects evaluation</a>
                            <a href="#">personal time evaluation</a>
-                      <!-- </div> -->
-                      <!-- <div wicket:id="administratorGroup"> -->
+                      </div>
+                       <div wicket:id="administratorGroup">
                            <a href="#">New User</a>
                            <a href="#">New Project</a>
                            <a href="#">Administrate Users</a>
                            <a href="#">Administrate Projects</a>
                            <a href="#">Permissions</a>
-                      <!-- </div>-->
+                       </div>
+                       <div>
+                        <input wicket:id="searchField" id="searchField" type="text"></input>
+                        <button wicket:id="searchButton" type="button">Search</button>
+                       </div>
                    </wicket:link>
                 </div>
                 <hr/>
