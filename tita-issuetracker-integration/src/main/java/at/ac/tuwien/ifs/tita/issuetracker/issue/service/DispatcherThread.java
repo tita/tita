@@ -37,16 +37,14 @@ public class DispatcherThread extends Thread {
     private boolean listening = true;
     private Map<Long, IProjectTrackable> projects;
 
-    private Logger log = LoggerFactory.getLogger(DispatcherThread.class);
+    private final Logger log = LoggerFactory.getLogger(DispatcherThread.class);
 
     public DispatcherThread(Map<Long, IProjectTrackable> projects) {
         super("Dispatcher");
         this.projects = projects;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void run() {
 

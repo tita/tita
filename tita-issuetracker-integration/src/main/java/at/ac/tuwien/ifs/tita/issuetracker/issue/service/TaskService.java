@@ -34,7 +34,6 @@ import at.ac.tuwien.ifs.tita.issuetracker.mantis.dao.IssueTrackerMantisDao;
  * 
  */
 public class TaskService implements ITaskService {
-
     private static DispatcherThread dispatcher = null;
     private static WorkerThread worker = null;
 

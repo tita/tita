@@ -31,9 +31,9 @@ import at.ac.tuwien.ifs.tita.entity.Effort;
  * @author rene
  * 
  */
-public class TimeEffortDao extends GenericHibernateDao<Effort, Long> {
+public class EffortDao extends GenericHibernateDao<Effort, Long> {
 
-    public TimeEffortDao() {
+    public EffortDao() {
         super(Effort.class);
     }
 

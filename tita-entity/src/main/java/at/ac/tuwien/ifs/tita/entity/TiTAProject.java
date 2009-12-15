@@ -16,7 +16,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import at.ac.tuwien.ifs.inv.conv.ProjectStatus;
+import at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus;
+import at.ac.tuwien.ifs.tita.entity.interfaces.IBaseEntity;
 
 /**
  * Entity for storing projects that are associated with an issue tracker.
@@ -116,6 +117,4 @@ public class TiTAProject implements IBaseEntity<Long> {
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
     }
-    
-    
 }

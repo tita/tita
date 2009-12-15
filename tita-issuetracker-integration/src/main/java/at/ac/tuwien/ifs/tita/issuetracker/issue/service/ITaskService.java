@@ -41,7 +41,8 @@ public interface ITaskService {
      * @return a map of tasks from the chosen project and status.
      * @throws ProjectNotFoundException if project is null
      */
-    Map<Long, ITaskTrackable> getTasks(IProjectTrackable project, IssueStatus status) throws ProjectNotFoundException;
+    Map<Long, ITaskTrackable> getTasks(IProjectTrackable project,
+            IssueStatus status) throws ProjectNotFoundException;
 
     /**
      * Method makes a update of a single project.

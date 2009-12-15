@@ -37,7 +37,7 @@ public class WorkerThread extends Thread {
     private IProjectTrackable project;
     private IIssueTrackerDao dao;
 
-    private Logger log = LoggerFactory.getLogger(WorkerThread.class);
+    private final Logger log = LoggerFactory.getLogger(WorkerThread.class);
 
     /**
      * Constructs a worker thread with a project.
@@ -56,7 +56,6 @@ public class WorkerThread extends Thread {
      */
     @Override
     public void run() {
-
         log.info("Fetching all Tasks for the chosen project.");
         Map<Long, ITaskTrackable> tasklist = dao.findAllTasksForProject(project.getId());
 

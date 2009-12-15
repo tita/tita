@@ -13,6 +13,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import at.ac.tuwien.ifs.tita.entity.interfaces.IBaseEntity;
+
 /**
  * Entity for storing projects comming from different issue trackers.
  * @author herbert

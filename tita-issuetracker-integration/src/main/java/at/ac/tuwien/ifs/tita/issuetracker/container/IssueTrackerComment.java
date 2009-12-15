@@ -10,8 +10,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
   
-*/
-
+ */
 
 package at.ac.tuwien.ifs.tita.issuetracker.container;
 
@@ -24,7 +23,7 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ICommentTrackable;
  * The container class for comment objects from the integrated issue tracker.
  * 
  * @author Karin
- *
+ * 
  */
 public class IssueTrackerComment implements ICommentTrackable {
     private Date creationTime;
@@ -33,17 +32,17 @@ public class IssueTrackerComment implements ICommentTrackable {
     private String reporter;
     private String text;
     private ViewState viewState;
-    
-    public IssueTrackerComment(long id, Date creationTime, Date lastChange, 
-            String reporter, String text, ViewState viewState){
-        this.id =id;
+
+    public IssueTrackerComment(long id, Date creationTime, Date lastChange,
+            String reporter, String text, ViewState viewState) {
+        this.id = id;
         this.creationTime = creationTime;
         this.lastChange = lastChange;
         this.reporter = reporter;
         this.text = text;
         this.viewState = viewState;
     }
-    
+
     /** {@inheritDoc} */
     public Date getCreationTime() {
         return this.creationTime;
@@ -53,22 +52,27 @@ public class IssueTrackerComment implements ICommentTrackable {
     public Long getId() {
         return this.id;
     }
+
     /** {@inheritDoc} */
     public Date getLastChange() {
         return this.lastChange;
     }
+
     /** {@inheritDoc} */
     public String getReporter() {
         return this.reporter;
     }
+
     /** {@inheritDoc} */
     public String getText() {
         return this.text;
     }
+
     /** {@inheritDoc} */
     public ViewState getViewState() {
         return this.viewState;
     }
+
     /** {@inheritDoc} */
     public void setCreationTime(Date creationTime) {
         this.creationTime = creationTime;
@@ -78,14 +82,17 @@ public class IssueTrackerComment implements ICommentTrackable {
     public void setLastChange(Date lastChange) {
         this.lastChange = lastChange;
     }
+
     /** {@inheritDoc} */
     public void setReporter(String reporter) {
         this.reporter = reporter;
     }
+
     /** {@inheritDoc} */
     public void setText(String text) {
         this.text = text;
     }
+
     /** {@inheritDoc} */
     public void setViewState(ViewState viewState) {
         this.viewState = viewState;

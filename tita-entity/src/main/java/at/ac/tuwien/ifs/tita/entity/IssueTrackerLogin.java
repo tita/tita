@@ -11,7 +11,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import at.ac.tuwien.ifs.inv.conv.IssueTracker;
+import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
+import at.ac.tuwien.ifs.tita.entity.interfaces.IBaseEntity;
 
 
 /**

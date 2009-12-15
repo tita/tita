@@ -32,6 +32,7 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
  */
 public class IssueTrackerTask implements ITaskTrackable, Serializable {
 
+    private Long id;
     private Map<Long, ICommentTrackable> comments;
     private Date creationTime;
     private String description;
@@ -44,7 +45,6 @@ public class IssueTrackerTask implements ITaskTrackable, Serializable {
     private IssueSeverity severity;
     private IssueStatus status;
     private String summary;
-    private Long id;
 
     public IssueTrackerTask(Long id, String description, String owner, Date creationTime, Date lastChange,
             IssuePriority priority, Long projectId, Map<Long, ICommentTrackable> comments, String reporter,

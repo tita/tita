@@ -12,7 +12,7 @@
    
  */
  
-package at.ac.tuwien.ifs.tita.service.time;
+package at.ac.tuwien.ifs.tita.business.service.time;
 
 import java.util.Calendar;
 import java.util.List;

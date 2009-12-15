@@ -37,13 +37,16 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IProjectTrackable;
 import at.ac.tuwien.ifs.tita.issuetracker.issue.service.TaskService;
 import at.ac.tuwien.ifs.tita.issuetracker.mantis.base.MantisBaseTest;
 
+/**
+ * Test for testing task service that imports all tasks comming from an issue tracker.
+ * @author herbert
+ *
+ */
 public class TaskServiceTest extends MantisBaseTest {
 
+    private static final Integer C_NUMBER_OF_PROJECTS = 3;
     private TaskService taskService = new TaskService();
-
-    Logger log = LoggerFactory.getLogger(TaskServiceTest.class);
-
-    private int numberOfProjects = 3;
+    private final Logger log = LoggerFactory.getLogger(TaskServiceTest.class);  
     private int numberOfTasksForEachProject = 2;
 
     private List<Long> taskIds = new ArrayList<Long>();
@@ -59,7 +62,7 @@ public class TaskServiceTest extends MantisBaseTest {
         super.setUp();
 
         try {
-            createSetup(this.numberOfProjects, this.numberOfTasksForEachProject);
+            createSetup(C_NUMBER_OF_PROJECTS, this.numberOfTasksForEachProject);
         } catch (MCException e) {
             fail("Mantis connection error.");
         } catch (ProjectNotFoundException e) {
@@ -70,7 +73,7 @@ public class TaskServiceTest extends MantisBaseTest {
     /**
      * Delete mantis projects for all tests.
      * 
-     * @throws InterruptedException
+     * @throws InterruptedException e
      */
     @After
     public void tearDown() throws InterruptedException {
@@ -81,11 +84,10 @@ public class TaskServiceTest extends MantisBaseTest {
      * The test case should manage the update for all projects and issues. The
      * time will be measured for the update and should be about 10 second.
      * 
-     * @throws ProjectNotFoundException
+     * @throws ProjectNotFoundException pnfe
      */
     @Test
-    public void updateAll_shouldFetchAllIssueForTheProjects()
-            throws ProjectNotFoundException {
+    public void updateAllShouldFetchAllIssueForTheProjects() throws ProjectNotFoundException {
 
         try {
 
@@ -108,9 +110,10 @@ public class TaskServiceTest extends MantisBaseTest {
             long endtime = System.currentTimeMillis();
             long duration = endtime - starttime;
             this.log.info("End of update");
+            //CHECKSTYLE:OFF
             this.log.info("Duration:" + duration / 1000 + " sec.");
-
-            assertEquals(this.numberOfProjects, this.taskService.getProjects()
+            //CHECKSTYLE:ON
+            assertEquals(C_NUMBER_OF_PROJECTS.intValue(), this.taskService.getProjects()
                     .size());
             assertEquals(this.numberOfTasksForEachProject + 1, this.taskService
                     .getTasks(
@@ -130,7 +133,7 @@ public class TaskServiceTest extends MantisBaseTest {
      * The test case should update a single project. After the update new tasks
      * for the project should be involved.
      * 
-     * @throws ProjectNotFoundException
+     * @throws ProjectNotFoundException pnfe
      * 
      */
     @Test
@@ -151,12 +154,13 @@ public class TaskServiceTest extends MantisBaseTest {
             long endtime = System.currentTimeMillis();
             long duration = endtime - starttime;
             this.log.info("End of update");
+            //CHECKSTYLE:OFF
             this.log.info("Duration:" + duration / 1000 + " sec.");
-
+            //CHECKSTYLE:ON
             IProjectTrackable pro = this.taskService.getIssueTrackerDao()
                     .findProject(this.projectIds.get(0));
 
-            assertEquals(this.numberOfProjects, this.taskService.getProjects()
+            assertEquals(C_NUMBER_OF_PROJECTS.intValue(), this.taskService.getProjects()
                     .size());
             assertEquals(this.numberOfTasksForEachProject + 1, this.taskService
                     .getTasks(pro, IssueStatus.NEW).size());
@@ -170,11 +174,10 @@ public class TaskServiceTest extends MantisBaseTest {
     /**
      * The test case shows how the task service reacts when no project is set.
      * 
-     * @throws ProjectNotFoundException
+     * @throws ProjectNotFoundException pnfe
      */
     @Test(expected = ProjectNotFoundException.class)
-    public void getTasks_shouldThrowProjectNotFoundException()
-            throws ProjectNotFoundException {
+    public void getTasksShouldThrowProjectNotFoundException() throws ProjectNotFoundException {
 
         this.taskService = new TaskService();
         this.taskService.getTasks(null, IssueStatus.NEW);
@@ -188,7 +191,7 @@ public class TaskServiceTest extends MantisBaseTest {
      * A null should be returned, that says, that a information message for the
      * user is necessary as feedback.
      * 
-     * @throws ProjectNotFoundException
+     * @throws ProjectNotFoundException pnfe
      */
     @Test
     public void getTasks() throws ProjectNotFoundException {
@@ -205,10 +208,10 @@ public class TaskServiceTest extends MantisBaseTest {
      * The method creates a setup in mantis to evaluate the performance and the
      * update mechanism from TiTA.
      * 
-     * @param amountOfProjects
-     * @param amountOfTasksForEachProject
-     * @throws MCException
-     * @throws ProjectNotFoundException
+     * @param amountOfProjects p
+     * @param amountOfTasksForEachProject p
+     * @throws MCException e
+     * @throws ProjectNotFoundException ef
      */
     private void createSetup(int amountOfProjects,
             int amountOfTasksForEachProject) throws MCException,
@@ -217,7 +220,7 @@ public class TaskServiceTest extends MantisBaseTest {
         List<Long> projectids = new ArrayList<Long>();
 
         this.log.info("Starting setup");
-        long starttime_setup = System.currentTimeMillis();
+        long starttimesetup = System.currentTimeMillis();
 
         Long id = 1L;
         Long taskid = 1L;
@@ -244,40 +247,43 @@ public class TaskServiceTest extends MantisBaseTest {
         assertEquals(amountOfTasksForEachProject, this.taskService.getTasks(
                 this.taskService.getProjects().get(id), IssueStatus.NEW).size());
 
-        long endtime_setup = System.currentTimeMillis();
-        long duration_setup = endtime_setup - starttime_setup;
-        duration_setup = endtime_setup - starttime_setup;
+        long endtimesetup = System.currentTimeMillis();
+        long durationsetup = endtimesetup - starttimesetup;
+        durationsetup = endtimesetup - starttimesetup;
 
         this.log.info("End of setup");
-        this.log.info("Duration Setup:" + duration_setup / 1000 + " sec.");
+        //CHECKSTYLE:OFF
+        this.log.info("Duration Setup:" + durationsetup / 1000 + " sec.");
+        //CHECKSTYLE:ON
     }
 
     /**
      * The method undo the setup for mantis.
      * 
-     * @throws InterruptedException
+     * @throws InterruptedException ie
      */
     private void deleteSetupAndChanges() throws InterruptedException {
-
+        //CHECKSTYLE:OFF
         Thread.sleep(2000);
 
         this.log.info("Starting deleting");
-        long starttime_deleting = System.currentTimeMillis();
+        long starttimedeleting = System.currentTimeMillis();
 
         // delete tasks
         for (int i = 0; i < this.taskIds.size(); i++) {
             deleteTestTask(this.taskIds.get(i));
         }
         // delete projects
-        for (int i = 0; i < this.numberOfProjects; i++) {
+        for (int i = 0; i < this.C_NUMBER_OF_PROJECTS; i++) {
             deleteTestProject("projectName" + i);
         }
-        long endtime_deleting = System.currentTimeMillis();
-        long duration_deleting = endtime_deleting - starttime_deleting;
-        duration_deleting = endtime_deleting - starttime_deleting;
+        long endtimedeleting = System.currentTimeMillis();
+        long durationdeleting = endtimedeleting - starttimedeleting;
+        durationdeleting = endtimedeleting - starttimedeleting;
 
         this.log.info("End of Deleting");
         this.log
-                .info("Duration Deleting:" + duration_deleting / 1000 + " sec.");
+                .info("Duration Deleting:" + durationdeleting / 1000 + " sec.");
+        //CHECKSTYLE:ON
     }
 }

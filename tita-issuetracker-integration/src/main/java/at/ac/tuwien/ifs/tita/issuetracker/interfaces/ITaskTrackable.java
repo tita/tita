@@ -29,7 +29,7 @@ import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueStatus;
  * @author Christoph
  * 
  */
-public interface ITaskTrackable{
+public interface ITaskTrackable {
 
     /**
      * Supplies the identifier of the task.
@@ -147,7 +147,7 @@ public interface ITaskTrackable{
     /**
      * Returns the creation time of the task.
      * 
-     * @return creationTime - time the task was created
+     * @return Date - time the task was created
      */
     Date getCreationTime();
 
@@ -221,6 +221,7 @@ public interface ITaskTrackable{
      * @see ICommentTrackable
      */
     void setComments(Map<Long, ICommentTrackable> comments);
+
     /**
      * Returns a list of comments added to the task.
      * 

@@ -14,67 +14,63 @@ import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import at.ac.tuwien.ifs.tita.entity.interfaces.IBaseEntity;
+
 /**
  * Entity for storing time producer's effort of his/her assigned tasks.
+ * 
  * @author herbert
- *
+ * 
  */
 @Entity
-@Table(name="EFFORT")
+@Table(name = "EFFORT")
 @SequenceGenerator(name = "seq_effort", sequenceName = "EEFORT_ID_SEQ", allocationSize = 1)
 @NamedQueries( {
-        @NamedQuery(name = "timeeffort.daily.view", 
-                query = "select te from Effort te where YEAR(te.startTime) = :year "
-                        + " and MONTH(te.startTime)= :month and DAY(te.startTime)= :day"),
-        @NamedQuery(name = "timeeffort.monthly.view", 
-                query = "select te from Effort te where YEAR(te.startTime) = :year "
-                        + " and MONTH(te.startTime)= :month"),
-        @NamedQuery(name = "timeeffort.actual.view", 
-                query = "select te from Effort te order by te.startTime desc") })
+        @NamedQuery(name = "timeeffort.daily.view", query = "select te from Effort te where YEAR(te.startTime) = :year "
+                + " and MONTH(te.startTime)= :month and DAY(te.startTime)= :day"),
+        @NamedQuery(name = "timeeffort.monthly.view", query = "select te from Effort te where YEAR(te.startTime) = :year "
+                + " and MONTH(te.startTime)= :month"),
+        @NamedQuery(name = "timeeffort.actual.view", query = "select te from Effort te order by te.startTime desc") })
 public class Effort implements IBaseEntity<Long> {
-    
+
     @Id
-    @Column(name="ID")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="seq_effort")
-    private Long id;   
-    
-    @Column(name="TITA_TASK_ID")
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_effort")
+    private Long id;
+
+    @Column(name = "TITA_TASK_ID")
     private Long titaTaskId;
-    
-    @Column(name="ISSUET_TASK_ID")
+
+    @Column(name = "ISSUET_TASK_ID")
     private Long issueTTaskId;
-    
-    @Column(name="START_TIME")
+
+    @Column(name = "START_TIME")
     private Date startTime;
-    
-    @Column(name="END_TIME")
+
+    @Column(name = "END_TIME")
     private Date endTime;
-    
-    @Column(name="DURATION")
+
+    @Column(name = "DURATION")
     private Long duration;
-    
-    @Column(name="DESCRIPTION")
+
+    @Column(name = "DESCRIPTION")
     private String description;
-    
-    @Column(name="DELETED")
+
+    @Column(name = "DELETED")
     private Boolean deleted;
-    
+
     @ManyToOne
-    @JoinColumn(name="USER_ID", referencedColumnName="ID")
+    @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
     private User user;
-    
+
     public Effort() {
     }
-    
-    public Effort(Long id, Long titaTaskId, Long issueTTaskId, Date startTime,
-            Date endTime, Long duration, String description) {
+
+    public Effort(Long id, Long titaTaskId, Long issueTTaskId, String description) {
         super();
         this.id = id;
         this.titaTaskId = titaTaskId;
         this.issueTTaskId = issueTTaskId;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.duration = duration;
         this.description = description;
     }
 
@@ -85,18 +81,6 @@ public class Effort implements IBaseEntity<Long> {
 
     public String getDescription() {
         return description;
-    }
-
-    public Date getStartTime() {
-        return startTime;
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public Long getDuration() {
-        return duration;
     }
 
     public Long getTitaTaskId() {
@@ -146,6 +130,20 @@ public class Effort implements IBaseEntity<Long> {
     public void setDescription(String description) {
         this.description = description;
     }
-    
-    
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public Long getDuration() {
+        return duration;
+    }
+
+    public Boolean isTiTAEffort() {
+        return (titaTaskId != null);
+    }
 }

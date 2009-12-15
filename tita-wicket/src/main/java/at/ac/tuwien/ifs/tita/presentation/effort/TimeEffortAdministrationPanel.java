@@ -47,14 +47,13 @@ import org.apache.wicket.validation.validator.StringValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import at.ac.tuwien.ifs.tita.business.service.time.IEffortService;
+import at.ac.tuwien.ifs.tita.business.util.TiTATimeConverter;
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.Effort;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.presentation.TitaDataProvider;
 import at.ac.tuwien.ifs.tita.presentation.utils.GlobalUtils;
-import at.ac.tuwien.ifs.tita.service.time.IEffortService;
-import at.ac.tuwien.ifs.tita.util.TiTATimeConverter;
-import at.ac.tuwien.ifs.tita.util.time.ITimer;
 
 /**
  * 
@@ -78,8 +77,8 @@ public class TimeEffortAdministrationPanel extends Panel {
     @SpringBean(name = "timeEffortService")
     private IEffortService service;
 
-    @SpringBean(name = "generalTimer")
-    private ITimer generalTimer;
+    // @SpringBean(name = "generalTimer")
+    // private ITimer generalTimer;
     //
     // // IssueTracker dao
     // @SpringBean(name = "mantisDAO")

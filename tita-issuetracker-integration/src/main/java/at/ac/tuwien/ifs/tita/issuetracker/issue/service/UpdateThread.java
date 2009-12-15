@@ -34,10 +34,7 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IProjectTrackable;
  */
 public class UpdateThread extends Thread {
 
-    private static final Integer TIME1 = 60;
-    private static final Integer TIME2 = 1000;
-
-    private Logger log = LoggerFactory.getLogger(UpdateThread.class);
+    private final Logger log = LoggerFactory.getLogger(UpdateThread.class);
 
     private int timeout;
     private boolean applicationIsRunning = true;
@@ -78,12 +75,14 @@ public class UpdateThread extends Thread {
                 new DispatcherThread(projects).start();
                 log.debug("Automatic update was succesful.");
                 log.debug("Waiting until timeout is over.");
-                Thread.sleep(timeout * TIME1 * TIME2);
+                // CHECKSTYLE:OFF
+                Thread.sleep(timeout * 60 * 1000);
+                // CHECKSTYLE:ON
             }
 
         } catch (InterruptedException e) {
             log.error("Automatic update failed.");
-            e.printStackTrace();
+            throw new RuntimeException("Automatic update failed.");
         }
     }
 

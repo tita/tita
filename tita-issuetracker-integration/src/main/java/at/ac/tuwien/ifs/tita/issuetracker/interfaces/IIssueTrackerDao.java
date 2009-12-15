@@ -30,6 +30,10 @@ public interface IIssueTrackerDao {
     /**
      * Method to find all projects for a User.
      * 
+<<<<<<< HEAD:tita-issuetracker-integration/src/main/java/at/ac/tuwien/ifs/tita/issuetracker/interfaces/IIssueTrackerDao.java
+=======
+     * 
+>>>>>>> master:tita-issuetracker-integration/src/main/java/at/ac/tuwien/ifs/tita/issuetracker/interfaces/IIssueTrackerDao.java
      * @return list of found projects
      */
     Map<Long, IProjectTrackable> findAccessibleProjects();

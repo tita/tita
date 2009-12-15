@@ -280,14 +280,14 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
     }
 
     /**
-     * TODO: write javadoc.
+     * Creates a test project in mantis.
      * 
-     * @param projectName x
-     * @param description x
-     * @param enabled x
-     * @param viewStatePrivate x
-     * @return x
-     * @throws MCException x
+     * @param projectName String
+     * @param description String
+     * @param enabled Boolean
+     * @param viewStatePrivate Boolean
+     * @return Long id
+     * @throws MCException mce
      */
     public Long createTestProject(String projectName, String description, Boolean enabled, Boolean viewStatePrivate)
             throws MCException {

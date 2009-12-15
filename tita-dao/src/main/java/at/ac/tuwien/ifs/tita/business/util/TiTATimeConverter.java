@@ -12,7 +12,7 @@
    
  */
 
-package at.ac.tuwien.ifs.tita.util;
+package at.ac.tuwien.ifs.tita.business.util;
 
 
 /**
