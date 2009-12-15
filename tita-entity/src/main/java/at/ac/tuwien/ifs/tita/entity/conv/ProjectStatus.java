@@ -1,4 +1,4 @@
-package at.ac.tuwien.ifs.inv.conv;
+package at.ac.tuwien.ifs.tita.entity.conv;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;

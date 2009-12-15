@@ -1,10 +1,10 @@
-package at.ac.tuwien.ifs.inv.conv;
+package at.ac.tuwien.ifs.tita.entity.conv;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
-import at.ac.tuwien.ifs.tita.entity.IBaseEntity;
+import at.ac.tuwien.ifs.tita.entity.interfaces.IBaseEntity;
 
 /**
  * Base-Entity for Conv-Tables.
