@@ -11,7 +11,7 @@
    limitations under the License.
    
  */
-package at.ac.tuwien.ifs.tita.service.user;
+package at.ac.tuwien.ifs.tita.business.service.user;
 
 //import org.springframework.transaction.annotation.Transactional;
 //

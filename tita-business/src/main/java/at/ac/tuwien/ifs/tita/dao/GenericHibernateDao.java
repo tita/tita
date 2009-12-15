@@ -49,7 +49,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
-import at.ac.tuwien.ifs.tita.entity.IBaseEntity;
+import at.ac.tuwien.ifs.tita.entity.interfaces.IBaseEntity;
 
 /**
  * Concrete implementation of IGenericHibernateDao Interface.

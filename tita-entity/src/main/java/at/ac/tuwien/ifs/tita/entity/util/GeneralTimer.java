@@ -13,11 +13,11 @@
    limitations under the License.
    
  */
-package at.ac.tuwien.ifs.tita.util;
+package at.ac.tuwien.ifs.tita.entity.util;
 
 import java.util.Date;
 
-import at.ac.tuwien.ifs.tita.entity.ITimer;
+import at.ac.tuwien.ifs.tita.entity.interfaces.ITimedBase;
 
 
 /**
@@ -25,19 +25,24 @@ import at.ac.tuwien.ifs.tita.entity.ITimer;
  * @author herbert
  *
  */
-public class GeneralTimer implements ITimer {
+public class GeneralTimer implements ITimedBase {
     
-    private Long duration;
-    private Boolean started;
-    private Long startTime;
-    private Long endTime;
+    protected Long duration;
+    protected Boolean started;
+    protected Long creationTime;
+    protected Long startTime;
+    protected Long endTime;
     
     public GeneralTimer() {
         super();
         this.duration = 0L;
         this.started = false;
+        // real start time, startTime only for starting and 
+        // splitting task time during synchronisation
+        this.creationTime = System.currentTimeMillis();
     }
 
+    /**{@inheritDoc}*/
     @Override
     public Long getDuration() {
         return duration;
@@ -46,40 +51,36 @@ public class GeneralTimer implements ITimer {
     /**{@inheritDoc}*/
     @Override
     public Boolean isStopped() {
-        return null;
-    }
-
-    /**{@inheritDoc}*/
-    @Override
-    public void splitTime(Integer countRunning) {
+        return !started;
     }
 
     /**{@inheritDoc}*/
     @Override
     public void start() {
-        if (!this.started) {
-            this.startTime = System.currentTimeMillis();
-            this.started = true;
+        if (!started) {
+            startTime = System.currentTimeMillis();
+            started = true;
         }
     }
 
     /**{@inheritDoc}*/
     @Override
     public void stop() {
-        if (this.started) {
-            this.endTime = System.currentTimeMillis();
-            this.duration = endTime - this.startTime;
-            this.started = false;
+        if (started) {
+            endTime = System.currentTimeMillis();
+            started = false;
         }
     }
 
+    /**{@inheritDoc}*/
     @Override
     public Date getStartTime() {
-        return new Date(this.startTime);
+        return new Date(creationTime);
     }
 
+    /**{@inheritDoc}*/
     @Override
     public Date getEndTime() {
-        return new Date(this.endTime);
+        return new Date(endTime);
     }
 }

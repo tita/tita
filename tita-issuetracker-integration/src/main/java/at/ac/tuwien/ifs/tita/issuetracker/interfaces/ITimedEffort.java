@@ -12,29 +12,30 @@
    
  */
 
-package at.ac.tuwien.ifs.tita.util.time;
+package at.ac.tuwien.ifs.tita.issuetracker.interfaces;
 
-import at.ac.tuwien.ifs.tita.entity.ITimer;
+import at.ac.tuwien.ifs.tita.entity.interfaces.ITimedBase;
+import at.ac.tuwien.ifs.tita.issuetracker.container.TimedIssueId;
+
 
 /**
- * Interface for TimerCoordinator.
+ * Timer interface for proper defining timer's tasks start and stop.
  * 
  * @author herbert
+ * 
  */
-public interface ITimedTaskCoordinator {
+public interface ITimedEffort extends ITimedBase {  
+    /**
+     * Get id of issue tracker project and issue id and encapsulates it.
+     * @return TimedIssueId id
+     */
+    TimedIssueId getTimedIssueId();
+    
 
     /**
-     * Add a timeable task to coordinators task list for managing it and starts
-     * this task.
+     * Splits the time for a given number of currently running tasks.
      * 
-     * @param t ITimeabletask
+     * @param countRunning Integer
      */
-    void startTimeableTask(ITimer t);
-
-    /**
-     * Removes a timeable task from coordinators task list, but stops it before.
-     * 
-     * @param t ITimeabletask
-     */
-    void stopTimeableTask(ITimer t);
+    void splitTime(Integer countRunning);
 }

@@ -12,7 +12,7 @@
    
  */
 
-package at.ac.tuwien.ifs.tita.service.user;
+package at.ac.tuwien.ifs.tita.business.service.user;
 
 //import at.ac.tuwien.ifs.tita.datasource.dao.IGenericHibernateDao;
 //import at.ac.tuwien.ifs.tita.datasource.entity.Role;

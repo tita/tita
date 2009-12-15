@@ -147,7 +147,7 @@ public interface ITaskTrackable {
     /**
      * Returns the creation time of the task.
      * 
-     * @return creationTime - time the task was created
+     * @return Date - time the task was created
      */
     Date getCreationTime();
 

@@ -1,4 +1,4 @@
-package at.ac.tuwien.ifs.tita.entity;
+package at.ac.tuwien.ifs.tita.entity.interfaces;
 
 import java.io.Serializable;
 

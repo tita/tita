@@ -14,6 +14,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import at.ac.tuwien.ifs.tita.entity.interfaces.IBaseEntity;
+
 /**
  * Entity for storing time producer's effort of his/her assigned tasks.
  * @author herbert
@@ -62,7 +64,7 @@ public class Effort implements IBaseEntity<Long>{
     @ManyToOne
     @JoinColumn(name="USER_ID", referencedColumnName="ID")
     private User user;
-    
+
     public Effort() {
     }
     

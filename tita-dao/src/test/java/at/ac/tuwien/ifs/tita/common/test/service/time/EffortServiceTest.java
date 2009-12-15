@@ -36,9 +36,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import at.ac.tuwien.ifs.tita.business.service.time.IEffortService;
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.Effort;
-import at.ac.tuwien.ifs.tita.service.time.IEffortService;
 
 /**
  * Effort Service Test.
@@ -61,8 +61,7 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
      */
     @Test
     public void testSaveTimeEffort() {
-        Effort timeEffort = new Effort(null, null, null, new Date(),null, null,
-                                        "Das ist die Test TimeEffort 1");
+        Effort timeEffort = new Effort(null, null, null, "Das ist die Test TimeEffort 1");
  
         try {
             service.saveEffort(timeEffort);
@@ -77,8 +76,7 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
      */
     @Test
     public void testDeleteTimeEffort() {
-        Effort timeEffort = new Effort(null, null, null, new Date(),null, null,
-                                        "Das ist die Test TimeEffort 2");
+        Effort timeEffort = new Effort(null, null, null, "Das ist die Test TimeEffort 2");
         try {
             service.saveEffort(timeEffort);
             Assert.assertNotNull(timeEffort.getId());
@@ -95,8 +93,7 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
      */
     @Test
     public void testUpdateTimeEffort() {
-        Effort timeEffort = new Effort(null, null, null, new Date(),null, null,
-                "Das ist die Test TimeEffort 3");
+        Effort timeEffort = new Effort(null, null, null,"Das ist die Test TimeEffort 3");
         try {
             service.saveEffort(timeEffort);
             Assert.assertNotNull(timeEffort.getId());
@@ -115,8 +112,7 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
      */
     @Test
     public void testSearchTimeEffort() {
-        Effort timeEffort = new Effort(null, null, null, new Date(),null, null,
-                "Das ist die Test TimeEffort 4");
+        Effort timeEffort = new Effort(null, null, null, "Das ist die Test TimeEffort 4");
         try {
             service.saveEffort(timeEffort);
             Assert.assertNotNull(timeEffort.getId());
@@ -147,12 +143,9 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
         } catch (ParseException e1) {
             assertTrue(false);
         }
-        Effort timeEffort1 = new Effort(null, null, null, date1,null, null,
-                "Das ist die Test TimeEffort 5");
-        Effort timeEffort2 = new Effort(null, null, null, date2,null, null,
-                "Das ist die Test TimeEffort 6");
-        Effort timeEffort3 = new Effort(null, null, null, date1,null, null,
-                "Das ist die Test TimeEffort 7");
+        Effort timeEffort1 = new Effort(null, null, null, "Das ist die Test TimeEffort 5");
+        Effort timeEffort2 = new Effort(null, null, null, "Das ist die Test TimeEffort 6");
+        Effort timeEffort3 = new Effort(null, null, null, "Das ist die Test TimeEffort 7");
         
         effortList.add(timeEffort1);
         effortList.add(timeEffort2);
