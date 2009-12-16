@@ -21,6 +21,8 @@ import java.util.List;
 
 import javax.persistence.Query;
 
+import org.springframework.stereotype.Repository;
+
 import at.ac.tuwien.ifs.tita.dao.GenericHibernateDao;
 import at.ac.tuwien.ifs.tita.entity.Effort;
 
@@ -31,6 +33,7 @@ import at.ac.tuwien.ifs.tita.entity.Effort;
  * @author rene
  * 
  */
+@Repository
 public class EffortDao extends GenericHibernateDao<Effort, Long> {
 
     public EffortDao() {
@@ -49,7 +52,7 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> {
         Query q = em.createNamedQuery("timeeffort.monthly.view");
         q.setParameter("year", cal.get(Calendar.YEAR));
         q.setParameter("month", cal.get(Calendar.MONTH) + 1);
-        return (List<Effort>) q.getResultList();
+        return q.getResultList();
     }
 
     /**
