@@ -25,6 +25,8 @@ import org.slf4j.LoggerFactory;
 
 import at.ac.tuwien.ifs.tita.entity.Effort;
 import at.ac.tuwien.ifs.tita.presentation.uihelper.AbstractTitaTableModel;
+import at.ac.tuwien.ifs.tita.presentation.uihelper.ButtonDelete;
+import at.ac.tuwien.ifs.tita.presentation.uihelper.ButtonEdit;
 import at.ac.tuwien.ifs.tita.presentation.utils.GlobalUtils;
 import at.ac.tuwien.ifs.tita.presentation.utils.IntegerConstants;
 
@@ -43,7 +45,23 @@ public class TableModelEffort extends AbstractTitaTableModel {
         super(list);
 
         columnNames = new String[] { "ID", "Date", "Description", "Start Time",
-                "End Time", "Duration", "" };
+                "End Time", "Duration", "", "" };
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        if (columnIndex == IntegerConstants.ONE) {
+            return Date.class;
+        } else if (columnIndex == IntegerConstants.SIX) {
+            return ButtonEdit.class;
+        } else if (columnIndex == IntegerConstants.SEVEN) {
+            return ButtonDelete.class;
+        } else {
+            return super.getColumnClass(columnIndex);
+        }
     }
 
     /**
@@ -69,6 +87,8 @@ public class TableModelEffort extends AbstractTitaTableModel {
             } else if (col == IntegerConstants.FIVE) {
                 return GlobalUtils.TIMELENGTHFORMAT.format(te.getDuration());
             } else if (col == IntegerConstants.SIX) {
+                return null;
+            } else if (col == IntegerConstants.SEVEN) {
                 return null;
             } else {
                 return te;

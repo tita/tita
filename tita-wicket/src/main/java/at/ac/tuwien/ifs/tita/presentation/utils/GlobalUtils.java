@@ -22,6 +22,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.apache.wicket.markup.html.form.TextField;
+
 /**
  * GlobalUtils.
  * 
@@ -128,6 +130,46 @@ public final class GlobalUtils {
             if (o.toString().compareTo("") != 0) {
                 return GlobalUtils.TIMELENGTHFORMAT.parse(o.toString())
                         .getTime();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Get time data from textfield.
+     * 
+     * @param field
+     *            to read
+     * @return time as long
+     * @throws ParseException
+     *             parse exception
+     */
+    public static Long getTimeFromTextField(TextField<String> field)
+            throws ParseException {
+        if (field != null) {
+            if (field.getModelObject().compareTo("") != 0) {
+                return GlobalUtils.TIMEFORMAT24HOURS.parse(
+                        field.getModelObject()).getTime();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Get duration from textfield.
+     * 
+     * @param field
+     *            to read
+     * @return duration as long
+     * @throws ParseException
+     *             parse exception
+     */
+    public static Long getDurationFromTextField(TextField<String> field)
+            throws ParseException {
+        if (field != null) {
+            if (field.getModelObject().compareTo("") != 0) {
+                return GlobalUtils.TIMELENGTHFORMAT.parse(
+                        field.getModelObject()).getTime();
             }
         }
         return null;

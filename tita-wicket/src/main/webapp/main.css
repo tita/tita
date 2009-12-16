@@ -141,11 +141,11 @@ tr {
 }
 
 .editCell {
-	font-size:100%;
+	font-size:80%;
 }
 
 .dateCell {
-	font-size:100%;
+	font-size:80%;
 	width: 72%;
 }
 
@@ -158,6 +158,17 @@ tr {
 	display: block;
 	background-color: transparent;
 	background-image: url(images/bt-delete.png);
+	background-position:center;
+	background-repeat: no-repeat;
+	width: 30px;
+	height: 30px;
+	border: none;
+}
+
+.buttonEdit {
+	display: block;
+	background-color: transparent;
+	background-image: url(images/bt-edit.png);
 	background-position:center;
 	background-repeat: no-repeat;
 	width: 30px;

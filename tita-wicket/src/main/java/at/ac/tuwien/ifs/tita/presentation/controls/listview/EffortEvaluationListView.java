@@ -86,8 +86,8 @@ public class EffortEvaluationListView<T> extends ListView<Effort> {
     /**
      * Checks if date is am or pm.
      * 
-     * @param long1
-     *            date to check
+     * @param time
+     *            time to check
      * @return am or pm as string
      */
     private String isAMorPM(Long time) {

@@ -16,15 +16,11 @@
  */
 package at.ac.tuwien.ifs.tita.presentation.uihelper;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import org.apache.wicket.markup.html.form.Button;
-
 import at.ac.tuwien.ifs.tita.entity.interfaces.BaseEntity;
-import at.ac.tuwien.ifs.tita.presentation.utils.IntegerConstants;
 
 /**
  * 
@@ -44,20 +40,6 @@ public abstract class AbstractTitaTableModel extends AbstractTableModel {
         super();
         columnNames = new String[] {};
         this.list = list1;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Class<?> getColumnClass(int columnIndex) {
-        if (columnIndex == IntegerConstants.SIX) {
-            return Button.class;
-        } else if (columnIndex == IntegerConstants.ONE) {
-            return Date.class;
-        } else {
-            return super.getColumnClass(columnIndex);
-        }
     }
 
     /**

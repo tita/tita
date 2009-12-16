@@ -14,18 +14,18 @@
    limitations under the License.
    
  */
-package at.ac.tuwien.ifs.tita.presentation.utils;
+package at.ac.tuwien.ifs.tita.presentation.uihelper;
 
 /**
- * Provides utils for effort associated classes.
+ * Button Delete.
  * 
  * @author msiedler
  * 
  */
-public class EffortUtils {
+public class ButtonDelete extends LenientAjaxButton {
 
-    public static final int MAXLISTSIZE = 25;
-    public static final int ROWS_PER_PAGE = 10;
-    public static final String[] WIDTHS = new String[] { "40", "90", "300",
-            "80", "80", "78", "30", "30" };
+    public ButtonDelete(String id) {
+        super(id);
+    }
+
 }

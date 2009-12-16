@@ -30,8 +30,6 @@ import org.apache.wicket.datetime.StyleDateConverter;
 import org.apache.wicket.datetime.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.border.MarkupComponentBorder;
-import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -48,9 +46,12 @@ import at.ac.tuwien.ifs.tita.business.service.time.IEffortService;
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.Effort;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
+import at.ac.tuwien.ifs.tita.presentation.uihelper.ButtonDelete;
 import at.ac.tuwien.ifs.tita.presentation.uihelper.ButtonDeleteRenderer;
+import at.ac.tuwien.ifs.tita.presentation.uihelper.ButtonEdit;
+import at.ac.tuwien.ifs.tita.presentation.uihelper.ButtonEditRenderer;
 import at.ac.tuwien.ifs.tita.presentation.uihelper.DateTextFieldRenderer;
-import at.ac.tuwien.ifs.tita.presentation.uihelper.ITitaAdministrationPanel;
+import at.ac.tuwien.ifs.tita.presentation.uihelper.IAdministrationPanel;
 import at.ac.tuwien.ifs.tita.presentation.utils.EffortUtils;
 import at.ac.tuwien.ifs.tita.presentation.utils.GlobalUtils;
 import at.ac.tuwien.ifs.tita.presentation.utils.IntegerConstants;
@@ -63,7 +64,7 @@ import at.ac.tuwien.ifs.tita.presentation.utils.IntegerConstants;
  * 
  */
 public class AdministrationPanelEffort extends Panel implements
-        ITitaAdministrationPanel {
+        IAdministrationPanel {
 
     @SpringBean(name = "timeEffortService")
     private IEffortService service;
@@ -86,7 +87,6 @@ public class AdministrationPanelEffort extends Panel implements
     private List<Effort> unfilteredList = new ArrayList<Effort>();
 
     // Wicket Components
-
     private Form<Effort> form = null;
     // private Form timerForm = null;
 
@@ -104,9 +104,6 @@ public class AdministrationPanelEffort extends Panel implements
 
     private WebMarkupContainer timeeffortContainer = null;
 
-    // private User user;
-    // private Project project;
-
     public AdministrationPanelEffort(String id, TiTAProject project) {
         super(id);
 
@@ -118,7 +115,7 @@ public class AdministrationPanelEffort extends Panel implements
     }
 
     /**
-     * Displays panel
+     * Displays panel.
      */
     private void displayPanel() {
 
@@ -169,10 +166,10 @@ public class AdministrationPanelEffort extends Panel implements
     }
 
     /**
-     * Initializes the time effort data table
+     * Initializes the time effort data table.
      * 
      * @param timeEffortList
-     * @return
+     *            the list to displayed in the table
      */
     private void displayDataTable(List<Effort> timeEffortList) {
 
@@ -213,7 +210,8 @@ public class AdministrationPanelEffort extends Panel implements
 
         teDescription = new TextField<String>("tedescription",
                 new Model<String>(""));
-        teDescription.add(StringValidator.maximumLength(50));
+        teDescription
+                .add(StringValidator.maximumLength(IntegerConstants.FIFTY));
         form.add(teDescription);
 
         teDate = new DateTextField("tedate", new PropertyModel<Date>(this,
@@ -268,11 +266,15 @@ public class AdministrationPanelEffort extends Panel implements
         table.setDefaultEditor(Date.class, re);
         table.setDefaultRenderer(Date.class, re);
 
-        ButtonDeleteRenderer btRe = new ButtonDeleteRenderer(this);
-        table.setDefaultRenderer(Button.class, btRe);
-        table.setDefaultEditor(Button.class, btRe);
+        ButtonEditRenderer btReEdit = new ButtonEditRenderer(this);
+        table.setDefaultRenderer(ButtonEdit.class, btReEdit);
+        table.setDefaultEditor(ButtonEdit.class, btReEdit);
 
-        table.setRowsPerPage(10);
+        ButtonDeleteRenderer btReDelete = new ButtonDeleteRenderer(this);
+        table.setDefaultRenderer(ButtonDelete.class, btReDelete);
+        table.setDefaultEditor(ButtonDelete.class, btReDelete);
+
+        table.setRowsPerPage(EffortUtils.ROWS_PER_PAGE);
         table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
         form.add(table.getRowsAjaxPagingNavigator("rowsPaging"));
@@ -339,6 +341,9 @@ public class AdministrationPanelEffort extends Panel implements
     // });
     // }
 
+    /**
+     * Clear TextFields.
+     */
     private void clearFields() {
         teDescription.setModelObject("");
         teStartTime.setModelObject("");
@@ -349,7 +354,21 @@ public class AdministrationPanelEffort extends Panel implements
     // =========== DB METHODS ================================================
 
     /**
-     * Save Time Effort
+     * {@inheritDoc}
+     */
+    public List<Effort> getListEntities(int maxresults) {
+        List<Effort> list = null;
+        try {
+            list = service.getActualEfforts(maxresults);
+        } catch (TitaDAOException e) {
+            log.error(e.getMessage());
+        }
+
+        return list;
+    }
+
+    /**
+     * {@inheritDoc}
      */
     public void saveListEntity() {
         Effort timeEffort = null;
@@ -359,9 +378,9 @@ public class AdministrationPanelEffort extends Panel implements
             timeEffort.setDate(teDate.getModelObject());
             timeEffort.setDescription(teDescription.getModelObject());
 
-            Long startTime = getTimeFromTextField(teStartTime);
-            Long endTime = getTimeFromTextField(teEndTime);
-            Long duration = getDurationFromTextField(teTimeLength);
+            Long startTime = GlobalUtils.getTimeFromTextField(teStartTime);
+            Long endTime = GlobalUtils.getTimeFromTextField(teEndTime);
+            Long duration = GlobalUtils.getDurationFromTextField(teTimeLength);
 
             if (startTime != null && (endTime != null || endTime != null)) {
                 if (duration == null) {
@@ -373,64 +392,21 @@ public class AdministrationPanelEffort extends Panel implements
                 timeEffort.setStartTime(startTime);
                 service.saveEffort(timeEffort);
 
-                timeeffortList = unfilteredList = getListEntities(EffortUtils.MAXLISTSIZE);
+                unfilteredList = getListEntities(EffortUtils.MAXLISTSIZE);
+                timeeffortList = unfilteredList;
 
                 timeEffort = new Effort();
             }
         } catch (TitaDAOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private Long getTimeFromTextField(TextField<String> field) {
-        try {
-            if (field != null) {
-                if (field.getModelObject().compareTo("") != 0) {
-                    return GlobalUtils.TIMEFORMAT24HOURS.parse(
-                            field.getModelObject()).getTime();
-                }
-            }
+            log.error(e.getMessage());
         } catch (ParseException e) {
-            log.error("Wrong date form");
-            field.setComponentBorder(new MarkupComponentBorder());
+            log.error(e.getMessage());
         }
-        return null;
-    }
-
-    private Long getDurationFromTextField(TextField<String> field) {
-        try {
-            if (field != null) {
-                if (field.getModelObject().compareTo("") != 0) {
-                    return GlobalUtils.TIMELENGTHFORMAT.parse(
-                            field.getModelObject()).getTime();
-                }
-            }
-        } catch (ParseException e) {
-            log.error("Wrong time length form");
-            field.setComponentBorder(new MarkupComponentBorder());
-        }
-        return null;
     }
 
     /**
-     * Gets actual time efforts
-     * 
-     * @param maxresults
-     *            sets max results
-     * @return all actual time efforts
+     * {@inheritDoc}
      */
-    public List<Effort> getListEntities(int maxresults) {
-        List<Effort> list = null;
-        try {
-            list = service.getActualEfforts(maxresults);
-            System.out.println("LISTSIZE = " + list);
-        } catch (TitaDAOException e) {
-            e.printStackTrace();
-        }
-
-        return list;
-    }
-
     public void deleteListEntity() {
         Effort timeEffort = (Effort) tm.getValueAt(tm.getSelectedRow(), -1);
         try {
@@ -445,17 +421,15 @@ public class AdministrationPanelEffort extends Panel implements
         }
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     public void updateListEntity() {
     }
 
     /**
-     * @return the date
+     * {@inheritDoc}
      */
-    public Date getDate() {
-        return date;
-    }
-
     public void reloadTable(AjaxRequestTarget target) {
         tm.reload(timeeffortList);
         target.addComponent(timeeffortContainer);
@@ -470,4 +444,12 @@ public class AdministrationPanelEffort extends Panel implements
         return project;
     }
 
+    /**
+     * Returns current date.
+     * 
+     * @return the date
+     */
+    public Date getDate() {
+        return date;
+    }
 }

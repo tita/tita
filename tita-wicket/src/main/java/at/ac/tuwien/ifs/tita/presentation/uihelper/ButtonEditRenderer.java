@@ -33,11 +33,11 @@ import org.wicketstuff.table.cell.CellRender;
  * @author msiedler
  * 
  */
-public class ButtonDeleteRenderer implements CellRender, CellEditor {
+public class ButtonEditRenderer implements CellRender, CellEditor {
 
     private IAdministrationPanel panel = null;
 
-    public ButtonDeleteRenderer(IAdministrationPanel panel) {
+    public ButtonEditRenderer(IAdministrationPanel panel) {
         this.panel = panel;
     }
 
@@ -60,14 +60,14 @@ public class ButtonDeleteRenderer implements CellRender, CellEditor {
         return new LenientAjaxButton(id) {
             @Override
             public void onSubmit(AjaxRequestTarget target, Form<?> form1) {
-                panel.deleteListEntity();
+                panel.updateListEntity();
                 panel.reloadTable(target);
             }
 
             @Override
             protected void onComponentTag(ComponentTag tag) {
                 super.onComponentTag(tag);
-                tag.put("class", "buttonDelete");
+                tag.put("class", "buttonEdit");
             }
         };
     }
