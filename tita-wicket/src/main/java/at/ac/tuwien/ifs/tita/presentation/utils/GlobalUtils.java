@@ -17,6 +17,7 @@
 package at.ac.tuwien.ifs.tita.presentation.utils;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -30,14 +31,20 @@ import java.util.Date;
  */
 public final class GlobalUtils {
 
-    public static final DateFormat DATEFORMAT = new SimpleDateFormat("dd.MM.yyyy");
-    public static final DateFormat TIMELENGTHFORMAT = new SimpleDateFormat("hh:mm");
-    public static final DateFormat TIMEFORMAT24HOURS = new SimpleDateFormat("HH:mm");
+    public static final int LISTSIZE = 10;
+
+    public static final DateFormat DATEFORMAT = new SimpleDateFormat(
+            "dd.MM.yyyy");
+    public static final DateFormat TIMELENGTHFORMAT = new SimpleDateFormat(
+            "hh:mm");
+    public static final DateFormat TIMEFORMAT24HOURS = new SimpleDateFormat(
+            "HH:mm");
 
     /**
      * Converts date into Calendar.
      * 
-     * @param d date to convert
+     * @param d
+     *            date to convert
      * @return calendar with date
      */
     public static Calendar getCalendarFromDate(Date d) {
@@ -49,8 +56,10 @@ public final class GlobalUtils {
     /**
      * Calculates the difference between to dates.
      * 
-     * @param d1 startdate
-     * @param d2 enddate
+     * @param d1
+     *            startdate
+     * @param d2
+     *            enddate
      * @return difference as date
      */
     public static Date getTimeDifference(Date d1, Date d2) {
@@ -60,10 +69,67 @@ public final class GlobalUtils {
     /**
      * Converts milliseconds to Long.
      * 
-     * @param t1 time in milliseconds
+     * @param t1
+     *            time in milliseconds
      * @return converted date
      */
     public static Date getDateFromLong(Long t1) {
         return new Date(t1);
+    }
+
+    /**
+     * Parse object to time with type long.
+     * 
+     * @param o
+     *            object to parse
+     * @return long object
+     * @throws ParseException
+     *             parse exception
+     */
+    public static Long getTimeFromObject(Object o) throws ParseException {
+        if (o != null) {
+            if (o.toString().compareTo("") != 0) {
+                return GlobalUtils.TIMEFORMAT24HOURS.parse(o.toString())
+                        .getTime();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Parse object to date object.
+     * 
+     * @param o
+     *            object to parse
+     * @return date object
+     * @throws ParseException
+     *             parse exception
+     */
+    public static Date getDateFromObject(Object o) throws ParseException {
+        if (o != null) {
+            if (o.toString().compareTo("") != 0) {
+                return GlobalUtils.DATEFORMAT.parse(o.toString());
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Parse object to duration with type long.
+     * 
+     * @param o
+     *            object to parse
+     * @return duration with type long
+     * @throws ParseException
+     *             parse exception
+     */
+    public static Long getDurationFromObject(Object o) throws ParseException {
+        if (o != null) {
+            if (o.toString().compareTo("") != 0) {
+                return GlobalUtils.TIMELENGTHFORMAT.parse(o.toString())
+                        .getTime();
+            }
+        }
+        return null;
     }
 }

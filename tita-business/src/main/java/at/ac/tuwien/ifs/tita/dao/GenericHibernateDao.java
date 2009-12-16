@@ -49,7 +49,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
-import at.ac.tuwien.ifs.tita.entity.interfaces.IBaseEntity;
+import at.ac.tuwien.ifs.tita.entity.interfaces.BaseEntity;
 
 /**
  * Concrete implementation of IGenericHibernateDao Interface.
@@ -234,7 +234,7 @@ public class GenericHibernateDao<T,ID extends Serializable> extends PersistenceC
     public T save(T entity){
         T persistedEntity = null;
         
-        persistedEntity = findById(((IBaseEntity<ID>)entity).getId());
+        persistedEntity = findById(((BaseEntity<ID>)entity).getId());
         if(persistedEntity != null){
             return merge(entity);
         }else{

@@ -28,46 +28,45 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import at.ac.tuwien.ifs.tita.entity.interfaces.IBaseEntity;
+import at.ac.tuwien.ifs.tita.entity.interfaces.BaseEntity;
 
 /**
  * Entity for storing projects comming from different issue trackers.
+ * 
  * @author herbert
- *
+ * 
  */
 @Entity
-@Table(name="ISSUE_TRACKER_PROJECT")
-@SequenceGenerator(name = "seq_issue_project", sequenceName = "ISSUE_PROJECT_ID_SEQ", 
-                   allocationSize = 1)
-public class IssueTrackerProject implements IBaseEntity<Long> {
+@Table(name = "ISSUE_TRACKER_PROJECT")
+@SequenceGenerator(name = "seq_issue_project", sequenceName = "ISSUE_PROJECT_ID_SEQ", allocationSize = 1)
+public class IssueTrackerProject extends BaseEntity<Long> {
 
     @Id
-    @Column(name="ID")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="seq_issue_project")
-    private Long id;   
-    
-    @Column(name="PROJECT_ID")
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_issue_project")
+    private Long id;
+
+    @Column(name = "PROJECT_ID")
     private Long projectId;
-    
-    @Column(name="ISST_PROJECT_ID")
+
+    @Column(name = "ISST_PROJECT_ID")
     private Long isstProjectId;
-    
-//    @Column(name="DESCRIPTION")
-//    private String description;
-        
-    
+
+    // @Column(name="DESCRIPTION")
+    // private String description;
+
     @OneToMany
-    @JoinColumn(name="ISST_PROJECT_ID")
+    @JoinColumn(name = "ISST_PROJECT_ID")
     private Set<IssueTrackerTask> issueTrackerTasks;
-    
+
     @SuppressWarnings("unused")
-    @Column(name="MODIFICATION_VERSION")
+    @Column(name = "MODIFICATION_VERSION")
     @Version
     private Long modificationVersion;
-    
+
     public IssueTrackerProject() {
     }
-    
+
     public IssueTrackerProject(Long id, Long projectId, Long isstProjectId) {
         super();
         this.id = id;
@@ -79,7 +78,6 @@ public class IssueTrackerProject implements IBaseEntity<Long> {
     public Long getId() {
         return id;
     }
-
 
     public Long getProjectId() {
         return projectId;

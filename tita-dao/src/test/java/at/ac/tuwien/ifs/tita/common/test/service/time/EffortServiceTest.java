@@ -13,7 +13,6 @@
  */
 package at.ac.tuwien.ifs.tita.common.test.service.time;
 
-
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -42,16 +41,19 @@ import at.ac.tuwien.ifs.tita.entity.Effort;
 
 /**
  * Effort Service Test.
+ * 
  * @author herbert
- *
+ * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:datasourceContext-test.xml" })
 @TransactionConfiguration
 @Transactional
-public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextTests {
-    
-//    private final Logger log = LoggerFactory.getLogger(EffortServiceTest.class);
+public class EffortServiceTest extends
+        AbstractTransactionalJUnit4SpringContextTests {
+
+    // private final Logger log =
+    // LoggerFactory.getLogger(EffortServiceTest.class);
 
     @Autowired
     private IEffortService service;
@@ -61,8 +63,9 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
      */
     @Test
     public void testSaveTimeEffort() {
-        Effort timeEffort = new Effort(null, null, null, "Das ist die Test TimeEffort 1");
- 
+        Effort timeEffort = new Effort(null, null, null,
+                "Das ist die Test TimeEffort 1");
+
         try {
             service.saveEffort(timeEffort);
         } catch (TitaDAOException e) {
@@ -76,7 +79,8 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
      */
     @Test
     public void testDeleteTimeEffort() {
-        Effort timeEffort = new Effort(null, null, null, "Das ist die Test TimeEffort 2");
+        Effort timeEffort = new Effort(null, null, null,
+                "Das ist die Test TimeEffort 2");
         try {
             service.saveEffort(timeEffort);
             Assert.assertNotNull(timeEffort.getId());
@@ -87,21 +91,23 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
             fail();
         }
     }
-    
+
     /**
      * Test.
      */
     @Test
     public void testUpdateTimeEffort() {
-        Effort timeEffort = new Effort(null, null, null,"Das ist die Test TimeEffort 3");
+        Effort timeEffort = new Effort(null, null, null,
+                "Das ist die Test TimeEffort 3");
         try {
             service.saveEffort(timeEffort);
             Assert.assertNotNull(timeEffort.getId());
 
-            Date time = new Date();
-            timeEffort.setStartTime(time);
+            Date date = new Date();
+            timeEffort.setDate(date);
             service.saveEffort(timeEffort);
-            Assert.assertEquals(service.getEffortById(timeEffort.getId()).getStartTime(), time);
+            Assert.assertEquals(service.getEffortById(timeEffort.getId())
+                    .getStartTime(), date);
         } catch (TitaDAOException e) {
             fail();
         }
@@ -112,13 +118,14 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
      */
     @Test
     public void testSearchTimeEffort() {
-        Effort timeEffort = new Effort(null, null, null, "Das ist die Test TimeEffort 4");
+        Effort timeEffort = new Effort(null, null, null,
+                "Das ist die Test TimeEffort 4");
         try {
             service.saveEffort(timeEffort);
             Assert.assertNotNull(timeEffort.getId());
             Effort te2 = service.getEffortById(timeEffort.getId());
             Assert.assertNotNull(te2);
-            Assert.assertEquals(timeEffort.getId(),te2.getId());
+            Assert.assertEquals(timeEffort.getId(), te2.getId());
         } catch (TitaDAOException e) {
             fail();
         }
@@ -126,32 +133,36 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
 
     /**
      * Prepare database for test -> insert 3 efforts.
+     * 
      * @return List of efforts
      */
-    private List<Effort> prepareEfforts(){
+    private List<Effort> prepareEfforts() {
         String strdate1 = "18.10.2009";
         String strdate2 = "25.05.2009";
         DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
         Date date1 = null;
         Date date2 = null;
-        
+
         List<Effort> effortList = new ArrayList<Effort>();
-        
+
         try {
             date1 = formatter.parse(strdate1);
             date2 = formatter.parse(strdate2);
         } catch (ParseException e1) {
             assertTrue(false);
         }
-        Effort timeEffort1 = new Effort(null, null, null, "Das ist die Test TimeEffort 5");
-        Effort timeEffort2 = new Effort(null, null, null, "Das ist die Test TimeEffort 6");
-        Effort timeEffort3 = new Effort(null, null, null, "Das ist die Test TimeEffort 7");
-        
+        Effort timeEffort1 = new Effort(null, null, null,
+                "Das ist die Test TimeEffort 5");
+        Effort timeEffort2 = new Effort(null, null, null,
+                "Das ist die Test TimeEffort 6");
+        Effort timeEffort3 = new Effort(null, null, null,
+                "Das ist die Test TimeEffort 7");
+
         effortList.add(timeEffort1);
         effortList.add(timeEffort2);
         effortList.add(timeEffort3);
         try {
-            for(Effort eff : effortList){
+            for (Effort eff : effortList) {
                 service.saveEffort(eff);
             }
         } catch (TitaDAOException e) {
@@ -159,7 +170,7 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
         }
         return effortList;
     }
-    
+
     /**
      * Test: Get TimeEffort by day with named query.
      * 
@@ -173,10 +184,10 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
         List<Effort> efforts = prepareEfforts();
         List<Effort> list = null;
         GregorianCalendar cal1 = new GregorianCalendar();
-        //CHECKSTYLE:OFF
+        // CHECKSTYLE:OFF
         cal1.set(2009, 9, 18);
-        //CHECKSTYLE:ON
-        try {    
+        // CHECKSTYLE:ON
+        try {
             list = service.getEffortsDailyView(cal1);
             Assert.assertNotNull(list);
             Assert.assertEquals(2, list.size());
@@ -188,15 +199,18 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
 
     /**
      * Delete all inserted efforts.
-     * @param efforts List
-     * @throws TitaDAOException e
+     * 
+     * @param efforts
+     *            List
+     * @throws TitaDAOException
+     *             e
      */
-    private void deleteEfforts(List<Effort> efforts) throws TitaDAOException{
-        for(Effort eff : efforts){
+    private void deleteEfforts(List<Effort> efforts) throws TitaDAOException {
+        for (Effort eff : efforts) {
             service.deleteEffort(eff);
         }
     }
-    
+
     /**
      * Test: Get TimeEffort by month with named query. EXCEPTION: DEBUG
      * BaseDAO:67 - Trying to persist Domain with Id: null. DEBUG BaseDAO:82 -
@@ -208,15 +222,15 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
         List<Effort> efforts = prepareEfforts();
         List<Effort> list = null;
         GregorianCalendar cal1 = new GregorianCalendar();
-        //CHECKSTYLE:OFF
+        // CHECKSTYLE:OFF
         cal1.set(2009, 9, 18);
-        //CHECKSTYLE:ON
+        // CHECKSTYLE:ON
         try {
             list = service.getEffortsMonthlyView(cal1);
             Assert.assertNotNull(list);
-            //CHECKSTYLE:OFF
+            // CHECKSTYLE:OFF
             Assert.assertEquals(2, list.size());
-            //CHECKSTYLE:ON
+            // CHECKSTYLE:ON
             deleteEfforts(efforts);
         } catch (TitaDAOException e) {
             fail();

@@ -25,20 +25,6 @@ h1 {font-size:2.5em}
 h2 {font-size:1.875em}
 p {font-size:0.875em}
 
-/* Table Style */
-table {
-	border:thin;
-	border-bottom-color:#003;
-}
-tr.odd {
-	background-color:#DBE1F3;
-	color:#000;
-}
-tr.even {
-	background-color:#039;
-	color:#FFF;
-}
-
 /* Header */
 #header{
     width:1024px;
@@ -113,3 +99,79 @@ div.effortsTabbedPanel div.tab-row a:hover {
     background: #fff;
 }
 /* Tabbed Panel for Efforts */
+
+/* Table Style */
+table {
+	font-size:80%;
+	border:thin;
+	border-bottom-color:#003;
+}
+
+thead {
+	background-color: rgb(10, 36, 106);
+	color:#FFF;
+}
+
+.titleheader {
+	background-color:#003;
+	color:#FFF;
+	height:2.5em;
+}
+
+.odd {
+	background-color: rgb(240, 240, 240);
+}
+
+.even {
+	background-color: #FFFFFF;
+}
+
+tr.onMouseOver {
+	background-color:#096;
+}
+
+.selected {
+	background-color: rgb(10, 36, 106);
+	color: white;
+	font-weight:bold;
+}
+
+tr {
+	height: 30px;
+}
+
+.editCell {
+	font-size:100%;
+}
+
+.dateCell {
+	font-size:100%;
+	width: 72%;
+}
+
+.headerLabel {
+	text-align:center;
+	width:100%;
+}
+
+.buttonDelete {
+	display: block;
+	background-color: transparent;
+	background-image: url(images/bt-delete.png);
+	background-position:center;
+	background-repeat: no-repeat;
+	width: 30px;
+	height: 30px;
+	border: none;
+}
+
+.buttonSave {
+	display: block;
+	background-color: transparent;
+	background-image: url(images/bt-add.png);
+	background-position:center;
+	background-repeat: no-repeat;
+	width: 30px;
+	height: 30px;
+	border: none;
+}

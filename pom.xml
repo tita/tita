@@ -645,6 +645,11 @@
 			<artifactId>commons-collections</artifactId>
 			<version>${commons-collections.version}</version>
 		</dependency> 
+		<dependency>
+			<groupId>org.wicketstuff</groupId>
+			<version>1.4-SNAPSHOT</version>
+			<artifactId>table</artifactId>
+		</dependency>
 		</dependencies>
 	</dependencyManagement>
 

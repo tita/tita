@@ -45,8 +45,9 @@ public class EffortsPage extends HeaderPage {
 
         initTempProjects();
         initTabbedPanels();
-        add(new TabbedPanel("effortsTabbedPanel", tabs).add(new AttributeModifier("class", true, EffortsPage.this
-                .getDefaultModel())));
+        add(new TabbedPanel("effortsTabbedPanel", tabs)
+                .add(new AttributeModifier("class", true, EffortsPage.this
+                        .getDefaultModel())));
     }
 
     /**
@@ -73,7 +74,7 @@ public class EffortsPage extends HeaderPage {
 
                 @Override
                 public Panel getPanel(String panelId) {
-                    return new TimeEffortAdministrationPanel(panelId, p);
+                    return new AdministrationPanelEffort(panelId, p);
                 }
 
             });

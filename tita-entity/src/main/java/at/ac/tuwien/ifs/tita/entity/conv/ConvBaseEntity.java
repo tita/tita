@@ -19,20 +19,21 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
-import at.ac.tuwien.ifs.tita.entity.interfaces.IBaseEntity;
+import at.ac.tuwien.ifs.tita.entity.interfaces.BaseEntity;
 
 /**
  * Base-Entity for Conv-Tables.
+ * 
  * @author Karin
- *
+ * 
  */
 @MappedSuperclass
-public class ConvBaseEntity implements IBaseEntity<Long>{
+public class ConvBaseEntity extends BaseEntity<Long> {
     @Id
-    @Column(name="ID")
+    @Column(name = "ID")
     private Long id;
-    
-    @Column(name="DESCRIPTION")
+
+    @Column(name = "DESCRIPTION")
     private String description;
 
     public ConvBaseEntity() {
@@ -52,7 +53,7 @@ public class ConvBaseEntity implements IBaseEntity<Long>{
     protected void setId(Long id) {
         this.id = id;
     }
-    
+
     public String getDescription() {
         return description;
     }

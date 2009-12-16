@@ -28,38 +28,38 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import at.ac.tuwien.ifs.tita.entity.interfaces.IBaseEntity;
+import at.ac.tuwien.ifs.tita.entity.interfaces.BaseEntity;
 
 /**
  * Entity for storing tasks comming from different issue trackers.
+ * 
  * @author herbert
- *
+ * 
  */
 @Entity
-@Table(name="ISSUE_TRACKER_TASK")
+@Table(name = "ISSUE_TRACKER_TASK")
 @SequenceGenerator(name = "seq_issue_task", sequenceName = "ISSUE_TASK_ID_SEQ", allocationSize = 1)
-public class IssueTrackerTask implements IBaseEntity<Long> {
-    
+public class IssueTrackerTask extends BaseEntity<Long> {
+
     @Id
-    @Column(name="ID")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="seq_issue_task")
-    private Long id;   
-    
-    @Column(name="ISST_TASK_ID")
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_issue_task")
+    private Long id;
+
+    @Column(name = "ISST_TASK_ID")
     private Long isstTaskId;
-        
+
     @OneToMany
-    @JoinColumn(name="ISSUET_TASK_ID")
+    @JoinColumn(name = "ISSUET_TASK_ID")
     private Set<Effort> issueTEfforts;
-    
+
     @SuppressWarnings("unused")
-    @Column(name="MODIFICATION_VERSION")
+    @Column(name = "MODIFICATION_VERSION")
     @Version
     private Long modificationVersion;
-    
+
     public IssueTrackerTask() {
     }
-      
 
     @Override
     public Long getId() {

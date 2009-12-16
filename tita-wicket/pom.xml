@@ -180,6 +180,11 @@
 			<groupId>commons-digester</groupId>
 			<artifactId>commons-digester</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.wicketstuff</groupId>
+			<version>1.4-SNAPSHOT</version>
+			<artifactId>table</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>at.ac.tuwien.ifs</groupId>

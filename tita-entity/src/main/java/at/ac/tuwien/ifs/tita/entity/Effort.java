@@ -15,6 +15,7 @@
  */
 package at.ac.tuwien.ifs.tita.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -29,7 +30,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import at.ac.tuwien.ifs.tita.entity.interfaces.IBaseEntity;
+import at.ac.tuwien.ifs.tita.entity.interfaces.BaseEntity;
 
 /**
  * Entity for storing time producer's effort of his/her assigned tasks.
@@ -46,7 +47,7 @@ import at.ac.tuwien.ifs.tita.entity.interfaces.IBaseEntity;
         @NamedQuery(name = "timeeffort.monthly.view", query = "select te from Effort te where YEAR(te.startTime) = :year "
                 + " and MONTH(te.startTime)= :month"),
         @NamedQuery(name = "timeeffort.actual.view", query = "select te from Effort te order by te.startTime desc") })
-public class Effort implements IBaseEntity<Long> {
+public class Effort extends BaseEntity<Long> implements Serializable {
 
     @Id
     @Column(name = "ID")
@@ -59,11 +60,11 @@ public class Effort implements IBaseEntity<Long> {
     @Column(name = "ISSUET_TASK_ID")
     private Long issueTTaskId;
 
-    @Column(name = "START_TIME")
-    private Date startTime;
+    @Column(name = "DATE")
+    private Date date;
 
-    @Column(name = "END_TIME")
-    private Date endTime;
+    @Column(name = "START_TIME")
+    private Long startTime;
 
     @Column(name = "DURATION")
     private Long duration;
@@ -81,7 +82,8 @@ public class Effort implements IBaseEntity<Long> {
     public Effort() {
     }
 
-    public Effort(Long id, Long titaTaskId, Long issueTTaskId, String description) {
+    public Effort(Long id, Long titaTaskId, Long issueTTaskId,
+            String description) {
         super();
         this.id = id;
         this.titaTaskId = titaTaskId;
@@ -106,12 +108,8 @@ public class Effort implements IBaseEntity<Long> {
         return issueTTaskId;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(Long startTime) {
         this.startTime = startTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
     }
 
     public void setDuration(Long duration) {
@@ -146,19 +144,33 @@ public class Effort implements IBaseEntity<Long> {
         this.description = description;
     }
 
-    public Date getStartTime() {
+    public Long getStartTime() {
         return startTime;
     }
 
-    public Date getEndTime() {
-        return endTime;
+    public Long getEndTime() {
+        return startTime + duration;
     }
 
     public Long getDuration() {
         return duration;
     }
 
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
     public Boolean isTiTAEffort() {
         return (titaTaskId != null);
     }
+
+    public Boolean matchDescription(String filterString) {
+        return this.description.toLowerCase().contains(
+                filterString.toLowerCase());
+    }
+
 }

@@ -32,64 +32,61 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import at.ac.tuwien.ifs.tita.entity.conv.Role;
-import at.ac.tuwien.ifs.tita.entity.interfaces.IBaseEntity;
-
+import at.ac.tuwien.ifs.tita.entity.interfaces.BaseEntity;
 
 /**
  * Entity for storing TiTA user.
+ * 
  * @author karin
- *
+ * 
  */
 @Entity
-@Table(name="USER")
+@Table(name = "USER")
 @SequenceGenerator(name = "seq_user", sequenceName = "USER_ID_SEQ", allocationSize = 1)
-
-public class User implements IBaseEntity<Long>{
+public class User extends BaseEntity<Long> {
 
     @Id
-    @Column(name="ID")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="seq_user")
-    private Long id;   
-    
-    @Column(name="USERNAME")
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_user")
+    private Long id;
+
+    @Column(name = "USERNAME")
     private String userName;
-    
-    @Column(name="PASSWORD")
+
+    @Column(name = "PASSWORD")
     private String password;
-    
-    @Column(name="FIRSTNAME")
+
+    @Column(name = "FIRSTNAME")
     private String firstName;
-    
-    @Column(name="LASTNAME")
+
+    @Column(name = "LASTNAME")
     private String lastName;
-    
-    @Column(name="EMAIL")
+
+    @Column(name = "EMAIL")
     private String email;
-    
-    @Column(name="DELETED")
+
+    @Column(name = "DELETED")
     private boolean deleted;
-    
+
     @ManyToOne
-    @JoinColumn(name="ROLE", referencedColumnName="ID")
+    @JoinColumn(name = "ROLE", referencedColumnName = "ID")
     private Role role;
-    
+
     @ManyToMany
-    @JoinTable(name = "USER_PROJECT",    
-            joinColumns = { @JoinColumn(name = "USER_ID")},  
-            inverseJoinColumns={@JoinColumn(name="PROJECT_ID")}) 
+    @JoinTable(name = "USER_PROJECT", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = { @JoinColumn(name = "PROJECT_ID") })
     private Set<TiTAProject> titaProjects;
-    
+
     @OneToMany
-    @JoinColumn(name="ID")
+    @JoinColumn(name = "ID")
     private Set<IssueTrackerLogin> issueTrackerLogins;
-    
+
     @SuppressWarnings("unused")
-    @Column(name="MODIFICATION_VERSION")
+    @Column(name = "MODIFICATION_VERSION")
     @Version
     private Long modificationVersion;
-    
-    public User(){
-        
+
+    public User() {
+
     }
 
     public String getUserName() {
@@ -159,6 +156,5 @@ public class User implements IBaseEntity<Long>{
     public Set<IssueTrackerLogin> getIssueTrackerLogins() {
         return issueTrackerLogins;
     }
-    
-    
+
 }

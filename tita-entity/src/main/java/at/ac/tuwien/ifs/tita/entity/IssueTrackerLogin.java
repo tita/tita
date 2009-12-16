@@ -27,39 +27,39 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
-import at.ac.tuwien.ifs.tita.entity.interfaces.IBaseEntity;
-
+import at.ac.tuwien.ifs.tita.entity.interfaces.BaseEntity;
 
 /**
  * Entity for storing login-Data for Users to login at IssueTrackers.
+ * 
  * @author karin
- *
+ * 
  */
 @Entity
-@Table(name="ISST_LOGIN")
+@Table(name = "ISST_LOGIN")
 @SequenceGenerator(name = "seq_isst_login", sequenceName = "ISST_LOGIN_ID_SEQ", allocationSize = 1)
-public class IssueTrackerLogin  implements IBaseEntity<Long>{
+public class IssueTrackerLogin extends BaseEntity<Long> {
     @Id
-    @Column(name="ID")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="seq_isst_login")
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_isst_login")
     private Long id;
-    
-    @Column(name="NAME")
+
+    @Column(name = "NAME")
     private String userName;
-    
-    @Column(name="PASSWORD")
+
+    @Column(name = "PASSWORD")
     private String password;
-    
+
     @ManyToOne
-    @JoinColumn(name="ISSUETRACKER_ID", referencedColumnName="ID")
+    @JoinColumn(name = "ISSUETRACKER_ID", referencedColumnName = "ID")
     private IssueTracker issueTracker;
-        
+
     @SuppressWarnings("unused")
-    @Column(name="MODIFICATION_VERSION")
+    @Column(name = "MODIFICATION_VERSION")
     @Version
     private Long modificationVersion;
-    
-    public IssueTrackerLogin(){
+
+    public IssueTrackerLogin() {
         super();
     }
 
@@ -99,6 +99,5 @@ public class IssueTrackerLogin  implements IBaseEntity<Long>{
     public void setIssueTracker(IssueTracker issueTracker) {
         this.issueTracker = issueTracker;
     }
-    
-    
+
 }
