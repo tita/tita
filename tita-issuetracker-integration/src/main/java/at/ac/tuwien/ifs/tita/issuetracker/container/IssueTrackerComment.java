@@ -3,7 +3,9 @@
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
+   
        http://www.apache.org/licenses/LICENSE\-2.0
+       
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,7 +29,7 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ICommentTrackable;
  */
 public class IssueTrackerComment implements ICommentTrackable {
     private Date creationTime;
-    private long id;
+    private final long id;
     private Date lastChange;
     private String reporter;
     private String text;
@@ -45,32 +47,32 @@ public class IssueTrackerComment implements ICommentTrackable {
 
     /** {@inheritDoc} */
     public Date getCreationTime() {
-        return this.creationTime;
+        return creationTime;
     }
 
     /** {@inheritDoc} */
     public Long getId() {
-        return this.id;
+        return id;
     }
 
     /** {@inheritDoc} */
     public Date getLastChange() {
-        return this.lastChange;
+        return lastChange;
     }
 
     /** {@inheritDoc} */
     public String getReporter() {
-        return this.reporter;
+        return reporter;
     }
 
     /** {@inheritDoc} */
     public String getText() {
-        return this.text;
+        return text;
     }
 
     /** {@inheritDoc} */
     public ViewState getViewState() {
-        return this.viewState;
+        return viewState;
     }
 
     /** {@inheritDoc} */
