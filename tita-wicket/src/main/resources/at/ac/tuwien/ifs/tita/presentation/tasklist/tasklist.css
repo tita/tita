@@ -1,0 +1,18 @@
+@CHARSET "ISO-8859-1";
+
+#dummy {
+	width: 30px;
+	background-color: #2b5286;
+}
+
+#header {
+	float:left;
+}
+
+#updateTaskList {
+	float:none;
+}
+
+#accordion {
+	float:none;
+}

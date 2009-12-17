@@ -1,0 +1,10 @@
+@CHARSET "ISO-8859-1";
+
+#taskTimer_content {
+	border: 1px #ffffff outset;
+	padding: 10px 10px 10px 10px;
+	color: #FFFFFF;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 1em;
+	font-weight: bold;
+}
