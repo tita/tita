@@ -284,8 +284,7 @@ public class AdministrationPanelEffort extends Panel implements
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
                 saveListEntity();
-                tm.reload(timeeffortList);
-                target.addComponent(timeeffortContainer);
+                reloadTable(target);
                 clearFields();
             }
 
@@ -382,8 +381,8 @@ public class AdministrationPanelEffort extends Panel implements
             Long endTime = GlobalUtils.getTimeFromTextField(teEndTime);
             Long duration = GlobalUtils.getDurationFromTextField(teTimeLength);
 
-            if (startTime != null && (endTime != null || endTime != null)) {
-                if (duration == null) {
+            if (startTime != null && (endTime != null || duration != null)) {
+                if (duration == null && endTime != null) {
                     duration = endTime - startTime;
                 }
 
@@ -391,11 +390,6 @@ public class AdministrationPanelEffort extends Panel implements
                 timeEffort.setDeleted(false);
                 timeEffort.setStartTime(startTime);
                 service.saveEffort(timeEffort);
-
-                unfilteredList = getListEntities(EffortUtils.MAXLISTSIZE);
-                timeeffortList = unfilteredList;
-
-                timeEffort = new Effort();
             }
         } catch (TitaDAOException e) {
             log.error(e.getMessage());
@@ -431,6 +425,9 @@ public class AdministrationPanelEffort extends Panel implements
      * {@inheritDoc}
      */
     public void reloadTable(AjaxRequestTarget target) {
+        unfilteredList = getListEntities(EffortUtils.MAXLISTSIZE);
+        timeeffortList = unfilteredList;
+
         tm.reload(timeeffortList);
         target.addComponent(timeeffortContainer);
     }

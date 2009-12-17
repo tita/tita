@@ -60,7 +60,7 @@ public class ButtonEditRenderer implements CellRender, CellEditor {
         return new LenientAjaxButton(id) {
             @Override
             public void onSubmit(AjaxRequestTarget target, Form<?> form1) {
-                panel.updateListEntity();
+                panel.saveListEntity();
                 panel.reloadTable(target);
             }
 
