@@ -39,6 +39,7 @@ public class AccordionPanelItem extends Panel {
         super(ITEM_ID);
         add(new Label("title", title));
 
+        Boolean mulLists = multipleLists;
         for (int i = 0; i < items.size(); i++) {          
             
             add(new ListView("content", items.get(i)) {

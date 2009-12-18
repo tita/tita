@@ -42,11 +42,11 @@ import at.ac.tuwien.ifs.tita.entity.interfaces.BaseEntity;
 @Table(name = "EFFORT")
 @SequenceGenerator(name = "seq_effort", sequenceName = "EEFORT_ID_SEQ", allocationSize = 1)
 @NamedQueries( {
-        @NamedQuery(name = "timeeffort.daily.view", query = "select te from Effort te where YEAR(te.startTime) = :year "
-                + " and MONTH(te.startTime)= :month and DAY(te.startTime)= :day"),
-        @NamedQuery(name = "timeeffort.monthly.view", query = "select te from Effort te where YEAR(te.startTime) = :year "
-                + " and MONTH(te.startTime)= :month"),
-        @NamedQuery(name = "timeeffort.actual.view", query = "select te from Effort te order by te.startTime desc") })
+        @NamedQuery(name = "timeeffort.daily.view", query = "select te from Effort te where YEAR(te.date) = :year "
+                + " and MONTH(te.date)= :month and DAY(te.date)= :day"),
+        @NamedQuery(name = "timeeffort.monthly.view", query = "select te from Effort te where YEAR(te.date) = :year "
+                + " and MONTH(te.date)= :month"),
+        @NamedQuery(name = "timeeffort.actual.view", query = "select te from Effort te order by te.date desc") })
 public class Effort extends BaseEntity<Long> implements Serializable {
 
     @Id

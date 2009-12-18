@@ -107,7 +107,7 @@ public class EffortServiceTest extends
             timeEffort.setDate(date);
             service.saveEffort(timeEffort);
             Assert.assertEquals(service.getEffortById(timeEffort.getId())
-                    .getStartTime(), date);
+                    .getDate(), date);
         } catch (TitaDAOException e) {
             fail();
         }
@@ -158,6 +158,10 @@ public class EffortServiceTest extends
         Effort timeEffort3 = new Effort(null, null, null,
                 "Das ist die Test TimeEffort 7");
 
+        timeEffort1.setDate(date1);
+        timeEffort2.setDate(date2);
+        timeEffort3.setDate(date1);
+        
         effortList.add(timeEffort1);
         effortList.add(timeEffort2);
         effortList.add(timeEffort3);
