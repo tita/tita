@@ -346,6 +346,7 @@
 						<exclude>**/*.log</exclude>
 						<exclude>**/*.MF</exclude>
 						<exclude>**/*.checkstyle</exclude>
+						<exclude>**/*.js</exclude>
 			
 						<exclude>NOTICE</exclude>
 						<exclude>LICENSE</exclude>

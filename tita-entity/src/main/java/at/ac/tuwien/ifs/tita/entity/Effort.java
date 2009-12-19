@@ -168,8 +168,15 @@ public class Effort extends BaseEntity<Long> implements Serializable {
         return (titaTaskId != null);
     }
 
+    /**
+     * filter function.
+     * 
+     * @param filterString
+     *            - Filter string
+     * @return true if it contains the string pattern.
+     */
     public Boolean matchDescription(String filterString) {
-        return this.description.toLowerCase().contains(
+        return description.toLowerCase().contains(
                 filterString.toLowerCase());
     }
 
