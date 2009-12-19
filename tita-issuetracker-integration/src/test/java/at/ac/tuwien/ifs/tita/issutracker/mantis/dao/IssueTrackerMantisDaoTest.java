@@ -20,6 +20,8 @@ import static org.junit.Assert.fail;
 import org.junit.Test;
 import org.mantisbt.connect.model.IIssue;
 
+import at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin;
+import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueResolution;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.ProjectStatus;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.ViewState;
@@ -36,6 +38,9 @@ import at.ac.tuwien.ifs.tita.issuetracker.mantis.dao.IssueTrackerMantisDao;
  */
 public class IssueTrackerMantisDaoTest extends MantisBaseTest {
 
+    private final IssueTrackerLogin defaultLogin = new IssueTrackerLogin(1L, "administrator",
+            "root", new IssueTracker(1L, "test-mantis", "http://localhost/mantisbt-1.1.8"));
+
     /**
      * Test: find Project by ProjectName.
      */
@@ -45,7 +50,7 @@ public class IssueTrackerMantisDaoTest extends MantisBaseTest {
 
             createTestProject("tita_test", "tita_test_description", true, false);
 
-            IssueTrackerMantisDao dao = new IssueTrackerMantisDao();
+            IssueTrackerMantisDao dao = new IssueTrackerMantisDao(defaultLogin);
             IProjectTrackable mantisProject = dao.findProject("tita_test");
             assertEquals("tita_test", mantisProject.getName());
             assertEquals("tita_test_description", mantisProject
@@ -74,7 +79,7 @@ public class IssueTrackerMantisDaoTest extends MantisBaseTest {
             taskId = createTestTask("tita_test_issue1", "issue_summary1",
                     "tita_test");
 
-            IssueTrackerMantisDao dao = new IssueTrackerMantisDao();
+            IssueTrackerMantisDao dao = new IssueTrackerMantisDao(defaultLogin);
             ITaskTrackable mantisTask = dao.findTask(taskId);
             assertEquals("tita_test_issue1", mantisTask.getDescription());
             assertEquals("issue_summary1", mantisTask.getSummary());
@@ -101,7 +106,7 @@ public class IssueTrackerMantisDaoTest extends MantisBaseTest {
                     "tita_test");
 
             // close task
-            IssueTrackerMantisDao dao = new IssueTrackerMantisDao();
+            IssueTrackerMantisDao dao = new IssueTrackerMantisDao(defaultLogin);
             dao.closeTask(taskId);
 
             // check
@@ -131,7 +136,7 @@ public class IssueTrackerMantisDaoTest extends MantisBaseTest {
                     "tita_test");
             commentId = createTestComment("test_comment_text", true, taskId);
 
-            IssueTrackerMantisDao dao = new IssueTrackerMantisDao();
+            IssueTrackerMantisDao dao = new IssueTrackerMantisDao(defaultLogin);
             ITaskTrackable mantisTask = dao.findTask(taskId);
             assertEquals("tita_test_issue1", mantisTask.getDescription());
             assertEquals("issue_summary1", mantisTask.getSummary());
@@ -163,14 +168,14 @@ public class IssueTrackerMantisDaoTest extends MantisBaseTest {
                     "tita_test_description", true, false);
 
             // Create connection
-            IssueTrackerMantisDao dao = new IssueTrackerMantisDao();
+            IssueTrackerMantisDao dao = new IssueTrackerMantisDao(defaultLogin);
             assertEquals(1, dao.findAccessibleProjects().size());
 
             projectId = createTestProject("tita_test2",
                     "tita_test_description", true, false);
 
             // Close the session because it is already running
-            IssueTrackerMantisDao daocurrent = new IssueTrackerMantisDao();
+            IssueTrackerMantisDao daocurrent = new IssueTrackerMantisDao(defaultLogin);
             assertEquals(2, daocurrent.findAccessibleProjects().size());
 
             deleteTestProject("tita_test1");
@@ -178,7 +183,7 @@ public class IssueTrackerMantisDaoTest extends MantisBaseTest {
 
             // Explicit close for the connection
             daocurrent.disconnect();
-            IssueTrackerMantisDao daocurrent2 = new IssueTrackerMantisDao();
+            IssueTrackerMantisDao daocurrent2 = new IssueTrackerMantisDao(defaultLogin);
             assertEquals(0, daocurrent2.findAccessibleProjects().size());
         } catch (Exception e) {
             fail("Creating projects or creating session failed!");

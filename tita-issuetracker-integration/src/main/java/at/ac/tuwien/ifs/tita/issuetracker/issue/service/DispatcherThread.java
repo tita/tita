@@ -23,6 +23,7 @@ import java.util.concurrent.Executors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin;
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IProjectTrackable;
 
 /**
@@ -35,13 +36,15 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IProjectTrackable;
 public class DispatcherThread extends Thread {
     private ExecutorService pool;
     private boolean listening = true;
-    private Map<Long, IProjectTrackable> projects;
+    private final Map<Long, IProjectTrackable> projects;
+    private final IssueTrackerLogin login;
 
     private final Logger log = LoggerFactory.getLogger(DispatcherThread.class);
 
-    public DispatcherThread(Map<Long, IProjectTrackable> projects) {
+    public DispatcherThread(Map<Long, IProjectTrackable> projects, IssueTrackerLogin login) {
         super("Dispatcher");
         this.projects = projects;
+        this.login = login;
     }
 
     /** {@inheritDoc} */
@@ -54,7 +57,7 @@ public class DispatcherThread extends Thread {
             for (IProjectTrackable project : projects.values()) {
 
                 while (listening) {
-                    pool.execute(new WorkerThread(project));
+                    pool.execute(new WorkerThread(project, login));
                 }
             }
 

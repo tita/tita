@@ -30,6 +30,11 @@ import org.mantisbt.connect.model.Issue;
 import org.mantisbt.connect.model.MCAttribute;
 import org.mantisbt.connect.model.Note;
 import org.mantisbt.connect.model.Project;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin;
+import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 
 /**
  * Base class for all local mantis tests (connecting, etc.).
@@ -38,10 +43,20 @@ import org.mantisbt.connect.model.Project;
  * 
  */
 public class MantisBaseTest {
+    
     protected MCSession session;
-    private final String url = "http://localhost/mantisbt-1.1.8/api/soap/mantisconnect.php";
-    private final String user = "administrator";
-    private final String pwd = "root";
+    private final IssueTrackerLogin defaultLogin = new IssueTrackerLogin(1L, "administrator",
+            "root", new IssueTracker(1L, "test-mantis", "http://localhost/mantisbt-1.1.8"));
+
+    private final String url = defaultLogin.getIssueTracker().getUrl() + "/api/soap/mantisconnect.php";
+    private final String user = defaultLogin.getUserName();
+    private final String pwd = defaultLogin.getPassword();
+    
+    private Long startTime;
+    private Long endTime;
+    private String performanceOutput = "";
+
+    private final Logger log = LoggerFactory.getLogger(MantisBaseTest.class);
 
     /**
      * Connects to Mantis-Server.
@@ -49,8 +64,8 @@ public class MantisBaseTest {
     @Before
     public void setUp() {
         try {
-            URL u = new URL(this.url);
-            this.session = new MCSession(u, this.user, this.pwd);
+            URL u = new URL(url);
+            session = new MCSession(u, user, pwd);
         } catch (MCException e) {
             assertTrue(false);
         } catch (MalformedURLException e) {
@@ -82,8 +97,8 @@ public class MantisBaseTest {
         newProject.setDesription(description);
         newProject.setEnabled(enabled); // ProjectStatus: Open
         newProject.setPrivate(viewStatePrivate); // ViewState:Public
-        Long id = this.session.addProject(newProject);
-        this.session.flush();
+        Long id = session.addProject(newProject);
+        session.flush();
         return id;
     }
 
@@ -106,14 +121,14 @@ public class MantisBaseTest {
         IIssue newIssue = new Issue();
         newIssue.setDescription(description);
         // newIssue.setHandler(new Account(100, "test", "test", "test@test"));
-        newIssue.setPriority(this.session.getDefaultIssuePriority());
+        newIssue.setPriority(session.getDefaultIssuePriority());
         newIssue.setSummary(summary);
-        newIssue.setSeverity(this.session.getDefaultIssueSeverity());
+        newIssue.setSeverity(session.getDefaultIssueSeverity());
         // newIssue.setReporter(new Account(101, "rep1", "rep1", "rep@rep"));
-        IProject p = this.session.getProject(projectName);
+        IProject p = session.getProject(projectName);
         newIssue.setProject(new MCAttribute(p.getId(), p.getName()));
-        long id = this.session.addIssue(newIssue);
-        this.session.flush();
+        long id = session.addIssue(newIssue);
+        session.flush();
         return id;
     }
 
@@ -135,8 +150,8 @@ public class MantisBaseTest {
         INote newNote = new Note();
         newNote.setText(text);
         newNote.setPrivate(isPrivate);
-        Long id = this.session.addNote(issueId, newNote);
-        this.session.flush();
+        Long id = session.addNote(issueId, newNote);
+        session.flush();
         return id;
     }
 
@@ -149,10 +164,10 @@ public class MantisBaseTest {
     protected void deleteTestProject(String projectName) {
         IProject old;
         try {
-            old = this.session.getProject(projectName);
+            old = session.getProject(projectName);
             if (old != null) {
-                this.session.deleteProject(old.getId());
-                this.session.flush();
+                session.deleteProject(old.getId());
+                session.flush();
             }
         } catch (MCException e) {
             assertTrue(false);
@@ -167,8 +182,8 @@ public class MantisBaseTest {
      */
     protected void deleteTestTask(long taskId) {
         try {
-            this.session.deleteIssue(taskId);
-            this.session.flush();
+            session.deleteIssue(taskId);
+            session.flush();
         } catch (MCException e) {
             assertTrue(false);
         }
@@ -182,10 +197,69 @@ public class MantisBaseTest {
      */
     protected void deleteTestComment(long commentId) {
         try {
-            this.session.deleteNote(commentId);
-            this.session.flush();
+            session.deleteNote(commentId);
+            session.flush();
         } catch (MCException e) {
             assertTrue(false);
         }
     }
+
+    /**
+     * Starts the timer.
+     * 
+     * @param description
+     *            - It describes the measured situation.
+     */
+    protected void startTimer(String description) {
+        log.debug(description);
+        performanceOutput = "";
+        performanceOutput += description + "\n";
+        startTime = System.currentTimeMillis();
+    }
+
+    /**
+     * Stops the timer.
+     * 
+     * @param description
+     *            - It describes the measured situation.
+     */
+    protected void stopTimer(String description) {
+        log.debug(description);
+        performanceOutput += description + "\n";
+        endTime = System.currentTimeMillis();
+        showDuration();
+    }
+
+    /**
+     * Shows the duration that was measured.
+     */
+    private void showDuration() {
+        // CHECKSTYLE:OFF
+        log.debug("Duration:" + (getEndTime() - getStartTime()) / 1000 + " sec.");
+        performanceOutput += "Duration:" + (getEndTime() - getStartTime()) / 1000 + " sec." + "\n";
+        // CHECKSTYLE:ON
+    }
+
+    /**
+     * Returns the startTime.
+     * 
+     * @return startTime of the measured activity.
+     */
+    private Long getStartTime() {
+        return startTime;
+    }
+
+    /**
+     * Returns the endTime.
+     * 
+     * @return endTime of the measured activity.
+     */
+    private Long getEndTime() {
+        return endTime;
+    }
+
+    protected String getPerformanceOutput() {
+        return performanceOutput;
+    }
+
 }

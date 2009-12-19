@@ -20,6 +20,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin;
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IIssueTrackerDao;
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IProjectTrackable;
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
@@ -34,8 +35,8 @@ import at.ac.tuwien.ifs.tita.issuetracker.mantis.dao.IssueTrackerMantisDao;
  */
 public class WorkerThread extends Thread {
 
-    private IProjectTrackable project;
-    private IIssueTrackerDao dao;
+    private final IProjectTrackable project;
+    private final IIssueTrackerDao dao;
 
     private final Logger log = LoggerFactory.getLogger(WorkerThread.class);
 
@@ -45,9 +46,9 @@ public class WorkerThread extends Thread {
      * @param project - project, from where the tasks should be fetched from
      *        mantis.
      */
-    public WorkerThread(IProjectTrackable project) {
+    public WorkerThread(IProjectTrackable project, IssueTrackerLogin login) {
         super("Worker");
-        dao = new IssueTrackerMantisDao();
+        dao = new IssueTrackerMantisDao(login);
         this.project = project;
     }
 

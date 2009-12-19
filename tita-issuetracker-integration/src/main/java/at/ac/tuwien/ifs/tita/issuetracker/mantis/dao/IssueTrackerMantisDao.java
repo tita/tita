@@ -34,6 +34,7 @@ import org.mantisbt.connect.model.Project;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin;
 import at.ac.tuwien.ifs.tita.issuetracker.container.IssueTrackerComment;
 import at.ac.tuwien.ifs.tita.issuetracker.container.IssueTrackerProject;
 import at.ac.tuwien.ifs.tita.issuetracker.container.IssueTrackerTask;
@@ -59,14 +60,17 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
     private final Logger log = LoggerFactory.getLogger(IssueTrackerMantisDao.class);
 
     private URL url;
-    private String user;
-    private String pwd;
+    private final String urlAsString;
+    private final String user;
+    private final String pwd;
     private IMCSession session;
 
-    public IssueTrackerMantisDao() {
+
+    public IssueTrackerMantisDao(IssueTrackerLogin login) {
         // TODO: read values from DB
-        user = "administrator";
-        pwd = "root";
+        user = login.getUserName();
+        pwd = login.getPassword();
+        urlAsString = login.getIssueTracker().getUrl();
 
         if (session != null) {
             disconnect();
@@ -80,7 +84,7 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
     private void connect() {
         try {
             // TODO: read values from DB
-            url = new URL("http://localhost/mantisbt-1.1.8/api/soap/mantisconnect.php");
+            url = new URL(urlAsString + "/api/soap/mantisconnect.php");
             session = new MCSession(url, user, pwd);
         } catch (MCException e) {
             log.error("Connection to Mantis-Server failed!");
@@ -289,7 +293,8 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
      * @return Long id
      * @throws MCException mce
      */
-    public Long createTestProject(String projectName, String description, Boolean enabled, Boolean viewStatePrivate)
+    public Long createProject(String projectName, String description, Boolean enabled,
+            Boolean viewStatePrivate)
             throws MCException {
 
         IProject newProject = new Project();
@@ -312,7 +317,8 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
      * @return id of the created task
      * @throws MCException - if error occurs, when task is added
      */
-    public Long createTestTask(String description, String summary, String projectName) throws MCException {
+    public Long createTask(String description, String summary, String projectName)
+            throws MCException {
 
         IIssue newIssue = new Issue();
         newIssue.setDescription(description);

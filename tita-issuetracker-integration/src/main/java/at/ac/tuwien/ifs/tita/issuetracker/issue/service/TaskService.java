@@ -18,6 +18,9 @@ package at.ac.tuwien.ifs.tita.issuetracker.issue.service;
 import java.util.Map;
 import java.util.TreeMap;
 
+import at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin;
+import at.ac.tuwien.ifs.tita.entity.IssueTrackerTask;
+import at.ac.tuwien.ifs.tita.entity.TiTATask;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueStatus;
 import at.ac.tuwien.ifs.tita.issuetracker.exceptions.ProjectNotFoundException;
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IIssueTrackerDao;
@@ -39,9 +42,12 @@ public class TaskService implements ITaskService {
 
     private IIssueTrackerDao dao;
     private Map<Long, IProjectTrackable> projects;
+    private final IssueTrackerLogin loggedUser;
 
-    public TaskService() {
-        dao = new IssueTrackerMantisDao();
+
+    public TaskService(IssueTrackerLogin login) {
+        loggedUser = login;
+        dao = new IssueTrackerMantisDao(login);
         projects = dao.findAccessibleProjects();
     }
 
@@ -60,10 +66,10 @@ public class TaskService implements ITaskService {
     /** {@inheritDoc} */
     @Override
     public void updateAll() {
-        dao = new IssueTrackerMantisDao();
+        dao = new IssueTrackerMantisDao(loggedUser);
         projects = dao.findAccessibleProjects();
 
-        dispatcher = new DispatcherThread(projects);
+        dispatcher = new DispatcherThread(projects, loggedUser);
         dispatcher.start();
         dispatcher.close();
 
@@ -72,7 +78,7 @@ public class TaskService implements ITaskService {
     /** {@inheritDoc} */
     @Override
     public void updateProject(IProjectTrackable project) {
-        worker = new WorkerThread(project);
+        worker = new WorkerThread(project, loggedUser);
         worker.start();
     }
 
@@ -101,5 +107,17 @@ public class TaskService implements ITaskService {
         }
         
         return statusTasks;
+    }
+
+    @Override
+    public IssueTrackerTask saveIssueTrackerTask(IssueTrackerTask issueTrackerTask) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public TiTATask saveTiTATask(TiTATask titaTask) {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

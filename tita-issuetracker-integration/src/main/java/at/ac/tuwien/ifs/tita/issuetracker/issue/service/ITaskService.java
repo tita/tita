@@ -17,6 +17,8 @@ package at.ac.tuwien.ifs.tita.issuetracker.issue.service;
 
 import java.util.Map;
 
+import at.ac.tuwien.ifs.tita.entity.IssueTrackerTask;
+import at.ac.tuwien.ifs.tita.entity.TiTATask;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueStatus;
 import at.ac.tuwien.ifs.tita.issuetracker.exceptions.ProjectNotFoundException;
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IProjectTrackable;
@@ -55,5 +57,24 @@ public interface ITaskService {
      * Method to update all projects.
      */
     void updateAll();
+    
+    /**
+     * Method to save a issue tracker task to Tita.
+     * 
+     * @param issueTrackerTask
+     *            - issue tracker task
+     * @return issueTrackerTask - the saved issue tracker task.
+     */
+    IssueTrackerTask saveIssueTrackerTask(IssueTrackerTask issueTrackerTask);
+
+    /**
+     * Method to save a tita task that is created to identify the self defined
+     * effort.
+     * 
+     * @param titaTask
+     *            - task for the effort
+     * @return titaTask - the saved tita task.
+     */
+    TiTATask saveTiTATask(TiTATask titaTask);
 
 }
