@@ -17,7 +17,6 @@ package at.ac.tuwien.ifs.tita.issuetracker.mantis.util.time;
 import java.util.Map;
 import java.util.TreeMap;
 
-import at.ac.tuwien.ifs.tita.entity.interfaces.ITimedBase;
 import at.ac.tuwien.ifs.tita.issuetracker.container.TimedIssueId;
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITimedEffort;
 
@@ -60,7 +59,7 @@ public class TimedIssueEffortCoordinator implements ITimedIssueEffortCoordinator
      * Starts all current available Tasks in task list.
      */
     private void startTasks() {
-        for (ITimedBase task : tasks.values()) {
+        for (ITimedEffort task : tasks.values()) {
             task.start();
         }
     }

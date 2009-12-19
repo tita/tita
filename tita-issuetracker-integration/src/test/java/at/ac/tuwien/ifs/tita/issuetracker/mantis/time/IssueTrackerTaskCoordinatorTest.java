@@ -17,6 +17,8 @@ package at.ac.tuwien.ifs.tita.issuetracker.mantis.time;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.util.Map;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -102,102 +104,70 @@ public class IssueTrackerTaskCoordinatorTest extends MantisBaseTest {
      * Messures time for more tasks parallel and return messured time of 7, 3
      * and 1 sec. for them.
      */
-//    @Test
-//    public void messureTimeForMoreTaskRunningParallelShouldSucceed() {
-//        // CHECKSTYLE:OFF
-//        Map<Long, ITaskTrackable> tasks;
-//        Long[] ids = new Long[3];
-//        int i = 0;
-//
-//        tasks = mantisDao.findAllTasksForProject(projectId);
-//        for (ITaskTrackable trackable : tasks.values()) {
-//            System.out.println("TaskId: " + trackable.getId());
-//            ids[i] = trackable.getId();
-//            i++;
-//        }
-//
-//        this.tiCo.startTimeableTask(((ITimedEffort) (tasks.get(ids[0]))));
-//        try {
-//            Thread.sleep(4000);
-//            this.tiCo.startTimeableTask(((ITimedEffort) (tasks.get(ids[1]))));
-//            Thread.sleep(4000);
-//            this.tiCo.startTimeableTask(((ITimedEffort) (tasks.get(ids[2]))));
-//            Thread.sleep(4000);
-//            // stop all tasks immediately
-//            this.tiCo.stopTimeableTask(((ITimedEffort) (tasks.get(ids[0]))));
-//            this.tiCo.stopTimeableTask(((ITimedEffort) (tasks.get(ids[1]))));
-//            this.tiCo.stopTimeableTask(((ITimedEffort) (tasks.get(ids[2]))));
-//
-//            for (Integer tm : this.tiCo.getTaskDurations().keySet()) {
-//                System.out.println("TaskId: "
-//                        + tm
-//                        + " - Duration: "
-//                        + TiTATimeConverter.getSeconds(this.tiCo
-//                                .getTaskDurations().get(tm)));
-//            }
-//
-//        } catch (InterruptedException e) {
-//            fail("InterruptedException should never be reached.");
-//        }
-//
-//        assertEquals(new Integer(7), TiTATimeConverter.getSeconds(this.tiCo
-//                .getTaskDurations().get(
-//                        ((ITimedEffort) (tasks.get(ids[0]))).getTimedTaskId())));
-//        assertEquals(new Integer(3), TiTATimeConverter.getSeconds(this.tiCo
-//                .getTaskDurations().get(
-//                        ((ITimedEffort) (tasks.get(ids[1]))).getTimedTaskId())));
-//        assertEquals(new Integer(1), TiTATimeConverter.getSeconds(this.tiCo
-//                .getTaskDurations().get(
-//                        ((ITimedEffort) (tasks.get(ids[2]))).getTimedTaskId())));
-//        // CHECKSTYLE:ON
-//    }
-//
-//    /**
-//     * Messures time for more tasks parallel and return messured time of 3 and 4
-//     * sec. for them.
-//     */
-//    @Test
-//    public void messureTimeForMoreTasksFirstStoppedBeforeSecondShouldSucceed() {
-//        // CHECKSTYLE:OFF
-//        Map<Long, ITaskTrackable> tasks;
-//        Long[] ids = new Long[3];
-//        int i = 0;
-//
-//        tasks = mantisDao.findAllTasksForProject(projectId);
-//        for (ITaskTrackable trackable : tasks.values()) {
-//            System.out.println("TaskId: " + trackable.getId());
-//            ids[i] = trackable.getId();
-//            i++;
-//        }
-//
-//        this.tiCo.startTimeableTask(((ITimedEffort) (tasks.get(ids[0]))));
-//        try {
-//            Thread.sleep(2000);
-//            this.tiCo.startTimeableTask(((ITimedEffort) (tasks.get(ids[1]))));
-//            Thread.sleep(2000);
-//            this.tiCo.stopTimeableTask(((ITimedEffort) (tasks.get(ids[0]))));
-//            Thread.sleep(3000);
-//            // stop task 1 immediately
-//            this.tiCo.stopTimeableTask(((ITimedEffort) (tasks.get(ids[1]))));
-//
-//            for (Integer tm : this.tiCo.getTaskDurations().keySet()) {
-//                System.out.println("TaskId: "
-//                        + tm
-//                        + " - Duration: "
-//                        + TiTATimeConverter.getSeconds(this.tiCo
-//                                .getTaskDurations().get(tm)));
-//            }
-//
-//        } catch (InterruptedException e) {
-//            fail("InterruptedException should never be reached.");
-//        }
-//
-//        assertEquals(new Integer(3), TiTATimeConverter.getSeconds(this.tiCo
-//                .getTaskDurations().get(
-//                        ((ITimedEffort) (tasks.get(ids[0]))).getTimedTaskId())));
-//        assertEquals(new Integer(4), TiTATimeConverter.getSeconds(this.tiCo
-//                .getTaskDurations().get(
-//                        ((ITimedEffort) (tasks.get(ids[1]))).getTimedTaskId())));
-//        // CHECKSTYLE:ON
-//    }
+    @Test
+    public void messureTimeForMoreTaskRunningParallelShouldSucceed() {
+        // CHECKSTYLE:OFF
+        Map<Long, ITaskTrackable> tasks;
+        TimedIssueEffort tiff1, tiff2, tiff3;
+       
+        tasks = mantisDao.findAllTasksForProject(projectId);
+        
+        tiff1 = new TimedIssueEffort(tasks.get(taskId1).getProjectId(), tasks.get(taskId1).getId());
+        tiff2 = new TimedIssueEffort(tasks.get(taskId2).getProjectId(), tasks.get(taskId2).getId());
+        tiff3 = new TimedIssueEffort(tasks.get(taskId3).getProjectId(), tasks.get(taskId3).getId());
+        
+        this.tiCo.startTimedIssueEffort(tiff1);
+        try {
+            Thread.sleep(4000);
+            this.tiCo.startTimedIssueEffort(tiff2);
+            Thread.sleep(4000);
+            this.tiCo.startTimedIssueEffort(tiff3);
+            Thread.sleep(4000);
+            // stop all tasks immediately
+            this.tiCo.stopTimedIssueEffort(tiff1);
+            this.tiCo.stopTimedIssueEffort(tiff2);
+            this.tiCo.stopTimedIssueEffort(tiff3);
+        } catch (InterruptedException e) {
+            fail("InterruptedException should never be reached.");
+        }
+
+        assertEquals(new Integer(7), TiTATimeConverter.getSeconds(tiff1.getDuration()));
+        assertEquals(new Integer(3), TiTATimeConverter.getSeconds(tiff2.getDuration()));
+        assertEquals(new Integer(1), TiTATimeConverter.getSeconds(tiff3.getDuration()));
+        // CHECKSTYLE:ON
+    }
+
+    /**
+     * Messures time for more tasks parallel and return messured time of 3 and 4
+     * sec. for them.
+     * 
+     */
+    @Test
+    public void messureTimeForMoreTasksFirstStoppedBeforeSecondShouldSucceed() {
+        // CHECKSTYLE:OFF
+        Map<Long, ITaskTrackable> tasks;
+        TimedIssueEffort tiff1, tiff2;
+
+        tasks = mantisDao.findAllTasksForProject(projectId);
+
+        tiff1 = new TimedIssueEffort(tasks.get(taskId1).getProjectId(), tasks.get(taskId1).getId());
+        tiff2 = new TimedIssueEffort(tasks.get(taskId2).getProjectId(), tasks.get(taskId2).getId());
+        
+        this.tiCo.startTimedIssueEffort(tiff1);
+        try {
+            Thread.sleep(2000);
+            this.tiCo.startTimedIssueEffort(tiff2);
+            Thread.sleep(2000);
+            this.tiCo.stopTimedIssueEffort(tiff1);
+            Thread.sleep(3000);
+            // stop task 1 immediately
+            this.tiCo.stopTimedIssueEffort(tiff2);
+        } catch (InterruptedException e) {
+            fail("InterruptedException should never be reached.");
+        }
+
+        assertEquals(new Integer(3), TiTATimeConverter.getSeconds(tiff1.getDuration()));
+        assertEquals(new Integer(4), TiTATimeConverter.getSeconds(tiff2.getDuration()));
+        // CHECKSTYLE:ON
+    }
 }
