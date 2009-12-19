@@ -37,10 +37,13 @@
 
   <!-- The data source -->
   <!-- 
-	   Datasource will be fetched from jndi
+	   Datasource is a H2DB
 	 -->
-  <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
-    <property name="jndiName" value="jdbc/titaDatasource" />
+  <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <property name="driverClassName" value="org.h2.Driver" />
+    <property name="url" value="jdbc:h2:db/main1" />
+    <property name="username" value="sa" />
+    <property name="password" value="" />
   </bean>
 
   <!-- Autowired to the EntityManagerFactory -->
@@ -57,5 +60,4 @@
 
   <!-- Declares Annotationbased Transactiondeclaration -->
   <tx:annotation-driven />
-
 </beans>

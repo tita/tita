@@ -30,8 +30,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import at.ac.tuwien.ifs.tita.entity.interfaces.BaseEntity;
-
 /**
  * Entity for storing time producer's effort of his/her assigned tasks.
  * 
@@ -51,11 +49,13 @@ public class Effort extends BaseEntity<Long> implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_effort")
     private Long id;
 
-    @Column(name = "TITA_TASK_ID")
-    private Long titaTaskId;
+    @ManyToOne
+    @JoinColumn(name = "TITA_TASK_ID", referencedColumnName = "ID")
+    private TiTATask titaTask;
 
-    @Column(name = "ISSUET_TASK_ID")
-    private Long issueTTaskId;
+    @ManyToOne
+    @JoinColumn(name = "ISSUET_TASK_ID", referencedColumnName = "ID")
+    private IssueTrackerTask issueTTask;
 
     @Column(name = "DATE")
     private Date date;
@@ -74,16 +74,15 @@ public class Effort extends BaseEntity<Long> implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
-    private User user;
+    private TiTAUser user;
 
     public Effort() {
     }
 
-    public Effort(Long id, Long titaTaskId, Long issueTTaskId, String description) {
+    public Effort(TiTATask titaTask, IssueTrackerTask issueTTask, String description) {
         super();
-        this.id = id;
-        this.titaTaskId = titaTaskId;
-        this.issueTTaskId = issueTTaskId;
+        this.titaTask = titaTask;
+        this.issueTTask = issueTTask;
         this.description = description;
     }
 
@@ -96,12 +95,12 @@ public class Effort extends BaseEntity<Long> implements Serializable {
         return description;
     }
 
-    public Long getTitaTaskId() {
-        return titaTaskId;
+    public TiTATask getTitaTaskId() {
+        return titaTask;
     }
 
-    public Long getIssueTTaskId() {
-        return issueTTaskId;
+    public IssueTrackerTask getIssueTTaskId() {
+        return issueTTask;
     }
 
     public void setStartTime(Long startTime) {
@@ -120,20 +119,20 @@ public class Effort extends BaseEntity<Long> implements Serializable {
         this.deleted = deleted;
     }
 
-    public User getUser() {
+    public TiTAUser getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(TiTAUser user) {
         this.user = user;
     }
 
-    public void setTitaTaskId(Long titaTaskId) {
-        this.titaTaskId = titaTaskId;
+    public void setTitaTask(TiTATask titaTask) {
+        this.titaTask = titaTask;
     }
 
-    public void setIssueTTaskId(Long issueTTaskId) {
-        this.issueTTaskId = issueTTaskId;
+    public void setIssueTTask(IssueTrackerTask issueTTask) {
+        this.issueTTask = issueTTask;
     }
 
     public void setDescription(String description) {
@@ -161,7 +160,7 @@ public class Effort extends BaseEntity<Long> implements Serializable {
     }
 
     public Boolean isTiTAEffort() {
-        return (titaTaskId != null);
+        return (titaTask.getId() != null);
     }
 
     /**

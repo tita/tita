@@ -23,6 +23,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -49,8 +50,9 @@ public class TiTATask extends BaseEntity<Long> {
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @Column(name = "PROJECT_ID")
-    private Long projectId;
+    @ManyToOne
+    @JoinColumn(name = "PROJECT_ID", referencedColumnName = "ID")
+    private TiTAProject titaProject;
 
     @OneToMany
     @JoinColumn(name = "TITA_TASK_ID")
@@ -61,6 +63,11 @@ public class TiTATask extends BaseEntity<Long> {
     @Version
     private Long modificationVersion;
 
+    public TiTATask(Long id, Set<Effort> efforts) {
+        this.id = id;
+        this.titaEfforts = efforts;
+    }
+    
     public TiTATask() {
     }
 
@@ -73,8 +80,8 @@ public class TiTATask extends BaseEntity<Long> {
         return description;
     }
 
-    public Long getProjectId() {
-        return projectId;
+    public TiTAProject getProject() {
+        return titaProject;
     }
 
     public Set<Effort> getTitaEfforts() {

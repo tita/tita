@@ -22,10 +22,14 @@ import java.util.List;
 
 import javax.persistence.Query;
 
+
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import at.ac.tuwien.ifs.tita.dao.GenericHibernateDao;
+import at.ac.tuwien.ifs.tita.dao.interfaces.IEffortDao;
 import at.ac.tuwien.ifs.tita.entity.Effort;
 
 /**
@@ -35,13 +39,11 @@ import at.ac.tuwien.ifs.tita.entity.Effort;
  * @author rene
  * 
  */
-@Repository
-public class EffortDao extends GenericHibernateDao<Effort, Long> {
+public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEffortDao {
 
     public EffortDao() {
         super(Effort.class);
     }
-
     /**
      * Gets a view for a month.
      * 
@@ -77,6 +79,16 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> {
      * 
      * @return list of years
      */
+    /** {@inheritDoc} */
+    @SuppressWarnings("unchecked")
+    public List<Effort> getTimeEffortsMonthlyView(Calendar cal) {
+        Query q = em.createNamedQuery("timeeffort.monthly.view");
+        q.setParameter("year", cal.get(Calendar.YEAR));
+        q.setParameter("month", cal.get(Calendar.MONTH) + 1);
+        return q.getResultList();
+    }
+
+    /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
     public List<Integer> getTimeEffortsYears() {
         // return
@@ -85,15 +97,47 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> {
         return q.getResultList();
     }
 
+
     /**
      * Gets a view for the last time efforts.
      * 
      * @param maxresults sets the max results value for the query
      * @return list of timefforts that match dates
      */
-    public List<Effort> getActualTimeEfforts(int maxresults) {
+    /** {@inheritDoc} */
+    @SuppressWarnings("unchecked")
+    public List<Effort> getActualTimeEfforts(Integer maxresults) {
         Query q = em.createNamedQuery("timeeffort.actual.view");
         q.setMaxResults(maxresults);
         return q.getResultList();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<Effort> findEffortsForProjectAndTimeConsumerId(Long projectId, Long tcId) {
+        Criterion criterions[] = null;
+        
+        Order order[] = {Order.asc("date")};
+        
+      
+        criterions = new Criterion [] { Restrictions.eq("issueTTask.isstProject.projectId", 
+                                                        projectId),
+                                        Restrictions.eq("titaTask.titaProject.id", projectId),
+                                        Restrictions.eq("user.id", tcId)};
+        return findByCriteriaOrdered(criterions, order, null);
+    }
+    
+    /** {@inheritDoc} */
+    @Override
+    public List<Effort> findEffortsForProjectId(Long projectId) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<Effort> findEffortsForTimeConsumerId(Long tcId) {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

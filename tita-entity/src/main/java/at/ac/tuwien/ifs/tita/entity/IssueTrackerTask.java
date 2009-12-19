@@ -23,6 +23,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -48,6 +49,10 @@ public class IssueTrackerTask extends BaseEntity<Long> {
 
     @Column(name = "ISST_TASK_ID")
     private Long isstTaskId;
+    
+    @ManyToOne
+    @JoinColumn(name = "PROJECT_ID", referencedColumnName = "PROJECT_ID")
+    private IssueTrackerProject isstProject;
 
     @Column(name = "DESCRIPTION")
     private String description;
@@ -73,6 +78,10 @@ public class IssueTrackerTask extends BaseEntity<Long> {
         return issueTEfforts;
     }
 
+    public IssueTrackerProject getIsstProject(){
+        return isstProject;
+    }
+    
     public Long getIsstTaskId() {
         return isstTaskId;
     }

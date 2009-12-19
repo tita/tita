@@ -48,8 +48,9 @@ public class IssueTrackerProject extends BaseEntity<Long> {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_issue_project")
     private Long id;
 
-    @Column(name = "PROJECT_ID")
-    private Long projectId;
+    @ManyToOne
+    @JoinColumn(name = "PROJECT_ID", referencedColumnName = "ID")
+    private TiTAProject titaProject;
 
     @Column(name = "PROJECT_NAME")
     private String projectName;
@@ -78,10 +79,10 @@ public class IssueTrackerProject extends BaseEntity<Long> {
     public IssueTrackerProject() {
     }
 
-    public IssueTrackerProject(Long id, Long projectId, Long isstProjectId) {
+    public IssueTrackerProject(Long id, TiTAProject project, Long isstProjectId) {
         super();
         this.id = id;
-        this.projectId = projectId;
+        this.titaProject = project;
         this.isstProjectId = isstProjectId;
     }
 
@@ -90,8 +91,8 @@ public class IssueTrackerProject extends BaseEntity<Long> {
         return this.id;
     }
 
-    public Long getProjectId() {
-        return this.projectId;
+    public TiTAProject getProjectId() {
+        return titaProject;
     }
 
     public Long getIsstProjectId() {
