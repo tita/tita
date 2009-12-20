@@ -11,10 +11,10 @@
    limitations under the License.
    
  */
- 
+
 package at.ac.tuwien.ifs.tita.business.service.time;
 
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -35,30 +35,27 @@ public interface IEffortService {
     /**
      * Saves a new timeEffort or updates an existing one.
      * 
-     * @param timeEffort
-     *            the timeEffort to be saved
-     * @throws TitaDAOException
-     *             if Parameter is null or another Exception is thrown
+     * @param timeEffort the timeEffort to be saved
+     * @throws TitaDAOException if Parameter is null or another Exception is
+     *         thrown
      */
     void saveEffort(Effort timeEffort) throws TitaDAOException;
 
     /**
      * deletes an existing timeEffort.
      * 
-     * @param timeEffort
-     *            the timeEffort to be deleted
-     * @throws TitaDAOException
-     *             if Parameter is null or another Exception is thrown
+     * @param timeEffort the timeEffort to be deleted
+     * @throws TitaDAOException if Parameter is null or another Exception is
+     *         thrown
      */
     void deleteEffort(Effort timeEffort) throws TitaDAOException;
 
     /**
      * returns a specific TimeEffort found to the id given.
      * 
-     * @param id
-     *            the unique identifier of an timeEffort
-     * @throws TitaDAOException
-     *             if no timeEffort was found or another Exception is thrown
+     * @param id the unique identifier of an timeEffort
+     * @throws TitaDAOException if no timeEffort was found or another Exception
+     *         is thrown
      * @return Effort found
      */
     Effort getEffortById(Long id) throws TitaDAOException;
@@ -66,33 +63,35 @@ public interface IEffortService {
     /**
      * Gets a view for a day.
      * 
-     * @param cal
-     *            calender dates which are selected
-     * @return list of timefforts that match dates
-     * @throws TitaDAOException
-     *             if anything goes wrong with db access.
+     * @param date dates which are selected
+     * @return list of efforts that match dates
+     * @throws TitaDAOException if anything goes wrong with db access.
      */
-    List<Effort> getEffortsDailyView(Calendar cal) throws TitaDAOException;
+    List<Effort> getEffortsDailyView(Date date) throws TitaDAOException;
 
     /**
      * Gets a view for a month.
      * 
-     * @param cal
-     *            calender dates which are selected
-     * @return list of timefforts that match dates
-     * @throws TitaDAOException
-     *             if anything goes wrong with db access.
+     * @param year year which is selected
+     * @param month month which is selected
+     * @return list of efforts that match dates
+     * @throws TitaDAOException if anything goes wrong with db access.
      */
-    List<Effort> getEffortsMonthlyView(Calendar cal) throws TitaDAOException;
+    List<Effort> getEffortsMonthlyView(Integer year, Integer month) throws TitaDAOException;
+
+    /**
+     * Gets all years in which efforts were saved.
+     * 
+     * @return list of years
+     */
+    List<Integer> getEffortsYears();
 
     /**
      * Gets a view for the last time efforts.
      * 
-     * @param maxresults
-     *            sets max results
-     * @return list of timefforts that match dates
-     * @throws TitaDAOException
-     *             if anything goes wrong with db access.
+     * @param maxresults sets max results
+     * @return list of efforts that match dates
+     * @throws TitaDAOException if anything goes wrong with db access.
      */
     List<Effort> getActualEfforts(int maxresults) throws TitaDAOException;
 }

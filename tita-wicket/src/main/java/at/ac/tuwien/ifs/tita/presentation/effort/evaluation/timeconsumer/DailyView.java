@@ -13,7 +13,6 @@
  */
 package at.ac.tuwien.ifs.tita.presentation.effort.evaluation.timeconsumer;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -33,7 +32,6 @@ import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.Effort;
 import at.ac.tuwien.ifs.tita.presentation.HeaderPage;
 import at.ac.tuwien.ifs.tita.presentation.controls.listview.EffortEvaluationListView;
-import at.ac.tuwien.ifs.tita.presentation.utils.GlobalUtils;
 
 /**
  * Daily evaluation.
@@ -45,7 +43,6 @@ public class DailyView extends HeaderPage {
     private final Date date = new Date();
 
     public DailyView() {
-        // addInitialTimeEfforts();
         initPage();
     }
 
@@ -93,11 +90,9 @@ public class DailyView extends HeaderPage {
      * @return all timeefforts that match the date
      */
     private List<Effort> getTimeEffortsDailyView(Date d) {
-        Calendar cal = GlobalUtils.getCalendarFromDate(d);
-
         List<Effort> list = null;
         try {
-            list = service.getEffortsDailyView(cal);
+            list = service.getEffortsDailyView(d);
         } catch (TitaDAOException e) {
             e.printStackTrace();
         }
@@ -113,48 +108,4 @@ public class DailyView extends HeaderPage {
     public Date getDate() {
         return date;
     }
-
-    /**
-     * Adds Inital Time Efforts. will be removed later.
-     */
-
-    // private void addInitialTimeEfforts() {
-    // GregorianCalendar cal1 = new GregorianCalendar();
-    // cal1.set(Calendar.AM_PM, Calendar.PM);
-    // cal1.set(2009, 11, 28, 14, 33);
-    //
-    // GregorianCalendar cal2 = new GregorianCalendar();
-    // cal2.set(Calendar.AM_PM, Calendar.PM);
-    // cal2.set(2009, 11, 28, 15, 46);
-    //
-    // TimeEffort timeEffort = new TimeEffort();
-    // timeEffort.setDate(new Date());
-    // timeEffort.setDeleted(false);
-    // timeEffort.setEndTime(cal2.getTime());
-    // timeEffort.setStartTime(cal1.getTime());
-    // timeEffort.setDescription("Das ist die Test TimeEffort 1");
-    //
-    // cal1 = new GregorianCalendar();
-    // cal1.set(Calendar.AM_PM, Calendar.PM);
-    // cal1.set(2009, 11, 28, 16, 11);
-    //
-    // cal2 = new GregorianCalendar();
-    // cal2.set(Calendar.AM_PM, Calendar.PM);
-    // cal2.set(2009, 11, 28, 17, 1);
-    //
-    // TimeEffort timeEffort2 = new TimeEffort();
-    // timeEffort2.setDate(new Date());
-    // timeEffort2.setDeleted(false);
-    // timeEffort2.setEndTime(cal2.getTime());
-    // timeEffort2.setStartTime(cal1.getTime());
-    // timeEffort2.setDescription("Das ist die Test TimeEffort 2");
-    //
-    // try {
-    // service.saveTimeEffort(timeEffort);
-    // service.saveTimeEffort(timeEffort2);
-    // } catch (TitaDAOException e) {
-    // e.printStackTrace();
-    // }
-    // }
-
 }

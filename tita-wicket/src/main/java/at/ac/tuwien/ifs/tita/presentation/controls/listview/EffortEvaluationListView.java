@@ -44,31 +44,25 @@ public class EffortEvaluationListView<T> extends ListView<Effort> {
      * Populates the items of the table.
      * 
      * @see org.apache.wicket.markup.html.list.ListView#populateItem(org.apache.wicket.markup.html.list.ListItem)
-     * @param item
-     *            items that will be inserted in the table.
+     * @param item items that will be inserted in the table.
      */
     @Override
     protected void populateItem(ListItem<Effort> item) {
         Effort effort = item.getModelObject();
-        Label lbDate = new Label("date", GlobalUtils.DATEFORMAT.format(effort
-                .getStartTime()));
+        Label lbDate = new Label("date", GlobalUtils.DATEFORMAT.format(effort.getDate()));
 
         Label lbDescription = new Label("description", effort.getDescription());
 
-        String startTime = GlobalUtils.TIMELENGTHFORMAT.format(effort
-                .getStartTime())
-                + " " + isAMorPM(effort.getStartTime());
-        String endTime = GlobalUtils.TIMELENGTHFORMAT.format(effort
-                .getEndTime())
-                + " " + isAMorPM(effort.getEndTime());
+        String startTime = GlobalUtils.TIMELENGTHFORMAT.format(effort.getStartTime()) + " "
+                + isAMorPM(effort.getStartTime());
+        String endTime = GlobalUtils.TIMELENGTHFORMAT.format(effort.getEndTime()) + " " + isAMorPM(effort.getEndTime());
 
         Label lbStartTime = new Label("starttime", startTime);
         Label lbEndTime = new Label("endtime", endTime);
 
         GlobalUtils.TIMEFORMAT24HOURS.setTimeZone(TimeZone.getTimeZone("GMT"));
         Label lbLength = new Label("length", ""
-                + GlobalUtils.TIMEFORMAT24HOURS.format(GlobalUtils
-                        .getDateFromLong(effort.getDuration())));
+                + GlobalUtils.TIMEFORMAT24HOURS.format(GlobalUtils.getDateFromLong(effort.getDuration())));
 
         lbDate.setOutputMarkupId(true);
         lbDescription.setOutputMarkupId(true);
@@ -86,8 +80,7 @@ public class EffortEvaluationListView<T> extends ListView<Effort> {
     /**
      * Checks if date is am or pm.
      * 
-     * @param time
-     *            time to check
+     * @param time time to check
      * @return am or pm as string
      */
     private String isAMorPM(Long time) {
