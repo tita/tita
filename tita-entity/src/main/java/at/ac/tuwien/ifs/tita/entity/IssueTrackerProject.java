@@ -23,11 +23,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 import at.ac.tuwien.ifs.tita.entity.interfaces.BaseEntity;
 
 /**
@@ -59,6 +61,9 @@ public class IssueTrackerProject extends BaseEntity<Long> {
     @JoinColumn(name = "ISST_PROJECT_ID")
     private Set<IssueTrackerTask> issueTrackerTasks;
 
+    @ManyToOne
+    private IssueTracker issueTracker;
+
     @SuppressWarnings("unused")
     @Column(name = "MODIFICATION_VERSION")
     @Version
@@ -89,5 +94,13 @@ public class IssueTrackerProject extends BaseEntity<Long> {
 
     public Set<IssueTrackerTask> getIssueTrackerTasks() {
         return issueTrackerTasks;
+    }
+
+    public void setIssueTracker(IssueTracker issueTracker) {
+        this.issueTracker = issueTracker;
+    }
+
+    public IssueTracker getIssueTracker() {
+        return issueTracker;
     }
 }

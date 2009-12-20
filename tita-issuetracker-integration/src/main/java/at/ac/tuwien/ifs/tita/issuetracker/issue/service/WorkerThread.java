@@ -52,6 +52,12 @@ public class WorkerThread extends Thread {
         this.project = project;
     }
 
+    public WorkerThread(Long projectId, IssueTrackerLogin login) {
+        super("Worker");
+        dao = new IssueTrackerMantisDao(login);
+        project = dao.findProject(projectId);
+    }
+
     /**
      * {@inheritDoc}
      */

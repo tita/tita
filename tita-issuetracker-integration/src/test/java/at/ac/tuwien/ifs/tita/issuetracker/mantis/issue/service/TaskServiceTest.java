@@ -36,7 +36,7 @@ import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueStatus;
 import at.ac.tuwien.ifs.tita.issuetracker.exceptions.ProjectNotFoundException;
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IProjectTrackable;
-import at.ac.tuwien.ifs.tita.issuetracker.issue.service.TaskService;
+import at.ac.tuwien.ifs.tita.issuetracker.issue.service.IssueTrackerService;
 import at.ac.tuwien.ifs.tita.issuetracker.mantis.base.MantisBaseTest;
 
 /**
@@ -49,9 +49,10 @@ public class TaskServiceTest extends MantisBaseTest {
     private final IssueTrackerLogin defaultLogin = new IssueTrackerLogin(1L, "administrator",
             "root", new IssueTracker(1L, "test-mantis", "http://localhost/mantisbt-1.1.8"));
 
-    private final Integer numberOfProjects = 3;
-    private TaskService taskService = new TaskService(defaultLogin);
+
+    private IssueTrackerService issueTrackerService = new IssueTrackerService(defaultLogin);
     private final Logger log = LoggerFactory.getLogger(TaskServiceTest.class);  
+    private final Integer numberOfProjects = 3;
     private final int numberOfTasksForEachProject = 2;
 
     private List<Long> taskIds = new ArrayList<Long>();
@@ -110,19 +111,17 @@ public class TaskServiceTest extends MantisBaseTest {
             taskIds.add(taskid);
 
             startTimer("Start of update for all projects:");
-            taskService.updateAll();
+            issueTrackerService.updateAll();
             stopTimer("Stopping the upate for all projects.");
 
             System.out.print(getPerformanceOutput());
 
-            assertEquals(numberOfProjects.intValue(), taskService.getProjects()
-                    .size());
-            assertEquals(numberOfTasksForEachProject + 1, taskService
-                    .getTasks(
-                            taskService.getProjects().get(
+            assertEquals(numberOfProjects.intValue(), issueTrackerService.getProjects().size());
+            assertEquals(numberOfTasksForEachProject + 1, issueTrackerService.getIssueTrackerTasks(
+                    issueTrackerService.getProjects().get(
                                     projectIds.get(0)), IssueStatus.NEW)
                     .size());
-            assertNotNull(taskService.getIssueTrackerDao().findProject(
+            assertNotNull(issueTrackerService.getIssueTrackerDao().findProject(
                     "projectName0"));
 
         } catch (MCException e) {
@@ -150,19 +149,19 @@ public class TaskServiceTest extends MantisBaseTest {
             taskIds.add(taskid);
 
             startTimer("Start of update for one projects:");
-            taskService.updateProject(taskService.getProjects().get(
+            issueTrackerService.updateProject(issueTrackerService.getProjects().get(
                     projectIds.get(0)));
             stopTimer("Stopping the upate for one projects.");
 
             System.out.print(getPerformanceOutput());
 
-            IProjectTrackable pro = taskService.getIssueTrackerDao()
+            IProjectTrackable pro = issueTrackerService.getIssueTrackerDao()
                     .findProject(projectIds.get(0));
 
-            assertEquals(numberOfProjects.intValue(), taskService.getProjects()
+            assertEquals(numberOfProjects.intValue(), issueTrackerService.getProjects()
                     .size());
-            assertEquals(numberOfTasksForEachProject + 1, taskService
-                    .getTasks(pro, IssueStatus.NEW).size());
+            assertEquals(numberOfTasksForEachProject + 1, issueTrackerService.getIssueTrackerTasks(
+                    pro, IssueStatus.NEW).size());
 
         } catch (MCException e) {
             fail("Creating or deleting projects and issues failed.");
@@ -171,15 +170,53 @@ public class TaskServiceTest extends MantisBaseTest {
     }
 
     /**
+     * The test case shows how the issue tracker service reacts when no project
+     * is set and checking for status.
+     * 
+     * @throws ProjectNotFoundException
+     *             pnfe
+     */
+    @Test(expected = ProjectNotFoundException.class)
+    public void getIssueTrackerTasksShouldThrowProjectNotFoundException()
+            throws ProjectNotFoundException {
+
+        issueTrackerService = new IssueTrackerService(defaultLogin);
+        issueTrackerService.getIssueTrackerTasks(null, IssueStatus.NEW);
+
+    }
+
+    /**
+     * The test case shows how the issue tracker service reacts when are no
+     * elements are found for the project.
+     * 
+     * A null should be returned, that says, that a information message for the
+     * user is necessary as feedback.
+     * 
+     * @throws ProjectNotFoundException
+     *             pnfe
+     */
+    @Test
+    public void getIssueTrackerTasks() throws ProjectNotFoundException {
+
+        issueTrackerService = new IssueTrackerService(defaultLogin);
+        IProjectTrackable project = issueTrackerService.getIssueTrackerDao()
+                .findProject(projectIds.get(0));
+
+        assertNull(issueTrackerService.getIssueTrackerTasks(project));
+
+    }
+
+    /**
      * The test case shows how the task service reacts when no project is set.
      * 
-     * @throws ProjectNotFoundException pnfe
+     * @throws ProjectNotFoundException
+     *             pnfe
      */
     @Test(expected = ProjectNotFoundException.class)
     public void getTasksShouldThrowProjectNotFoundException() throws ProjectNotFoundException {
 
-        taskService = new TaskService(defaultLogin);
-        taskService.getTasks(null, IssueStatus.NEW);
+        issueTrackerService = new IssueTrackerService(defaultLogin);
+        issueTrackerService.getIssueTrackerTasks(null);
 
     }
 
@@ -195,11 +232,11 @@ public class TaskServiceTest extends MantisBaseTest {
     @Test
     public void getTasks() throws ProjectNotFoundException {
 
-        taskService = new TaskService(defaultLogin);
-        IProjectTrackable project = taskService.getIssueTrackerDao()
+        issueTrackerService = new IssueTrackerService(defaultLogin);
+        IProjectTrackable project = issueTrackerService.getIssueTrackerDao()
                 .findProject(projectIds.get(0));
 
-        assertNull(taskService.getTasks(project, IssueStatus.ASSIGNED));
+        assertNull(issueTrackerService.getIssueTrackerTasks(project, IssueStatus.ASSIGNED));
 
     }
 
@@ -237,13 +274,13 @@ public class TaskServiceTest extends MantisBaseTest {
         taskIds = taskids;
         projectIds = projectids;
 
-        assertEquals(0, taskService.getProjects().size());
+        assertEquals(0, issueTrackerService.getProjects().size());
 
-        taskService = new TaskService(defaultLogin);
+        issueTrackerService = new IssueTrackerService(defaultLogin);
 
-        assertEquals(amountOfProjects, taskService.getProjects().size());
-        assertEquals(amountOfTasksForEachProject, taskService.getTasks(
-                taskService.getProjects().get(id), IssueStatus.NEW).size());
+        assertEquals(amountOfProjects, issueTrackerService.getProjects().size());
+        assertEquals(amountOfTasksForEachProject, issueTrackerService.getIssueTrackerTasks(
+                issueTrackerService.getProjects().get(id), IssueStatus.NEW).size());
 
         stopTimer("End of the setup.");
         System.out.print(getPerformanceOutput());

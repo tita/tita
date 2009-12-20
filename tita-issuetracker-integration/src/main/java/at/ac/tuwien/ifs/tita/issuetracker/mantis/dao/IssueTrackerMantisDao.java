@@ -91,7 +91,6 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
         } catch (MalformedURLException e) {
             log.error("URL " + url.getPath() + " is malformed!");
         }
-
     }
 
     /**
@@ -226,7 +225,6 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
         Map<Long, ITaskTrackable> tasks = findAllTasksForProject(id);
         ViewState viewState = IssueTrackerMantisEnum.extractViewState(project);
         return new IssueTrackerProject(id, name, description, status, tasks, url, viewState);
-
     }
 
     /**
