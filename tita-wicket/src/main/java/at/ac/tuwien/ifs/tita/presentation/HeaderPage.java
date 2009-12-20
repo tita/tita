@@ -17,7 +17,6 @@ package at.ac.tuwien.ifs.tita.presentation;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.TextField;
 
 import at.ac.tuwien.ifs.tita.presentation.tasklist.TaskListPanel;
 
@@ -33,19 +32,12 @@ public class HeaderPage extends BasePage {
         String username = "User1";
         add(new Label("showUser", "Signed in as " + username));
 
-        final WebMarkupContainer timeConsumergroup = new WebMarkupContainer(
-                "timeConsumerGroup");
-        final WebMarkupContainer timeControllergroup = new WebMarkupContainer(
-                "timeControllerGroup");
-        final WebMarkupContainer administratorGroup = new WebMarkupContainer(
-                "administratorGroup");
+        final WebMarkupContainer timeConsumergroup = new WebMarkupContainer("timeConsumerGroup");
+        final WebMarkupContainer timeControllergroup = new WebMarkupContainer("timeControllerGroup");
+        final WebMarkupContainer administratorGroup = new WebMarkupContainer("administratorGroup");
         add(timeConsumergroup);
         add(timeControllergroup);
         add(administratorGroup);
         add(new TaskListPanel("taskList"));
-
-        TextField<String> searchField = new TextField<String>("searchField");
-        add(searchField);
-        // add(new Button("searchButton"));
     }
 }
