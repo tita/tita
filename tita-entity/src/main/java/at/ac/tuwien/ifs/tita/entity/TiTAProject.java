@@ -18,6 +18,7 @@ package at.ac.tuwien.ifs.tita.entity;
 import java.io.Serializable;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -64,15 +65,15 @@ public class TiTAProject extends BaseEntity<Long> implements Serializable {
     @JoinColumn(name = "STATUS_ID", referencedColumnName = "ID")
     private ProjectStatus projectStatus;
 
-    @OneToMany
-    @JoinColumn(name = "TASK_ID")
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
+    @JoinColumn(name = "PROJECT_ID")
     private Set<TiTATask> titaTasks;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "PROJECT_ID")
     private Set<IssueTrackerProject> issueTrackerProjects;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinTable(name = "USER_PROJECT", joinColumns = { @JoinColumn(name = "PROJECT_ID") }, 
                inverseJoinColumns = { @JoinColumn(name = "USER_ID") })
     private Set<TiTAUser> users;
@@ -83,11 +84,12 @@ public class TiTAProject extends BaseEntity<Long> implements Serializable {
     @Version
     private Long modificationVersion;
 
-    public TiTAProject(Long id, Set<TiTATask> tasks){
+    public TiTAProject(Long id, Set<TiTATask> tasks, Set<IssueTrackerProject> projects){
         this.id = id;
         this.titaTasks = tasks;
+        this.issueTrackerProjects = projects;
     }
-
+    
     public TiTAProject(){    
     }
     

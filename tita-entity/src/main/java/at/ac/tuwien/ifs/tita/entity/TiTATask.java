@@ -17,6 +17,7 @@ package at.ac.tuwien.ifs.tita.entity;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -54,7 +55,7 @@ public class TiTATask extends BaseEntity<Long> {
     @JoinColumn(name = "PROJECT_ID", referencedColumnName = "ID")
     private TiTAProject titaProject;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "TITA_TASK_ID")
     private Set<Effort> titaEfforts;
 

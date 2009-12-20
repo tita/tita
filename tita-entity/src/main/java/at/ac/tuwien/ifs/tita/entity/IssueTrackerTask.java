@@ -17,6 +17,7 @@ package at.ac.tuwien.ifs.tita.entity;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -57,7 +58,8 @@ public class IssueTrackerTask extends BaseEntity<Long> {
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @OneToMany
+
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "ISSUET_TASK_ID")
     private Set<Effort> issueTEfforts;
 
@@ -67,6 +69,10 @@ public class IssueTrackerTask extends BaseEntity<Long> {
     private Long modificationVersion;
 
     public IssueTrackerTask() {
+    }
+    
+    public IssueTrackerTask(Set<Effort> efforts) {
+        this.issueTEfforts = efforts;
     }
 
     @Override

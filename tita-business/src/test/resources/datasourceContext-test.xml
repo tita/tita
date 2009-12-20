@@ -19,10 +19,10 @@
   <!-- The DAOs -->
   <!-- bean id="userDAO" class="at.ac.tuwien.ifs.tita.common.dao.GenericHibernateDao">
 	<constructor-arg value="at.ac.tuwien.ifs.tita.entity.User"/>
-  </bean>
-  <bean id="roleDAO" class="at.ac.tuwien.ifs.tita.datasource.dao.GenericHibernateDao">
-  	<constructor-arg value="at.ac.tuwien.ifs.tita.entity.Role"/>
   </bean-->
+  <bean id="titaProjectDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
+  	<constructor-arg value="at.ac.tuwien.ifs.tita.entity.TiTAProject"/>
+  </bean>
   <bean id="timeEffortDAO" class="at.ac.tuwien.ifs.tita.dao.time.EffortDao"/>
 
   <import resource="classpath:persistence-context-local.xml"/>

@@ -16,12 +16,13 @@
 
 package at.ac.tuwien.ifs.tita.dao.time;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
-
 
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
@@ -114,24 +115,37 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
 
     /** {@inheritDoc} */
     @Override
-    public List<Effort> findEffortsForProjectAndTimeConsumerId(Long projectId, Long tcId) {
-        Criterion criterions[] = null;
+    public List<Effort> findEffortsForTiTAProjectAndTimeConsumerId(Long projectId, Long tcId) {
+//        Criterion criterions[] = null;
+//        
+//        Order order[] = {Order.asc("date")};
+//        
+//      
+//        criterions = new Criterion [] { Restrictions.eq("issueTTask.isstProject.projectId", 
+//                                                        projectId),
+//                                        Restrictions.eq("titaTask.titaProject.id", projectId),
+//                                        Restrictions.eq("user.id", tcId)};
+//        return findByCriteriaOrdered(criterions, order, null);
         
-        Order order[] = {Order.asc("date")};
-        
-      
-        criterions = new Criterion [] { Restrictions.eq("issueTTask.isstProject.projectId", 
-                                                        projectId),
-                                        Restrictions.eq("titaTask.titaProject.id", projectId),
-                                        Restrictions.eq("user.id", tcId)};
-        return findByCriteriaOrdered(criterions, order, null);
+       return null;
     }
     
     /** {@inheritDoc} */
+    @SuppressWarnings("unchecked")
     @Override
-    public List<Effort> findEffortsForProjectId(Long projectId) {
-        // TODO Auto-generated method stub
-        return null;
+    public List<Effort> findEffortsForTiTAProjectId(Long projectId) {
+        List<Effort> efforts = new ArrayList<Effort>();
+        String queryString = "from Effort te where te.issueTTask.isstProject.titaProject.id = " +
+                             " :pId and te.titaTask.titaProject.id = :pId";
+        
+        Query q = em.createQuery(queryString);
+        q.setParameter("pId", projectId);
+        try {
+            efforts = q.getResultList();
+        } catch (NoResultException e) {
+            // nothing to do
+        }
+        return efforts;
     }
 
     /** {@inheritDoc} */

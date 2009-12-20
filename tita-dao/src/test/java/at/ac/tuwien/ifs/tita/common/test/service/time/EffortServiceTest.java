@@ -61,8 +61,8 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
      */
     @Test
     public void testSaveTimeEffort() {
-        Effort timeEffort = new Effort(null, null, null, "Das ist die Test TimeEffort 1");
-
+        Effort timeEffort = new Effort(null, null, null, null,
+                "Das ist die Test TimeEffort 1");
         try {
             service.saveEffort(timeEffort);
         } catch (TitaDAOException e) {
@@ -76,7 +76,8 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
      */
     @Test
     public void testDeleteTimeEffort() {
-        Effort timeEffort = new Effort(null, null, null, "Das ist die Test TimeEffort 2");
+        Effort timeEffort = new Effort(null, null, null, null,
+                "Das ist die Test TimeEffort 2");
         try {
             service.saveEffort(timeEffort);
             Assert.assertNotNull(timeEffort.getId());
@@ -93,7 +94,8 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
      */
     @Test
     public void testUpdateTimeEffort() {
-        Effort timeEffort = new Effort(null, null, null, "Das ist die Test TimeEffort 3");
+        Effort timeEffort = new Effort(null, null, null, null,
+                "Das ist die Test TimeEffort 3");
         try {
             service.saveEffort(timeEffort);
             Assert.assertNotNull(timeEffort.getId());
@@ -112,7 +114,8 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
      */
     @Test
     public void testSearchTimeEffort() {
-        Effort timeEffort = new Effort(null, null, null, "Das ist die Test TimeEffort 4");
+       Effort timeEffort = new Effort(null, null, null, null,
+                "Das ist die Test TimeEffort 4");
         try {
             service.saveEffort(timeEffort);
             Assert.assertNotNull(timeEffort.getId());
@@ -144,9 +147,12 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
         } catch (ParseException e1) {
             assertTrue(false);
         }
-        Effort timeEffort1 = new Effort(null, null, null, "Das ist die Test TimeEffort 5");
-        Effort timeEffort2 = new Effort(null, null, null, "Das ist die Test TimeEffort 6");
-        Effort timeEffort3 = new Effort(null, null, null, "Das ist die Test TimeEffort 7");
+        Effort timeEffort1 = new Effort(null, null, null, null,
+                "Das ist die Test TimeEffort 5");
+        Effort timeEffort2 = new Effort(null, null, null, null,
+                "Das ist die Test TimeEffort 6");
+        Effort timeEffort3 = new Effort(null, null, null, null,
+                "Das ist die Test TimeEffort 7");
 
         timeEffort1.setDate(date1);
         timeEffort2.setDate(date2);

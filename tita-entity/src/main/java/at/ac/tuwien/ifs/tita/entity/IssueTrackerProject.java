@@ -17,6 +17,7 @@ package at.ac.tuwien.ifs.tita.entity;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -64,7 +65,7 @@ public class IssueTrackerProject extends BaseEntity<Long> {
     // @Column(name="DESCRIPTION")
     // private String description;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "ISST_PROJECT_ID")
     private Set<IssueTrackerTask> issueTrackerTasks;
 
@@ -79,11 +80,11 @@ public class IssueTrackerProject extends BaseEntity<Long> {
     public IssueTrackerProject() {
     }
 
-    public IssueTrackerProject(Long id, TiTAProject project, Long isstProjectId) {
+    public IssueTrackerProject(Long id, Long isstProjectId,Set<IssueTrackerTask> issueTrackerTasks){
         super();
         this.id = id;
-        this.titaProject = project;
         this.isstProjectId = isstProjectId;
+        this.issueTrackerTasks = issueTrackerTasks;
     }
 
     @Override

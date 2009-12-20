@@ -17,6 +17,7 @@ package at.ac.tuwien.ifs.tita.entity;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -72,8 +73,9 @@ public class User extends BaseEntity<Long> {
     @JoinColumn(name = "ROLE", referencedColumnName = "ID")
     private Role role;
 
-    @ManyToMany
-    @JoinTable(name = "USER_PROJECT", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = { @JoinColumn(name = "PROJECT_ID") })
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
+    @JoinTable(name = "USER_PROJECT", joinColumns = { @JoinColumn(name = "USER_ID") }, 
+               inverseJoinColumns = { @JoinColumn(name = "PROJECT_ID") })
     private Set<TiTAProject> titaProjects;
 
     @OneToMany

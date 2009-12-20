@@ -45,7 +45,7 @@ public interface IEffortDao {
      * @param projectId Long
      * @return List of Effort
      */
-    List<Effort> findEffortsForProjectId(Long projectId);
+    List<Effort> findEffortsForTiTAProjectId(Long projectId);
     
     /**
      * Find all effort of a time consumer in a specific tita-project.
@@ -53,7 +53,7 @@ public interface IEffortDao {
      * @param tcId Long
      * @return List of Effort
      */
-    List<Effort> findEffortsForProjectAndTimeConsumerId(Long projectId, Long tcId);
+    List<Effort> findEffortsForTiTAProjectAndTimeConsumerId(Long projectId, Long tcId);
     
     /**
      * Find all efforts of a specific time consumer in whole tita.

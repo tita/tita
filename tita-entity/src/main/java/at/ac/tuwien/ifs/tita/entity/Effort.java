@@ -79,13 +79,16 @@ public class Effort extends BaseEntity<Long> implements Serializable {
     public Effort() {
     }
 
-    public Effort(TiTATask titaTask, IssueTrackerTask issueTTask, String description) {
+    public Effort( Date creationDate, Long startTime, Long duration, Boolean deleted,
+                  String description) {
         super();
-        this.titaTask = titaTask;
-        this.issueTTask = issueTTask;
+        this.date = creationDate;
+        this.startTime = startTime;
+        this.duration = duration;
+        this.deleted = deleted;
         this.description = description;
     }
-
+    
     @Override
     public Long getId() {
         return id;
