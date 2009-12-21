@@ -220,7 +220,9 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
         List<Effort> list = null;
 
         try {
+            //CHECKSTYLE:OFF
             list = service.getEffortsMonthlyView(2009, 9);
+            //CHECKSTYLE:ON
             Assert.assertNotNull(list);
             Assert.assertEquals(2, list.size());
             deleteEfforts(efforts);

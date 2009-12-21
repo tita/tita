@@ -228,9 +228,9 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
         T persistedEntity = null;
 
         persistedEntity = findById(((BaseEntity<ID>) entity).getId());
-        if (persistedEntity != null)
+        if (persistedEntity != null) {
             return merge(entity);
-        else {
+        } else {
             persist(entity);
             return entity;
         }
@@ -353,12 +353,13 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
 
         List<T> resultList = findByCriteria(criterion);
 
-        if (resultList.size() == 1)
+        if (resultList.size() == 1) {
             return resultList.get(0);
-
-        if (resultList.size() == 0)
+        }
+        
+        if (resultList.size() == 0) {
             return null;
-
+        }
         /*
          * No unique ResultList leads to a TitaDAOException.
          */

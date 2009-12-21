@@ -45,7 +45,8 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> {
     /**
      * Gets a view for a month.
      * 
-     * @param cal calenderdates which are selected
+     * @param year year which is selected
+     * @param month month whicht is selected
      * @return list of timefforts that match dates
      */
     public List<Effort> getTimeEffortsMonthlyView(Integer year, Integer month) {

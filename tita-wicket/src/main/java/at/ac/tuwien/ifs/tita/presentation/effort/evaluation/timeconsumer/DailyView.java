@@ -13,6 +13,7 @@
  */
 package at.ac.tuwien.ifs.tita.presentation.effort.evaluation.timeconsumer;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -30,13 +31,13 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import at.ac.tuwien.ifs.tita.business.service.time.IEffortService;
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.Effort;
-import at.ac.tuwien.ifs.tita.presentation.HeaderPage;
+import at.ac.tuwien.ifs.tita.presentation.BasePage;
 import at.ac.tuwien.ifs.tita.presentation.controls.listview.EffortEvaluationListView;
 
 /**
  * Daily evaluation.
  */
-public class DailyView extends HeaderPage {
+public class DailyView extends BasePage {
     @SpringBean(name = "timeEffortService")
     private IEffortService service;
 
@@ -91,6 +92,7 @@ public class DailyView extends HeaderPage {
      */
     private List<Effort> getTimeEffortsDailyView(Date d) {
         List<Effort> list = null;
+        
         try {
             list = service.getEffortsDailyView(d);
         } catch (TitaDAOException e) {

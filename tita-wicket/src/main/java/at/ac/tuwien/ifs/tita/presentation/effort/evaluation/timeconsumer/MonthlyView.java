@@ -34,14 +34,14 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import at.ac.tuwien.ifs.tita.business.service.time.IEffortService;
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.Effort;
-import at.ac.tuwien.ifs.tita.presentation.HeaderPage;
+import at.ac.tuwien.ifs.tita.presentation.BasePage;
 import at.ac.tuwien.ifs.tita.presentation.controls.dropdown.SelectOption;
 import at.ac.tuwien.ifs.tita.presentation.controls.listview.EffortEvaluationListView;
 
 /**
  * Monthly evaluation.
  */
-public class MonthlyView extends HeaderPage {
+public class MonthlyView extends BasePage {
     @SpringBean(name = "timeEffortService")
     private IEffortService service;
 
@@ -113,7 +113,7 @@ public class MonthlyView extends HeaderPage {
     /**
      * Gets time effort data by date.
      * 
-     * @param yeear year of effort entry
+     * @param year year of effort entry
      * @param month month of effort entry
      * @return all efforts that match the date
      */
