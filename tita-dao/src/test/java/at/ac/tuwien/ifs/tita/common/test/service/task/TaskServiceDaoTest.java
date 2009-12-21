@@ -15,30 +15,35 @@
  */
 package at.ac.tuwien.ifs.tita.common.test.service.task;
 
-import static org.junit.Assert.fail;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import junit.framework.Assert;
+import junit.framework.TestCase;
+
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mantisbt.connect.MCException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import at.ac.tuwien.ifs.tita.business.service.tasks.ITaskService;
+import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin;
+import at.ac.tuwien.ifs.tita.entity.IssueTrackerTask;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
+import at.ac.tuwien.ifs.tita.entity.TiTATask;
+import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 import at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus;
-import at.ac.tuwien.ifs.tita.issuetracker.exceptions.ProjectNotFoundException;
 
 /**
- * Task Service Testcases.
+ * Task Service Dao Testcases.
  *
  * @author Christoph
  *
@@ -47,13 +52,16 @@ import at.ac.tuwien.ifs.tita.issuetracker.exceptions.ProjectNotFoundException;
 @ContextConfiguration(locations = { "classpath:datasourceContext-test.xml" })
 @TransactionConfiguration
 @Transactional
-public class TaskServiceTest extends IssueTrackerServiceTest {
+public class TaskServiceDaoTest extends TestCase {
+
+    private IssueTrackerLogin defaultLogin = new IssueTrackerLogin(1L, "administrator", "root",
+            new IssueTracker(1L, "test-mantis", "http://localhost/mantisbt-1.1.8"));
 
     private TiTAProject titaProject;
     private List<IssueTrackerLogin> logins;
 
     @Resource(name = "taskService")
-    private ITaskService taskService;
+    private ITaskService service;
 
     /**
      * Prepare mantis connection and create a setup in mantis with projects and
@@ -62,9 +70,8 @@ public class TaskServiceTest extends IssueTrackerServiceTest {
     @Override
     @Before
     public void setUp() {
-        super.setUp();
 
-        try {
+        // try {
             this.logins = new ArrayList<IssueTrackerLogin>();
             this.logins.add(this.defaultLogin);
 
@@ -73,19 +80,13 @@ public class TaskServiceTest extends IssueTrackerServiceTest {
             this.titaProject.setDeleted(false);
             this.titaProject.setProjectStatus(new ProjectStatus(1L, "open"));
 
-            this.taskService.setLogins(this.logins);
-            this.taskService.setProject(this.titaProject);
-            this.taskService.fetchTaskFromIssueTrackerProjects();
-
-            createSetup(this.numberOfProjects, this.numberOfTasksForEachProject);
-
-        } catch (MCException e) {
-            fail("Mantis connection error.");
-        } catch (ProjectNotFoundException e) {
-            fail("Project must be set.");
-        } catch (InterruptedException e) {
-            fail("Interruption Failure.");
-        }
+            // this.taskService.setLogins(this.logins);
+            // this.taskService.setProject(this.titaProject);
+            // this.taskService.fetchTaskFromIssueTrackerProjects();
+        //
+        // } catch (ProjectNotFoundException e) {
+        // fail("Project must be set.");
+        // }
     }
 
     /**
@@ -98,7 +99,45 @@ public class TaskServiceTest extends IssueTrackerServiceTest {
     @After
     public void tearDown() throws InterruptedException {
         this.logins = null;
-        deleteSetupAndChanges();
+
+    }
+
+    /**
+     * The test case should fetch all tita task, that are created for self
+     * defined efforts.
+     */
+    @Test
+    @Ignore
+    public void getTiTATasks() {
+
+    }
+
+    /**
+     * The test case save a TiTATask for a self defined effort.
+     */
+    @Test
+    public void saveTiTATask() {
+        TiTATask titaTask = new TiTATask();
+        try {
+            this.service.saveTiTATask(titaTask);
+        } catch (TitaDAOException e) {
+            fail("");
+        }
+    }
+
+    /**
+     * The test case should save a issue tracker task that is provided from the
+     * task list.
+     */
+    @Test
+    public void saveIssueTrackerTask() {
+        IssueTrackerTask issueTrackerTask = new IssueTrackerTask();
+        try {
+            this.service.saveIssueTrackerTask(issueTrackerTask);
+        } catch (TitaDAOException e) {
+            fail("");
+        }
+        Assert.assertNotNull(issueTrackerTask.getId());
     }
 
 }

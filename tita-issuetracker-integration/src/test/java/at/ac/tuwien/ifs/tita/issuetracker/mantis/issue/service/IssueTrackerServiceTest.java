@@ -26,6 +26,7 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mantisbt.connect.MCException;
 import org.slf4j.Logger;
@@ -195,13 +196,14 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
      * projectId. After the update new tasks for the project should be involved.
      *
      * This test case does not run, because a additional project is produced.
-     * 
+     *
      * @throws ProjectNotFoundException
      *             pnfe
      * @throws InterruptedException
      *             ie
      */
     @Test
+    @Ignore
     public void updateProjectByProjectId() throws ProjectNotFoundException, InterruptedException {
         try {
 

@@ -65,8 +65,7 @@ public class TiTAProject extends BaseEntity<Long> implements Serializable {
     private ProjectStatus projectStatus;
 
     @OneToMany
-    @JoinColumn(name = "PROJECT_ID")
-    // TASK_ID
+    @JoinColumn(name = "TASK_ID")
     private Set<TiTATask> titaTasks;
 
     @OneToMany
@@ -76,6 +75,7 @@ public class TiTAProject extends BaseEntity<Long> implements Serializable {
     @ManyToMany
     @JoinTable(name = "USER_PROJECT", joinColumns = { @JoinColumn(name = "PROJECT_ID") }, inverseJoinColumns = { @JoinColumn(name = "USER_ID") })
     private Set<User> users;
+
 
     @SuppressWarnings("unused")
     @Column(name = "MODIFICATION_VERSION")
@@ -100,6 +100,22 @@ public class TiTAProject extends BaseEntity<Long> implements Serializable {
 
     public Set<IssueTrackerProject> getIssueTrackerProjects() {
         return this.issueTrackerProjects;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setTitaTasks(Set<TiTATask> titaTasks) {
+        this.titaTasks = titaTasks;
+    }
+
+    public void setIssueTrackerProjects(Set<IssueTrackerProject> issueTrackerProjects) {
+        this.issueTrackerProjects = issueTrackerProjects;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 
     public Set<User> getUsers() {

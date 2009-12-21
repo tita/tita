@@ -27,12 +27,12 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
 import at.ac.tuwien.ifs.tita.issuetracker.mantis.dao.IssueTrackerMantisDao;
 
 /**
- * The TaskService manage the synchronization between mantis and TiTA. Therefore
- * are two methods that starts the update functions. In addition you can fetch
- * the updated tasks from a project an status.
- *
+ * The IssueTrackerService manage the synchronization between mantis and TiTA.
+ * Therefore are two methods that starts the update functions. In addition you
+ * can fetch the updated tasks from a project an status.
+ * 
  * @author Christoph
- *
+ * 
  */
 public class IssueTrackerService implements IIssueTrackerService {
     private static DispatcherThread dispatcher = null;

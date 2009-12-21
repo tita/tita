@@ -35,7 +35,7 @@
    <bean id="timeEffortService" class="at.ac.tuwien.ifs.tita.business.service.time.EffortService">
     <property name="timeEffortDao" ref="timeEffortDAO"/>
   </bean>
-  
+
   <bean id="taskService" class="at.ac.tuwien.ifs.tita.business.service.tasks.TaskService">
     <property name="issueTrackerTaskDao" ref="issueTrackerTaskDAO"/>
     <property name="titaTaskDao" ref="titataskDAO"/>
