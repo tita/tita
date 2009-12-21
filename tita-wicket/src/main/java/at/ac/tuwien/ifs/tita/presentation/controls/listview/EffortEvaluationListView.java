@@ -13,6 +13,7 @@
  */
 package at.ac.tuwien.ifs.tita.presentation.controls.listview;
 
+import java.text.DateFormatSymbols;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
@@ -34,8 +35,8 @@ import at.ac.tuwien.ifs.tita.presentation.utils.GlobalUtils;
  */
 public class EffortEvaluationListView<T> extends ListView<Effort> {
 
-    // private static final Integer SUBTRACTTIME = 3600000;
-
+    private String[] weekdays = new DateFormatSymbols().getShortWeekdays();
+    
     public EffortEvaluationListView(String id, List<Effort> list) {
         super(id, list);
     }
@@ -51,6 +52,8 @@ public class EffortEvaluationListView<T> extends ListView<Effort> {
         Effort effort = item.getModelObject();
         Label lbDate = new Label("date", GlobalUtils.DATEFORMAT.format(effort.getDate()));
 
+        Calendar cal = GlobalUtils.getCalendarFromDate(effort.getDate());
+        Label lbWeekDay = new Label("weekday", weekdays[cal.get(Calendar.DAY_OF_WEEK)]);
         Label lbDescription = new Label("description", effort.getDescription());
 
         String startTime = GlobalUtils.TIMELENGTHFORMAT.format(effort.getStartTime()) + " "
@@ -65,18 +68,20 @@ public class EffortEvaluationListView<T> extends ListView<Effort> {
                 + GlobalUtils.TIMEFORMAT24HOURS.format(GlobalUtils.getDateFromLong(effort.getDuration())));
 
         lbDate.setOutputMarkupId(true);
+        lbWeekDay.setOutputMarkupId(true);
         lbDescription.setOutputMarkupId(true);
         lbStartTime.setOutputMarkupId(true);
         lbEndTime.setOutputMarkupId(true);
         lbLength.setOutputMarkupId(true);
 
         item.add(lbDate);
+        item.add(lbWeekDay);
         item.add(lbDescription);
         item.add(lbStartTime);
         item.add(lbEndTime);
         item.add(lbLength);
     }
-
+    
     /**
      * Checks if date is am or pm.
      * 
