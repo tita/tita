@@ -20,8 +20,9 @@
 #log files
 #================
 *velocity.log
+*velocity.log.*
 
 #================
 #h2db
 #================
-*db
+*data

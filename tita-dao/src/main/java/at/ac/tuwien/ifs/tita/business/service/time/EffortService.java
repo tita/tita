@@ -14,7 +14,7 @@
 
 package at.ac.tuwien.ifs.tita.business.service.time;
 
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
@@ -22,9 +22,11 @@ import at.ac.tuwien.ifs.tita.dao.time.EffortDao;
 import at.ac.tuwien.ifs.tita.entity.Effort;
 
 /**
- * Service for manipulating (insert, update, delete, search... ) efforts in TiTA.
+ * Service for manipulating (insert, update, delete, search... ) efforts in
+ * TiTA.
+ * 
  * @author herbert
- *
+ * 
  */
 public class EffortService implements IEffortService {
 
@@ -56,16 +58,23 @@ public class EffortService implements IEffortService {
      * {@inheritDoc}
      */
     @Override
-    public List<Effort> getEffortsDailyView(Calendar cal) throws TitaDAOException {
-        return timeEffortDao.getTimeEffortsDailyView(cal);
+    public List<Effort> getEffortsDailyView(Date date) throws TitaDAOException {
+        return timeEffortDao.getTimeEffortsDailyView(date);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<Effort> getEffortsMonthlyView(Calendar cal) throws TitaDAOException {
-        return timeEffortDao.getTimeEffortsMonthlyView(cal);
+    public List<Effort> getEffortsMonthlyView(Integer year, Integer month) throws TitaDAOException {
+        return timeEffortDao.getTimeEffortsMonthlyView(year, month);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<Integer> getEffortsYears() {
+        return timeEffortDao.getTimeEffortsYears();
     }
 
     /**

@@ -29,7 +29,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.PropertyModel;
 
-import at.ac.tuwien.ifs.tita.presentation.HeaderPage;
+import at.ac.tuwien.ifs.tita.presentation.BasePage;
 import at.ac.tuwien.ifs.tita.presentation.controls.dropdown.SelectOption;
 
 /**
@@ -38,7 +38,7 @@ import at.ac.tuwien.ifs.tita.presentation.controls.dropdown.SelectOption;
  * @author rene
  * 
  */
-public class MultipleProjectsView extends HeaderPage {
+public class MultipleProjectsView extends BasePage {
     private final SelectOption selectedTimespan;
 
     public MultipleProjectsView() {

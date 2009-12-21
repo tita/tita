@@ -20,7 +20,47 @@
     </head>
     <body>
     <div id="container">
-        <wicket:child />
+         <div id="header">
+               <div id="title_left">
+                   <strong>Ti</strong>ny 
+                   <strong>T</strong>ime 
+                   <strong>T</strong>racking
+                   <strong>A</strong>ssistent
+               </div>
+               <div id="title_right">
+                   <span wicket:id="showUser">[User]</span>
+                   <wicket:link><a href="#">Signout</a></wicket:link>
+               </div>
+            </div>
+            <div id="contents">
+                <br/><hr/>
+                <div id="navigation">
+                   <wicket:link>
+                        <div wicket:id="timeConsumerGroup"> 
+                           <a href="effort/EffortsPage.html">Efforts</a>
+                           <a href="effort/evaluation/timeconsumer/DailyView.html">Daily View</a>
+                           <a href="effort/evaluation/timeconsumer/MonthlyView.html">Monthly View</a>
+                       </div> 
+                       <div wicket:id="timeControllerGroup"> 
+                           <a href="effort/evaluation/timecontroller/#">Target/Actual time comparison</a>
+                           <a href="effort/evaluation/timecontroller/MultipleProjectsView.html">multiple projects evaluation</a>
+                           <a href="effort/evaluation/timecontroller/#">personal time evaluation</a>
+                      </div>
+                       <div wicket:id="administratorGroup">
+                           <a href="#">New User</a>
+                           <a href="#">New Project</a>
+                           <a href="#">Administrate Users</a>
+                           <a href="#">Administrate Projects</a>
+                           <a href="#">Permissions</a>
+                       </div>
+                   </wicket:link>
+                </div>
+                <hr/>
+                <div id="main">
+                    <wicket:child />
+                </div>
+                <div id="taskBar"><div id="tita_taskList" wicket:id="taskList">Task List</div></div>
+           </div>
     </div>
     </body>
 </html>
