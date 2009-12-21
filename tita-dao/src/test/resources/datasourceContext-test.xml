@@ -24,6 +24,8 @@
   	<constructor-arg value="at.ac.tuwien.ifs.tita.entity.Role"/>
   </bean-->
   <bean id="timeEffortDAO" class="at.ac.tuwien.ifs.tita.dao.time.EffortDao"/>
+  <bean id="titataskDAO" class="at.ac.tuwien.ifs.tita.dao.titatask.TiTATaskDao"/>
+  <bean id="issueTrackerTaskDAO" class="at.ac.tuwien.ifs.tita.dao.issuetracker.task.IssueTrackerTaskDao"/>
 
   <!-- The Services -->
   <!-- bean id="userService" class="at.ac.tuwien.ifs.tita.common.service.user.UserService">
@@ -32,6 +34,11 @@
   </bean-->						
    <bean id="timeEffortService" class="at.ac.tuwien.ifs.tita.business.service.time.EffortService">
     <property name="timeEffortDao" ref="timeEffortDAO"/>
+  </bean>
+  
+  <bean id="taskService" class="at.ac.tuwien.ifs.tita.business.service.tasks.TaskService">
+    <property name="issueTrackerTaskDao" ref="issueTrackerTaskDAO"/>
+    <property name="titaTaskDao" ref="titataskDAO"/>
   </bean>
   
   <import resource="classpath:persistence-context-local.xml"/>

@@ -15,10 +15,14 @@
  */
 package at.ac.tuwien.ifs.tita.dao.issuetracker.task;
 
+import java.util.Map;
+
 import org.springframework.stereotype.Repository;
 
 import at.ac.tuwien.ifs.tita.dao.GenericHibernateDao;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerTask;
+import at.ac.tuwien.ifs.tita.entity.TiTAProject;
+import at.ac.tuwien.ifs.tita.entity.TiTATask;
 
 /**
  * IssueTrackerTask Data Access Object.
@@ -31,6 +35,19 @@ public class IssueTrackerTaskDao extends GenericHibernateDao<IssueTrackerTask, L
 
     public IssueTrackerTaskDao() {
         super(IssueTrackerTask.class);
+    }
+
+    /**
+     * dfsg.
+     * 
+     * @param project
+     *            sdfg
+     * @return asdf
+     */
+    public Map<Long, TiTATask> getTiTATasksForTitaProject(TiTAProject project) {
+
+        return null;
+
     }
 
 }

@@ -9,7 +9,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-  
+
  */
 package at.ac.tuwien.ifs.tita.issuetracker.container;
 
@@ -23,9 +23,9 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
 
 /**
  * The container class for project objects from the integrated issue tracker.
- * 
+ *
  * @author Karin
- * 
+ *
  */
 public class IssueTrackerProject implements IProjectTrackable {
     private long id;
@@ -35,6 +35,16 @@ public class IssueTrackerProject implements IProjectTrackable {
     private Map<Long, ITaskTrackable> tasks;
     private URL url;
     private ViewState viewState;
+
+    public IssueTrackerProject(long id, String name, String description, ProjectStatus status,
+            URL url, ViewState viewState) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.url = url;
+        this.viewState = viewState;
+    }
 
     public IssueTrackerProject(long id, String name, String description,
             ProjectStatus status, Map<Long, ITaskTrackable> tasks, URL url,

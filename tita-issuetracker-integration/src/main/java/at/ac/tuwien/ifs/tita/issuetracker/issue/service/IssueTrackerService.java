@@ -3,15 +3,15 @@
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
-   
+
        http://www.apache.org/licenses/LICENSE\-2.0
-       
+
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-  
+
  */
 package at.ac.tuwien.ifs.tita.issuetracker.issue.service;
 
@@ -30,9 +30,9 @@ import at.ac.tuwien.ifs.tita.issuetracker.mantis.dao.IssueTrackerMantisDao;
  * The TaskService manage the synchronization between mantis and TiTA. Therefore
  * are two methods that starts the update functions. In addition you can fetch
  * the updated tasks from a project an status.
- * 
+ *
  * @author Christoph
- * 
+ *
  */
 public class IssueTrackerService implements IIssueTrackerService {
     private static DispatcherThread dispatcher = null;
@@ -44,13 +44,13 @@ public class IssueTrackerService implements IIssueTrackerService {
 
 
     public IssueTrackerService(IssueTrackerLogin login) {
-        loggedUser = login;
-        dao = new IssueTrackerMantisDao(login);
-        projects = dao.findAccessibleProjects();
+        this.loggedUser = login;
+        this.dao = new IssueTrackerMantisDao(login);
+        this.projects = this.dao.findAccessibleProjects();
     }
 
     public IIssueTrackerDao getIssueTrackerDao() {
-        return dao;
+        return this.dao;
     }
 
     public void setProjects(Map<Long, IProjectTrackable> projects) {
@@ -58,32 +58,30 @@ public class IssueTrackerService implements IIssueTrackerService {
     }
 
     public Map<Long, IProjectTrackable> getProjects() {
-        return projects;
+        return this.projects;
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateAll() {
-        dao = new IssueTrackerMantisDao(loggedUser);
-        projects = dao.findAccessibleProjects();
+        this.dao = new IssueTrackerMantisDao(this.loggedUser);
+        this.projects = this.dao.findAccessibleProjects();
 
-        dispatcher = new DispatcherThread(projects, loggedUser);
-        dispatcher.start();
-        dispatcher.close();
-
+        dispatcher = new DispatcherThread(this.projects, this.loggedUser);
+        dispatcher.run();
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateProject(IProjectTrackable project) {
-        worker = new WorkerThread(project, loggedUser);
+        worker = new WorkerThread(project, this.loggedUser);
         worker.start();
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateProject(Long projectId) {
-        worker = new WorkerThread(projectId, loggedUser);
+        worker = new WorkerThread(projectId, this.loggedUser);
         worker.start();
     }
 
@@ -96,9 +94,13 @@ public class IssueTrackerService implements IIssueTrackerService {
         if (project == null) {
             throw new ProjectNotFoundException("No project was set.");
         }
-        
+
         Map<Long, ITaskTrackable> tasks = project.getTasks();
         Map<Long, ITaskTrackable> statusTasks = new TreeMap<Long, ITaskTrackable>();
+
+        if (tasks == null) {
+            return null;
+        }
 
         for (ITaskTrackable task : tasks.values()) {
 
@@ -111,7 +113,7 @@ public class IssueTrackerService implements IIssueTrackerService {
         if (statusTasks.size() == 0) {
             return null;
         }
-        
+
         return statusTasks;
     }
 
@@ -129,6 +131,7 @@ public class IssueTrackerService implements IIssueTrackerService {
 
     /** {@inheritDoc} */
     @Override
+    @Deprecated
     public Map<Long, ITaskTrackable> getIssueTrackerTasksByProjectId(Long projectId)
             throws ProjectNotFoundException {
 
@@ -136,7 +139,7 @@ public class IssueTrackerService implements IIssueTrackerService {
             throw new ProjectNotFoundException("No project was set.");
         }
 
-        return dao.findAllTasksForProject(projectId);
+        return this.dao.findAllTasksForProject(projectId);
     }
 
 }

@@ -9,7 +9,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-   
+
  */
 
 package at.ac.tuwien.ifs.tita.issuetracker.mantis.base;
@@ -38,20 +38,20 @@ import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 
 /**
  * Base class for all local mantis tests (connecting, etc.).
- * 
+ *
  * @author herbert
- * 
+ *
  */
 public class MantisBaseTest {
-    
+
     protected MCSession session;
-    private final IssueTrackerLogin defaultLogin = new IssueTrackerLogin(1L, "administrator",
+    protected final IssueTrackerLogin defaultLogin = new IssueTrackerLogin(1L, "administrator",
             "root", new IssueTracker(1L, "test-mantis", "http://localhost/mantisbt-1.1.8"));
 
-    private final String url = defaultLogin.getIssueTracker().getUrl() + "/api/soap/mantisconnect.php";
-    private final String user = defaultLogin.getUserName();
-    private final String pwd = defaultLogin.getPassword();
-    
+    private final String url = this.defaultLogin.getIssueTracker().getUrl() + "/api/soap/mantisconnect.php";
+    private final String user = this.defaultLogin.getUserName();
+    private final String pwd = this.defaultLogin.getPassword();
+
     private Long startTime;
     private Long endTime;
     private String performanceOutput = "";
@@ -64,8 +64,8 @@ public class MantisBaseTest {
     @Before
     public void setUp() {
         try {
-            URL u = new URL(url);
-            session = new MCSession(u, user, pwd);
+            URL u = new URL(this.url);
+            this.session = new MCSession(u, this.user, this.pwd);
         } catch (MCException e) {
             assertTrue(false);
         } catch (MalformedURLException e) {
@@ -75,7 +75,7 @@ public class MantisBaseTest {
 
     /**
      * Creates a Project on the Mantis-Server.
-     * 
+     *
      * @param projectName
      *            - name of the project
      * @param description
@@ -97,14 +97,14 @@ public class MantisBaseTest {
         newProject.setDesription(description);
         newProject.setEnabled(enabled); // ProjectStatus: Open
         newProject.setPrivate(viewStatePrivate); // ViewState:Public
-        Long id = session.addProject(newProject);
-        session.flush();
+        Long id = this.session.addProject(newProject);
+        this.session.flush();
         return id;
     }
 
     /**
      * Creates a task on the Mantis-Server.
-     * 
+     *
      * @param description
      *            - description of the project
      * @param summary
@@ -121,20 +121,20 @@ public class MantisBaseTest {
         IIssue newIssue = new Issue();
         newIssue.setDescription(description);
         // newIssue.setHandler(new Account(100, "test", "test", "test@test"));
-        newIssue.setPriority(session.getDefaultIssuePriority());
+        newIssue.setPriority(this.session.getDefaultIssuePriority());
         newIssue.setSummary(summary);
-        newIssue.setSeverity(session.getDefaultIssueSeverity());
+        newIssue.setSeverity(this.session.getDefaultIssueSeverity());
         // newIssue.setReporter(new Account(101, "rep1", "rep1", "rep@rep"));
-        IProject p = session.getProject(projectName);
+        IProject p = this.session.getProject(projectName);
         newIssue.setProject(new MCAttribute(p.getId(), p.getName()));
-        long id = session.addIssue(newIssue);
-        session.flush();
+        long id = this.session.addIssue(newIssue);
+        this.session.flush();
         return id;
     }
 
     /**
      * Creates a comment on the Mantis-Server.
-     * 
+     *
      * @param text
      *            - text of the comment
      * @param isPrivate
@@ -150,24 +150,24 @@ public class MantisBaseTest {
         INote newNote = new Note();
         newNote.setText(text);
         newNote.setPrivate(isPrivate);
-        Long id = session.addNote(issueId, newNote);
-        session.flush();
+        Long id = this.session.addNote(issueId, newNote);
+        this.session.flush();
         return id;
     }
 
     /**
      * Deletes project on the Mantis-Server.
-     * 
+     *
      * @param projectName
      *            - name of the project to delete
      */
     protected void deleteTestProject(String projectName) {
         IProject old;
         try {
-            old = session.getProject(projectName);
+            old = this.session.getProject(projectName);
             if (old != null) {
-                session.deleteProject(old.getId());
-                session.flush();
+                this.session.deleteProject(old.getId());
+                this.session.flush();
             }
         } catch (MCException e) {
             assertTrue(false);
@@ -176,14 +176,14 @@ public class MantisBaseTest {
 
     /**
      * Deletes task on the Mantis-Server.
-     * 
+     *
      * @param taskId
      *            - id of the task to delete
      */
     protected void deleteTestTask(long taskId) {
         try {
-            session.deleteIssue(taskId);
-            session.flush();
+            this.session.deleteIssue(taskId);
+            this.session.flush();
         } catch (MCException e) {
             assertTrue(false);
         }
@@ -191,14 +191,14 @@ public class MantisBaseTest {
 
     /**
      * Deletes comment on the Mantis-Server.
-     * 
+     *
      * @param commentId
      *            - id of the comment to delete
      */
     protected void deleteTestComment(long commentId) {
         try {
-            session.deleteNote(commentId);
-            session.flush();
+            this.session.deleteNote(commentId);
+            this.session.flush();
         } catch (MCException e) {
             assertTrue(false);
         }
@@ -206,27 +206,27 @@ public class MantisBaseTest {
 
     /**
      * Starts the timer.
-     * 
+     *
      * @param description
      *            - It describes the measured situation.
      */
     protected void startTimer(String description) {
-        log.debug(description);
-        performanceOutput = "";
-        performanceOutput += description + "\n";
-        startTime = System.currentTimeMillis();
+        this.log.debug(description);
+        this.performanceOutput = "";
+        this.performanceOutput += description + "\n";
+        this.startTime = System.currentTimeMillis();
     }
 
     /**
      * Stops the timer.
-     * 
+     *
      * @param description
      *            - It describes the measured situation.
      */
     protected void stopTimer(String description) {
-        log.debug(description);
-        performanceOutput += description + "\n";
-        endTime = System.currentTimeMillis();
+        this.log.debug(description);
+        this.performanceOutput += description + "\n";
+        this.endTime = System.currentTimeMillis();
         showDuration();
     }
 
@@ -235,31 +235,31 @@ public class MantisBaseTest {
      */
     private void showDuration() {
         // CHECKSTYLE:OFF
-        log.debug("Duration:" + (getEndTime() - getStartTime()) / 1000 + " sec.");
-        performanceOutput += "Duration:" + (getEndTime() - getStartTime()) / 1000 + " sec." + "\n";
+        this.log.debug("Duration:" + (getEndTime() - getStartTime()) / 1000 + " sec.");
+        this.performanceOutput += "Duration:" + (getEndTime() - getStartTime()) / 1000 + " sec." + "\n";
         // CHECKSTYLE:ON
     }
 
     /**
      * Returns the startTime.
-     * 
+     *
      * @return startTime of the measured activity.
      */
     private Long getStartTime() {
-        return startTime;
+        return this.startTime;
     }
 
     /**
      * Returns the endTime.
-     * 
+     *
      * @return endTime of the measured activity.
      */
     private Long getEndTime() {
-        return endTime;
+        return this.endTime;
     }
 
     protected String getPerformanceOutput() {
-        return performanceOutput;
+        return this.performanceOutput;
     }
 
 }

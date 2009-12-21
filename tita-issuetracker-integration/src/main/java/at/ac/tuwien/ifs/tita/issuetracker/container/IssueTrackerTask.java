@@ -9,7 +9,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-  
+
  */
 package at.ac.tuwien.ifs.tita.issuetracker.container;
 
@@ -21,34 +21,38 @@ import at.ac.tuwien.ifs.tita.issuetracker.enums.IssuePriority;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueResolution;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueSeverity;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueStatus;
+import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueTrackingTool;
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ICommentTrackable;
+import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IProjectTrackable;
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
 
 /**
  * The container class for task objects from the integrated issue tracker.
- * 
+ *
  * @author Karin
- * 
+ *
  */
 public class IssueTrackerTask implements ITaskTrackable, Serializable {
 
-    private Long id;
+    private final Long id;
     private Map<Long, ICommentTrackable> comments;
     private Date creationTime;
     private String description;
     private Date lastChange;
     private String owner;
     private IssuePriority priority;
-    private Long projectId;
+    private IProjectTrackable project;
     private String reporter;
     private IssueResolution resolution;
     private IssueSeverity severity;
     private IssueStatus status;
     private String summary;
+    private IssueTrackingTool trackingTool;
 
-    public IssueTrackerTask(Long id, String description, String owner, Date creationTime, Date lastChange,
-            IssuePriority priority, Long projectId, Map<Long, ICommentTrackable> comments, String reporter,
-            IssueResolution resolution, IssueSeverity severity, IssueStatus status, String summary) {
+    public IssueTrackerTask(Long id, String description, String owner, Date creationTime,
+            Date lastChange, IssuePriority priority, IProjectTrackable project,
+            Map<Long, ICommentTrackable> comments, String reporter, IssueResolution resolution,
+            IssueSeverity severity, IssueStatus status, String summary, IssueTrackingTool tool) {
         super();
         this.id = id;
         this.description = description;
@@ -56,78 +60,79 @@ public class IssueTrackerTask implements ITaskTrackable, Serializable {
         this.creationTime = creationTime;
         this.lastChange = lastChange;
         this.priority = priority;
-        this.projectId = projectId;
+        this.project = project;
         this.comments = comments;
         this.reporter = reporter;
         this.resolution = resolution;
         this.severity = severity;
         this.status = status;
         this.summary = summary;
+        this.trackingTool = tool;
     }
 
     /** {@inheritDoc} */
     public Map<Long, ICommentTrackable> getComments() {
-        return comments;
+        return this.comments;
     }
 
     /** {@inheritDoc} */
     public Date getCreationTime() {
-        return creationTime;
+        return this.creationTime;
     }
 
     /** {@inheritDoc} */
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     /** {@inheritDoc} */
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     /** {@inheritDoc} */
     public Date getLastChange() {
-        return lastChange;
+        return this.lastChange;
     }
 
     /** {@inheritDoc} */
     public String getOwner() {
-        return owner;
+        return this.owner;
     }
 
     /** {@inheritDoc} */
     public IssuePriority getPriority() {
-        return priority;
+        return this.priority;
     }
 
     /** {@inheritDoc} */
-    public Long getProjectId() {
-        return projectId;
+    public IProjectTrackable getProject() {
+        return this.project;
     }
 
     /** {@inheritDoc} */
     public String getReporter() {
-        return reporter;
+        return this.reporter;
     }
 
     /** {@inheritDoc} */
     public IssueResolution getResolution() {
-        return resolution;
+        return this.resolution;
     }
 
     /** {@inheritDoc} */
     public IssueSeverity getSeverity() {
-        return severity;
+        return this.severity;
     }
 
     /** {@inheritDoc} */
     public IssueStatus getStatus() {
-        return status;
+        return this.status;
     }
 
     /** {@inheritDoc} */
     public String getSummary() {
-        return summary;
+        return this.summary;
     }
 
     /** {@inheritDoc} */
@@ -161,8 +166,8 @@ public class IssueTrackerTask implements ITaskTrackable, Serializable {
     }
 
     /** {@inheritDoc} */
-    public void setProjectId(long projectId) {
-        this.projectId = projectId;
+    public void setProject(IProjectTrackable project) {
+        this.project = project;
     }
 
     /** {@inheritDoc} */
@@ -189,4 +194,17 @@ public class IssueTrackerTask implements ITaskTrackable, Serializable {
     public void setSummary(String summary) {
         this.summary = summary;
     }
+
+    /** {@inheritDoc} */
+    public IssueTrackingTool getIssueTrackerType() {
+        return this.trackingTool;
+    }
+
+    /** {@inheritDoc} */
+    public void setIssueTrackerType(IssueTrackingTool tool) {
+        this.trackingTool = tool;
+    }
+
+
+
 }

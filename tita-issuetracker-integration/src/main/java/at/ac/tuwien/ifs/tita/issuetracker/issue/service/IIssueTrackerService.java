@@ -49,7 +49,7 @@ public interface IIssueTrackerService {
      * returns null, no elements found for the project.
      * 
      * @param project
-     *            - the project, from where the issues are wanted
+     *            - the project, from where the tasks are wanted
      * @return a map of tasks from the chosen project.
      * @throws ProjectNotFoundException
      *             if project is null
@@ -59,22 +59,45 @@ public interface IIssueTrackerService {
 
 
     /**
-     * Method makes a update of a single project.
+     * Method returns a map of all tasks for the chosen project. If the method
+     * returns null, no elements found for the project.
      * 
-     * @param project - the chosen project
+     * @param projectId
+     *            - the id of the project, from where the tasks are wanted
+     * @return a map of tasks from the chosen project.
+     * @throws ProjectNotFoundException
+     *             if project is null
+     */
+    Map<Long, ITaskTrackable> getIssueTrackerTasksByProjectId(Long projectId)
+            throws ProjectNotFoundException;
+
+    /**
+     * Method manages a update of a single project.
+     * 
+     * @param project
+     *            - the chosen project
      */
     void updateProject(IProjectTrackable project);
 
+    /**
+     * Method manages a update of a single project.
+     * 
+     * @param projectId
+     *            - the project of the chosen project.
+     */
+    void updateProject(Long projectId);
+    
     /**
      * Method to update all projects.
      */
     void updateAll();
 
-    Map<Long, ITaskTrackable> getIssueTrackerTasksByProjectId(Long projectId)
-            throws ProjectNotFoundException;
-
-    void updateProject(Long projectId);
-    
+    /**
+     * Method to fetch all accessible projects.
+     * 
+     * @return projects
+     */
+    Map<Long, IProjectTrackable> getProjects();
 
 
 
