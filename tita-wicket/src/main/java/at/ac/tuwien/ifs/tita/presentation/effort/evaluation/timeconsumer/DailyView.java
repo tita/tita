@@ -13,6 +13,7 @@
  */
 package at.ac.tuwien.ifs.tita.presentation.effort.evaluation.timeconsumer;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -91,14 +92,30 @@ public class DailyView extends BasePage {
      */
     private List<Effort> getTimeEffortsDailyView(Date d) {
         List<Effort> list = null;
-        
+
+        Date de = getMidnightDateTime(d);
         try {
-            list = service.getEffortsDailyView(d);
+            list = service.getEffortsDailyView(de);
         } catch (TitaDAOException e) {
             e.printStackTrace();
         }
 
         return list;
+    }
+    
+    /**
+     * Sets time of date to midnight.
+     * @param d date to convert
+     * @return midnight date.
+     */
+    private Date getMidnightDateTime(Date d) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(d);
+        cal.set(Calendar.MILLISECOND, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.HOUR_OF_DAY, 0); 
+        return cal.getTime();
     }
 
     /**
