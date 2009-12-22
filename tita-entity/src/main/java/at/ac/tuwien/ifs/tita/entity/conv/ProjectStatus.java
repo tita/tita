@@ -25,7 +25,7 @@ import javax.persistence.Table;
  */
 
 @Entity
-@Table(name="PROJECT_STATUS")
+@Table(name="CONV_PROJECT_STATUS")
 public class ProjectStatus extends ConvBaseEntity{
 
     public ProjectStatus() {

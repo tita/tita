@@ -25,5 +25,7 @@
   </bean>
   <bean id="timeEffortDAO" class="at.ac.tuwien.ifs.tita.dao.time.EffortDao"/>
 
+  <bean id="issueTrackerDao" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao"/>
+  
   <import resource="classpath:persistence-context-local.xml"/>
 </beans>

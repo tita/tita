@@ -48,11 +48,8 @@ public class IssueTrackerTask extends BaseEntity<Long> {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_issue_task")
     private Long id;
 
-    @Column(name = "ISST_TASK_ID")
-    private Long isstTaskId;
-    
     @ManyToOne
-    @JoinColumn(name = "PROJECT_ID", referencedColumnName = "PROJECT_ID")
+    @JoinColumn(name = "ISSUE_TRACKER_PROJECT_ID", referencedColumnName = "ID")
     private IssueTrackerProject isstProject;
 
     @Column(name = "DESCRIPTION")
@@ -87,15 +84,7 @@ public class IssueTrackerTask extends BaseEntity<Long> {
     public IssueTrackerProject getIsstProject(){
         return isstProject;
     }
-    
-    public Long getIsstTaskId() {
-        return isstTaskId;
-    }
-
-    public void setIsstTaskId(Long isstTaskId) {
-        this.isstTaskId = isstTaskId;
-    }
-
+   
     public void setDescription(String description) {
         this.description = description;
     }
@@ -103,5 +92,4 @@ public class IssueTrackerTask extends BaseEntity<Long> {
     public String getDescription() {
         return description;
     }
-
 }

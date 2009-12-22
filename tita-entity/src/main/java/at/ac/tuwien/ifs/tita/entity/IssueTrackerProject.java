@@ -50,12 +50,16 @@ public class IssueTrackerProject extends BaseEntity<Long> {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "PROJECT_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "TITA_PROJECT_ID", referencedColumnName = "ID")
     private TiTAProject titaProject;
 
     @Column(name = "PROJECT_NAME")
     private String projectName;
 
+    @ManyToOne
+    @JoinColumn(name = "ISST_ID")
+    private IssueTracker issueTracker;
+    
     @Column(name = "ISST_PROJECT_ID")
     private Long isstProjectId;
 
@@ -65,12 +69,9 @@ public class IssueTrackerProject extends BaseEntity<Long> {
     // @Column(name="DESCRIPTION")
     // private String description;
 
-    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
-    @JoinColumn(name = "ISST_PROJECT_ID")
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE},
+               mappedBy="isstProject")
     private Set<IssueTrackerTask> issueTrackerTasks;
-
-    @ManyToOne
-    private IssueTracker issueTracker;
 
     @SuppressWarnings("unused")
     @Column(name = "MODIFICATION_VERSION")
@@ -80,9 +81,11 @@ public class IssueTrackerProject extends BaseEntity<Long> {
     public IssueTrackerProject() {
     }
 
-    public IssueTrackerProject(Long id, Long isstProjectId,Set<IssueTrackerTask> issueTrackerTasks){
+    public IssueTrackerProject(Long id, IssueTracker issTracker, Long isstProjectId, 
+                               Set<IssueTrackerTask> issueTrackerTasks){
         super();
         this.id = id;
+        this.issueTracker = issTracker;
         this.isstProjectId = isstProjectId;
         this.issueTrackerTasks = issueTrackerTasks;
     }
@@ -94,6 +97,10 @@ public class IssueTrackerProject extends BaseEntity<Long> {
 
     public TiTAProject getProjectId() {
         return titaProject;
+    }
+    
+    public IssueTracker getIssueTrackerId() {
+        return issueTracker;
     }
 
     public Long getIsstProjectId() {
@@ -126,5 +133,9 @@ public class IssueTrackerProject extends BaseEntity<Long> {
 
     public String getProjectName() {
         return this.projectName;
+    }
+    
+    public void setTitaProject(TiTAProject titaProject){
+        this.titaProject = titaProject;
     }
 }

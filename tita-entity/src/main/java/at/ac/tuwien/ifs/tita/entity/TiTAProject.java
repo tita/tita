@@ -43,12 +43,12 @@ import at.ac.tuwien.ifs.tita.entity.interfaces.BaseEntity;
  *
  */
 @Entity
-@Table(name = "PROJECT")
+@Table(name = "TITA_PROJECT")
 @SequenceGenerator(name = "seq_project", sequenceName = "PROJECT_ID_SEQ", allocationSize = 1)
 public class TiTAProject extends BaseEntity<Long> implements Serializable {
 
     @Id
-    @Column(name = "ID")
+    @Column(name = "ID", insertable=false)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_project")
     private Long id;
 
@@ -66,15 +66,14 @@ public class TiTAProject extends BaseEntity<Long> implements Serializable {
     private ProjectStatus projectStatus;
 
     @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
-    @JoinColumn(name = "PROJECT_ID")
     private Set<TiTATask> titaTasks;
 
-    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
-    @JoinColumn(name = "PROJECT_ID")
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE} ,
+                          mappedBy = "titaProject")
     private Set<IssueTrackerProject> issueTrackerProjects;
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
-    @JoinTable(name = "USER_PROJECT", joinColumns = { @JoinColumn(name = "PROJECT_ID") }, 
+    @ManyToMany //(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
+    @JoinTable(name = "USER_PROJECT", joinColumns = { @JoinColumn(name = "TITA_PROJECT_ID") }, 
                inverseJoinColumns = { @JoinColumn(name = "USER_ID") })
     private Set<TiTAUser> users;
 
@@ -82,14 +81,23 @@ public class TiTAProject extends BaseEntity<Long> implements Serializable {
     @SuppressWarnings("unused")
     @Column(name = "MODIFICATION_VERSION")
     @Version
-    private Long modificationVersion;
-
-    public TiTAProject(Long id, Set<TiTATask> tasks, Set<IssueTrackerProject> projects){
-        this.id = id;
-        this.titaTasks = tasks;
-        this.issueTrackerProjects = projects;
-    }
+    private Long modificationVersion; 
     
+    public TiTAProject(Long id, String description, String name,
+            Boolean deleted, ProjectStatus projectStatus,
+            Set<TiTATask> titaTasks,
+            Set<IssueTrackerProject> issueTrackerProjects, Set<User> users) {
+        super();
+        this.id = id;
+        this.description = description;
+        this.name = name;
+        this.deleted = deleted;
+        this.projectStatus = projectStatus;
+        this.titaTasks = titaTasks;
+        this.issueTrackerProjects = issueTrackerProjects;
+        this.users = users;
+    }
+
     public TiTAProject(){    
     }
     

@@ -16,6 +16,7 @@
 package at.ac.tuwien.ifs.tita.entity;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -38,7 +39,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "EFFORT")
-@SequenceGenerator(name = "seq_effort", sequenceName = "EEFORT_ID_SEQ", allocationSize = 1)
+@SequenceGenerator(name = "seq_effort", sequenceName = "EFFORT_ID_SEQ", allocationSize = 1)
 @NamedQueries( {
         @NamedQuery(name = "effort.years", query = "select distinct YEAR(te.date) from Effort te where deleted=false"),
         @NamedQuery(name = "timeeffort.actual.view", query = "select te from Effort te order by te.date desc") })
@@ -59,9 +60,6 @@ public class Effort extends BaseEntity<Long> implements Serializable {
 
     @Column(name = "DATE")
     private Date date;
-
-    @Column(name = "START_TIME")
-    private Long startTime;
 
     @Column(name = "DURATION")
     private Long duration;
@@ -106,8 +104,8 @@ public class Effort extends BaseEntity<Long> implements Serializable {
         return issueTTask;
     }
 
-    public void setStartTime(Long startTime) {
-        this.startTime = startTime;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public void setDuration(Long duration) {
@@ -142,24 +140,19 @@ public class Effort extends BaseEntity<Long> implements Serializable {
         this.description = description;
     }
 
-    public Long getStartTime() {
-        return startTime;
+    public Date getDate() {
+        return date;
     }
 
     public Long getEndTime() {
-        return startTime + duration;
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        
+        return (cal.getTimeInMillis() + duration);
     }
 
     public Long getDuration() {
         return duration;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public Date getDate() {
-        return date;
     }
 
     public Boolean isTiTAEffort() {

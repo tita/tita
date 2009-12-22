@@ -1,0 +1,11 @@
+drop table EFFORT;
+drop table TITA_TASK;
+drop table ISSUE_TRACKER_TASK;
+drop table ISSUE_TRACKER_PROJECT;
+drop table USER_PROJECT;
+drop table TITA_PROJECT;
+drop table CONV_PROJECT_STATUS;
+drop table CONV_ISSUE_TRACKER;
+drop table ISST_LOGIN;
+drop table USER;
+drop table CONV_ROLE;

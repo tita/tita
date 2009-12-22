@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration debug="false">
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+        <param name="Threshold" value="DEBUG"/>
+        <param name="Target" value="System.out"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="|%d{ISO8601}|%-5p|%c|%m%n" />
+        </layout>
+    </appender>
+    <!-- unsere eigene Klassen -->
+    <logger name="at.ac.tuwien">
+        <level value="debug"/>
+    </logger>
+
+    <logger name="org.springframework">
+        <level value="debug"/>
+    </logger>
+    <logger name="org.hibernate">
+        <level value="debug"/>
+    </logger>
+    <logger name="org.hibernate.SQL">
+        <level value="debug"/>
+    </logger>
+    <logger name="org.ajax4jsf">
+        <level value="error"/>
+    </logger>
+    <!--logger name="org.richfaces">
+        <level value="error"/>
+    </logger>
+    <logger name="net.sf.ehcache">
+        <level value="warn"/>
+    </logger-->
+    <logger name="org.apache">
+        <level value="warn"/>
+    </logger>
+    <root>
+        <level value="debug"/>
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</log4j:configuration>

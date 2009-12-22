@@ -135,13 +135,26 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
     @Override
     public List<Effort> findEffortsForTiTAProjectId(Long projectId) {
         List<Effort> efforts = new ArrayList<Effort>();
-        String queryString = "from Effort te where te.issueTTask.isstProject.titaProject.id = " +
-                             " :pId and te.titaTask.titaProject.id = :pId";
         
-        Query q = em.createQuery(queryString);
-        q.setParameter("pId", projectId);
+        
+        String queryString = "select e.* from effort e " +
+                             "join tita_task tt on e.tita_task_id = tt.id " +
+                             "join tita_project tp on tt.tita_project_id = tp.id " +
+                             "where tp.id = ? union " +
+                             "select e.* from effort e " +      
+                             "join issue_tracker_task it on e.issuet_task_id = it.id " + 
+                             "join issue_tracker_project itp on it.issue_tracker_project_id =" +
+                             "itp.id join tita_project tp2 on tp2.id = itp.tita_project_id " +
+                             "where tp2.id = ?";
+        
+        org.hibernate.SQLQuery q = getSession().createSQLQuery(queryString);
+        
+        q.setLong(0,projectId);
+        q.setLong(1, projectId);
+        q.addEntity(Effort.class);
+        
         try {
-            efforts = q.getResultList();
+            efforts = q.list();
         } catch (NoResultException e) {
             // nothing to do
         }

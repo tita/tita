@@ -51,8 +51,12 @@ public class TiTATask extends BaseEntity<Long> {
     @Column(name = "DESCRIPTION")
     private String description;
 
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
+    @JoinColumn(name = "USER_ID")
+    private User user;
+    
     @ManyToOne
-    @JoinColumn(name = "PROJECT_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "TITA_PROJECT_ID", referencedColumnName = "ID")
     private TiTAProject titaProject;
 
     @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
@@ -64,8 +68,9 @@ public class TiTATask extends BaseEntity<Long> {
     @Version
     private Long modificationVersion;
 
-    public TiTATask(Long id, Set<Effort> efforts) {
+    public TiTATask(Long id, User user, Set<Effort> efforts) {
         this.id = id;
+        this.user = user;
         this.titaEfforts = efforts;
     }
     
@@ -87,5 +92,9 @@ public class TiTATask extends BaseEntity<Long> {
 
     public Set<Effort> getTitaEfforts() {
         return titaEfforts;
+    }
+    
+    public User getUser(){
+        return user;
     }
 }

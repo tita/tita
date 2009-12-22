@@ -51,7 +51,7 @@ public class IssueTrackerLogin extends BaseEntity<Long> {
     private String password;
 
     @ManyToOne
-    @JoinColumn(name = "ISSUETRACKER_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "ISST_ID", referencedColumnName = "ID")
     private IssueTracker issueTracker;
 
     @SuppressWarnings("unused")
