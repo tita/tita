@@ -41,9 +41,12 @@
 	 -->
   <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
     <property name="driverClassName" value="org.postgresql.Driver" />
-    <property name="url" value="jdbc:postgresql://localhost:1234/postgres" />
-    <property name="username" value="postgres" />
-    <property name="password" value="sa" />
+    <property name="url" value="jdbc:h2:main1"/>
+    <!-- property name="url" value="jdbc:postgresql://localhost:1234/postgres" /-->
+    <!-- property name="username" value="postgres" />
+    <property name="password" value="sa" /-->
+    <property name="username" value="sa" />
+    <property name="password" value="" />
   </bean>
 
   <!-- Autowired to the EntityManagerFactory -->

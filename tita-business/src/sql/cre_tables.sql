@@ -66,14 +66,14 @@ create table ISSUE_TRACKER_PROJECT(
 
 create unique index AK_ISSUE_TRACKER_PROJECT on ISSUE_TRACKER_PROJECT (ISST_ID, ISST_PROJECT_ID);
 
-create table USER_PROJECT(
+create table USER_TITA_PROJECT(
 	ID bigint,
 	USER_ID bigint references USER (ID),
 	TITA_PROJECT_ID bigint references TITA_PROJECT (ID),
     primary key (ID)
 );
 
-create unique index AK_USER_PROJECT on USER_PROJECT (USER_ID,TITA_PROJECT_ID);
+create unique index AK_USER_PROJECT on USER_TITA_PROJECT (USER_ID,TITA_PROJECT_ID);
 
 create table TITA_TASK( 
 	ID bigint,

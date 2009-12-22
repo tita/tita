@@ -5,3 +5,4 @@ drop sequence ISSUE_TASK_ID_SEQ;
 drop sequence PROJECT_ID_SEQ;
 drop sequence TITA_TASK_ID_SEQ;
 drop sequence USER_ID_SEQ;
+drop sequence USER_TITA_ID_SEQ;

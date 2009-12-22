@@ -31,7 +31,6 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
-import at.ac.tuwien.ifs.tita.entity.interfaces.BaseEntity;
 
 /**
  * Entity for storing projects comming from different issue trackers.
@@ -50,7 +49,7 @@ public class IssueTrackerProject extends BaseEntity<Long> {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "TITA_PROJECT_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "TITA_PROJECT_ID")
     private TiTAProject titaProject;
 
     @Column(name = "PROJECT_NAME")
@@ -71,6 +70,7 @@ public class IssueTrackerProject extends BaseEntity<Long> {
 
     @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE},
                mappedBy="isstProject")
+    @JoinColumn(name = "ISSUE_TRACKER_PROJECT_ID")
     private Set<IssueTrackerTask> issueTrackerTasks;
 
     @SuppressWarnings("unused")
@@ -81,10 +81,12 @@ public class IssueTrackerProject extends BaseEntity<Long> {
     public IssueTrackerProject() {
     }
 
-    public IssueTrackerProject(Long id, IssueTracker issTracker, Long isstProjectId, 
+    public IssueTrackerProject(Long id, TiTAProject titaProject, 
+                               IssueTracker issTracker, Long isstProjectId, 
                                Set<IssueTrackerTask> issueTrackerTasks){
         super();
         this.id = id;
+        this.titaProject = titaProject;
         this.issueTracker = issTracker;
         this.isstProjectId = isstProjectId;
         this.issueTrackerTasks = issueTrackerTasks;

@@ -27,7 +27,6 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
-import at.ac.tuwien.ifs.tita.entity.interfaces.BaseEntity;
 
 /**
  * Entity for storing login-Data for Users to login at IssueTrackers.

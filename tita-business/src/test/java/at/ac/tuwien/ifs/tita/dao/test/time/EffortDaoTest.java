@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import at.ac.tuwien.ifs.tita.dao.GenericHibernateDao;
+import at.ac.tuwien.ifs.tita.dao.IGenericHibernateDao;
 import at.ac.tuwien.ifs.tita.dao.time.EffortDao;
 import at.ac.tuwien.ifs.tita.entity.Effort;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerProject;
@@ -26,6 +26,7 @@ import at.ac.tuwien.ifs.tita.entity.IssueTrackerTask;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTATask;
 import at.ac.tuwien.ifs.tita.entity.User;
+import at.ac.tuwien.ifs.tita.entity.UserTitaProject;
 import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 
 /**
@@ -46,11 +47,23 @@ public class EffortDaoTest { //extends AbstractJpaTests {
     
     @Qualifier("titaProjectDAO")
     @Autowired
-    private GenericHibernateDao<TiTAProject, Long> titaProjectDAO;
+    private IGenericHibernateDao<TiTAProject, Long> titaProjectDAO;
     
-    @Qualifier("titaProjectDAO")
+    @Qualifier("issueTrackerDAO")
     @Autowired
-    private GenericHibernateDao<IssueTracker, Long> itDao;
+    private IGenericHibernateDao<IssueTracker, Long> itDao;
+    
+    @Qualifier("userTitaDAO")
+    @Autowired
+    private IGenericHibernateDao<UserTitaProject, Long> utpDao;
+    
+    @Qualifier("issueTrackerProjectDAO")
+    @Autowired
+    private IGenericHibernateDao<IssueTrackerProject, Long> itpDao;
+    
+    @Qualifier("userDAO")
+    @Autowired
+    private IGenericHibernateDao<User, Long> userDao;
     
     public EffortDaoTest() {
         
@@ -68,26 +81,51 @@ public class EffortDaoTest { //extends AbstractJpaTests {
         IssueTracker it = new IssueTracker(1L,"issue tracker 1");
         
         itDao.save(it);
+        itDao.flushnClear();
         
         Effort et1 = null, et2 = null, et3 = null, et4 = null, 
                ei1 = null, ei2 = null, ei3 = null, ei4 = null; 
+        
         User us1 = new User(), us2 = new User();
         
+        userDao.save(us1);
+        userDao.save(us2);
+        userDao.flushnClear();
+                               
+        tip1 = new TiTAProject(null, "bla", "bla", false, null,
+                               null,null);
        
+        titaProjectDAO.save(tip1);
+        titaProjectDAO.flushnClear();
+        
+        UserTitaProject utp1 = new UserTitaProject(us1,tip1);
+        UserTitaProject utp2 = new UserTitaProject(us2,tip1);
+              
+        utpDao.save(utp1);
+        utpDao.save(utp2);
+        utpDao.flush();
+        
+        IssueTrackerProject ip1 = new IssueTrackerProject(null,tip1,it,97L,null);
+        IssueTrackerProject ip2 = new IssueTrackerProject(null,tip1,it,98L,null);
+        
+//        itpDao.save(ip1);
+//        itpDao.save(ip2);
+//        itpDao.flushnClear();
+        
         et1 = new Effort(null,new Date(System.currentTimeMillis()), 1000L, false,
-                         "tita task 1 - effort 1");
+                "tita task 1 - effort 1");
         et2 = new Effort(null,new Date(System.currentTimeMillis()),2000L, false,"tita task 1 - effort 2");
         et3 = new Effort(null,new Date(System.currentTimeMillis()),5000L, false,"tita task 2 - effort 1");
         et4 = new Effort(null,new Date(System.currentTimeMillis()),3000L, false,"tita task 2 - effort 2");
         ei1 = new Effort(null,new Date(System.currentTimeMillis()),2000L, false,
-                         "issuetracker task 1 - effort 1");
+                "issuetracker task 1 - effort 1");
         ei2 = new Effort(null,new Date(System.currentTimeMillis()),8000L, false,
-                         "issuetracker task 1 - effort 2");
+                "issuetracker task 1 - effort 2");
         ei3 = new Effort(null,new Date(System.currentTimeMillis()),1000L, false,
-                         "issuetracker task 2 - effort 1");
+                "issuetracker task 2 - effort 1");
         ei4 = new Effort(null,new Date(System.currentTimeMillis()),7000L, false,
-                         "issuetracker task 2 - effort 2");
-               
+                "issuetracker task 2 - effort 2");
+        
         Set<Effort> se1 = new HashSet<Effort>();
         se1.add(et1);
         se1.add(et2);
@@ -104,47 +142,24 @@ public class EffortDaoTest { //extends AbstractJpaTests {
         se4.add(ei3);
         se4.add(ei4);
         
-        TiTATask tit1 = new TiTATask(null,us1,se1);
-        TiTATask tit2 = new TiTATask(null,us2, se2);
+        TiTATask tit1 = new TiTATask(null,us1,tip1,se1);
+        TiTATask tit2 = new TiTATask(null,us2,tip1,se2);
         
         Set<TiTATask> sa1 = new HashSet<TiTATask>();
         sa1.add(tit1);
         sa1.add(tit2);
         
-        IssueTrackerTask itt1 = new IssueTrackerTask(null,se3);
-        IssueTrackerTask itt2 = new IssueTrackerTask(null,se4);
+        IssueTrackerTask itt1 = new IssueTrackerTask(null,ip1,se3);
+        IssueTrackerTask itt2 = new IssueTrackerTask(null,ip2,se4);
         
         Set<IssueTrackerTask> si1 = new HashSet<IssueTrackerTask>();
         si1.add(itt1);
         
         Set<IssueTrackerTask> si2 = new HashSet<IssueTrackerTask>();
         si2.add(itt2); 
-//         ip1 from issue tracker project 1L and ip2 from itp 2L
         
-        IssueTrackerProject ip1 = new IssueTrackerProject(null,it,97L,si1);
-        IssueTrackerProject ip2 = new IssueTrackerProject(null,it,98L,si2);
-        
-        Set<IssueTrackerProject> sip1 = new HashSet<IssueTrackerProject>();
-        sip1.add(ip1);
-        sip1.add(ip2);
-       
-        Set<User> uss1 = new HashSet<User>();
-        uss1.add(us1);
-        uss1.add(us2);
-        
-        tip1 = new TiTAProject(null, "bla", "bla", false, null,
-                               sa1,sip1,uss1);
-        
-//        Long id, String description, String name,
-//        Boolean deleted, ProjectStatus projectStatus,
-//        Set<TiTATask> titaTasks,
-//        Set<IssueTrackerProject> issueTrackerProjects, Set<User> users
-//        tip1.setIssueTrackerProjects(sip1);
-        
-        //save object tree in database
         titaProjectDAO.save(tip1);
-        titaProjectDAO.flush();
-        titaProjectDAO.clear();
+        titaProjectDAO.flushnClear();
         //CHECKSTYLE:ON
     }
     

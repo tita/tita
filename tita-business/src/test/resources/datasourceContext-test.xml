@@ -23,9 +23,24 @@
   <bean id="titaProjectDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
   	<constructor-arg value="at.ac.tuwien.ifs.tita.entity.TiTAProject"/>
   </bean>
+  
   <bean id="timeEffortDAO" class="at.ac.tuwien.ifs.tita.dao.time.EffortDao"/>
 
-  <bean id="issueTrackerDao" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao"/>
+  <bean id="issueTrackerDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
+  	<constructor-arg value="at.ac.tuwien.ifs.tita.entity.conv.IssueTracker"/>
+  </bean>
   
+  <bean id="userTitaDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
+  	<constructor-arg value="at.ac.tuwien.ifs.tita.entity.UserTitaProject"/>
+  </bean>
+  
+   <bean id="userDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
+  	<constructor-arg value="at.ac.tuwien.ifs.tita.entity.User"/>
+   </bean>
+   
+   <bean id="issueTrackerProjectDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
+  	<constructor-arg value="at.ac.tuwien.ifs.tita.entity.IssueTrackerProject"/>
+   </bean>
+     
   <import resource="classpath:persistence-context-local.xml"/>
 </beans>

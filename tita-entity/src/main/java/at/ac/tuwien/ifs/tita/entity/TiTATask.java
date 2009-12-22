@@ -30,7 +30,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import at.ac.tuwien.ifs.tita.entity.interfaces.BaseEntity;
 
 /**
  * Entity for storing tasks that a time producer has generated in TiTA.
@@ -51,15 +50,16 @@ public class TiTATask extends BaseEntity<Long> {
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
+    @ManyToOne
     @JoinColumn(name = "USER_ID")
     private User user;
     
     @ManyToOne
-    @JoinColumn(name = "TITA_PROJECT_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "TITA_PROJECT_ID")
     private TiTAProject titaProject;
 
-    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE},
+                          mappedBy ="titaTask")
     @JoinColumn(name = "TITA_TASK_ID")
     private Set<Effort> titaEfforts;
 
@@ -68,10 +68,11 @@ public class TiTATask extends BaseEntity<Long> {
     @Version
     private Long modificationVersion;
 
-    public TiTATask(Long id, User user, Set<Effort> efforts) {
+    public TiTATask(Long id, User user, TiTAProject titaProject, Set<Effort> efforts) {
         this.id = id;
         this.user = user;
         this.titaEfforts = efforts;
+        this.titaProject = titaProject;
     }
     
     public TiTATask() {

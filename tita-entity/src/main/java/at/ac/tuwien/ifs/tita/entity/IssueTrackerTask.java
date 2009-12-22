@@ -30,7 +30,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import at.ac.tuwien.ifs.tita.entity.interfaces.BaseEntity;
 
 /**
  * Entity for storing tasks coming from different issue trackers.
@@ -68,8 +67,10 @@ public class IssueTrackerTask extends BaseEntity<Long> {
     public IssueTrackerTask() {
     }
     
-    public IssueTrackerTask(Set<Effort> efforts) {
+    public IssueTrackerTask(IssueTrackerProject issueTrackerProject, Set<Effort> efforts) {
+        this.id = id;
         this.issueTEfforts = efforts;
+        this.isstProject = issueTrackerProject;
     }
 
     @Override

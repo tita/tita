@@ -13,7 +13,7 @@
    limitations under the License.
   
  */
-package at.ac.tuwien.ifs.tita.entity.interfaces;
+package at.ac.tuwien.ifs.tita.entity;
 
 import java.io.Serializable;
 

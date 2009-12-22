@@ -17,14 +17,13 @@ package at.ac.tuwien.ifs.tita.entity;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -32,7 +31,6 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import at.ac.tuwien.ifs.tita.entity.conv.Role;
-import at.ac.tuwien.ifs.tita.entity.interfaces.BaseEntity;
 
 /**
  * Entity for storing TiTA user.
@@ -72,13 +70,12 @@ public class User extends BaseEntity<Long> {
     @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")
     private Role role;
 
-    @ManyToMany//(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
-    @JoinTable(name = "USER_PROJECT", joinColumns = { @JoinColumn(name = "USER_ID") }, 
-               inverseJoinColumns = { @JoinColumn(name = "TITA_PROJECT_ID") })
-    private Set<TiTAProject> titaProjects;
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE},
+               mappedBy = "user")
+    @JoinColumn(name="ID") //, referencedColumnName="USER1_ID")
+    private Set<UserTitaProject> userTitaProject;
 
-    @OneToMany
-    @JoinColumn(name = "ID")
+    @OneToMany(mappedBy = "issueTracker")
     private Set<IssueTrackerLogin> issueTrackerLogins;
 
     @SuppressWarnings("unused")
@@ -151,8 +148,8 @@ public class User extends BaseEntity<Long> {
         this.role = role;
     }
 
-    public Set<TiTAProject> getTitaProjects() {
-        return titaProjects;
+    public Set<UserTitaProject> getUserTitaProject() {
+        return userTitaProject;
     }
 
     public Set<IssueTrackerLogin> getIssueTrackerLogins() {

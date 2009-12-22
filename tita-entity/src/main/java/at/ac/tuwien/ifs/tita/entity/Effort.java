@@ -31,6 +31,10 @@ import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+<<<<<<< HEAD:tita-entity/src/main/java/at/ac/tuwien/ifs/tita/entity/Effort.java
+=======
+
+>>>>>>> working on feature projekuebergreifende auswertungen:tita-entity/src/main/java/at/ac/tuwien/ifs/tita/entity/Effort.java
 /**
  * Entity for storing time producer's effort of his/her assigned tasks.
  * 
@@ -51,11 +55,11 @@ public class Effort extends BaseEntity<Long> implements Serializable {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "TITA_TASK_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "TITA_TASK_ID") //, referencedColumnName = "ID")
     private TiTATask titaTask;
 
     @ManyToOne
-    @JoinColumn(name = "ISSUET_TASK_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "ISSUET_TASK_ID") //, referencedColumnName = "ID")
     private IssueTrackerTask issueTTask;
 
     @Column(name = "DATE")

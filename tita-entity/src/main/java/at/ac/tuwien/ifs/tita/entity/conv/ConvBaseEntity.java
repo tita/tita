@@ -19,7 +19,7 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
-import at.ac.tuwien.ifs.tita.entity.interfaces.BaseEntity;
+import at.ac.tuwien.ifs.tita.entity.BaseEntity;
 
 /**
  * Base-Entity for Conv-Tables.
