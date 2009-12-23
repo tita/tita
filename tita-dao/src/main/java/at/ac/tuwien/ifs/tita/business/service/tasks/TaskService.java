@@ -23,13 +23,16 @@ import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.dao.issuetracker.task.IssueTrackerTaskDao;
 import at.ac.tuwien.ifs.tita.dao.titatask.TiTATaskDao;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin;
+import at.ac.tuwien.ifs.tita.entity.IssueTrackerProject;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerTask;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTATask;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueStatus;
 import at.ac.tuwien.ifs.tita.issuetracker.exceptions.ProjectNotFoundException;
+import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IProjectTrackable;
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
 import at.ac.tuwien.ifs.tita.issuetracker.issue.service.IIssueTrackerService;
+import at.ac.tuwien.ifs.tita.issuetracker.issue.service.IssueTrackerService;
 
 /**
  * The TaskService combines the IssueTrackerService, which fetches and manage
@@ -129,30 +132,32 @@ public class TaskService implements ITaskService {
      */
     public void fetchTaskFromIssueTrackerProjects()
             throws ProjectNotFoundException {
-        //
-        // Long key = 0L;
-        //
-        // for (IssueTrackerLogin login : this.logins) {
-        // this.issueTrackerService = new IssueTrackerService(login);
-        //
-        // Map<Long, IProjectTrackable> mapOfProjects =
-        // this.issueTrackerService.getProjects();
-        //
-        // for (IssueTrackerProject issueTrackerProject :
-        // this.project.getIssueTrackerProjects()) {
-        // if (mapOfProjects.containsValue(issueTrackerProject)) {
-        // // TODO Flag setzen
-        // Map<Long, ITaskTrackable> mapOfTasks = this.issueTrackerService
-        // .getIssueTrackerTasksByProjectId(issueTrackerProject.getProjectId());
-        //
-        // for (ITaskTrackable taskTrackable : mapOfTasks.values()) {
-        // key++;
-        // this.mapOfTasksFromAllProjectsIncludedInTiTAProject.put(key,
-        // taskTrackable);
-        // }
-        // }
-        // }
-        // }
+
+        Long key = 0L;
+
+        for (IssueTrackerLogin login : this.logins) {
+            this.issueTrackerService = new IssueTrackerService(login);
+
+            Map<Long, IProjectTrackable> mapOfProjects = this.issueTrackerService.getProjects();
+
+            for (IssueTrackerProject issueTrackerProject : this.project.getIssueTrackerProjects()) {
+                if (mapOfProjects.containsValue(issueTrackerProject)) {
+                    // TODO Flag setzen
+
+                    Map<Long, ITaskTrackable> mapOfTasks = this.issueTrackerService
+                            .getIssueTrackerTasksByProjectId(issueTrackerProject.getProjectId());
+
+                    for (ITaskTrackable taskTrackable : mapOfTasks.values()) {
+                        key++;
+                        this.mapOfTasksFromAllProjectsIncludedInTiTAProject.put(key, taskTrackable);
+                    }
+                }
+            }
+        }
+    }
+
+    public Map<Long, ITaskTrackable> getMapOfTasksFromAllProjectsIncludedInTiTAProject() {
+        return this.mapOfTasksFromAllProjectsIncludedInTiTAProject;
     }
 
     public void setLogins(List<IssueTrackerLogin> logins) {

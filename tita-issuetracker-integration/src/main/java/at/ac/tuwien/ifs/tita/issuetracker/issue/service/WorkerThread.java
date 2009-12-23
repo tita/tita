@@ -66,6 +66,10 @@ public class WorkerThread extends Thread {
         this.log.info("Fetching all Tasks for the chosen project.");
         Map<Long, ITaskTrackable> tasklist = this.dao.findAllTasksForProject(this.project.getId());
 
+        for (ITaskTrackable task : tasklist.values()) {
+            task.setProject(this.project);
+        }
+
         this.project.setTasks(tasklist);
         this.log.info("Stopping the worker thread.");
         this.stop();

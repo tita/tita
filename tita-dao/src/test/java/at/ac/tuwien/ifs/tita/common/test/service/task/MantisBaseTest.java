@@ -32,7 +32,6 @@ import org.mantisbt.connect.model.Note;
 import org.mantisbt.connect.model.Project;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin;
 import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
@@ -43,7 +42,7 @@ import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
  * @author herbert
  *
  */
-public class MantisBaseTest extends AbstractTransactionalJUnit4SpringContextTests {
+public class MantisBaseTest {
 
     protected MCSession session;
     protected final IssueTrackerLogin defaultLogin = new IssueTrackerLogin(1L, "administrator",

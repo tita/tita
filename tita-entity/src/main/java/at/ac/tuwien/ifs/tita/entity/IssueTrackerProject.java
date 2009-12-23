@@ -51,6 +51,9 @@ public class IssueTrackerProject extends BaseEntity<Long> {
     @Column(name = "PROJECT_ID")
     private Long projectId;
 
+    @Column(name = "PROJECT_NAME")
+    private String projectName;
+
     @Column(name = "ISST_PROJECT_ID")
     private Long isstProjectId;
 
@@ -112,6 +115,14 @@ public class IssueTrackerProject extends BaseEntity<Long> {
     }
 
     public boolean isDeleted() {
-        return deleted;
+        return this.deleted;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public String getProjectName() {
+        return this.projectName;
     }
 }

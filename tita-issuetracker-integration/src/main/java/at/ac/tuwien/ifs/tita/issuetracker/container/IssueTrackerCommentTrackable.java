@@ -27,7 +27,7 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ICommentTrackable;
  * @author Karin
  * 
  */
-public class IssueTrackerComment implements ICommentTrackable {
+public class IssueTrackerCommentTrackable implements ICommentTrackable {
     private Date creationTime;
     private final long id;
     private Date lastChange;
@@ -35,7 +35,7 @@ public class IssueTrackerComment implements ICommentTrackable {
     private String text;
     private ViewState viewState;
 
-    public IssueTrackerComment(long id, Date creationTime, Date lastChange,
+    public IssueTrackerCommentTrackable(long id, Date creationTime, Date lastChange,
             String reporter, String text, ViewState viewState) {
         this.id = id;
         this.creationTime = creationTime;

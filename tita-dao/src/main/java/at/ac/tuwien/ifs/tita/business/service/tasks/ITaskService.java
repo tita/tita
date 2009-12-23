@@ -124,16 +124,23 @@ public interface ITaskService {
 
     /**
      * Method.
-     * 
+     *
      * @return project
      */
     TiTAProject getProject();
 
     /**
      * Method.
-     * 
+     *
      * @param project
      *            - project
      */
     void setProject(TiTAProject project);
+
+    /**
+     * Method.
+     * 
+     * @return a map of tasks from all projects included in the tita project.
+     */
+    Map<Long, ITaskTrackable> getMapOfTasksFromAllProjectsIncludedInTiTAProject();
 }

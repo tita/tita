@@ -35,9 +35,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin;
-import at.ac.tuwien.ifs.tita.issuetracker.container.IssueTrackerComment;
-import at.ac.tuwien.ifs.tita.issuetracker.container.IssueTrackerProject;
-import at.ac.tuwien.ifs.tita.issuetracker.container.IssueTrackerTask;
+import at.ac.tuwien.ifs.tita.issuetracker.container.IssueTrackerCommentTrackable;
+import at.ac.tuwien.ifs.tita.issuetracker.container.IssueTrackerProjectTrackable;
+import at.ac.tuwien.ifs.tita.issuetracker.container.IssueTrackerTaskTrackable;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssuePriority;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueResolution;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueSeverity;
@@ -124,7 +124,7 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
         try {
             IIssue[] issues = this.session.getProjectIssues(projectId);
             for (IIssue issue : issues) {
-                IssueTrackerTask task = createMantisTask(issue, this.session.getProject(projectId));
+                IssueTrackerTaskTrackable task = createMantisTask(issue, this.session.getProject(projectId));
                 taskList.put(task.getId(), task);
             }
             return taskList;
@@ -143,7 +143,7 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
         try {
             INote[] notes = this.session.getIssue(taskId).getNotes();
             for (INote note : notes) {
-                IssueTrackerComment comment = createMantisComment(note);
+                IssueTrackerCommentTrackable comment = createMantisComment(note);
                 commentList.put(comment.getId(), comment);
             }
             return commentList;
@@ -162,7 +162,7 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
         try {
             issue = this.session.getIssue(taskId);
             project = this.session.getProject(projectId);
-            IssueTrackerTask mantisTask = createMantisTask(issue, project);
+            IssueTrackerTaskTrackable mantisTask = createMantisTask(issue, project);
             return mantisTask;
 
         } catch (MCException e) {
@@ -227,7 +227,7 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
         ProjectStatus status = IssueTrackerMantisEnum.extractProjectStatus(project);
         // Map<Long, ITaskTrackable> tasks = findAllTasksForProject(id);
         ViewState viewState = IssueTrackerMantisEnum.extractViewState(project);
-        return new IssueTrackerProject(id, name, description, status, this.url, viewState);
+        return new IssueTrackerProjectTrackable(id, name, description, status, this.url, viewState);
     }
 
     /**
@@ -239,7 +239,7 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
      *            - Project to find
      * @return new IssueTrackerTask
      */
-    public IssueTrackerTask createMantisTask(IIssue issue, IProject project) {
+    public IssueTrackerTaskTrackable createMantisTask(IIssue issue, IProject project) {
         Long id = issue.getId();
         String description = issue.getDescription();
         String owner = "";
@@ -249,7 +249,7 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
         Date creationTime = issue.getDateSubmitted();
         Date lastChange = issue.getDateLastUpdated();
         IssuePriority priority = IssueTrackerMantisEnum.extractIssuePriority(issue);
-        IProjectTrackable projectTrackable = findProject(project.getId());
+        IProjectTrackable projectTrackable = null;
 
         Map<Long, ICommentTrackable> comments = findAllCommentsForTask(issue.getId());
         String reporter = "";
@@ -262,7 +262,7 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
         String summary = issue.getSummary();
         IssueTrackingTool tool = IssueTrackingTool.MANTIS;
 
-        return new IssueTrackerTask(id, description, owner, creationTime, lastChange, priority,
+        return new IssueTrackerTaskTrackable(id, description, owner, creationTime, lastChange, priority,
                 projectTrackable, comments, reporter, resolution, severity, status, summary, tool);
     }
 
@@ -272,7 +272,7 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
      * @param note - note to copy
      * @return new IssueTrackerComment
      */
-    public IssueTrackerComment createMantisComment(INote note) {
+    public IssueTrackerCommentTrackable createMantisComment(INote note) {
         Long id = note.getId();
         Date creationTime = note.getDateSubmitted();
         Date lastChange = note.getDateLastModified();
@@ -283,7 +283,7 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
         String text = note.getText();
         ViewState viewState = IssueTrackerMantisEnum.extractViewState(note);
 
-        return new IssueTrackerComment(id, creationTime, lastChange, reporter, text, viewState);
+        return new IssueTrackerCommentTrackable(id, creationTime, lastChange, reporter, text, viewState);
     }
 
     /**

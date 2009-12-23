@@ -27,7 +27,7 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
  * @author Karin
  *
  */
-public class IssueTrackerProject implements IProjectTrackable {
+public class IssueTrackerProjectTrackable implements IProjectTrackable {
     private long id;
     private String name;
     private String description;
@@ -36,7 +36,7 @@ public class IssueTrackerProject implements IProjectTrackable {
     private URL url;
     private ViewState viewState;
 
-    public IssueTrackerProject(long id, String name, String description, ProjectStatus status,
+    public IssueTrackerProjectTrackable(long id, String name, String description, ProjectStatus status,
             URL url, ViewState viewState) {
         this.id = id;
         this.name = name;
@@ -46,7 +46,7 @@ public class IssueTrackerProject implements IProjectTrackable {
         this.viewState = viewState;
     }
 
-    public IssueTrackerProject(long id, String name, String description,
+    public IssueTrackerProjectTrackable(long id, String name, String description,
             ProjectStatus status, Map<Long, ITaskTrackable> tasks, URL url,
             ViewState viewState) {
         this.id = id;
