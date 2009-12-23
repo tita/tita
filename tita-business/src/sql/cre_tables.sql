@@ -1,44 +1,44 @@
 -- conv tables
 create table CONV_ROLE(
 	ID bigint,
-	DESCRIPTION varchar2(50),
+	DESCRIPTION varchar(50),
 	primary key (ID)
 );
 
 create table CONV_ISSUE_TRACKER(
 	ID bigint,
-	DESCRIPTION varchar2(50),
+	DESCRIPTION varchar(50),
 	primary key (ID)
 );
 
 create table CONV_PROJECT_STATUS(
 	ID bigint,
-	DESCRIPTION varchar2(50),
+	DESCRIPTION varchar(50),
 	primary key (ID)
 );
 
 -- tables
-create table USER(
+create table public.USER(
 	ID bigint,
-	USERNAME varchar2(20),
-	PASSWORD varchar2(20),
-	FIRSTNAME varchar2(20),
-	LASTNAME varchar2(20),
-	EMAIL varchar2(40),
+	USERNAME varchar(20),
+	PASSWORD varchar(20),
+	FIRSTNAME varchar(20),
+	LASTNAME varchar(20),
+	EMAIL varchar(40),
 	DELETED boolean,
 	ROLE_ID bigint references CONV_ROLE(ID),
 	MODIFICATION_VERSION bigint,
 	primary key (ID)
 );
 
-create unique index AK_USERNAME on USER (USERNAME);
+create unique index AK_USERNAME on public.USER (USERNAME);
 
 create table ISST_LOGIN( 
 	ID bigint,
-	USER_ID bigint references USER (ID),
+	USER_ID bigint references public.USER (ID),
 	ISST_ID bigint references CONV_ISSUE_TRACKER(ID),
-	NAME varchar2(20),
-	PASSWORD varchar2(20),
+	NAME varchar(20),
+	PASSWORD varchar(20),
 	MODIFICATION_VERSION bigint,
 	primary key (ID)
 );
@@ -47,8 +47,8 @@ create unique index AK_USER_ISSUE_TRACKER on ISST_LOGIN (USER_ID, ISST_ID);
 
 create table TITA_PROJECT( 
 	ID bigint,
-	DESCRIPTION varchar2(50),
-	NAME varchar2(50),
+	DESCRIPTION varchar(50),
+	NAME varchar(50),
 	DELETED boolean,
 	STATUS_ID bigint references CONV_PROJECT_STATUS(ID),
 	MODIFICATION_VERSION bigint,
@@ -68,7 +68,7 @@ create unique index AK_ISSUE_TRACKER_PROJECT on ISSUE_TRACKER_PROJECT (ISST_ID, 
 
 create table USER_TITA_PROJECT(
 	ID bigint,
-	USER_ID bigint references USER (ID),
+	USER_ID bigint references public.USER (ID),
 	TITA_PROJECT_ID bigint references TITA_PROJECT (ID),
     primary key (ID)
 );
@@ -77,8 +77,8 @@ create unique index AK_USER_PROJECT on USER_TITA_PROJECT (USER_ID,TITA_PROJECT_I
 
 create table TITA_TASK( 
 	ID bigint,
-	DESCRIPTION varchar2(50),
-	USER_ID bigint references USER (ID),
+	DESCRIPTION varchar(50),
+	USER_ID bigint references public.USER (ID),
 	TITA_PROJECT_ID bigint references TITA_PROJECT(ID),
 	MODIFICATION_VERSION bigint,
 	primary key (ID)
@@ -93,12 +93,12 @@ create table ISSUE_TRACKER_TASK(
 
 create table EFFORT(
 	ID bigint,
-	DESCRIPTION varchar2(50),
+	DESCRIPTION varchar(50),
 	TITA_TASK_ID bigint references TITA_TASK (ID),
 	ISSUET_TASK_ID bigint references ISSUE_TRACKER_TASK (ID),
 	DATE date,
 	DURATION bigint,
 	DELETED boolean,
-	USER_ID bigint references USER (ID),
+	USER_ID bigint references public.USER (ID),
 	primary key (ID)
 );

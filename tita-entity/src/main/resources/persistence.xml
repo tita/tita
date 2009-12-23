@@ -37,8 +37,8 @@
       <property name="hibernate.archive.autodetection" value="class, hbm" />
       <property name="hibernate.hbm2ddl.auto" value="update" />
       <property name="hibernate.show_sql" value="true" />
-      <property name="hibernate.dialect" value="org.hibernate.dialect.h2Dialect"/>
-      <!-- property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" /-->
+      <!-- property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/-->
+      <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
     </properties>
   </persistence-unit>
 </persistence>

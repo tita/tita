@@ -7,5 +7,5 @@ delete from TITA_PROJECT;
 delete from CONV_PROJECT_STATUS;
 delete from CONV_ISSUE_TRACKER;
 delete from ISST_LOGIN;
-delete from USER;
+delete from public.USER;
 delete from CONV_ROLE;

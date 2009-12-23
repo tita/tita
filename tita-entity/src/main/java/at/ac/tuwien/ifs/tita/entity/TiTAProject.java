@@ -18,10 +18,8 @@ package at.ac.tuwien.ifs.tita.entity;
 import java.io.Serializable;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -63,20 +61,13 @@ public class TiTAProject extends BaseEntity<Long> implements Serializable {
     @JoinColumn(name = "STATUS_ID")
     private ProjectStatus projectStatus;
 
-    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE},
-               mappedBy = "titaProject")
-    @JoinColumn(name = "ID") //, referencedColumnName="TITA_PROJECT_ID")
+    @OneToMany(mappedBy = "titaProject")
     private Set<TiTATask> titaTasks;
 
-    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE} ,
-                          mappedBy = "titaProject")
-    @JoinColumn(name = "ID") //, referencedColumnName="TITA_PROJECT_ID")
+    @OneToMany(mappedBy = "titaProject")
     private Set<IssueTrackerProject> issueTrackerProjects;
 
-
-    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE},
-                          mappedBy = "titaProject")
-    @JoinColumn(name="ID") //, referencedColumnName="TITA_PROJECT_ID")
+    @OneToMany(mappedBy = "titaProject")
     private Set<UserTitaProject> userTitaProject;
 
     @SuppressWarnings("unused")

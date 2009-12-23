@@ -64,7 +64,6 @@
 		<commons-digester.version>2.0</commons-digester.version>
 		<itext.version>2.1.7</itext.version>
 		<commons-collections.version>20040616</commons-collections.version>
-		<postgres.version></postgres.version>
 		
 		<!-- Plugin Version -->
 		<docbkx.version>2.0.7</docbkx.version>

@@ -17,7 +17,6 @@ package at.ac.tuwien.ifs.tita.entity;
 
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -39,7 +38,7 @@ import at.ac.tuwien.ifs.tita.entity.conv.Role;
  * 
  */
 @Entity
-@Table(name = "USER1")
+@Table(name = "USER")
 @SequenceGenerator(name = "seq_user", sequenceName = "USER_ID_SEQ", allocationSize = 1)
 public class User extends BaseEntity<Long> {
 
@@ -70,12 +69,11 @@ public class User extends BaseEntity<Long> {
     @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")
     private Role role;
 
-    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE},
-               mappedBy = "user")
-    @JoinColumn(name="ID") //, referencedColumnName="USER1_ID")
+    @OneToMany(mappedBy = "user")
+//    @JoinColumn(name="ID") //, referencedColumnName="USER1_ID")
     private Set<UserTitaProject> userTitaProject;
 
-    @OneToMany(mappedBy = "issueTracker")
+    @OneToMany(mappedBy = "user")
     private Set<IssueTrackerLogin> issueTrackerLogins;
 
     @SuppressWarnings("unused")
@@ -85,6 +83,18 @@ public class User extends BaseEntity<Long> {
 
     public User() {
 
+    }
+    
+    public User(String userName, String password, String firstName,
+            String lastName, String email, Boolean deleted, Role role) {
+        super();
+        this.userName = userName;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.deleted = deleted;
+        this.role = role;
     }
 
     public String getUserName() {

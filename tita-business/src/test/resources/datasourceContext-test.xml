@@ -38,6 +38,10 @@
   	<constructor-arg value="at.ac.tuwien.ifs.tita.entity.User"/>
    </bean>
    
+   <bean id="roleDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
+  	<constructor-arg value="at.ac.tuwien.ifs.tita.entity.conv.Role"/>
+   </bean>
+      
    <bean id="issueTrackerProjectDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
   	<constructor-arg value="at.ac.tuwien.ifs.tita.entity.IssueTrackerProject"/>
    </bean>

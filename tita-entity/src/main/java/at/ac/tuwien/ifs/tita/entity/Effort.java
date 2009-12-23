@@ -55,11 +55,11 @@ public class Effort extends BaseEntity<Long> implements Serializable {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "TITA_TASK_ID") //, referencedColumnName = "ID")
+    @JoinColumn(name = "TITA_TASK_ID")
     private TiTATask titaTask;
 
     @ManyToOne
-    @JoinColumn(name = "ISSUET_TASK_ID") //, referencedColumnName = "ID")
+    @JoinColumn(name = "ISSUET_TASK_ID")
     private IssueTrackerTask issueTTask;
 
     @Column(name = "DATE")
@@ -75,8 +75,9 @@ public class Effort extends BaseEntity<Long> implements Serializable {
     private Boolean deleted;
 
     @ManyToOne
-    @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
-    private TiTAUser user;
+
+    @JoinColumn(name = "USER_ID") //, referencedColumnName = "ID")
+    private User user;
 
     public Effort() {
     }

@@ -50,7 +50,11 @@ public class IssueTrackerLogin extends BaseEntity<Long> {
     private String password;
 
     @ManyToOne
-    @JoinColumn(name = "ISST_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "USER_ID") //, referencedColumnName = "ID")
+    private User user;
+    
+    @ManyToOne
+    @JoinColumn(name = "ISST_ID") //, referencedColumnName = "ID")
     private IssueTracker issueTracker;
 
     @SuppressWarnings("unused")
@@ -63,12 +67,13 @@ public class IssueTrackerLogin extends BaseEntity<Long> {
     }
 
     public IssueTrackerLogin(Long id, String userName, String password,
-            IssueTracker issueTracker) {
+            IssueTracker issueTracker, User user) {
         super();
         this.id = id;
         this.userName = userName;
         this.password = password;
         this.issueTracker = issueTracker;
+        this.user = user;
     }
 
     public String getUserName() {
@@ -99,4 +104,7 @@ public class IssueTrackerLogin extends BaseEntity<Long> {
         this.issueTracker = issueTracker;
     }
 
+    public User getUser() {
+        return user;
+    }
 }

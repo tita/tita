@@ -28,6 +28,7 @@ import at.ac.tuwien.ifs.tita.entity.TiTATask;
 import at.ac.tuwien.ifs.tita.entity.User;
 import at.ac.tuwien.ifs.tita.entity.UserTitaProject;
 import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
+import at.ac.tuwien.ifs.tita.entity.conv.Role;
 
 /**
  * Test for EffortDao.
@@ -65,6 +66,10 @@ public class EffortDaoTest { //extends AbstractJpaTests {
     @Autowired
     private IGenericHibernateDao<User, Long> userDao;
     
+    @Qualifier("roleDAO")
+    @Autowired
+    private IGenericHibernateDao<Role, Long> roleDao;
+    
     public EffortDaoTest() {
         
     }  
@@ -83,10 +88,16 @@ public class EffortDaoTest { //extends AbstractJpaTests {
         itDao.save(it);
         itDao.flushnClear();
         
+        Role r1 = new Role(1L,"role 1");
+        
+        roleDao.save(r1);
+        roleDao.flush();
+        
         Effort et1 = null, et2 = null, et3 = null, et4 = null, 
                ei1 = null, ei2 = null, ei3 = null, ei4 = null; 
         
-        User us1 = new User(), us2 = new User();
+        User us1 = new User(null, null, null, null, null, null, r1); 
+        User us2 = new User(null, null, null, null, null, null, r1);
         
         userDao.save(us1);
         userDao.save(us2);
