@@ -91,13 +91,13 @@ public class EffortDaoTest { //extends AbstractJpaTests {
         Role r1 = new Role(1L,"role 1");
         
         roleDao.save(r1);
-        roleDao.flush();
+        roleDao.flushnClear();
         
         Effort et1 = null, et2 = null, et3 = null, et4 = null, 
                ei1 = null, ei2 = null, ei3 = null, ei4 = null; 
         
-        User us1 = new User(null, null, null, null, null, null, r1); 
-        User us2 = new User(null, null, null, null, null, null, r1);
+        User us1 = new User(null, null, null, null, null, null, r1, null, null); 
+        User us2 = new User(null, null, null, null, null, null, r1, null, null);
         
         userDao.save(us1);
         userDao.save(us2);

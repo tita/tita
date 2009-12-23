@@ -63,10 +63,10 @@ public class User extends BaseEntity<Long> {
     private String email;
 
     @Column(name = "DELETED")
-    private boolean deleted;
+    private Boolean deleted;
 
     @ManyToOne
-    @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "ROLE_ID") //,insertable=false) //, referencedColumnName = "ID")
     private Role role;
 
     @OneToMany(mappedBy = "user")
@@ -86,7 +86,8 @@ public class User extends BaseEntity<Long> {
     }
     
     public User(String userName, String password, String firstName,
-            String lastName, String email, Boolean deleted, Role role) {
+            String lastName, String email, Boolean deleted, Role role,
+            Set<UserTitaProject> userTitaProject, Set<IssueTrackerLogin> issueTrackerLogins) {
         super();
         this.userName = userName;
         this.password = password;
@@ -95,6 +96,8 @@ public class User extends BaseEntity<Long> {
         this.email = email;
         this.deleted = deleted;
         this.role = role;
+        this.userTitaProject = userTitaProject;
+        this.issueTrackerLogins = issueTrackerLogins;
     }
 
     public String getUserName() {

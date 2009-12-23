@@ -26,11 +26,11 @@ public class UserTitaProject extends BaseEntity<Long> {
     private Long id;
     
     @ManyToOne
-    @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "USER_ID") //, referencedColumnName = "ID")
     private User user;
     
     @ManyToOne
-    @JoinColumn(name = "TITA_PROJECT_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "TITA_PROJECT_ID") //, referencedColumnName = "ID")
     private TiTAProject titaProject;
     
     public UserTitaProject(User user, TiTAProject titaProject) {
