@@ -18,6 +18,7 @@ package at.ac.tuwien.ifs.tita.entity;
 import java.io.Serializable;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -61,13 +62,16 @@ public class TiTAProject extends BaseEntity<Long> implements Serializable {
     @JoinColumn(name = "STATUS_ID")
     private ProjectStatus projectStatus;
 
-    @OneToMany(mappedBy = "titaProject")
+    @OneToMany(mappedBy = "titaProject", 
+               cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<TiTATask> titaTasks;
 
-    @OneToMany(mappedBy = "titaProject")
+    @OneToMany(mappedBy = "titaProject", 
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<IssueTrackerProject> issueTrackerProjects;
 
-    @OneToMany(mappedBy = "titaProject")
+    @OneToMany(mappedBy = "titaProject", 
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<UserTitaProject> userTitaProject;
 
     @SuppressWarnings("unused")
@@ -75,12 +79,11 @@ public class TiTAProject extends BaseEntity<Long> implements Serializable {
     @Version
     private Long modificationVersion; 
     
-    public TiTAProject(Long id, String description, String name,
+    public TiTAProject(String description, String name,
             Boolean deleted, ProjectStatus projectStatus,
             Set<TiTATask> titaTasks,
             Set<IssueTrackerProject> issueTrackerProjects) {
         super();
-        this.id = id;
         this.description = description;
         this.name = name;
         this.deleted = deleted;
@@ -133,10 +136,6 @@ public class TiTAProject extends BaseEntity<Long> implements Serializable {
         return this.projectStatus;
     }
 
-    public void setProjectStatus(ProjectStatus projectStatus) {
-        this.projectStatus = projectStatus;
-    }
-
     public Set<TiTATask> getTitaTasks() {
         return this.titaTasks;
     }
@@ -156,7 +155,16 @@ public class TiTAProject extends BaseEntity<Long> implements Serializable {
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
     }
+
     public void setUserTitaProject(Set<UserTitaProject> userTitaProject){
         this.userTitaProject = userTitaProject;
+
+    public void setTitaTasks(Set<TiTATask> titaTasks) {
+        this.titaTasks = titaTasks;
+    }
+
+    public void setIssueTrackerProjects(
+            Set<IssueTrackerProject> issueTrackerProjects) {
+        this.issueTrackerProjects = issueTrackerProjects;
     }
 }

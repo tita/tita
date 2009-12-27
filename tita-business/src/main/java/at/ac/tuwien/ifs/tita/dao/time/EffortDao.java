@@ -27,8 +27,6 @@ import javax.persistence.Query;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.stereotype.Repository;
-
 import at.ac.tuwien.ifs.tita.dao.GenericHibernateDao;
 import at.ac.tuwien.ifs.tita.dao.interfaces.IEffortDao;
 import at.ac.tuwien.ifs.tita.entity.Effort;
@@ -41,7 +39,17 @@ import at.ac.tuwien.ifs.tita.entity.Effort;
  * 
  */
 public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEffortDao {
-
+    private static final String C_TITA_EFFORT_SQL = 
+        "select e1.* from effort e1 " +
+        "join tita_task tt on e1.tita_task_id = tt.id " +
+        "join tita_project tp on tt.tita_project_id = tp.id ";
+        
+    private static final String C_ISSUE_TRACKER_EFFORT_SQL = 
+        "select e2.* from effort e2 " +      
+        "join issue_tracker_task it on e2.issuet_task_id = it.id " + 
+        "join issue_tracker_project itp on it.issue_tracker_project_id =" +
+        "itp.id join tita_project tp2 on tp2.id = itp.tita_project_id ";
+    
     public EffortDao() {
         super(Effort.class);
     }
@@ -116,55 +124,61 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
     /** {@inheritDoc} */
     @Override
     public List<Effort> findEffortsForTiTAProjectAndTimeConsumerId(Long projectId, Long tcId) {
-//        Criterion criterions[] = null;
-//        
-//        Order order[] = {Order.asc("date")};
-//        
-//      
-//        criterions = new Criterion [] { Restrictions.eq("issueTTask.isstProject.projectId", 
-//                                                        projectId),
-//                                        Restrictions.eq("titaTask.titaProject.id", projectId),
-//                                        Restrictions.eq("user.id", tcId)};
-//        return findByCriteriaOrdered(criterions, order, null);
+        String queryString = C_TITA_EFFORT_SQL +
+                             "where tp.id = ? and e1.user_id = ? union " +
+                             C_ISSUE_TRACKER_EFFORT_SQL +
+                             "where tp2.id = ? and e2.user_id = ? ";
         
-       return null;
+        org.hibernate.SQLQuery q = getSession().createSQLQuery(queryString);
+        q.setLong(0,projectId);
+        q.setLong(1, tcId);
+        q.setLong(2, projectId);
+        q.setLong(3, tcId);
+        
+        return readEffortsFromDB(q);
     }
     
     /** {@inheritDoc} */
-    @SuppressWarnings("unchecked")
     @Override
     public List<Effort> findEffortsForTiTAProjectId(Long projectId) {
-        List<Effort> efforts = new ArrayList<Effort>();
-        
-        
-        String queryString = "select e.* from effort e " +
-                             "join tita_task tt on e.tita_task_id = tt.id " +
-                             "join tita_project tp on tt.tita_project_id = tp.id " +
+        String queryString = C_TITA_EFFORT_SQL +
                              "where tp.id = ? union " +
-                             "select e.* from effort e " +      
-                             "join issue_tracker_task it on e.issuet_task_id = it.id " + 
-                             "join issue_tracker_project itp on it.issue_tracker_project_id =" +
-                             "itp.id join tita_project tp2 on tp2.id = itp.tita_project_id " +
+                             C_ISSUE_TRACKER_EFFORT_SQL +
                              "where tp2.id = ?";
         
         org.hibernate.SQLQuery q = getSession().createSQLQuery(queryString);
-        
         q.setLong(0,projectId);
         q.setLong(1, projectId);
-        q.addEntity(Effort.class);
+                
+        return readEffortsFromDB(q);
+    }
+
+    /**
+     * Reads all efforts specified in query and returns it to caller.
+     * @param query org.hibernate.SQLQuery
+     * @return List of Efforts
+     */
+    @SuppressWarnings("unchecked")
+    private List<Effort> readEffortsFromDB(org.hibernate.SQLQuery query){
+        List<Effort> efforts = new ArrayList<Effort>();
+        
+        query.addEntity(Effort.class);
         
         try {
-            efforts = q.list();
+            efforts = query.list();
         } catch (NoResultException e) {
             // nothing to do
         }
         return efforts;
     }
-
+    
     /** {@inheritDoc} */
     @Override
     public List<Effort> findEffortsForTimeConsumerId(Long tcId) {
-        // TODO Auto-generated method stub
-        return null;
+        Criterion criterions[] = null;
+        Order order[] = {Order.asc("date")};
+
+        criterions = new Criterion [] { Restrictions.eq("user.id", tcId)};
+        return findByCriteriaOrdered(criterions, order, null);
     }
 }

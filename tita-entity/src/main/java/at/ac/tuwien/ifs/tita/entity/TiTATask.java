@@ -17,6 +17,7 @@ package at.ac.tuwien.ifs.tita.entity;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -49,15 +50,16 @@ public class TiTATask extends BaseEntity<Long> {
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "USER_ID")
     private TiTAUser user;
     
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "TITA_PROJECT_ID")
     private TiTAProject titaProject;
 
-    @OneToMany(mappedBy ="titaTask")
+    @OneToMany(mappedBy ="titaTask", 
+               cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<Effort> titaEfforts;
 
     @SuppressWarnings("unused")
@@ -65,11 +67,9 @@ public class TiTATask extends BaseEntity<Long> {
     @Version
     private Long modificationVersion;
 
-    public TiTATask(Long id, TiTAUser user, TiTAProject titaProject, Set<Effort> efforts) {
-        this.id = id;
+    public TiTATask(TiTAUser user, Set<Effort> efforts) {
         this.user = user;
         this.titaEfforts = efforts;
-        this.titaProject = titaProject;
     }
     
     public TiTATask() {
@@ -94,5 +94,9 @@ public class TiTATask extends BaseEntity<Long> {
     
     public TiTAUser getUser(){
         return user;
+    }
+
+    public void setTitaProject(TiTAProject titaProject) {
+        this.titaProject = titaProject;
     }
 }

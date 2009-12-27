@@ -17,6 +17,7 @@ package at.ac.tuwien.ifs.tita.entity;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -65,15 +66,17 @@ public class TiTAUser extends BaseEntity<Long> {
     @Column(name = "DELETED")
     private Boolean deleted;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "ROLE_ID") //,insertable=false) //, referencedColumnName = "ID")
     private Role role;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", 
+               cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
 //    @JoinColumn(name="ID") //, referencedColumnName="USER1_ID")
     private Set<UserTitaProject> userTitaProject;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", 
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<IssueTrackerLogin> issueTrackerLogins;
 
     @SuppressWarnings("unused")

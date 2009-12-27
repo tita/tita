@@ -19,6 +19,7 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -54,11 +55,11 @@ public class Effort extends BaseEntity<Long> implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_effort")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "TITA_TASK_ID")
     private TiTATask titaTask;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "ISSUET_TASK_ID")
     private IssueTrackerTask issueTTask;
 
@@ -74,22 +75,23 @@ public class Effort extends BaseEntity<Long> implements Serializable {
     @Column(name = "DELETED")
     private Boolean deleted;
 
-    @ManyToOne
 
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "USER_ID") //, referencedColumnName = "ID")
     private TiTAUser user;
 
     public Effort() {
     }
 
-    public Effort( Date creationDate, Long startTime, Long duration, Boolean deleted,
-                  String description) {
+
+    public Effort(Date date, Long duration, Boolean deleted,
+                  String description, TiTAUser user) {
         super();
-        this.date = creationDate;
-        this.startTime = startTime;
+        this.date = date;
         this.duration = duration;
         this.deleted = deleted;
         this.description = description;
+        this.user = user;
     }
     
     @Override
@@ -178,4 +180,11 @@ public class Effort extends BaseEntity<Long> implements Serializable {
         return description.toLowerCase().contains(filterString.toLowerCase());
     }
 
+    public TiTATask getTitaTask() {
+        return titaTask;
+    }
+
+    public IssueTrackerTask getIssueTTask() {
+        return issueTTask;
+    }
 }

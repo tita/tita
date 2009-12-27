@@ -40,10 +40,14 @@
 	   Datasource is a H2DB
 	 -->
   <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-    <property name="driverClassName" value="org.h2.Driver" />
+    <!-- property name="driverClassName" value="org.h2.Driver" />
     <property name="url" value="jdbc:h2:db/main1" />
     <property name="username" value="sa" />
-    <property name="password" value="" />
+    <property name="password" value="" /-->
+    <property name="driverClassName" value="org.postgresql.Driver" />
+    <property name="url" value="jdbc:postgresql://localhost:1234/postgres" />
+    <property name="username" value="postgres" />
+    <property name="password" value="sa" />    
   </bean>
 
   <!-- Autowired to the EntityManagerFactory -->

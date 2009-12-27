@@ -17,6 +17,7 @@ package at.ac.tuwien.ifs.tita.entity;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -47,14 +48,14 @@ public class IssueTrackerProject extends BaseEntity<Long> {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_issue_project")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "TITA_PROJECT_ID")
     private TiTAProject titaProject;
 
     @Column(name = "PROJECT_NAME")
     private String projectName;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "ISST_ID")
     private IssueTracker issueTracker;
     
@@ -67,7 +68,8 @@ public class IssueTrackerProject extends BaseEntity<Long> {
     // @Column(name="DESCRIPTION")
     // private String description;
 
-    @OneToMany(mappedBy="isstProject")
+    @OneToMany(mappedBy="isstProject", 
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<IssueTrackerTask> issueTrackerTasks;
 
     @SuppressWarnings("unused")
@@ -78,12 +80,9 @@ public class IssueTrackerProject extends BaseEntity<Long> {
     public IssueTrackerProject() {
     }
 
-    public IssueTrackerProject(Long id, TiTAProject titaProject, 
-                               IssueTracker issTracker, Long isstProjectId, 
+    public IssueTrackerProject(IssueTracker issTracker, Long isstProjectId, 
                                Set<IssueTrackerTask> issueTrackerTasks){
         super();
-        this.id = id;
-        this.titaProject = titaProject;
         this.issueTracker = issTracker;
         this.isstProjectId = isstProjectId;
         this.issueTrackerTasks = issueTrackerTasks;

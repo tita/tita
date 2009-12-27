@@ -34,11 +34,16 @@
   </description>
 
   <dependencies>
-    <!-- H2DB -->
+     <!-- H2DB -->
     <dependency>
-      <groupId>com.h2database</groupId>
-      <artifactId>h2</artifactId>
+      <groupId>postgresql</groupId>
+      <artifactId>postgresql</artifactId>
     </dependency>
+
+	<!-- dependency>
+		<groupId>com.h2database</groupId>
+		<artifactId>h2</artifactId>
+	</dependency-->
     
     <!-- JPA & Hibernate -->
     <dependency>
