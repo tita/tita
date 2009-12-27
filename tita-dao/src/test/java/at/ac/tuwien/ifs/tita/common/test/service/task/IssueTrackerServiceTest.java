@@ -36,7 +36,6 @@ import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueStatus;
 import at.ac.tuwien.ifs.tita.issuetracker.exceptions.ProjectNotFoundException;
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IProjectTrackable;
 import at.ac.tuwien.ifs.tita.issuetracker.issue.service.IssueTrackerService;
-import at.ac.tuwien.ifs.tita.issuetracker.mantis.base.MantisBaseTest;
 
 /**
  * Test for testing task service that imports all tasks comming from an issue tracker.
@@ -60,6 +59,7 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
      * tasks.
      */
     @Before
+    @Override
     public void setUp() {
         super.setUp();
 

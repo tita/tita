@@ -55,6 +55,7 @@ public class TaskServiceTest extends IssueTrackerServiceTest {
      * tasks.
      */
     @Before
+    @Override
     public void setUp() {
 
         // try {
@@ -100,6 +101,7 @@ public class TaskServiceTest extends IssueTrackerServiceTest {
      *             e
      */
     @After
+    @Override
     public void tearDown() throws InterruptedException {
         this.titaProject = null;
         deleteSetupAndChanges();
