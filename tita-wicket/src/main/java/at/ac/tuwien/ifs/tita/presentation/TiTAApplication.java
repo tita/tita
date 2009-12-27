@@ -50,8 +50,8 @@ public class TiTAApplication extends SwarmWebApplication {
      * 
      * @return homepage of app
      */
-    public Class<HomePage> getHomePage() {
-        return HomePage.class;
+    public Class<BasePage> getHomePage() {
+        return BasePage.class;
     }
 
     /**
@@ -71,7 +71,24 @@ public class TiTAApplication extends SwarmWebApplication {
 
         try {
             factory.addPolicyFile(getServletContext().getResource("/WEB-INF/tita.hive"));
-            factory.setAlias("hp", "at.ac.tuwien.ifs.tita.presentation.HomePage");
+            factory.setAlias("hp", "at.ac.tuwien.ifs.tita.presentation.BasePage");
+            
+            //Aliases for Admin
+            
+            //Aliases for timeconsumer
+            factory.setAlias("effortsPage", 
+                    "at.ac.tuwien.ifs.tita.presentation.effort.EffortsPage");
+            factory.setAlias("dailyView", 
+                    "at.ac.tuwien.ifs.tita.presentation.effort.evaluation.timeconsumer.DailyView");
+            factory.setAlias("monthlyView", 
+                  "at.ac.tuwien.ifs.tita.presentation.effort.evaluation.timeconsumer.MonthlyView");
+            
+            
+            //Aliases for timecontroller
+            factory.setAlias("multipleProjectsView", 
+                "at.ac.tuwien.ifs.tita.presentation.effort.evaluation" +
+                ".timecontroller.MultipleProjectsView");
+      
         } catch (MalformedURLException e) {
             throw new WicketRuntimeException(e);
         }
@@ -89,5 +106,10 @@ public class TiTAApplication extends SwarmWebApplication {
         return HomePage.class;
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
+    public TitaLoginContext getLogoffContext(){
+        return new TitaLoginContext();
+    }
 }

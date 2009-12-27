@@ -186,3 +186,54 @@ tr {
 	height: 30px;
 	border: none;
 }
+
+
+
+
+
+
+.loginFormBox {
+    position: relative;
+    height: 132px;
+    font-size: 90%;
+    color: #002d68;
+    text-align: left;
+    padding-left: 80px;
+}
+
+.loginFormBox td {
+    padding: 3px;
+    padding-right: 30px;
+}
+
+.loginFormBox td label {
+    font-size: 90%;
+}
+
+.loginFormBox input {
+    font-family: Trebuchet MS, Arial;
+    color: #002d68;
+    background: #8bbef7;
+    border: 1px solid #d0e7f2;
+    padding: 0px;
+    width: 200px;
+}
+
+.loginFormBox select {
+    font-family: Trebuchet MS, Arial;
+    color: #002d68;
+    background: #8bbef7;
+    border: 1px solid #d0e7f2;
+    padding: 0px;
+    width: 202px;
+}
+
+.loginFormBox input.submit {
+    width: auto;
+    height: auto;
+    border: none;
+}
+
+.loginFormBox img {
+    cursor: pointer;
+}

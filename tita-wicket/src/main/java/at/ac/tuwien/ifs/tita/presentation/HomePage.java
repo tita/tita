@@ -17,6 +17,9 @@
 package at.ac.tuwien.ifs.tita.presentation;
 
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.security.WaspSession;
+import org.apache.wicket.security.authentication.LoginException;
 
 
 /**
@@ -25,5 +28,44 @@ import org.apache.wicket.markup.html.WebPage;
 public class HomePage extends WebPage {
 
     public HomePage() {
+        // stateless so the login page will not throw a timeout exception
+        // note that is only a hint we need to have stateless components on the
+        // page for this to work, like a statelessform
+        setStatelessHint(true);
+        add(new FeedbackPanel("feedback")
+        {
+            private static final long serialVersionUID = 1L;
+
+            /**
+             * @see org.apache.wicket.Component#isVisible()
+             */
+            public boolean isVisible() {
+                return anyMessage();
+            }
+        });
+        String panelId = "signInPanel";
+        newUserPasswordSignInPanel(panelId);
+    }
+
+    /**
+     * Creates a sign in panel with a username and a password field.
+     * 
+     * @param panelId - id
+     */
+    protected void newUserPasswordSignInPanel(String panelId) {
+        add(new SignInPanel(panelId)
+        {
+            private static final long serialVersionUID = 1L;
+
+            public boolean signIn(String username, String password){
+                TitaLoginContext ctx = new TitaLoginContext(username, password);
+                try {
+                    ((WaspSession)getSession()).login(ctx);
+                } catch (LoginException e){
+                    return false;
+                }
+                return true;
+            }
+        });
     }
 }

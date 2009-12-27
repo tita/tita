@@ -1,7 +1,19 @@
 grant
 {
     permission ${ComponentPermission} "${hp}", "inherit, render";
-    permission ${ComponentPermission} "${hp}", "enable";
+    permission ${ComponentPermission} "${hp}", "enable, inherit";
+    
+    permission ${ComponentPermission} "${effortsPage}", "inherit, render";
+    permission ${ComponentPermission} "${effortsPage}", "enable, inherit";
+    
+    permission ${ComponentPermission} "${dailyView}", "inherit, render";
+    permission ${ComponentPermission} "${dailyView}", "enable, inherit";
+    
+    permission ${ComponentPermission} "${monthlyView}", "inherit, render";
+    permission ${ComponentPermission} "${monthlyView}", "enable, inherit";
+    
+    permission ${ComponentPermission} "${multipleProjectsView}", "inherit, render";
+    permission ${ComponentPermission} "${multipleProjectsView}", "enable, inherit";
 };
 
 grant principal org.apache.wicket.security.hive.authorization.SimplePrincipal "admin"
@@ -9,12 +21,20 @@ grant principal org.apache.wicket.security.hive.authorization.SimplePrincipal "a
 
 };
 
-grant principal org.apache.wicket.security.hive.authorization.SimplePrincipal "timecontroller"
+grant principal org.apache.wicket.security.hive.authorization.SimplePrincipal "timeconsumer"
 {
-
+    permission ${ComponentPermission} "${effortsPage}", "inherit, render";
+    permission ${ComponentPermission} "${effortsPage}", "enable;
+    
+    permission ${ComponentPermission} "${dailyView}", "inherit, render";
+    permission ${ComponentPermission} "${dailyView}", "enable";
+    
+    permission ${ComponentPermission} "${monthlyView}", "inherit, render";
+    permission ${ComponentPermission} "${monthlyView}", "enable";
 };
 
-grant principal org.apache.wicket.security.hive.authorization.SimplePrincipal "timeproducer"
+grant principal org.apache.wicket.security.hive.authorization.SimplePrincipal "timecontroller"
 {
-	
+	permission ${ComponentPermission} "${multipleProjectsView}", "inherit, render";
+    permission ${ComponentPermission} "${multipleProjectsView}", "enable";
 };

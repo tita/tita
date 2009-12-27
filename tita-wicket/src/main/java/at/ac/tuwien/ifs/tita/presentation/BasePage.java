@@ -15,9 +15,18 @@
  */
 package at.ac.tuwien.ifs.tita.presentation;
 
+import org.apache.wicket.Application;
+import org.apache.wicket.PageParameters;
+import org.apache.wicket.Session;
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.security.WaspSession;
+import org.apache.wicket.security.components.SecureWebPage;
+import org.apache.wicket.security.hive.authentication.LoginContext;
+import org.apache.wicket.security.swarm.SwarmWebApplication;
 
 import at.ac.tuwien.ifs.tita.presentation.tasklist.TaskListPanel;
 
@@ -27,9 +36,10 @@ import at.ac.tuwien.ifs.tita.presentation.tasklist.TaskListPanel;
  * @author rene
  * 
  */
-public class BasePage extends WebPage {
+public class BasePage extends SecureWebPage {
     
     public BasePage() {
+        init();
         String username = "User1";
         add(new Label("showUser", "Signed in as " + username));
         
@@ -43,5 +53,74 @@ public class BasePage extends WebPage {
         add(timeControllergroup);
         add(administratorGroup);
         add(new TaskListPanel("taskList"));
+    }
+
+    public BasePage(PageParameters parameters)  {
+        super(parameters);
+        init();
+    }
+
+    public BasePage(IModel model) {
+        super(model);
+        init();
+    }
+    
+    /**
+     * initialize the page.
+     */
+    protected void init() {
+        // not a secure link because everyone can logoff.
+        Link logoff = new Link("logoff")
+        {
+
+            private static final long serialVersionUID = 1L;
+
+            public void onClick() {
+                WaspSession waspSession = ((WaspSession)getSession());
+                if (waspSession.logoff(getLogoffContext())) {
+                    // homepage is not allowed anymore so we end up at the
+                    // loginpage
+                    setResponsePage(Application.get().getHomePage());
+                    waspSession.invalidate();
+                } else{
+                    error("A problem occured during the logoff process, please " +
+                            "try again or contact support");
+                }
+            }
+        };
+        add(logoff);
+    }
+
+    /**
+     * shortcut to the {@link WaspSession}.
+     * 
+     * @return the session.
+     */
+    protected final WaspSession getSecureSession() {
+        return (WaspSession)Session.get();
+    }
+
+    /**
+     * Shortcut to the application.
+     * 
+     * @return the application
+     */
+    protected final SwarmWebApplication getSecureApplication() {
+        return (SwarmWebApplication)Application.get();
+    }
+
+    /**
+     * Allows subclasses to specify which context should be used when logging
+     * off.
+     * 
+     * @return the context
+     */
+    protected final LoginContext getLogoffContext(){
+        Application app = Application.get();
+        if (app instanceof TiTAApplication){
+            return ((TiTAApplication)app).getLogoffContext();
+        }
+        throw new WicketRuntimeException("Application is not a subclass of "
+                + TiTAApplication.class);
     }
 }
