@@ -66,10 +66,9 @@ public class IssueTrackerLogin extends BaseEntity<Long> {
         super();
     }
 
-    public IssueTrackerLogin(Long id, String userName, String password,
+    public IssueTrackerLogin(String userName, String password,
             IssueTracker issueTracker, TiTAUser user) {
         super();
-        this.id = id;
         this.userName = userName;
         this.password = password;
         this.issueTracker = issueTracker;

@@ -61,7 +61,7 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
     @Test
     public void testSaveTimeEffort() {
         Effort timeEffort = new Effort(null, null, null,
-                "Das ist die Test TimeEffort 1");
+                "Das ist die Test TimeEffort 1", null);
         try {
             service.saveEffort(timeEffort);
         } catch (TitaDAOException e) {
@@ -76,7 +76,7 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
     @Test
     public void testDeleteTimeEffort() {
        Effort timeEffort = new Effort(null, null, null,
-                "Das ist die Test TimeEffort 2");
+                "Das ist die Test TimeEffort 2", null);
         try {
             service.saveEffort(timeEffort);
             Assert.assertNotNull(timeEffort.getId());
@@ -94,7 +94,7 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
     @Test
     public void testUpdateTimeEffort() {
         Effort timeEffort = new Effort(null, null, null,
-                "Das ist die Test TimeEffort 3");
+                "Das ist die Test TimeEffort 3", null);
         try {
             service.saveEffort(timeEffort);
             Assert.assertNotNull(timeEffort.getId());
@@ -114,7 +114,7 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
     @Test
     public void testSearchTimeEffort() {
         Effort timeEffort = new Effort(null, null, null,
-                "Das ist die Test TimeEffort 4");
+                "Das ist die Test TimeEffort 4", null);
         try {
             service.saveEffort(timeEffort);
             Assert.assertNotNull(timeEffort.getId());
@@ -147,11 +147,11 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
             assertTrue(false);
         }
         Effort timeEffort1 = new Effort(null,null, null,
-                "Das ist die Test TimeEffort 5");
+                "Das ist die Test TimeEffort 5", null);
         Effort timeEffort2 = new Effort(null,null, null,
-                "Das ist die Test TimeEffort 6");
+                "Das ist die Test TimeEffort 6", null);
         Effort timeEffort3 = new Effort(null,null, null,
-                "Das ist die Test TimeEffort 7");
+                "Das ist die Test TimeEffort 7", null);
 
         timeEffort1.setDate(date1);
         timeEffort2.setDate(date2);

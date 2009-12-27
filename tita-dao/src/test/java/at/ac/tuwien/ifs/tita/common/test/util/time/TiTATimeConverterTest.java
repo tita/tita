@@ -18,7 +18,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import at.ac.tuwien.ifs.tita.business.util.TiTATimeConverter;
+import at.ac.tuwien.ifs.tita.issuetracker.util.TiTATimeConverter;
 
 /**
  * Tests for class TiTATimeConverter.

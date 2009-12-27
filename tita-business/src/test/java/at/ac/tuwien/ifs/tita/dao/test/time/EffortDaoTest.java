@@ -68,7 +68,7 @@ public class EffortDaoTest { //extends AbstractJpaTests {
 //        String description
         //CHECKSTYLE:OFF
         
-        IssueTracker it = new IssueTracker(1L,"issue tracker 1");
+        IssueTracker it = new IssueTracker(1L,"issue tracker 1",null);
         
         Role r1 = new Role(1L,"role 1");
         

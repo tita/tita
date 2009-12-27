@@ -27,6 +27,7 @@ import javax.persistence.Query;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+
 import at.ac.tuwien.ifs.tita.dao.GenericHibernateDao;
 import at.ac.tuwien.ifs.tita.dao.interfaces.IEffortDao;
 import at.ac.tuwien.ifs.tita.entity.Effort;
@@ -66,10 +67,37 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
         start.set(year, month, 1);
         end.set(year, month, start.getActualMaximum(Calendar.DAY_OF_MONTH));
 
-        return findByCriteria(Restrictions.between("date", start.getTime(), end.getTime()), Restrictions.eq("deleted",
-                false));
+        return findByCriteria(Restrictions.between("date", start.getTime(), end.getTime()), 
+                              Restrictions.eq("deleted",false));
     }
 
+    /** {@inheritDoc} */
+    @SuppressWarnings("unchecked")
+    public List<Effort> getTimeEffortsMonthlyView(Calendar cal) {
+        Query q = em.createNamedQuery("timeeffort.monthly.view");
+        q.setParameter("year", cal.get(Calendar.YEAR));
+        q.setParameter("month", cal.get(Calendar.MONTH) + 1);
+        return q.getResultList();
+    }
+
+    /** {@inheritDoc} */
+    @SuppressWarnings("unchecked")
+    public List<Effort> getTimeEffortsDailyView(Calendar cal) {
+        Query q = em.createNamedQuery("timeeffort.daily.view");
+        q.setParameter("year", cal.get(Calendar.YEAR));
+        q.setParameter("month", cal.get(Calendar.MONTH) + 1);
+        q.setParameter("day", cal.get(Calendar.DAY_OF_MONTH));
+        return q.getResultList();
+    }
+
+    /** {@inheritDoc} */
+    @SuppressWarnings("unchecked")
+    public List<Effort> getActualTimeEfforts(Integer maxresults) {
+        Query q = em.createNamedQuery("timeeffort.actual.view");
+        q.setMaxResults(maxresults);
+        return q.getResultList();
+    }
+    
     /**
      * Gets a view for a day.
      * 
@@ -83,41 +111,12 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
         return findByExample(e);
     }
 
-    /**
-     * Gets all years in which efforts were saved.
-     * 
-     * @return list of years
-     */
-    /** {@inheritDoc} */
-    @SuppressWarnings("unchecked")
-    public List<Effort> getTimeEffortsMonthlyView(Calendar cal) {
-        Query q = em.createNamedQuery("timeeffort.monthly.view");
-        q.setParameter("year", cal.get(Calendar.YEAR));
-        q.setParameter("month", cal.get(Calendar.MONTH) + 1);
-        return q.getResultList();
-    }
-
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
     public List<Integer> getTimeEffortsYears() {
         // return
         // findByHqlQuery("select distinct YEAR(te.date) from Effort te where deleted=false");
         Query q = em.createNamedQuery("effort.years");
-        return q.getResultList();
-    }
-
-
-    /**
-     * Gets a view for the last time efforts.
-     * 
-     * @param maxresults sets the max results value for the query
-     * @return list of timefforts that match dates
-     */
-    /** {@inheritDoc} */
-    @SuppressWarnings("unchecked")
-    public List<Effort> getActualTimeEfforts(Integer maxresults) {
-        Query q = em.createNamedQuery("timeeffort.actual.view");
-        q.setMaxResults(maxresults);
         return q.getResultList();
     }
 

@@ -14,6 +14,7 @@
 
 package at.ac.tuwien.ifs.tita.issuetracker.mantis.time;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.util.Map;
@@ -25,9 +26,12 @@ import org.mantisbt.connect.MCException;
 
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin;
 import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
+import at.ac.tuwien.ifs.tita.issuetracker.container.TimedIssueEffort;
+import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
 import at.ac.tuwien.ifs.tita.issuetracker.mantis.base.MantisBaseTest;
 import at.ac.tuwien.ifs.tita.issuetracker.mantis.dao.IssueTrackerMantisDao;
 import at.ac.tuwien.ifs.tita.issuetracker.mantis.util.time.TimedIssueEffortCoordinator;
+import at.ac.tuwien.ifs.tita.issuetracker.util.TiTATimeConverter;
 
 /**
  * Test for class TimedTaskCoordinator.
@@ -37,8 +41,8 @@ import at.ac.tuwien.ifs.tita.issuetracker.mantis.util.time.TimedIssueEffortCoord
  */
 public class IssueTrackerTaskCoordinatorTest extends MantisBaseTest {
 
-    private final IssueTrackerLogin defaultLogin = new IssueTrackerLogin(1L, "administrator",
-            "root", new IssueTracker(1L, "test-mantis", "http://localhost/mantisbt-1.1.8"));
+    private final IssueTrackerLogin defaultLogin = new IssueTrackerLogin("administrator",
+            "root", new IssueTracker(1L, "test-mantis", "http://localhost/mantisbt-1.1.8"),null);
 
     private Long projectId = null;
     private Long taskId1, taskId2, taskId3 = null;
@@ -112,9 +116,12 @@ public class IssueTrackerTaskCoordinatorTest extends MantisBaseTest {
        
         tasks = mantisDao.findAllTasksForProject(projectId);
         
-        tiff1 = new TimedIssueEffort(tasks.get(taskId1).getProjectId(), tasks.get(taskId1).getId());
-        tiff2 = new TimedIssueEffort(tasks.get(taskId2).getProjectId(), tasks.get(taskId2).getId());
-        tiff3 = new TimedIssueEffort(tasks.get(taskId3).getProjectId(), tasks.get(taskId3).getId());
+        tiff1 = new TimedIssueEffort(tasks.get(taskId1).getProject().getId(), 
+                                     tasks.get(taskId1).getId());
+        tiff2 = new TimedIssueEffort(tasks.get(taskId2).getProject().getId(), 
+                                     tasks.get(taskId2).getId());
+        tiff3 = new TimedIssueEffort(tasks.get(taskId3).getProject().getId(), 
+                                     tasks.get(taskId3).getId());
         
         this.tiCo.startTimedIssueEffort(tiff1);
         try {
@@ -150,8 +157,10 @@ public class IssueTrackerTaskCoordinatorTest extends MantisBaseTest {
 
         tasks = mantisDao.findAllTasksForProject(projectId);
 
-        tiff1 = new TimedIssueEffort(tasks.get(taskId1).getProjectId(), tasks.get(taskId1).getId());
-        tiff2 = new TimedIssueEffort(tasks.get(taskId2).getProjectId(), tasks.get(taskId2).getId());
+        tiff1 = new TimedIssueEffort(tasks.get(taskId1).getProject().getId(),
+                                     tasks.get(taskId1).getId());
+        tiff2 = new TimedIssueEffort(tasks.get(taskId2).getProject().getId(), 
+                                     tasks.get(taskId2).getId());
         
         this.tiCo.startTimedIssueEffort(tiff1);
         try {

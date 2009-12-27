@@ -119,15 +119,7 @@ public class TiTAProject extends BaseEntity<Long> implements Serializable {
     public void setIssueTrackerProjects(Set<IssueTrackerProject> issueTrackerProjects) {
         this.issueTrackerProjects = issueTrackerProjects;
     }
-
-    public void setUsers(Set<TiTAUser> users) {
-        this.users = users;
-    }
-
-    public Set<TiTAUser> getUsers() {
-        return this.users;
-    }
-    
+   
     public Set<UserTitaProject> getUserTitaProject() {
         return userTitaProject;
     }
@@ -158,13 +150,9 @@ public class TiTAProject extends BaseEntity<Long> implements Serializable {
 
     public void setUserTitaProject(Set<UserTitaProject> userTitaProject){
         this.userTitaProject = userTitaProject;
-
-    public void setTitaTasks(Set<TiTATask> titaTasks) {
-        this.titaTasks = titaTasks;
     }
 
-    public void setIssueTrackerProjects(
-            Set<IssueTrackerProject> issueTrackerProjects) {
-        this.issueTrackerProjects = issueTrackerProjects;
+    public void setProjectStatus(ProjectStatus projectStatus) {
+        this.projectStatus = projectStatus;
     }
 }

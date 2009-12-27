@@ -32,10 +32,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-<<<<<<< HEAD:tita-entity/src/main/java/at/ac/tuwien/ifs/tita/entity/Effort.java
-=======
-
->>>>>>> working on feature projekuebergreifende auswertungen:tita-entity/src/main/java/at/ac/tuwien/ifs/tita/entity/Effort.java
 /**
  * Entity for storing time producer's effort of his/her assigned tasks.
  * 
@@ -74,7 +70,6 @@ public class Effort extends BaseEntity<Long> implements Serializable {
 
     @Column(name = "DELETED")
     private Boolean deleted;
-
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "USER_ID") //, referencedColumnName = "ID")
@@ -186,5 +181,16 @@ public class Effort extends BaseEntity<Long> implements Serializable {
 
     public IssueTrackerTask getIssueTTask() {
         return issueTTask;
+    }
+    
+    public Long getStartTime(){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        
+        return cal.getTimeInMillis();
+    }
+    
+    public void setStartTime(Long startTime){
+        this.date = new Date(startTime);
     }
 }

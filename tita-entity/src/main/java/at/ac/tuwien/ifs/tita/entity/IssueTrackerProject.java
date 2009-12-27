@@ -93,7 +93,7 @@ public class IssueTrackerProject extends BaseEntity<Long> {
         return this.id;
     }
 
-    public TiTAProject getProjectId() {
+    public TiTAProject getProject() {
         return titaProject;
     }
     

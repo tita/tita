@@ -145,7 +145,7 @@ public class TaskService implements ITaskService {
                     // TODO Flag setzen
 
                     Map<Long, ITaskTrackable> mapOfTasks = this.issueTrackerService
-                            .getIssueTrackerTasksByProjectId(issueTrackerProject.getProjectId());
+                            .getIssueTrackerTasksByProjectId(issueTrackerProject.getProject().getId());
 
                     for (ITaskTrackable taskTrackable : mapOfTasks.values()) {
                         key++;

@@ -35,6 +35,7 @@ import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus;
 import at.ac.tuwien.ifs.tita.issuetracker.exceptions.ProjectNotFoundException;
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
+import at.ac.tuwien.ifs.tita.common.test.service.task.IssueTrackerServiceTest;
 
 /**
  * Task Service Testcases.
@@ -53,7 +54,6 @@ public class TaskServiceTest extends IssueTrackerServiceTest {
      * Prepare mantis connection and create a setup in mantis with projects and
      * tasks.
      */
-    @Override
     @Before
     public void setUp() {
 
@@ -99,7 +99,6 @@ public class TaskServiceTest extends IssueTrackerServiceTest {
      * @throws InterruptedException
      *             e
      */
-    @Override
     @After
     public void tearDown() throws InterruptedException {
         this.titaProject = null;
