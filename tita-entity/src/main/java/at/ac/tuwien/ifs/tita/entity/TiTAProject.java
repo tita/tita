@@ -132,4 +132,6 @@ public class TiTAProject extends BaseEntity<Long> implements Serializable {
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
     }
+    
+    
 }

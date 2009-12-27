@@ -16,13 +16,20 @@
 */
 package at.ac.tuwien.ifs.tita.presentation;
 
-import org.apache.wicket.protocol.http.WebApplication;
+import java.net.MalformedURLException;
+
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.security.hive.HiveMind;
+import org.apache.wicket.security.hive.config.PolicyFileHiveFactory;
+import org.apache.wicket.security.hive.config.SwarmPolicyFileHiveFactory;
+import org.apache.wicket.security.swarm.SwarmWebApplication;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 
 /**
  * Wicket Application for testing Hello World from DB.
  */
-public class TiTAApplication extends WebApplication {
+public class TiTAApplication extends SwarmWebApplication {
     
     public TiTAApplication() {
     }
@@ -32,7 +39,10 @@ public class TiTAApplication extends WebApplication {
     protected void init() {
         // THIS LINE IS IMPORTANT - IT INSTALLS THE COMPONENT INJECTOR THAT WILL
         // INJECT NEWLY CREATED COMPONENTS WITH THEIR SPRING DEPENDENCIES
+        super.init();
         addComponentInstantiationListener(new SpringComponentInjector(this));
+        InjectorHolder.getInjector().inject(this);
+
     }
 
     /**
@@ -43,5 +53,41 @@ public class TiTAApplication extends WebApplication {
     public Class<HomePage> getHomePage() {
         return HomePage.class;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Object getHiveKey() {
+        return getServletContext().getRealPath(CONTEXTPATH);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void setUpHive() {
+        PolicyFileHiveFactory factory = new SwarmPolicyFileHiveFactory(getActionFactory());
+
+        try {
+            factory.addPolicyFile(getServletContext().getResource("/WEB-INF/tita.hive"));
+            factory.setAlias("hp", "at.ac.tuwien.ifs.tita.presentation.HomePage");
+        } catch (MalformedURLException e) {
+            throw new WicketRuntimeException(e);
+        }
+        
+        //register factory
+        HiveMind.registerHive(getHiveKey(), factory);
+       
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Class<HomePage> getLoginPage() {
+        return HomePage.class;
+    }
+
 
 }

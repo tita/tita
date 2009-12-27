@@ -1,0 +1,20 @@
+grant
+{
+    permission ${ComponentPermission} "${hp}", "inherit, render";
+    permission ${ComponentPermission} "${hp}", "enable";
+};
+
+grant principal org.apache.wicket.security.hive.authorization.SimplePrincipal "admin"
+{
+
+};
+
+grant principal org.apache.wicket.security.hive.authorization.SimplePrincipal "timecontroller"
+{
+
+};
+
+grant principal org.apache.wicket.security.hive.authorization.SimplePrincipal "timeproducer"
+{
+	
+};

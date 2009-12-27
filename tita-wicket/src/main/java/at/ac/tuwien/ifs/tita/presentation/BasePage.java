@@ -15,7 +15,7 @@
  */
 package at.ac.tuwien.ifs.tita.presentation;
 
-import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.security.components.SecureWebPage;
 
 /**
  * BaseClass for sites.
@@ -23,6 +23,6 @@ import org.apache.wicket.markup.html.WebPage;
  * @author rene
  * 
  */
-public abstract class BasePage extends WebPage {
+public abstract class BasePage extends SecureWebPage {
 
 }
