@@ -9,7 +9,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-  
+
  */
 package at.ac.tuwien.ifs.tita.issuetracker.interfaces;
 
@@ -20,27 +20,28 @@ import at.ac.tuwien.ifs.tita.issuetracker.enums.IssuePriority;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueResolution;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueSeverity;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueStatus;
+import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueTrackingTool;
 
 /**
  * The interface describes the view on issue or bug objects from the integrated
  * issue tracker, how it is called in the different issue trackers. The data
  * from the issue tracker is mapped in the implementation of the interface.
- * 
+ *
  * @author Christoph
- * 
+ *
  */
 public interface ITaskTrackable {
 
     /**
      * Supplies the identifier of the task.
-     * 
+     *
      * @return id - identifier of the task
      */
     Long getId();
 
     /**
      * Sets the summary, a short description of the task.
-     * 
+     *
      * @param summary
      *            - short description
      */
@@ -48,14 +49,14 @@ public interface ITaskTrackable {
 
     /**
      * Returns the summary of the task.
-     * 
+     *
      * @return summary - short task description
      */
     String getSummary();
 
     /**
      * Sets the detailed description of the task.
-     * 
+     *
      * @param description
      *            - detailed description of the task
      */
@@ -63,14 +64,14 @@ public interface ITaskTrackable {
 
     /**
      * Return the detailed task description.
-     * 
+     *
      * @return description - detailed description
      */
     String getDescription();
 
     /**
      * Sets the priority of the task.
-     * 
+     *
      * @param priority
      *            - uses the enumeration values for setting
      * @see IssuePriority
@@ -79,7 +80,7 @@ public interface ITaskTrackable {
 
     /**
      * Returns the priority of the task.
-     * 
+     *
      * @return priority - the priority of the task
      * @see IssuePriority
      */
@@ -87,7 +88,7 @@ public interface ITaskTrackable {
 
     /**
      * Sets the severity of the task.
-     * 
+     *
      * @param severity
      *            - uses the enumeration values for setting
      * @see IssueSeverity
@@ -96,7 +97,7 @@ public interface ITaskTrackable {
 
     /**
      * Returns the severity of the task.
-     * 
+     *
      * @return severity - the severity of the task
      * @see IssueSeverity
      */
@@ -104,7 +105,7 @@ public interface ITaskTrackable {
 
     /**
      * Sets the resolution of the task.
-     * 
+     *
      * @param resolution
      *            - uses the enumeration values for setting
      * @see IssueResolution
@@ -113,15 +114,33 @@ public interface ITaskTrackable {
 
     /**
      * Returns the resolution of the task.
-     * 
+     *
      * @return resolution - the resolution of the task
      * @see IssueResolution
      */
     IssueResolution getResolution();
 
     /**
+     * Sets the type of the issue tracker.
+     *
+     * @param tool
+     *            - uses the enumeration values for setting
+     * @see IssueTrackingTool
+     */
+    void setIssueTrackerType(IssueTrackingTool tool);
+
+    /**
+     * Returns the type of the issue tracker.
+     *
+     * @return tool - the type of the issue tracker from where the task is
+     *         provided
+     * @see IssueTrackingTool
+     */
+    IssueTrackingTool getIssueTrackerType();
+
+    /**
      * Sets the status of the task.
-     * 
+     *
      * @param status
      *            - uses the enumeration values for setting
      * @see IssueStatus
@@ -130,7 +149,7 @@ public interface ITaskTrackable {
 
     /**
      * Returns the status of the task.
-     * 
+     *
      * @return status - the status of the task
      * @see IssueStatus
      */
@@ -138,7 +157,7 @@ public interface ITaskTrackable {
 
     /**
      * Sets the creation time of the task due to the issue tracker.
-     * 
+     *
      * @param creationTime
      *            - time the task was created
      */
@@ -146,14 +165,14 @@ public interface ITaskTrackable {
 
     /**
      * Returns the creation time of the task.
-     * 
+     *
      * @return Date - time the task was created
      */
     Date getCreationTime();
 
     /**
      * Sets the time the last change was updated.
-     * 
+     *
      * @param lastChange
      *            - the time the last change was updated
      */
@@ -161,14 +180,14 @@ public interface ITaskTrackable {
 
     /**
      * Returns the last change time.
-     * 
+     *
      * @return lastChange - the time the last change was committed
      */
     Date getLastChange();
 
     /**
      * Sets the reporter(user of the issue tracker) of the task.
-     * 
+     *
      * @param reporter
      *            - the author of the task
      */
@@ -176,14 +195,14 @@ public interface ITaskTrackable {
 
     /**
      * Returns the reporter of the task.
-     * 
+     *
      * @return reporter - author of the task
      */
     String getReporter();
 
     /**
      * Sets the owner of the task.
-     * 
+     *
      * @param owner
      *            - the person who has assigned to
      */
@@ -191,31 +210,31 @@ public interface ITaskTrackable {
 
     /**
      * Return the owner of the task.
-     * 
+     *
      * @return owner - person who has assigned to
      */
     String getOwner();
 
     /**
-     * Sets the Id of the project of the task.
-     * 
-     * @param projectId
-     *            - the Id of the project the task is being filed against
+     * Sets the project of the task.
+     *
+     * @param project
+     *            - the project the task is being filed against
      */
-    void setProjectId(long projectId);
+    void setProject(IProjectTrackable project);
 
     /**
-     * Returns the projectId the task is being filed against.
+     * Returns the project the task is being filed against.
      * 
      * @return project - the project the task is being filed against
      * @see IProjectTrackable
      */
-    Long getProjectId();
+    IProjectTrackable getProject();
 
     /**
      * Sets the comments that are added to the task. At the creation time of
      * course null
-     * 
+     *
      * @param comments
      *            - a map of comments, default null
      * @see ICommentTrackable
@@ -224,7 +243,7 @@ public interface ITaskTrackable {
 
     /**
      * Returns a list of comments added to the task.
-     * 
+     *
      * @return comments - a map of comments
      * @see ICommentTrackable
      */

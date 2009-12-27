@@ -20,11 +20,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-	<groupId>at.ac.tuwien.ifs</groupId>
-	<artifactId>tita-parent</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+    <groupId>at.ac.tuwien.ifs</groupId>
+    <artifactId>tita-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
   </parent>
-  
+
 
 
   <artifactId>tita-issuetracker-integration</artifactId>
@@ -41,11 +41,7 @@
       <artifactId>tita-entity</artifactId>
       <version>1.0.0-SNAPSHOT</version>
     </dependency>
-    <dependency>
-      <groupId>at.ac.tuwien.ifs</groupId>
-      <artifactId>tita-business</artifactId>
-      <version>1.0.0-SNAPSHOT</version>
-    </dependency>
+
     <!-- Springframework dependencies -->
     <dependency>
       <groupId>org.springframework</groupId>
@@ -72,61 +68,61 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
     </dependency>
-    
+
     <!-- mantis connect dependencies -->
     <dependency>
       <groupId>javax.xml</groupId>
       <artifactId>jaxrpc</artifactId>
       <version>1.1</version>
-	</dependency>
-	
-	<dependency>
+    </dependency>
+
+    <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
       <version>1.0.4</version>
-	</dependency> 
-	
-	<dependency>
+    </dependency>
+
+    <dependency>
       <groupId>commons-discovery</groupId>
       <artifactId>commons-discovery</artifactId>
       <version>0.2</version>
-	</dependency> 
-	
-	<dependency>
+    </dependency>
+
+    <dependency>
       <groupId>org.apache.axis</groupId>
       <artifactId>axis-ant</artifactId>
       <version>1.4</version>
-	</dependency> 
-	
-	<dependency>
+    </dependency>
+
+    <dependency>
       <groupId>wsdl4j</groupId>
       <artifactId>wsdl4j</artifactId>
       <version>1.5.1</version>
-	</dependency> 
-	
-	<dependency>
+    </dependency>
+
+    <dependency>
       <groupId>axis</groupId>
       <artifactId>axis</artifactId>
       <version>1.4</version>
-	</dependency> 
+    </dependency>
 
-	<dependency>
+    <dependency>
       <groupId>mantisconnect</groupId>
       <artifactId>mantisconnect</artifactId>
       <version>1.1.1.0</version>
-	</dependency> 
+    </dependency>
   </dependencies>
   <build>
-  	<plugins>
-		<plugin>
-	        <groupId>org.apache.maven.plugins</groupId>
-	        <artifactId>maven-surefire-plugin</artifactId>
-	        <version>2.4.3</version>
-	        <configuration>
-	          <skipTests>true</skipTests>
-	        </configuration>
-	      </plugin>
-	  	</plugins>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.4.3</version>
+        <configuration>
+          <skipTests>true</skipTests>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 
 </project>

@@ -137,6 +137,7 @@ public class User extends BaseEntity<Long> {
         this.deleted = deleted;
     }
 
+    @Override
     public Long getId() {
         return id;
     }

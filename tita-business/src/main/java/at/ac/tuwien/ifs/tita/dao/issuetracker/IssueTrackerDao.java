@@ -13,35 +13,20 @@
    limitations under the License.
   
  */
-package at.ac.tuwien.ifs.tita.entity.conv;
+package at.ac.tuwien.ifs.tita.dao.issuetracker;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import at.ac.tuwien.ifs.tita.dao.GenericHibernateDao;
+import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 
 /**
- * Entity for storing IssueTrackers like Mantis.
- * @author karin
- *
+ * Issue Tracker Data Access Object.
+ * 
+ * @author Christoph
+ * 
  */
-@Entity
-@Table(name="ISSUETRACKER")
-public class IssueTracker extends ConvBaseEntity{
+public class IssueTrackerDao extends GenericHibernateDao<IssueTracker, Long> {
 
-    @Column(name = "URL")
-    private String url;
-
-    public IssueTracker(Long id, String description, String url) {
-        super(id, description);
-        this.url = url;
+    public IssueTrackerDao() {
+        super(IssueTracker.class);
     }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-   
 }

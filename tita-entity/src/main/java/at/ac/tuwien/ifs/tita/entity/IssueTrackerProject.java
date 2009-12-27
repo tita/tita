@@ -3,15 +3,15 @@
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
-   
+
        http://www.apache.org/licenses/LICENSE\-2.0
-       
+
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-  
+
  */
 package at.ac.tuwien.ifs.tita.entity;
 
@@ -23,18 +23,20 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 import at.ac.tuwien.ifs.tita.entity.interfaces.BaseEntity;
 
 /**
  * Entity for storing projects comming from different issue trackers.
- * 
+ *
  * @author herbert
- * 
+ *
  */
 @Entity
 @Table(name = "ISSUE_TRACKER_PROJECT")
@@ -49,8 +51,14 @@ public class IssueTrackerProject extends BaseEntity<Long> {
     @Column(name = "PROJECT_ID")
     private Long projectId;
 
+    @Column(name = "PROJECT_NAME")
+    private String projectName;
+
     @Column(name = "ISST_PROJECT_ID")
     private Long isstProjectId;
+
+    @Column(name = "DELETED")
+    private boolean deleted;
 
     // @Column(name="DESCRIPTION")
     // private String description;
@@ -58,6 +66,9 @@ public class IssueTrackerProject extends BaseEntity<Long> {
     @OneToMany
     @JoinColumn(name = "ISST_PROJECT_ID")
     private Set<IssueTrackerTask> issueTrackerTasks;
+
+    @ManyToOne
+    private IssueTracker issueTracker;
 
     @SuppressWarnings("unused")
     @Column(name = "MODIFICATION_VERSION")
@@ -76,18 +87,42 @@ public class IssueTrackerProject extends BaseEntity<Long> {
 
     @Override
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     public Long getProjectId() {
-        return projectId;
+        return this.projectId;
     }
 
     public Long getIsstProjectId() {
-        return isstProjectId;
+        return this.isstProjectId;
     }
 
     public Set<IssueTrackerTask> getIssueTrackerTasks() {
-        return issueTrackerTasks;
+        return this.issueTrackerTasks;
+    }
+
+    public void setIssueTracker(IssueTracker issueTracker) {
+        this.issueTracker = issueTracker;
+    }
+
+    public IssueTracker getIssueTracker() {
+        return this.issueTracker;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public boolean isDeleted() {
+        return this.deleted;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public String getProjectName() {
+        return this.projectName;
     }
 }
