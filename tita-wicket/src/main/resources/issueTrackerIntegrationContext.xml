@@ -18,7 +18,7 @@
 
   <!-- The DAOs -->
   <bean id="userDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
-	<constructor-arg value="at.ac.tuwien.ifs.tita.entity.User"/>
+	<constructor-arg value="at.ac.tuwien.ifs.tita.entity.TiTAUser"/>
   </bean>
   <bean id="roleDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
   <constructor-arg value="at.ac.tuwien.ifs.tita.entity.conv.Role"/>
