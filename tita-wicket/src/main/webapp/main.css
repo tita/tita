@@ -28,7 +28,7 @@ p {font-size:0.875em}
 /* Header */
 #header{
     width:1024px;
-    margin:0 auto;   
+    margin:0 auto;  
 }
 
 #title_left{
@@ -56,7 +56,7 @@ p {font-size:0.875em}
 
 #taskbar{
     float: right;
-    width: 300px;
+    width: 290px;
     height: 500px;
     border: 1px solid black;
 }

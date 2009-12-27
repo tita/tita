@@ -2,6 +2,7 @@
 #eclipse-workspace
 #=================
 .metadata
+.springBeans
 
 #=================
 #eclipse-project
@@ -20,6 +21,7 @@
 #log files
 #================
 *velocity.log
+*velocity.log.*
 
 #================
 #h2db

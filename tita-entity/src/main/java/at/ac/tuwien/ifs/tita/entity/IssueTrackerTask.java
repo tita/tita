@@ -31,7 +31,7 @@ import javax.persistence.Version;
 import at.ac.tuwien.ifs.tita.entity.interfaces.BaseEntity;
 
 /**
- * Entity for storing tasks comming from different issue trackers.
+ * Entity for storing tasks coming from different issue trackers.
  * 
  * @author herbert
  * 
@@ -48,6 +48,9 @@ public class IssueTrackerTask extends BaseEntity<Long> {
 
     @Column(name = "ISST_TASK_ID")
     private Long isstTaskId;
+
+    @Column(name = "DESCRIPTION")
+    private String description;
 
     @OneToMany
     @JoinColumn(name = "ISSUET_TASK_ID")
@@ -76,6 +79,14 @@ public class IssueTrackerTask extends BaseEntity<Long> {
 
     public void setIsstTaskId(Long isstTaskId) {
         this.isstTaskId = isstTaskId;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
 }

@@ -15,7 +15,11 @@
  */
 package at.ac.tuwien.ifs.tita.presentation;
 
-import org.apache.wicket.security.components.SecureWebPage;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.basic.Label;
+
+import at.ac.tuwien.ifs.tita.presentation.tasklist.TaskListPanel;
 
 /**
  * BaseClass for sites.
@@ -23,6 +27,21 @@ import org.apache.wicket.security.components.SecureWebPage;
  * @author rene
  * 
  */
-public abstract class BasePage extends SecureWebPage {
-
+public class BasePage extends WebPage {
+    
+    public BasePage() {
+        String username = "User1";
+        add(new Label("showUser", "Signed in as " + username));
+        
+        final WebMarkupContainer timeConsumergroup = new WebMarkupContainer(
+            "timeConsumerGroup");
+        final WebMarkupContainer timeControllergroup = new WebMarkupContainer(
+            "timeControllerGroup");
+        final WebMarkupContainer administratorGroup = new WebMarkupContainer(
+            "administratorGroup");
+        add(timeConsumergroup);
+        add(timeControllergroup);
+        add(administratorGroup);
+        add(new TaskListPanel("taskList"));
+    }
 }

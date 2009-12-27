@@ -12,7 +12,7 @@
 
  */
 
-package at.ac.tuwien.ifs.tita.issuetracker.mantis.base;
+package at.ac.tuwien.ifs.tita.common.test.service.task;
 
 import static org.junit.Assert.assertTrue;
 

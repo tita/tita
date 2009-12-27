@@ -16,6 +16,7 @@
  */
 package at.ac.tuwien.ifs.tita.presentation.effort.evaluation.timeconsumer;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -33,26 +34,28 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import at.ac.tuwien.ifs.tita.business.service.time.IEffortService;
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.Effort;
-import at.ac.tuwien.ifs.tita.presentation.HeaderPage;
+import at.ac.tuwien.ifs.tita.presentation.BasePage;
 import at.ac.tuwien.ifs.tita.presentation.controls.dropdown.SelectOption;
 import at.ac.tuwien.ifs.tita.presentation.controls.listview.EffortEvaluationListView;
 
 /**
  * Monthly evaluation.
  */
-public class MonthlyView extends HeaderPage {
+public class MonthlyView extends BasePage {
     @SpringBean(name = "timeEffortService")
     private IEffortService service;
 
     private SelectOption selectedYear;
     private SelectOption selectedMonth;
 
+    private List<SelectOption> years;
     private List<SelectOption> months;
 
     public MonthlyView() {
         String year = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
         int month = Calendar.getInstance().get(Calendar.MONTH);
 
+        initYears();
         selectedYear = new SelectOption(year, year);
 
         initMonths();
@@ -64,25 +67,25 @@ public class MonthlyView extends HeaderPage {
     /**
      * Inits Page.
      */
+    @SuppressWarnings("unchecked")
     private void initPage() {
         Form<Effort> form = new Form<Effort>("dailyviewform", new CompoundPropertyModel<Effort>(new Effort()));
         add(form);
         form.setOutputMarkupId(true);
 
         ChoiceRenderer choiceRenderer = new ChoiceRenderer("value", "key");
-        /* TODO: read years from database. */
-        SelectOption[] options = new SelectOption[] { new SelectOption("2009", "2009"),
-                new SelectOption("2008", "2008") };
+
         final DropDownChoice ddYears = new DropDownChoice("yearSelection", new PropertyModel(this, "selectedYear"),
-                Arrays.asList(options), choiceRenderer);
+                getYears(), choiceRenderer);
         form.add(ddYears);
 
         final DropDownChoice ddMonths = new DropDownChoice("monthSelection", new PropertyModel(this, "selectedMonth"),
                 getMonths(), choiceRenderer);
         form.add(ddMonths);
 
+        Calendar cal = Calendar.getInstance();
         final EffortEvaluationListView<Effort> listView = new EffortEvaluationListView<Effort>("dailyList",
-                getTimeEffortsMonthlyView(Calendar.getInstance()));
+                getTimeEffortsMonthlyView(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)));
         listView.setOutputMarkupId(true);
 
         final WebMarkupContainer timeeffortContainer = new WebMarkupContainer("timeeffortContainer");
@@ -94,9 +97,9 @@ public class MonthlyView extends HeaderPage {
         form.add(new AjaxButton("btnShowMonthly", form) {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
-                Calendar cal = Calendar.getInstance();
-                cal.set(Integer.valueOf(selectedYear.toString()), Integer.valueOf(selectedMonth.toString()), 1);
-                listView.setList(getTimeEffortsMonthlyView(cal));
+                Integer year = Integer.valueOf(selectedYear.toString());
+                Integer month = Integer.valueOf(selectedMonth.toString());
+                listView.setList(getTimeEffortsMonthlyView(year, month));
                 target.addComponent(timeeffortContainer);
             }
 
@@ -110,18 +113,30 @@ public class MonthlyView extends HeaderPage {
     /**
      * Gets time effort data by date.
      * 
-     * @param cal date of timeeffort entry
-     * @return all timeefforts that match the date
+     * @param year year of effort entry
+     * @param month month of effort entry
+     * @return all efforts that match the date
      */
-    private List<Effort> getTimeEffortsMonthlyView(Calendar cal) {
+    private List<Effort> getTimeEffortsMonthlyView(Integer year, Integer month) {
         List<Effort> list = null;
         try {
-            list = service.getEffortsMonthlyView(cal);
+            list = service.getEffortsMonthlyView(year, month);
         } catch (TitaDAOException e) {
             e.printStackTrace();
         }
 
         return list;
+    }
+
+    /**
+     * Inits all years.
+     */
+    private void initYears() {
+        years = new ArrayList<SelectOption>();
+        List<Integer> effortYears = service.getEffortsYears();
+        for (Integer e : effortYears) {
+            years.add(new SelectOption(e.toString(), e.toString()));
+        }
     }
 
     /**
@@ -134,6 +149,15 @@ public class MonthlyView extends HeaderPage {
                 "June"), new SelectOption("6", "July"), new SelectOption("7", "August"), new SelectOption("8",
                 "September"), new SelectOption("9", "October"), new SelectOption("10", "November"), new SelectOption(
                 "11", "December"));
+    }
+
+    /**
+     * Return years.
+     * 
+     * @return the years
+     */
+    public List<SelectOption> getYears() {
+        return years;
     }
 
     /**

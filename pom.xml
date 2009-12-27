@@ -79,9 +79,9 @@
  <modules>
       <module>tita-entity</module>
       <module>tita-dao</module>
-      <module>tita-business</module>
       <module>tita-issuetracker-integration</module>
       <module>tita-jasperreports</module>
+      <module>tita-business</module>
       <module>tita-wicket</module>
  </modules>
 
@@ -349,6 +349,7 @@
 						<exclude>**/*.checkstyle</exclude>
 						<exclude>**/*.js</exclude>
 						<exclude>**/*.db</exclude>
+						<exclude>**/*.springBeans</exclude>
 			
 						<exclude>NOTICE</exclude>
 						<exclude>LICENSE</exclude>

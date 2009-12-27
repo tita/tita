@@ -15,6 +15,7 @@
  */
 package at.ac.tuwien.ifs.tita.entity.conv;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -26,5 +27,21 @@ import javax.persistence.Table;
 @Entity
 @Table(name="ISSUETRACKER")
 public class IssueTracker extends ConvBaseEntity{
+
+    @Column(name = "URL")
+    private String url;
+
+    public IssueTracker(Long id, String description, String url) {
+        super(id, description);
+        this.url = url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getUrl() {
+        return url;
+    }
    
 }

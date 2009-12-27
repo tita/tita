@@ -3,15 +3,15 @@
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
-   
+
        http://www.apache.org/licenses/LICENSE\-2.0
-       
+
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-  
+
  */
 package at.ac.tuwien.ifs.tita.entity;
 
@@ -37,9 +37,9 @@ import at.ac.tuwien.ifs.tita.entity.interfaces.BaseEntity;
 
 /**
  * Entity for storing projects that are associated with an issue tracker.
- * 
+ *
  * @author herbert
- * 
+ *
  */
 @Entity
 @Table(name = "PROJECT")
@@ -65,7 +65,7 @@ public class TiTAProject extends BaseEntity<Long> implements Serializable {
     private ProjectStatus projectStatus;
 
     @OneToMany
-    @JoinColumn(name = "PROJECT_ID")
+    @JoinColumn(name = "TASK_ID")
     private Set<TiTATask> titaTasks;
 
     @OneToMany
@@ -75,6 +75,7 @@ public class TiTAProject extends BaseEntity<Long> implements Serializable {
     @ManyToMany
     @JoinTable(name = "USER_PROJECT", joinColumns = { @JoinColumn(name = "PROJECT_ID") }, inverseJoinColumns = { @JoinColumn(name = "USER_ID") })
     private Set<User> users;
+
 
     @SuppressWarnings("unused")
     @Column(name = "MODIFICATION_VERSION")
@@ -86,27 +87,43 @@ public class TiTAProject extends BaseEntity<Long> implements Serializable {
 
     @Override
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     public Set<TiTATask> getTiTATasks() {
-        return titaTasks;
+        return this.titaTasks;
     }
 
     public Set<IssueTrackerProject> getIssueTrackerProjects() {
-        return issueTrackerProjects;
+        return this.issueTrackerProjects;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setTitaTasks(Set<TiTATask> titaTasks) {
+        this.titaTasks = titaTasks;
+    }
+
+    public void setIssueTrackerProjects(Set<IssueTrackerProject> issueTrackerProjects) {
+        this.issueTrackerProjects = issueTrackerProjects;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 
     public Set<User> getUsers() {
-        return users;
+        return this.users;
     }
 
     public ProjectStatus getProjectStatus() {
-        return projectStatus;
+        return this.projectStatus;
     }
 
     public void setProjectStatus(ProjectStatus projectStatus) {
@@ -114,11 +131,11 @@ public class TiTAProject extends BaseEntity<Long> implements Serializable {
     }
 
     public Set<TiTATask> getTitaTasks() {
-        return titaTasks;
+        return this.titaTasks;
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -126,7 +143,7 @@ public class TiTAProject extends BaseEntity<Long> implements Serializable {
     }
 
     public Boolean getDeleted() {
-        return deleted;
+        return this.deleted;
     }
 
     public void setDeleted(Boolean deleted) {

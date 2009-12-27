@@ -22,6 +22,7 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin;
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IProjectTrackable;
 
 /**
@@ -38,7 +39,8 @@ public class UpdateThread extends Thread {
 
     private int timeout;
     private boolean applicationIsRunning = true;
-    private Map<Long, IProjectTrackable> projects;
+    private final Map<Long, IProjectTrackable> projects;
+    private final IssueTrackerLogin login;
 
     /**
      * Constructor for the automatic update thread.
@@ -46,9 +48,10 @@ public class UpdateThread extends Thread {
      * @param projects - map of projects that are accessbile from the issue
      *        trackers.
      */
-    public UpdateThread(Map<Long, IProjectTrackable> projects) {
+    public UpdateThread(Map<Long, IProjectTrackable> projects, IssueTrackerLogin login) {
         super("automatic update");
         this.projects = projects;
+        this.login = login;
     }
 
     /**
@@ -72,7 +75,7 @@ public class UpdateThread extends Thread {
             while (applicationIsRunning) {
 
                 log.debug("Starting automatic update.");
-                new DispatcherThread(projects).start();
+                new DispatcherThread(projects, login).start();
                 log.debug("Automatic update was succesful.");
                 log.debug("Waiting until timeout is over.");
                 // CHECKSTYLE:OFF

@@ -31,21 +31,19 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import at.ac.tuwien.ifs.tita.business.service.time.IEffortService;
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.Effort;
-import at.ac.tuwien.ifs.tita.presentation.HeaderPage;
+import at.ac.tuwien.ifs.tita.presentation.BasePage;
 import at.ac.tuwien.ifs.tita.presentation.controls.listview.EffortEvaluationListView;
-import at.ac.tuwien.ifs.tita.presentation.utils.GlobalUtils;
 
 /**
  * Daily evaluation.
  */
-public class DailyView extends HeaderPage {
+public class DailyView extends BasePage {
     @SpringBean(name = "timeEffortService")
     private IEffortService service;
 
     private final Date date = new Date();
 
     public DailyView() {
-        // addInitialTimeEfforts();
         initPage();
     }
 
@@ -93,16 +91,31 @@ public class DailyView extends HeaderPage {
      * @return all timeefforts that match the date
      */
     private List<Effort> getTimeEffortsDailyView(Date d) {
-        Calendar cal = GlobalUtils.getCalendarFromDate(d);
-
         List<Effort> list = null;
+
+        Date de = getMidnightDateTime(d);
         try {
-            list = service.getEffortsDailyView(cal);
+            list = service.getEffortsDailyView(de);
         } catch (TitaDAOException e) {
             e.printStackTrace();
         }
 
         return list;
+    }
+    
+    /**
+     * Sets time of date to midnight.
+     * @param d date to convert
+     * @return midnight date.
+     */
+    private Date getMidnightDateTime(Date d) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(d);
+        cal.set(Calendar.MILLISECOND, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.HOUR_OF_DAY, 0); 
+        return cal.getTime();
     }
 
     /**
@@ -113,48 +126,4 @@ public class DailyView extends HeaderPage {
     public Date getDate() {
         return date;
     }
-
-    /**
-     * Adds Inital Time Efforts. will be removed later.
-     */
-
-    // private void addInitialTimeEfforts() {
-    // GregorianCalendar cal1 = new GregorianCalendar();
-    // cal1.set(Calendar.AM_PM, Calendar.PM);
-    // cal1.set(2009, 11, 28, 14, 33);
-    //
-    // GregorianCalendar cal2 = new GregorianCalendar();
-    // cal2.set(Calendar.AM_PM, Calendar.PM);
-    // cal2.set(2009, 11, 28, 15, 46);
-    //
-    // TimeEffort timeEffort = new TimeEffort();
-    // timeEffort.setDate(new Date());
-    // timeEffort.setDeleted(false);
-    // timeEffort.setEndTime(cal2.getTime());
-    // timeEffort.setStartTime(cal1.getTime());
-    // timeEffort.setDescription("Das ist die Test TimeEffort 1");
-    //
-    // cal1 = new GregorianCalendar();
-    // cal1.set(Calendar.AM_PM, Calendar.PM);
-    // cal1.set(2009, 11, 28, 16, 11);
-    //
-    // cal2 = new GregorianCalendar();
-    // cal2.set(Calendar.AM_PM, Calendar.PM);
-    // cal2.set(2009, 11, 28, 17, 1);
-    //
-    // TimeEffort timeEffort2 = new TimeEffort();
-    // timeEffort2.setDate(new Date());
-    // timeEffort2.setDeleted(false);
-    // timeEffort2.setEndTime(cal2.getTime());
-    // timeEffort2.setStartTime(cal1.getTime());
-    // timeEffort2.setDescription("Das ist die Test TimeEffort 2");
-    //
-    // try {
-    // service.saveTimeEffort(timeEffort);
-    // service.saveTimeEffort(timeEffort2);
-    // } catch (TitaDAOException e) {
-    // e.printStackTrace();
-    // }
-    // }
-
 }

@@ -26,7 +26,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
-import at.ac.tuwien.ifs.tita.presentation.HeaderPage;
+import at.ac.tuwien.ifs.tita.presentation.BasePage;
 
 /**
  * Main Area for Efforts.
@@ -34,7 +34,7 @@ import at.ac.tuwien.ifs.tita.presentation.HeaderPage;
  * @author rene
  * 
  */
-public class EffortsPage extends HeaderPage {
+public class EffortsPage extends BasePage {
     private final List<ITab> tabs = new ArrayList<ITab>();
     private final List<TiTAProject> projects;
 

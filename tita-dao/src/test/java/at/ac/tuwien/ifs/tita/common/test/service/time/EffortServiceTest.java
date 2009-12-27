@@ -21,7 +21,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -49,8 +48,7 @@ import at.ac.tuwien.ifs.tita.entity.Effort;
 @ContextConfiguration(locations = { "classpath:datasourceContext-test.xml" })
 @TransactionConfiguration
 @Transactional
-public class EffortServiceTest extends
-        AbstractTransactionalJUnit4SpringContextTests {
+public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     // private final Logger log =
     // LoggerFactory.getLogger(EffortServiceTest.class);
@@ -63,8 +61,7 @@ public class EffortServiceTest extends
      */
     @Test
     public void testSaveTimeEffort() {
-        Effort timeEffort = new Effort(null, null, null,
-                "Das ist die Test TimeEffort 1");
+        Effort timeEffort = new Effort(null, null, null, "Das ist die Test TimeEffort 1");
 
         try {
             service.saveEffort(timeEffort);
@@ -79,8 +76,7 @@ public class EffortServiceTest extends
      */
     @Test
     public void testDeleteTimeEffort() {
-        Effort timeEffort = new Effort(null, null, null,
-                "Das ist die Test TimeEffort 2");
+        Effort timeEffort = new Effort(null, null, null, "Das ist die Test TimeEffort 2");
         try {
             service.saveEffort(timeEffort);
             Assert.assertNotNull(timeEffort.getId());
@@ -97,8 +93,7 @@ public class EffortServiceTest extends
      */
     @Test
     public void testUpdateTimeEffort() {
-        Effort timeEffort = new Effort(null, null, null,
-                "Das ist die Test TimeEffort 3");
+        Effort timeEffort = new Effort(null, null, null, "Das ist die Test TimeEffort 3");
         try {
             service.saveEffort(timeEffort);
             Assert.assertNotNull(timeEffort.getId());
@@ -106,8 +101,7 @@ public class EffortServiceTest extends
             Date date = new Date();
             timeEffort.setDate(date);
             service.saveEffort(timeEffort);
-            Assert.assertEquals(service.getEffortById(timeEffort.getId())
-                    .getDate(), date);
+            Assert.assertEquals(service.getEffortById(timeEffort.getId()).getDate(), date);
         } catch (TitaDAOException e) {
             fail();
         }
@@ -118,8 +112,7 @@ public class EffortServiceTest extends
      */
     @Test
     public void testSearchTimeEffort() {
-        Effort timeEffort = new Effort(null, null, null,
-                "Das ist die Test TimeEffort 4");
+        Effort timeEffort = new Effort(null, null, null, "Das ist die Test TimeEffort 4");
         try {
             service.saveEffort(timeEffort);
             Assert.assertNotNull(timeEffort.getId());
@@ -138,7 +131,7 @@ public class EffortServiceTest extends
      */
     private List<Effort> prepareEfforts() {
         String strdate1 = "18.10.2009";
-        String strdate2 = "25.05.2009";
+        String strdate2 = "25.05.2008";
         DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
         Date date1 = null;
         Date date2 = null;
@@ -151,17 +144,18 @@ public class EffortServiceTest extends
         } catch (ParseException e1) {
             assertTrue(false);
         }
-        Effort timeEffort1 = new Effort(null, null, null,
-                "Das ist die Test TimeEffort 5");
-        Effort timeEffort2 = new Effort(null, null, null,
-                "Das ist die Test TimeEffort 6");
-        Effort timeEffort3 = new Effort(null, null, null,
-                "Das ist die Test TimeEffort 7");
+        Effort timeEffort1 = new Effort(null, null, null, "Das ist die Test TimeEffort 5");
+        Effort timeEffort2 = new Effort(null, null, null, "Das ist die Test TimeEffort 6");
+        Effort timeEffort3 = new Effort(null, null, null, "Das ist die Test TimeEffort 7");
 
         timeEffort1.setDate(date1);
         timeEffort2.setDate(date2);
         timeEffort3.setDate(date1);
-        
+
+        timeEffort1.setDeleted(false);
+        timeEffort2.setDeleted(false);
+        timeEffort3.setDeleted(false);
+
         effortList.add(timeEffort1);
         effortList.add(timeEffort2);
         effortList.add(timeEffort3);
@@ -176,23 +170,26 @@ public class EffortServiceTest extends
     }
 
     /**
-     * Test: Get TimeEffort by day with named query.
-     * 
-     * EXCEPTION: DEBUG BaseDAO:67 - Trying to persist Domain with Id: null.
-     * DEBUG BaseDAO:82 - Exception catched while trying to save Entity with Id:
-     * null
+     * Test: Get TimeEffort by day.
      */
 
     @Test
     public void testGetTimeEffortByDay() {
         List<Effort> efforts = prepareEfforts();
         List<Effort> list = null;
-        GregorianCalendar cal1 = new GregorianCalendar();
-        // CHECKSTYLE:OFF
-        cal1.set(2009, 9, 18);
-        // CHECKSTYLE:ON
+
+        String strdate1 = "18.10.2009";
+        DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+        Date date1 = null;
+
         try {
-            list = service.getEffortsDailyView(cal1);
+            date1 = formatter.parse(strdate1);
+        } catch (ParseException e1) {
+            assertTrue(false);
+        }
+
+        try {
+            list = service.getEffortsDailyView(date1);
             Assert.assertNotNull(list);
             Assert.assertEquals(2, list.size());
             deleteEfforts(efforts);
@@ -204,10 +201,8 @@ public class EffortServiceTest extends
     /**
      * Delete all inserted efforts.
      * 
-     * @param efforts
-     *            List
-     * @throws TitaDAOException
-     *             e
+     * @param efforts List
+     * @throws TitaDAOException e
      */
     private void deleteEfforts(List<Effort> efforts) throws TitaDAOException {
         for (Effort eff : efforts) {
@@ -216,25 +211,39 @@ public class EffortServiceTest extends
     }
 
     /**
-     * Test: Get TimeEffort by month with named query. EXCEPTION: DEBUG
-     * BaseDAO:67 - Trying to persist Domain with Id: null. DEBUG BaseDAO:82 -
-     * Exception catched while trying to save Entity with Id: null
+     * Test: Get TimeEffort by month.
      */
 
     @Test
     public void testGetTimeEffortByMonth() {
         List<Effort> efforts = prepareEfforts();
         List<Effort> list = null;
-        GregorianCalendar cal1 = new GregorianCalendar();
-        // CHECKSTYLE:OFF
-        cal1.set(2009, 9, 18);
-        // CHECKSTYLE:ON
+
         try {
-            list = service.getEffortsMonthlyView(cal1);
+            //CHECKSTYLE:OFF
+            list = service.getEffortsMonthlyView(2009, 9);
+            //CHECKSTYLE:ON
             Assert.assertNotNull(list);
-            // CHECKSTYLE:OFF
             Assert.assertEquals(2, list.size());
-            // CHECKSTYLE:ON
+            deleteEfforts(efforts);
+        } catch (TitaDAOException e) {
+            fail();
+        }
+    }
+
+    /**
+     * Test: Get all years of TimeEfforts.
+     */
+
+    @Test
+    public void testGetTimeEffortYears() {
+        List<Effort> efforts = prepareEfforts();
+        List<Integer> list = null;
+
+        try {
+            list = service.getEffortsYears();
+            Assert.assertNotNull(list);
+            Assert.assertEquals(2, list.size());
             deleteEfforts(efforts);
         } catch (TitaDAOException e) {
             fail();
