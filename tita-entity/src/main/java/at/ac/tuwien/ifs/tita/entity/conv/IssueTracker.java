@@ -36,6 +36,10 @@ public class IssueTracker extends ConvBaseEntity{
         this.url = url;
     }
 
+    public IssueTracker(){
+        super();
+    }
+    
     public void setUrl(String url) {
         this.url = url;
     }

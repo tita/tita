@@ -38,9 +38,9 @@ import at.ac.tuwien.ifs.tita.entity.conv.Role;
  * 
  */
 @Entity
-@Table(name = "USER")
+@Table(name = "TITA_USER")
 @SequenceGenerator(name = "seq_user", sequenceName = "USER_ID_SEQ", allocationSize = 1)
-public class User extends BaseEntity<Long> {
+public class TiTAUser extends BaseEntity<Long> {
 
     @Id
     @Column(name = "ID")
@@ -81,11 +81,11 @@ public class User extends BaseEntity<Long> {
     @Version
     private Long modificationVersion;
 
-    public User() {
+    public TiTAUser() {
 
     }
     
-    public User(String userName, String password, String firstName,
+    public TiTAUser(String userName, String password, String firstName,
             String lastName, String email, Boolean deleted, Role role,
             Set<UserTitaProject> userTitaProject, Set<IssueTrackerLogin> issueTrackerLogins) {
         super();

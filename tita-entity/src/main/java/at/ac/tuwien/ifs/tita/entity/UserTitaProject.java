@@ -27,19 +27,19 @@ public class UserTitaProject extends BaseEntity<Long> {
     
     @ManyToOne
     @JoinColumn(name = "USER_ID") //, referencedColumnName = "ID")
-    private User user;
+    private TiTAUser user;
     
     @ManyToOne
     @JoinColumn(name = "TITA_PROJECT_ID") //, referencedColumnName = "ID")
     private TiTAProject titaProject;
     
-    public UserTitaProject(User user, TiTAProject titaProject) {
+    public UserTitaProject(TiTAUser user, TiTAProject titaProject) {
         super();
         this.user = user;
         this.titaProject = titaProject;
     }
 
-    public User getUser() {
+    public TiTAUser getUser() {
         return user;
     }
 

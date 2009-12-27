@@ -27,7 +27,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name="CONV_PROJECT_STATUS")
 public class ProjectStatus extends ConvBaseEntity{
-
     public ProjectStatus() {
         super();
     }
@@ -35,5 +34,4 @@ public class ProjectStatus extends ConvBaseEntity{
     public ProjectStatus(Long id, String description) {
         super(id, description);
     }
-
 }

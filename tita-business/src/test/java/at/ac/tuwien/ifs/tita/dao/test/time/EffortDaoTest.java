@@ -8,7 +8,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,7 @@ import at.ac.tuwien.ifs.tita.entity.IssueTrackerProject;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerTask;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTATask;
-import at.ac.tuwien.ifs.tita.entity.User;
+import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.entity.UserTitaProject;
 import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 import at.ac.tuwien.ifs.tita.entity.conv.Role;
@@ -64,7 +63,7 @@ public class EffortDaoTest { //extends AbstractJpaTests {
     
     @Qualifier("userDAO")
     @Autowired
-    private IGenericHibernateDao<User, Long> userDao;
+    private IGenericHibernateDao<TiTAUser, Long> userDao;
     
     @Qualifier("roleDAO")
     @Autowired
@@ -77,7 +76,7 @@ public class EffortDaoTest { //extends AbstractJpaTests {
     /**
      * Prepare on TiTA Project for testing effort dao.
      */
-    @Before
+//    @Before
     public void prepareProjects(){       
 //        Long id, Date creationDate, Long startTime, Long duration, Boolean deleted,
 //        String description
@@ -96,8 +95,8 @@ public class EffortDaoTest { //extends AbstractJpaTests {
         Effort et1 = null, et2 = null, et3 = null, et4 = null, 
                ei1 = null, ei2 = null, ei3 = null, ei4 = null; 
         
-        User us1 = new User(null, null, null, null, null, null, r1, null, null); 
-        User us2 = new User(null, null, null, null, null, null, r1, null, null);
+        TiTAUser us1 = new TiTAUser(null, null, null, null, null, null, r1, null, null); 
+        TiTAUser us2 = new TiTAUser(null, null, null, null, null, null, r1, null, null);
         
         userDao.save(us1);
         userDao.save(us2);

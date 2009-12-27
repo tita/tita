@@ -1,7 +1,7 @@
 insert into CONV_ISSUE_TRACKER (ID, DESCRIPTION) values (1, 'it 1');
 insert into CONV_ROLE (ID, DESCRIPTION) values (1, 'role 1');
 insert into CONV_PROJECT_STATUS (ID, DESCRIPTION) values (1, 'stat 1');
-insert into USER (ID,ROLE_ID) values (1,1);
+insert into TITA_USER (ID,ROLE_ID) values (1,1);
 
 insert into TITA_PROJECT (ID, DESCRIPTION, NAME, DELETED, STATUS_ID, MODIFICATION_VERSION)
 values (1, 'nix', 'name', false, 1, 0);

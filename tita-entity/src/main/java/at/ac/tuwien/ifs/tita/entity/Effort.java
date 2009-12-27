@@ -77,7 +77,7 @@ public class Effort extends BaseEntity<Long> implements Serializable {
     @ManyToOne
 
     @JoinColumn(name = "USER_ID") //, referencedColumnName = "ID")
-    private User user;
+    private TiTAUser user;
 
     public Effort() {
     }
@@ -149,6 +149,10 @@ public class Effort extends BaseEntity<Long> implements Serializable {
         return date;
     }
 
+    /**
+     * Returns an proper end time as Long - used for GUI perposes.
+     * @return Long end time
+     */
     public Long getEndTime() {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);

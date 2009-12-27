@@ -18,7 +18,7 @@ create table CONV_PROJECT_STATUS(
 );
 
 -- tables
-create table public.USER(
+create table TITA_USER(
 	ID bigint,
 	USERNAME varchar(20),
 	PASSWORD varchar(20),
@@ -31,11 +31,11 @@ create table public.USER(
 	primary key (ID)
 );
 
-create unique index AK_USERNAME on public.USER (USERNAME);
+create unique index AK_USERNAME on TITA_USER (USERNAME);
 
 create table ISST_LOGIN( 
 	ID bigint,
-	USER_ID bigint references public.USER (ID),
+	USER_ID bigint references TITA_USER (ID),
 	ISST_ID bigint references CONV_ISSUE_TRACKER(ID),
 	NAME varchar(20),
 	PASSWORD varchar(20),
@@ -68,7 +68,7 @@ create unique index AK_ISSUE_TRACKER_PROJECT on ISSUE_TRACKER_PROJECT (ISST_ID, 
 
 create table USER_TITA_PROJECT(
 	ID bigint,
-	USER_ID bigint references public.USER (ID),
+	USER_ID bigint references TITA_USER (ID),
 	TITA_PROJECT_ID bigint references TITA_PROJECT (ID),
     primary key (ID)
 );
@@ -78,7 +78,7 @@ create unique index AK_USER_PROJECT on USER_TITA_PROJECT (USER_ID,TITA_PROJECT_I
 create table TITA_TASK( 
 	ID bigint,
 	DESCRIPTION varchar(50),
-	USER_ID bigint references public.USER (ID),
+	USER_ID bigint references TITA_USER (ID),
 	TITA_PROJECT_ID bigint references TITA_PROJECT(ID),
 	MODIFICATION_VERSION bigint,
 	primary key (ID)
@@ -99,6 +99,6 @@ create table EFFORT(
 	DATE date,
 	DURATION bigint,
 	DELETED boolean,
-	USER_ID bigint references public.USER (ID),
+	USER_ID bigint references TITA_USER (ID),
 	primary key (ID)
 );

@@ -31,4 +31,8 @@ public class Role extends ConvBaseEntity{
     public Role(Long id, String description) {
         super(id,description);
     }
+    
+    public Role(){
+        super();
+    }
 }

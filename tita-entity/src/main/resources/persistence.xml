@@ -31,15 +31,15 @@
     <class>at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin</class>
     <class>at.ac.tuwien.ifs.tita.entity.TiTAProject</class>
     <class>at.ac.tuwien.ifs.tita.entity.Effort</class>
-    <class>at.ac.tuwien.ifs.tita.entity.User</class>
+    <class>at.ac.tuwien.ifs.tita.entity.TiTAUser</class>
     <class>at.ac.tuwien.ifs.tita.entity.UserTitaProject</class>
     <properties>
       <property name="hibernate.archive.autodetection" value="class, hbm" />
       <property name="hibernate.hbm2ddl.auto" value="update" />
       <property name="hibernate.show_sql" value="true" />
       <property name="hibernate.show_comment" value="true" />
-      <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
-      <!-- <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" /> -->
+      <!-- property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/-->
+      <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
     </properties>
   </persistence-unit>
 </persistence>

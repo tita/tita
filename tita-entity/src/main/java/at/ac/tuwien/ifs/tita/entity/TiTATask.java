@@ -51,7 +51,7 @@ public class TiTATask extends BaseEntity<Long> {
 
     @ManyToOne
     @JoinColumn(name = "USER_ID")
-    private User user;
+    private TiTAUser user;
     
     @ManyToOne
     @JoinColumn(name = "TITA_PROJECT_ID")
@@ -65,7 +65,7 @@ public class TiTATask extends BaseEntity<Long> {
     @Version
     private Long modificationVersion;
 
-    public TiTATask(Long id, User user, TiTAProject titaProject, Set<Effort> efforts) {
+    public TiTATask(Long id, TiTAUser user, TiTAProject titaProject, Set<Effort> efforts) {
         this.id = id;
         this.user = user;
         this.titaEfforts = efforts;
@@ -92,7 +92,7 @@ public class TiTATask extends BaseEntity<Long> {
         return titaEfforts;
     }
     
-    public User getUser(){
+    public TiTAUser getUser(){
         return user;
     }
 }
