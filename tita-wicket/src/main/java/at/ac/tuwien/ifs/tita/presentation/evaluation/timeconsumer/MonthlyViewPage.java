@@ -14,36 +14,54 @@
    limitations under the License.
    
  */
-package at.ac.tuwien.ifs.tita.presentation.effort.evaluation.timeconsumer;
+package at.ac.tuwien.ifs.tita.presentation.evaluation.timeconsumer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.servlet.ServletContext;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.data.JRTableModelDataSource;
+
+import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.request.target.resource.ResourceStreamRequestTarget;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.wicketstuff.table.Table;
 
 import at.ac.tuwien.ifs.tita.business.service.time.IEffortService;
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.Effort;
 import at.ac.tuwien.ifs.tita.presentation.BasePage;
 import at.ac.tuwien.ifs.tita.presentation.controls.dropdown.SelectOption;
-import at.ac.tuwien.ifs.tita.presentation.controls.listview.EffortEvaluationListView;
+import at.ac.tuwien.ifs.tita.presentation.models.TableModelTimeConsumerEvaluation;
+import at.ac.tuwien.ifs.tita.reporting.JasperPdfResource;
 
 /**
  * Monthly evaluation.
  */
-public class MonthlyView extends BasePage {
+public class MonthlyViewPage extends BasePage {
+    private final Logger log = LoggerFactory.getLogger(MonthlyViewPage.class);
+
     @SpringBean(name = "timeEffortService")
     private IEffortService service;
+
+    @SpringBean(name = "monthlyViewReport")
+    private JasperPdfResource pdfResource;
 
     private SelectOption selectedYear;
     private SelectOption selectedMonth;
@@ -51,7 +69,9 @@ public class MonthlyView extends BasePage {
     private List<SelectOption> years;
     private List<SelectOption> months;
 
-    public MonthlyView() {
+    private TableModelTimeConsumerEvaluation tableModel;
+
+    public MonthlyViewPage() {
         String year = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
         int month = Calendar.getInstance().get(Calendar.MONTH);
 
@@ -69,7 +89,8 @@ public class MonthlyView extends BasePage {
      */
     @SuppressWarnings("unchecked")
     private void initPage() {
-        Form<Effort> form = new Form<Effort>("dailyviewform", new CompoundPropertyModel<Effort>(new Effort()));
+        Form<Effort> form = new Form<Effort>("timeConsumerEvaluationForm", new CompoundPropertyModel<Effort>(
+                new Effort()));
         add(form);
         form.setOutputMarkupId(true);
 
@@ -83,23 +104,23 @@ public class MonthlyView extends BasePage {
                 getMonths(), choiceRenderer);
         form.add(ddMonths);
 
-        Calendar cal = Calendar.getInstance();
-        final EffortEvaluationListView<Effort> listView = new EffortEvaluationListView<Effort>("dailyList",
-                getTimeEffortsMonthlyView(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)));
-        listView.setOutputMarkupId(true);
-
         final WebMarkupContainer timeeffortContainer = new WebMarkupContainer("timeeffortContainer");
         timeeffortContainer.setOutputMarkupId(true);
         timeeffortContainer.setOutputMarkupPlaceholderTag(true);
         add(timeeffortContainer);
-        timeeffortContainer.add(listView);
 
-        form.add(new AjaxButton("btnShowMonthly", form) {
+        Calendar cal = Calendar.getInstance();
+        tableModel = new TableModelTimeConsumerEvaluation(getTimeEffortsMonthlyView(cal.get(Calendar.YEAR), cal
+                .get(Calendar.MONTH)));
+        Table table = new Table("tetable", tableModel);
+        timeeffortContainer.add(table);
+
+        form.add(new AjaxButton("btnShowEvaluation", form) {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
                 Integer year = Integer.valueOf(selectedYear.toString());
                 Integer month = Integer.valueOf(selectedMonth.toString());
-                listView.setList(getTimeEffortsMonthlyView(year, month));
+                tableModel.reload(getTimeEffortsMonthlyView(year, month));
                 target.addComponent(timeeffortContainer);
             }
 
@@ -108,6 +129,33 @@ public class MonthlyView extends BasePage {
                 // TODO Set border red on textfields which are'nt filled
             }
         });
+
+        form.add(new Button("btnShowPDF") {
+            @Override
+            public void onSubmit() {
+                try {
+                    loadReport();
+                    ResourceStreamRequestTarget rsrtarget = new ResourceStreamRequestTarget(pdfResource
+                            .getResourceStream());
+                    rsrtarget.setFileName(pdfResource.getFilename());
+                    RequestCycle.get().setRequestTarget(rsrtarget);
+                } catch (JRException e) {
+                    // TODO: GUI Exception Handling
+                    log.error(e.getMessage());
+                }
+            }
+        });
+    }
+
+    /**
+     * loads report and sets data source.
+     * 
+     * @throws JRException JasperReports Exception
+     */
+    private void loadReport() throws JRException {
+        ServletContext context = ((WebApplication) getApplication()).getServletContext();
+        pdfResource.loadReport(context.getRealPath(pdfResource.getDesignFilename()));
+        pdfResource.setReportDataSource(new JRTableModelDataSource(tableModel));
     }
 
     /**
@@ -122,7 +170,8 @@ public class MonthlyView extends BasePage {
         try {
             list = service.getEffortsMonthlyView(year, month);
         } catch (TitaDAOException e) {
-            e.printStackTrace();
+            // TODO: GUI Exception Handling
+            log.error(e.getMessage());
         }
 
         return list;

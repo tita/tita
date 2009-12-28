@@ -16,18 +16,6 @@
 
 package at.ac.tuwien.ifs.tita.dao;
 
-/**
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
- http://www.apache.org/licenses/LICENSE\-2.0
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
-
- */
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
@@ -121,8 +109,8 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
         List<T> myList = null;
 
         try {
-            myList = getSession().createCriteria(persistenceClass).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
-                    .list();
+            myList = getSession().createCriteria(persistenceClass).setResultTransformer(
+                    CriteriaSpecification.DISTINCT_ROOT_ENTITY).list();
         } catch (Exception e) {
             throw new PersistenceException("Failure during reading entities. Class=" + persistenceClass.getSimpleName()
                     + "\n" + e.getMessage(), e);
@@ -142,7 +130,7 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
             for (Order order : orders) {
                 crit.addOrder(order);
             }
-            crit.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+            crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
             myList = crit.list();
         } catch (Exception e) {
             throw new PersistenceException("Failure during reading entities. Class=" + persistenceClass.getSimpleName()
@@ -168,7 +156,7 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
             // Tell Hibernate to remove duplicates from the result set if there
             // is a
             // OneToMany relation in the exampleInstance entity.
-            crit.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+            crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
             myList = crit.list();
         } catch (Exception e) {
@@ -186,7 +174,7 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
 
         try {
             Criteria crit = getSession().createCriteria(persistenceClass);
-            crit.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+            crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
             myList = crit.scroll(ScrollMode.FORWARD_ONLY);
         } catch (Exception e) {
             throw new PersistenceException("Failure during reading entities. Class=" + persistenceClass.getSimpleName()
@@ -211,7 +199,7 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
             // Tell Hibernate to remove duplicates from the result set if there
             // is a
             // OneToMany relation in the exampleInstance entity.
-            crit.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+            crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
             myList = crit.scroll(ScrollMode.FORWARD_ONLY);
         } catch (Exception e) {
@@ -308,7 +296,7 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
         for (Criterion c : criterion) {
             crit.add(c);
         }
-        crit.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
         return crit.list();
     }
 
@@ -336,7 +324,7 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
         for (int j = 0; j < orders.length; j++) {
             crit.addOrder(orders[j]);
         }
-        crit.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
         return crit.list();
     }
 
@@ -356,7 +344,7 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
         if (resultList.size() == 1) {
             return resultList.get(0);
         }
-        
+
         if (resultList.size() == 0) {
             return null;
         }
@@ -377,7 +365,7 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
         for (Criterion c : criterion) {
             crit.add(c);
         }
-        crit.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
         return new ScrollableWrapper<T>(crit.scroll(ScrollMode.FORWARD_ONLY));
     }
 

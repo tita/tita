@@ -13,7 +13,7 @@
    limitations under the License.
   
  */
-package at.ac.tuwien.ifs.tita.presentation.effort.evaluation.timecontroller;
+package at.ac.tuwien.ifs.tita.presentation.evaluation.timecontroller;
 
 import java.util.Arrays;
 import java.util.List;

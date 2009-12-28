@@ -49,11 +49,11 @@ public abstract class JasperResource extends DynamicWebResource {
     private Map<String, String> reportParameters;
     /** report filename. */
     private String filename;
-    /** compiled report filename. */
+    /** report design filename. */
     private String designFilename;
 
     /**
-     * Loads report from compiled report file.
+     * Loads report from report file.
      * 
      * @param filepath filepath to report file.
      * @throws JRException if file could not be loaded.
@@ -242,7 +242,7 @@ public abstract class JasperResource extends DynamicWebResource {
     }
 
     /**
-     * Returns filename of compiled report.
+     * Returns filename of report design.
      * 
      * @return the designFilename
      */
@@ -251,7 +251,7 @@ public abstract class JasperResource extends DynamicWebResource {
     }
 
     /**
-     * sets name of compiled report.
+     * sets name of report design.
      * 
      * @param designFilename the designFilename to set
      */
