@@ -25,7 +25,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -37,9 +36,9 @@ import at.ac.tuwien.ifs.tita.entity.interfaces.BaseEntity;
 
 /**
  * Entity for storing projects that are associated with an issue tracker.
- *
+ * 
  * @author herbert
- *
+ * 
  */
 @Entity
 @Table(name = "PROJECT")
@@ -72,10 +71,9 @@ public class TiTAProject extends BaseEntity<Long> implements Serializable {
     @JoinColumn(name = "PROJECT_ID")
     private Set<IssueTrackerProject> issueTrackerProjects;
 
-    @ManyToMany
-    @JoinTable(name = "USER_PROJECT", joinColumns = { @JoinColumn(name = "PROJECT_ID") }, inverseJoinColumns = { @JoinColumn(name = "USER_ID") })
-    private Set<User> users;
-
+    @OneToMany(mappedBy = "project")
+    @JoinTable(name = "USER_PROJECT")
+    private Set<TiTAUserProject> users;
 
     @SuppressWarnings("unused")
     @Column(name = "MODIFICATION_VERSION")
@@ -114,12 +112,12 @@ public class TiTAProject extends BaseEntity<Long> implements Serializable {
         this.issueTrackerProjects = issueTrackerProjects;
     }
 
-    public void setUsers(Set<User> users) {
+    public void setUsers(Set<TiTAUserProject> users) {
         this.users = users;
     }
 
-    public Set<User> getUsers() {
-        return this.users;
+    public Set<TiTAUserProject> getUsers() {
+        return users;
     }
 
     public ProjectStatus getProjectStatus() {

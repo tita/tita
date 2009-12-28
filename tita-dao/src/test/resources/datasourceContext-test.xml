@@ -20,21 +20,17 @@
   default-autowire="byName">
 
   <!-- The DAOs -->
-  <!-- bean id="userDAO" class="at.ac.tuwien.ifs.tita.common.dao.GenericHibernateDao">
-	<constructor-arg value="at.ac.tuwien.ifs.tita.entity.User"/>
-  </bean>
-  <bean id="roleDAO" class="at.ac.tuwien.ifs.tita.datasource.dao.GenericHibernateDao">
-  	<constructor-arg value="at.ac.tuwien.ifs.tita.entity.Role"/>
-  </bean-->
   <bean id="timeEffortDAO" class="at.ac.tuwien.ifs.tita.dao.time.EffortDao"/>
   <bean id="titataskDAO" class="at.ac.tuwien.ifs.tita.dao.titatask.TiTATaskDao"/>
   <bean id="issueTrackerTaskDAO" class="at.ac.tuwien.ifs.tita.dao.issuetracker.task.IssueTrackerTaskDao"/>
+  <bean id="userDAO" class="at.ac.tuwien.ifs.tita.dao.user.UserDAO" />
+  <bean id="roleDAO" class="at.ac.tuwien.ifs.tita.dao.user.RoleDAO" />
 
   <!-- The Services -->
-  <!-- bean id="userService" class="at.ac.tuwien.ifs.tita.common.service.user.UserService">
-    <property name="userDAO" ref="userDAO" />
-    <property name="roleDAO" ref="roleDAO" />
-  </bean-->						
+  <bean id="userService" class="at.ac.tuwien.ifs.tita.business.service.user.UserService">
+    <property name="userDao" ref="userDAO" />
+    <property name="roleDao" ref="roleDAO" />
+  </bean>       
    <bean id="timeEffortService" class="at.ac.tuwien.ifs.tita.business.service.time.EffortService">
     <property name="timeEffortDao" ref="timeEffortDAO"/>
   </bean>

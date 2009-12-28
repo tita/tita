@@ -13,11 +13,12 @@
  */
 package at.ac.tuwien.ifs.tita.business.service.user;
 
-//import org.springframework.transaction.annotation.Transactional;
-//
-//import at.ac.tuwien.ifs.tita.datasource.entity.Role;
-//import at.ac.tuwien.ifs.tita.datasource.entity.User;
-//import at.ac.tuwien.ifs.tita.datasource.exception.TitaDAOException;
+import javax.persistence.PersistenceException;
+
+import org.springframework.transaction.annotation.Transactional;
+
+import at.ac.tuwien.ifs.tita.entity.User;
+import at.ac.tuwien.ifs.tita.entity.conv.Role;
 
 /**
  * IUserService encapsulates all User-concerning Database operations.
@@ -25,85 +26,63 @@ package at.ac.tuwien.ifs.tita.business.service.user;
  * @author ASE Group 10 - TiTA
  * 
  */
-//@Transactional
+@Transactional
 public interface IUserService {
-//    /**
-//     * Saves a new user or updates an existing one.
-//     * 
-//     * @param user
-//     *            the user to be saved
-//     * @throws TitaDAOException
-//     *             if Parameter is null or another Exception is thrown
-//     */
-//    void saveUser(User user) throws TitaDAOException;
-//
-//    /**
-//     * Updates an exsiting User.
-//     * 
-//     * @param user
-//     *            the user to be updated
-//     * @throws TitaDAOException
-//     *             if Parameter is null or another Exception is thrown
-//     */
-//    User updateUser(User user) throws TitaDAOException;
-//
-//    /**
-//     * deletes an existing user.
-//     * 
-//     * @param user
-//     *            the user to be deleted
-//     * @throws TitaDAOException
-//     *             if Parameter is null or another Exception is thrown
-//     */
-//    void deleteUser(User user) throws TitaDAOException;
-//
-//    /**
-//     * returns a specific User found to the id given.
-//     * 
-//     * @param id
-//     *            the unique identifier of an user
-//     * @throws TitaDAOException
-//     *             if no user was found or another Exception is thrown
-//     */
-//    User getUserById(Long id) throws TitaDAOException;
-//
-//    /**
-//     * Saves a new Role or updates an existing one.
-//     * 
-//     * @param role
-//     *            the role to be saved
-//     * @throws TitaDAOException
-//     *             if Parameter is null or another Exception is thrown
-//     */
-//    void saveRole(Role role) throws TitaDAOException;
-//
-//    /**
-//     * Updates an exsiting Role.
-//     * 
-//     * @param role
-//     *            the role to be updated
-//     * @throws TitaDAOException
-//     *             if Parameter is null or another Exception is thrown
-//     */
-//    Role updateRole(Role role) throws TitaDAOException;
-//
-//    /**
-//     * deletes an existing role.
-//     * 
-//     * @param role
-//     *            the role to be deleted
-//     * @throws TitaDAOException
-//     *             if Parameter is null or another Exception is thrown
-//     */
-//    void deleteRole(Role role) throws TitaDAOException;
-//
-//    /**
-//     * returns a specific Role found to the id given.
-//     * 
-//     * @param id
-//     *            the unique identifier of an role
-//     * @throws TitaDAOException
-//     *             if no role was found or another Exception is thrown
-//     */
-//    Role getRoleById(Long id) throws TitaDAOException;
+    /**
+     * Saves a new user or updates an existing one.
+     * 
+     * @param user the user to be saved
+     * @throws PersistenceException if Parameter is null or another Exception is
+     *         thrown
+     * @return the saved User.
+     */
+    User saveUser(User user) throws PersistenceException;
+
+    /**
+     * deletes an existing user.
+     * 
+     * @param user the user to be deleted
+     * @throws PersistenceException if Parameter is null or another Exception is
+     *         thrown
+     */
+    void deleteUser(User user) throws PersistenceException;
+
+    /**
+     * returns a specific User found to the id given.
+     * 
+     * @param id the unique identifier of an user
+     * @throws PersistenceException if no user was found or another Exception is
+     *         thrown
+     * @return the specified User, if found.
+     */
+    User getUserById(Long id) throws PersistenceException;
+
+    /**
+     * Saves a new Role or updates an existing one.
+     * 
+     * @param role the role to be saved
+     * @throws PersistenceException if Parameter is null or another Exception is
+     *         thrown
+     * @return the saved Role.
+     */
+    Role saveRole(Role role) throws PersistenceException;
+
+    /**
+     * deletes an existing role.
+     * 
+     * @param role the role to be deleted
+     * @throws PersistenceException if Parameter is null or another Exception is
+     *         thrown
+     */
+    void deleteRole(Role role) throws PersistenceException;
+
+    /**
+     * returns a specific Role found to the id given.
+     * 
+     * @param id the unique identifier of an role
+     * @throws PersistenceException if no role was found or another Exception is
+     *         thrown
+     * @return the specified Role if id was found
+     */
+    Role getRoleById(Long id) throws PersistenceException;
 }
