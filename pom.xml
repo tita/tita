@@ -484,16 +484,16 @@
 			</dependency>
 			
 			<!--  H2 Database -->
-			<!-- dependency>
+			<dependency>
 				<groupId>com.h2database</groupId>
 				<artifactId>h2</artifactId>
 				<version>${h2db.version}</version>
-			</dependency-->
-			<dependency>
+			</dependency>
+			<!-- dependency>
 			    <groupId>postgresql</groupId>
 			    <artifactId>postgresql</artifactId>
 			    <version>8.4-701.jdbc4</version>
-			</dependency> 
+			</dependency--> 
 		
 			<!-- Util Dependencies -->
 			<dependency>
