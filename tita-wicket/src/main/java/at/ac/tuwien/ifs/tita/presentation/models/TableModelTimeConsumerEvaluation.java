@@ -25,7 +25,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.ac.tuwien.ifs.tita.entity.Effort;
-import at.ac.tuwien.ifs.tita.presentation.uihelper.AbstractTitaTableModel;
 import at.ac.tuwien.ifs.tita.presentation.utils.GlobalUtils;
 import at.ac.tuwien.ifs.tita.presentation.utils.IntegerConstants;
 
@@ -96,18 +95,14 @@ public class TableModelTimeConsumerEvaluation extends AbstractTitaTableModel {
      * @param time time to check
      * @return am or pm as string
      */
-    /*private String isAMorPM(Long time) {
-        String amorpm = "";
-
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(time);
-
-        if (cal.get(Calendar.AM_PM) == Calendar.AM) {
-            amorpm = "am";
-        } else if (cal.get(Calendar.AM_PM) == Calendar.PM) {
-            amorpm = "pm";
-        }
-
-        return amorpm;
-    }*/
+    /*
+     * private String isAMorPM(Long time) { String amorpm = "";
+     * 
+     * Calendar cal = Calendar.getInstance(); cal.setTimeInMillis(time);
+     * 
+     * if (cal.get(Calendar.AM_PM) == Calendar.AM) { amorpm = "am"; } else if
+     * (cal.get(Calendar.AM_PM) == Calendar.PM) { amorpm = "pm"; }
+     * 
+     * return amorpm; }
+     */
 }
