@@ -14,67 +14,67 @@
 
 package at.ac.tuwien.ifs.tita.business.service.user;
 
-//import at.ac.tuwien.ifs.tita.datasource.dao.IGenericHibernateDao;
-//import at.ac.tuwien.ifs.tita.datasource.entity.Role;
-//import at.ac.tuwien.ifs.tita.datasource.entity.User;
-//import at.ac.tuwien.ifs.tita.datasource.exception.TitaDAOException;
+import javax.persistence.PersistenceException;
+
+import at.ac.tuwien.ifs.tita.dao.user.RoleDAO;
+import at.ac.tuwien.ifs.tita.dao.user.UserDAO;
+import at.ac.tuwien.ifs.tita.entity.User;
+import at.ac.tuwien.ifs.tita.entity.conv.Role;
 
 /**
- * Service for manipulating (insert, update, delete, search... ) users and roles in TiTA.
- * @author herbert
- *
+ * Service for manipulating (insert, update, delete, search... ) users and roles
+ * in TiTA.
+ * 
+ * @author ASE Group 10 - TiTA
+ * 
  */
 public class UserService implements IUserService {
 
-//    private IGenericHibernateDao<User, Long> userDao;
-//    private IGenericHibernateDao<Role, Long> roleDao;
-//
-//    public void setUserDAO(IGenericHibernateDao<User, Long> userDao) {
-//        this.userDao = userDao;
-//    }
-//
-//    public void setRoleDAO(IGenericHibernateDao<Role, Long> roleDao) {
-//        this.roleDao = roleDao;
-//    }
-//
-//    @Override
-//    public void deleteRole(Role role) throws TitaDAOException {
-//        roleDao.delete(role);
-//    }
-//
-//    @Override
-//    public void deleteUser(User user) throws TitaDAOException {
-//        userDao.delete(user);
-//
-//    }
-//
-//    @Override
-//    public Role getRoleById(Long id) throws TitaDAOException {
-//        return roleDao.findById(id);
-//    }
-//
-//    @Override
-//    public User getUserById(Long id) throws TitaDAOException {
-//        return userDao.findById(id);
-//    }
-//
-//    @Override
-//    public void saveRole(Role role) throws TitaDAOException {
-//        roleDao.persist(role);
-//    }
-//
-//    @Override
-//    public void saveUser(User user) throws TitaDAOException {
-//        userDao.persist(user);
-//    }
-//
-//    @Override
-//    public Role updateRole(Role role) throws TitaDAOException {
-//        return roleDao.merge(role);
-//    }
-//
-//    @Override
-//    public User updateUser(User user) throws TitaDAOException {
-//        return userDao.merge(user);
-//    }
+    private UserDAO userDao;
+    private RoleDAO roleDao;
+
+    public void setUserDao(UserDAO userDao) {
+        this.userDao = userDao;
+    }
+
+    public void setRoleDao(RoleDAO roleDao) {
+        this.roleDao = roleDao;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void deleteRole(Role role) throws PersistenceException {
+        roleDao.delete(role);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void deleteUser(User user) throws PersistenceException {
+        userDao.delete(user);
+
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Role getRoleById(Long id) throws PersistenceException {
+        return roleDao.findById(id);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public User getUserById(Long id) throws PersistenceException {
+        return userDao.findById(id);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Role saveRole(Role role) throws PersistenceException {
+        return roleDao.save(role);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public User saveUser(User user) throws PersistenceException {
+        return userDao.save(user);
+    }
 }

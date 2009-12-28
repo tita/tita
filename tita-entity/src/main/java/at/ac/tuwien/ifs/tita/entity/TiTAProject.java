@@ -71,7 +71,7 @@ public class TiTAProject extends BaseEntity<Long> implements Serializable {
     @JoinColumn(name = "PROJECT_ID")
     private Set<IssueTrackerProject> issueTrackerProjects;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "project")
     @JoinTable(name = "USER_PROJECT")
     private Set<TiTAUserProject> users;
 
