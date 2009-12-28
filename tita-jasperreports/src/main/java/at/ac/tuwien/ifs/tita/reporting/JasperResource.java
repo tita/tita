@@ -49,11 +49,11 @@ public abstract class JasperResource extends DynamicWebResource {
     private Map<String, String> reportParameters;
     /** report filename. */
     private String filename;
-    /** compiled report filename. */
+    /** report design filename. */
     private String designFilename;
 
     /**
-     * Loads report from compiled report file.
+     * Loads report from report file.
      * 
      * @param filepath filepath to report file.
      * @throws JRException if file could not be loaded.
@@ -194,15 +194,6 @@ public abstract class JasperResource extends DynamicWebResource {
     }
 
     /**
-     * Sets report data source.
-     * 
-     * @param reportDataSource report data source as JRDataSource
-     */
-    public void setReportDataSource(JRDataSource reportDataSource) {
-        this.reportDataSource = reportDataSource;
-    }
-
-    /**
      * Returns report parameters.
      * 
      * @return the reportParameters report parameter as Map
@@ -214,10 +205,19 @@ public abstract class JasperResource extends DynamicWebResource {
     /**
      * Sets report parameters.
      * 
-     * @param parameters report parameter as Map
+     * @param reportParameters report parameter as Map
      */
-    public void setReportParameters(Map<String, String> parameters) {
-        reportParameters = parameters;
+    public void setReportParameters(Map<String, String> reportParameters) {
+        this.reportParameters = reportParameters;
+    }
+
+    /**
+     * Sets report data source.
+     * 
+     * @param reportDataSource report data source as JRDataSource
+     */
+    public void setReportDataSource(JRDataSource reportDataSource) {
+        this.reportDataSource = reportDataSource;
     }
 
     /**
@@ -242,7 +242,7 @@ public abstract class JasperResource extends DynamicWebResource {
     }
 
     /**
-     * Returns filename of compiled report.
+     * Returns filename of report design.
      * 
      * @return the designFilename
      */
@@ -251,7 +251,7 @@ public abstract class JasperResource extends DynamicWebResource {
     }
 
     /**
-     * sets name of compiled report.
+     * sets name of report design.
      * 
      * @param designFilename the designFilename to set
      */

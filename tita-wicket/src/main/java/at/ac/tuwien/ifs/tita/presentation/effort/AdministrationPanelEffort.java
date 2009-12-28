@@ -46,6 +46,7 @@ import at.ac.tuwien.ifs.tita.business.service.time.IEffortService;
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.Effort;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
+import at.ac.tuwien.ifs.tita.presentation.models.TableModelEffort;
 import at.ac.tuwien.ifs.tita.presentation.uihelper.ButtonDelete;
 import at.ac.tuwien.ifs.tita.presentation.uihelper.ButtonDeleteRenderer;
 import at.ac.tuwien.ifs.tita.presentation.uihelper.ButtonEdit;

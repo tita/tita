@@ -14,7 +14,7 @@
    limitations under the License.
    
  */
-package at.ac.tuwien.ifs.tita.presentation.effort;
+package at.ac.tuwien.ifs.tita.presentation.models;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -24,7 +24,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.ac.tuwien.ifs.tita.entity.Effort;
-import at.ac.tuwien.ifs.tita.presentation.uihelper.AbstractTitaTableModel;
 import at.ac.tuwien.ifs.tita.presentation.uihelper.ButtonDelete;
 import at.ac.tuwien.ifs.tita.presentation.uihelper.ButtonEdit;
 import at.ac.tuwien.ifs.tita.presentation.utils.GlobalUtils;

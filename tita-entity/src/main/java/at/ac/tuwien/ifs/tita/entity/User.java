@@ -24,7 +24,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -41,7 +40,7 @@ import at.ac.tuwien.ifs.tita.entity.interfaces.BaseEntity;
  * 
  */
 @Entity
-@Table(name = "USER")
+@Table(name = "TITA_USER")
 @SequenceGenerator(name = "seq_user", sequenceName = "USER_ID_SEQ", allocationSize = 1)
 public class User extends BaseEntity<Long> {
 
@@ -72,9 +71,9 @@ public class User extends BaseEntity<Long> {
     @JoinColumn(name = "ROLE", referencedColumnName = "ID")
     private Role role;
 
-    @ManyToMany
-    @JoinTable(name = "USER_PROJECT", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = { @JoinColumn(name = "PROJECT_ID") })
-    private Set<TiTAProject> titaProjects;
+    @OneToMany(mappedBy = "user")
+    @JoinTable(name = "USER_PROJECT")
+    private Set<TiTAUserProject> titaProjects;
 
     @OneToMany
     @JoinColumn(name = "ID")
@@ -150,7 +149,7 @@ public class User extends BaseEntity<Long> {
         this.role = role;
     }
 
-    public Set<TiTAProject> getTitaProjects() {
+    public Set<TiTAUserProject> getTitaProjects() {
         return titaProjects;
     }
 

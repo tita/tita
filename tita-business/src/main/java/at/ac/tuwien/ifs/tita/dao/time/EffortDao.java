@@ -22,6 +22,9 @@ import java.util.List;
 
 import javax.persistence.Query;
 
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -55,8 +58,9 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> {
         start.set(year, month, 1);
         end.set(year, month, start.getActualMaximum(Calendar.DAY_OF_MONTH));
 
-        return findByCriteria(Restrictions.between("date", start.getTime(), end.getTime()), Restrictions.eq("deleted",
-                false));
+        return findByCriteriaOrdered(new Criterion[] { Restrictions.between("date", start.getTime(), end.getTime()),
+                Restrictions.eq("deleted", false) }, new Order[] { Property.forName("date").asc(),
+                Property.forName("startTime").asc() }, new String[] {});
     }
 
     /**
@@ -66,10 +70,9 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> {
      * @return list of timefforts that match dates
      */
     public List<Effort> getTimeEffortsDailyView(Date date) {
-        Effort e = new Effort();
-        e.setDate(date);
-        e.setDeleted(false);
-        return findByExample(e);
+        return findByCriteriaOrdered(
+                new Criterion[] { Restrictions.eq("date", date), Restrictions.eq("deleted", false) },
+                new Order[] { Property.forName("startTime").asc() }, new String[] {});
     }
 
     /**
