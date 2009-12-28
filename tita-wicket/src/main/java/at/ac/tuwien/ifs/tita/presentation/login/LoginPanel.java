@@ -1,4 +1,20 @@
-package at.ac.tuwien.ifs.tita.presentation;
+/**
+   Copyright 2009 TiTA Project, Vienna University of Technology
+   
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+   
+       http://www.apache.org/licenses/LICENSE\-2.0
+       
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+   
+ */
+package at.ac.tuwien.ifs.tita.presentation.login;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.markup.html.form.PasswordTextField;
@@ -10,14 +26,15 @@ import org.apache.wicket.util.value.ValueMap;
 
 /**
  * Panel to authenticate user.
+ * 
  * @author Karin
- *
+ * 
  */
-public abstract class SignInPanel extends Panel{
+public abstract class LoginPanel extends Panel {
 
-    public SignInPanel(final String id) {
+    public LoginPanel(final String id) {
         super(id);
-        add(new SignInForm("signInForm").setOutputMarkupId(false));
+        add(new SignInForm("loginForm").setOutputMarkupId(false));
     }
 
     /**
@@ -38,8 +55,7 @@ public abstract class SignInPanel extends Panel{
         /**
          * Constructor.
          * 
-         * @param id
-         *            id of the form component
+         * @param id id of the form component
          */
         public SignInForm(final String id) {
             // sets a compound model on this form, every component without an
@@ -51,18 +67,18 @@ public abstract class SignInPanel extends Panel{
             add(new PasswordTextField("password").setOutputMarkupId(false));
         }
 
-       
         /**
          * .
+         * 
          * @see org.apache.wicket.markup.html.form.Form#onSubmit()
          */
+        @Override
         public void onSubmit() {
-           
-                // delete persistent data
+
+            // delete persistent data
             getPage().removePersistedFormData(SignInForm.class, true);
 
-
-            ValueMap values = (ValueMap)getModelObject();
+            ValueMap values = (ValueMap) getModelObject();
             String username = values.getString("username");
             String password = values.getString("password");
 
@@ -71,11 +87,10 @@ public abstract class SignInPanel extends Panel{
                 if (!getPage().continueToOriginalDestination()) {
                     setResponsePage(Application.get().getHomePage());
                 }
-            }  else {
+            } else {
                 // Try the component based localizer first. If not found try the
                 // application localizer. Else use the default
-                error(getLocalizer().getString("exception.login", this,
-                        "Illegal username password combo"));
+                error(getLocalizer().getString("exception.login", this, "Illegal username password combo"));
             }
         }
 

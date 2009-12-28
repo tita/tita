@@ -14,7 +14,7 @@
    limitations under the License.
    
  */
-package at.ac.tuwien.ifs.tita.presentation;
+package at.ac.tuwien.ifs.tita.presentation.permissions;
 
 import org.apache.wicket.security.hive.authentication.Subject;
 import org.apache.wicket.security.hive.authorization.Principal;

@@ -26,6 +26,8 @@ import org.apache.wicket.security.hive.config.SwarmPolicyFileHiveFactory;
 import org.apache.wicket.security.swarm.SwarmWebApplication;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 
+import at.ac.tuwien.ifs.tita.presentation.login.TitaLoginContext;
+
 /**
  * Wicket Application for testing Hello World from DB.
  */

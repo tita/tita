@@ -21,6 +21,8 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.security.WaspSession;
 import org.apache.wicket.security.authentication.LoginException;
 
+import at.ac.tuwien.ifs.tita.presentation.login.LoginPanel;
+import at.ac.tuwien.ifs.tita.presentation.login.TitaLoginContext;
 
 /**
  * Homepage of Hello World Application.
@@ -32,19 +34,18 @@ public class HomePage extends WebPage {
         // note that is only a hint we need to have stateless components on the
         // page for this to work, like a statelessform
         setStatelessHint(true);
-        add(new FeedbackPanel("feedback")
-        {
+        add(new FeedbackPanel("feedback") {
             private static final long serialVersionUID = 1L;
 
             /**
              * @see org.apache.wicket.Component#isVisible()
              */
+            @Override
             public boolean isVisible() {
                 return anyMessage();
             }
         });
-        String panelId = "signInPanel";
-        newUserPasswordSignInPanel(panelId);
+        newUserPasswordSignInPanel("loginPanel");
     }
 
     /**
@@ -53,15 +54,15 @@ public class HomePage extends WebPage {
      * @param panelId - id
      */
     protected void newUserPasswordSignInPanel(String panelId) {
-        add(new SignInPanel(panelId)
-        {
+        add(new LoginPanel(panelId) {
             private static final long serialVersionUID = 1L;
 
-            public boolean signIn(String username, String password){
+            @Override
+            public boolean signIn(String username, String password) {
                 TitaLoginContext ctx = new TitaLoginContext(username, password);
                 try {
-                    ((WaspSession)getSession()).login(ctx);
-                } catch (LoginException e){
+                    ((WaspSession) getSession()).login(ctx);
+                } catch (LoginException e) {
                     return false;
                 }
                 return true;

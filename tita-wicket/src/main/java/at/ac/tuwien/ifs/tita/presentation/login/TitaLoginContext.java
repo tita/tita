@@ -14,7 +14,7 @@
    limitations under the License.
    
  */
-package at.ac.tuwien.ifs.tita.presentation;
+package at.ac.tuwien.ifs.tita.presentation.login;
 
 import org.apache.wicket.security.authentication.LoginException;
 import org.apache.wicket.security.hive.authentication.DefaultSubject;
@@ -22,46 +22,52 @@ import org.apache.wicket.security.hive.authentication.LoginContext;
 import org.apache.wicket.security.hive.authentication.Subject;
 import org.apache.wicket.util.lang.Objects;
 
+import at.ac.tuwien.ifs.tita.presentation.permissions.TitaPrincipal;
+
 /**
  * Login Context for Tita - to authenticate Users and grant principals.
+ * 
  * @author Karin
- *
+ * 
  */
 public class TitaLoginContext extends LoginContext {
     private final String username;
     private final String password;
-    
+
     /**
      * 
      * Constructor for loging off.
      */
-    public TitaLoginContext(){
+    public TitaLoginContext() {
         username = null;
         password = null;
     }
-    
+
     public TitaLoginContext(String username, String password) {
         this.username = username;
         this.password = password;
     }
-    
-    /**{@inheritDoc}*/
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Subject login() throws LoginException {
-        //TODO: check username und pwd from db
+        // TODO: check username und pwd from db
         if (username != null && Objects.equal(username, password)) {
             DefaultSubject user = new DefaultSubject();
-            //TODO: get role from db and check
-            if(username.equals("admin")){
+            // TODO: get role from db and check
+            if (username.equals("admin")) {
                 System.out.println("admin logged in!!!!!!!!!!!!!!");
                 user.addPrincipal(new TitaPrincipal("admin"));
-            } else if(username.equals("timecontroller")){
+            } else if (username.equals("timecontroller")) {
                 System.out.println("timecontroller logged in!!!!!!!!!!!!!!");
                 user.addPrincipal(new TitaPrincipal("timecontroller"));
-            }else if(username.equals("timeconsumer")){
+            } else if (username.equals("timeconsumer")) {
                 System.out.println("TimeConsumer logged in!!!!!!!!!!!!!!");
                 user.addPrincipal(new TitaPrincipal("timeconsumer"));
             }
-            
+
             return user;
         }
         throw new LoginException("Login of user " + username + " failed.");
