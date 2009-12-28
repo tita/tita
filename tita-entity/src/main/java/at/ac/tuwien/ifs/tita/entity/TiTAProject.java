@@ -25,7 +25,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -72,9 +71,9 @@ public class TiTAProject extends BaseEntity<Long> implements Serializable {
     @JoinColumn(name = "PROJECT_ID")
     private Set<IssueTrackerProject> issueTrackerProjects;
 
-    @ManyToMany
-    @JoinTable(name = "USER_PROJECT", joinColumns = { @JoinColumn(name = "PROJECT_ID") }, inverseJoinColumns = { @JoinColumn(name = "USER_ID") })
-    private Set<User> users;
+    @OneToMany(mappedBy = "user")
+    @JoinTable(name = "USER_PROJECT")
+    private Set<TiTAUserProject> users;
 
     @SuppressWarnings("unused")
     @Column(name = "MODIFICATION_VERSION")
@@ -101,7 +100,7 @@ public class TiTAProject extends BaseEntity<Long> implements Serializable {
         return issueTrackerProjects;
     }
 
-    public Set<User> getUsers() {
+    public Set<TiTAUserProject> getUsers() {
         return users;
     }
 
