@@ -21,9 +21,27 @@
   
 	<!-- define jasper reports -->
 	<bean id="monthlyViewReport" class="at.ac.tuwien.ifs.tita.reporting.JasperPdfResource">
-        <property name="designFilename" value="/reports/MonthlyView.jrxml" />
+        <property name="designFilename" value="/reports/DailyMonthlyView.jrxml" />
+        <property name="filename" value="MonthlyView.pdf" />
+        <property name="reportParameters">
+            <map>
+                <entry>
+                    <key><value>title</value></key>
+                    <value>Monthly View</value>
+                </entry>
+            </map>
+        </property>
     </bean>
     <bean id="dailyViewReport" class="at.ac.tuwien.ifs.tita.reporting.JasperPdfResource">
-        <property name="designFilename" value="/reports/DailyView.jrxml" />
+        <property name="designFilename" value="/reports/DailyMonthlyView.jrxml" />
+        <property name="filename" value="DailyView.pdf" />
+        <property name="reportParameters">
+            <map>
+                <entry>
+                    <key><value>title</value></key>
+                    <value>Daily View</value>
+                </entry>
+            </map>
+        </property>
     </bean>
 </beans>

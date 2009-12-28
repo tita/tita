@@ -194,15 +194,6 @@ public abstract class JasperResource extends DynamicWebResource {
     }
 
     /**
-     * Sets report data source.
-     * 
-     * @param reportDataSource report data source as JRDataSource
-     */
-    public void setReportDataSource(JRDataSource reportDataSource) {
-        this.reportDataSource = reportDataSource;
-    }
-
-    /**
      * Returns report parameters.
      * 
      * @return the reportParameters report parameter as Map
@@ -214,10 +205,19 @@ public abstract class JasperResource extends DynamicWebResource {
     /**
      * Sets report parameters.
      * 
-     * @param parameters report parameter as Map
+     * @param reportParameters report parameter as Map
      */
-    public void setReportParameters(Map<String, String> parameters) {
-        reportParameters = parameters;
+    public void setReportParameters(Map<String, String> reportParameters) {
+        this.reportParameters = reportParameters;
+    }
+
+    /**
+     * Sets report data source.
+     * 
+     * @param reportDataSource report data source as JRDataSource
+     */
+    public void setReportDataSource(JRDataSource reportDataSource) {
+        this.reportDataSource = reportDataSource;
     }
 
     /**
