@@ -14,53 +14,158 @@
 
 package at.ac.tuwien.ifs.tita.common.test.service.user;
 
-import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
+import javax.persistence.PersistenceException;
 
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration(locations = { "classpath:datasourceContext-test.xml" })
-//@TransactionConfiguration
+import junit.framework.Assert;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.Transactional;
+
+import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
+import at.ac.tuwien.ifs.tita.entity.User;
+
 /**
- * Test.
+ * Tests the UserService with various CRUD-Operations.
  * 
- * @author herbert
+ * @author ASE Group 10
  * 
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "classpath:datasourceContext-test.xml" })
+@TransactionConfiguration
+@Transactional
 public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTests {
 
-//    private final Logger log = LoggerFactory.getLogger(UserServiceTest.class);
-//
-//    @Autowired
-//    private ApplicationContext ctx;
-//
-//    @Autowired
-//    private IUserService service;
-//
-//    @Test
-//    public void testSaveRole() {
-//        Role role1 = new Role();
-//        role1.setDescription("Das ist die Test Rolle 1");
-//
-//        try {
-//            service.saveRole(role1);
-//            Assert.assertNotNull(role1.getId());
-//        } catch (TitaDAOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    @Test
-//    public void testSearchRole() {
-//        Role role1 = new Role();
-//        role1.setDescription("Das ist die Test Rolle 1");
-//
-//        try {
-//            service.saveRole(role1);
-//            Assert.assertNotNull(role1.getId());
-//            Role role2 = service.getRoleById(role1.getId());
-//            Assert.assertNotNull(role2);
-//            Assert.assertEquals(role1.getId(), role2.getId());
-//        } catch (TitaDAOException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    private final Logger log = LoggerFactory.getLogger(UserServiceTest.class);
+
+    @Autowired
+    private IUserService service;
+
+    // global user object for tests
+    private User user;
+
+    /**
+     * test saving a User.
+     */
+    @Test
+    public void testSaveUser() {
+        log.debug("##### Save User #####");
+        user = new User();
+        user.setDeleted(false);
+        user.setEmail("test@person.at");
+        user.setFirstName("test");
+        user.setLastName("person");
+        user.setPassword("testpassword");
+        user.setUserName("testusername");
+
+        try {
+            user = service.saveUser(user);
+            Assert.assertNotNull(user.getId());
+            log.debug("##### Save User -> Success!! #####");
+        } catch (PersistenceException e) {
+            log.error("##### Save User -> Error!#####");
+            Assert.fail();
+        }
+    }
+
+    /**
+     * test updating a User.
+     */
+    @Test
+    public void testUpdateUser() {
+        log.debug("##### Update User #####");
+        user = new User();
+        user.setDeleted(false);
+        user.setEmail("test@person.at");
+        user.setFirstName("test");
+        user.setLastName("person");
+        user.setPassword("testpassword");
+        user.setUserName("testusername");
+
+        try {
+            User temp = service.saveUser(user);
+
+            temp.setDeleted(true);
+            temp.setEmail("other@person.at");
+            temp.setFirstName("other");
+            temp.setLastName("other");
+            temp.setPassword("otherpassword");
+            temp.setUserName("otherusername");
+
+            user = service.saveUser(temp);
+
+            Assert.assertEquals(temp.getId(), user.getId());
+            Assert.assertEquals(temp.getEmail(), user.getEmail());
+            Assert.assertEquals(temp.isDeleted(), user.isDeleted());
+            Assert.assertEquals(temp.getFirstName(), user.getFirstName());
+            Assert.assertEquals(temp.getLastName(), user.getLastName());
+            Assert.assertEquals(temp.getPassword(), user.getPassword());
+            Assert.assertEquals(temp.getUserName(), user.getUserName());
+
+            log.debug("##### Update User -> Success!! #####");
+        } catch (PersistenceException e) {
+            log.error("##### Update User -> Error!#####");
+            Assert.fail();
+        }
+    }
+
+    /**
+     * test deleting a User.
+     */
+    @Test
+    public void testDeleteUser() {
+        log.debug("##### Delete User #####");
+        user = new User();
+        user.setDeleted(false);
+        user.setEmail("test@person.at");
+        user.setFirstName("test");
+        user.setLastName("person");
+        user.setPassword("testpassword");
+        user.setUserName("testusername");
+
+        try {
+            user = service.saveUser(user);
+            Assert.assertNotNull(user.getId());
+            service.deleteUser(user);
+            Assert.assertNull(service.getUserById(user.getId()));
+            log.debug("##### Delete User -> Success!! #####");
+        } catch (PersistenceException e) {
+            log.error("##### Delete User -> Failed!#####");
+            Assert.fail();
+        }
+    }
+
+    /**
+     * test finding a User by Id.
+     */
+    @Test
+    public void testFindUserById() {
+        log.debug("##### Find User #####");
+        user = new User();
+        user.setDeleted(false);
+        user.setEmail("test@person.at");
+        user.setFirstName("test");
+        user.setLastName("person");
+        user.setPassword("testpassword");
+        user.setUserName("testusername");
+
+        try {
+            user = service.saveUser(user);
+            Assert.assertNotNull(user.getId());
+            Assert.assertNotNull(service.getUserById(user.getId()));
+            log.debug("##### Find User -> Success!! #####");
+        } catch (PersistenceException e) {
+            log.error("##### Find User -> Failed!#####");
+            Assert.fail();
+        }
+    }
+
 }

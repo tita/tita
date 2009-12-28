@@ -15,6 +15,8 @@
  */
 package at.ac.tuwien.ifs.tita.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -36,11 +38,11 @@ import javax.persistence.Table;
 public class TiTAUserProject {
 
     @Id
-    @Column(name = "USER_ID")
+    // @Column(name = "USER_ID")
     private long userId;
 
     @Id
-    @Column(name = "PROJECT_ID")
+    // @Column(name = "PROJECT_ID")
     private long projectId;
 
     @Column(name = "TARGET_HOURS")
@@ -150,7 +152,7 @@ public class TiTAUserProject {
      * 
      * @author ASE Group 10
      */
-    public class TiTAUserProjectId {
+    public class TiTAUserProjectId implements Serializable {
         private long userId;
         private long projectId;
 
