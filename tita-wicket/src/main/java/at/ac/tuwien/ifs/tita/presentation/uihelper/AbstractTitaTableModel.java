@@ -67,21 +67,6 @@ public abstract class AbstractTitaTableModel extends AbstractTableModel {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isCellEditable(int row, int column) {
-        if (column != 0) {
-            if (selectedRow != -1) {
-                if (selectedRow == row) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
      * Marks the selected row.
      * 
      * @param selectedRow

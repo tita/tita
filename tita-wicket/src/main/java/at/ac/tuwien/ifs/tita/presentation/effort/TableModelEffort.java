@@ -150,4 +150,19 @@ public class TableModelEffort extends AbstractTitaTableModel {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isCellEditable(int row, int column) {
+        if (column != IntegerConstants.ZERO && column != IntegerConstants.FIVE) {
+            if (selectedRow != -1) {
+                if (selectedRow == row) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }

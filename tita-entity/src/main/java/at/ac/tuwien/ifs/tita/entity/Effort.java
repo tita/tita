@@ -41,9 +41,7 @@ import at.ac.tuwien.ifs.tita.entity.interfaces.BaseEntity;
 @Entity
 @Table(name = "EFFORT")
 @SequenceGenerator(name = "seq_effort", sequenceName = "EEFORT_ID_SEQ", allocationSize = 1)
-@NamedQueries( {
-        @NamedQuery(name = "effort.years", query = "select distinct YEAR(te.date) from Effort te where deleted=false"),
-        @NamedQuery(name = "timeeffort.actual.view", query = "select te from Effort te order by te.date desc") })
+@NamedQueries( { @NamedQuery(name = "effort.years", query = "select distinct YEAR(te.date) from Effort te where deleted=false") })
 public class Effort extends BaseEntity<Long> implements Serializable {
 
     @Id
@@ -79,7 +77,8 @@ public class Effort extends BaseEntity<Long> implements Serializable {
     public Effort() {
     }
 
-    public Effort(Long id, Long titaTaskId, Long issueTTaskId, String description) {
+    public Effort(Long id, Long titaTaskId, Long issueTTaskId,
+            String description) {
         super();
         this.id = id;
         this.titaTaskId = titaTaskId;
@@ -167,7 +166,8 @@ public class Effort extends BaseEntity<Long> implements Serializable {
     /**
      * filter function.
      * 
-     * @param filterString - Filter string
+     * @param filterString
+     *            - Filter string
      * @return true if it contains the string pattern.
      */
     public Boolean matchDescription(String filterString) {

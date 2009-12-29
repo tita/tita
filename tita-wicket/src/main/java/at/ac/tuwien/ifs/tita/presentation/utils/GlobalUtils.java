@@ -38,7 +38,7 @@ public final class GlobalUtils {
     public static final DateFormat DATEFORMAT = new SimpleDateFormat(
             "dd.MM.yyyy");
     public static final DateFormat TIMELENGTHFORMAT = new SimpleDateFormat(
-            "hh:mm");
+            "HH:mm:ss");
     public static final DateFormat TIMEFORMAT24HOURS = new SimpleDateFormat(
             "HH:mm");
 

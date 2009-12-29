@@ -22,6 +22,8 @@ import java.util.List;
 
 import javax.persistence.Query;
 
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -45,8 +47,10 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> {
     /**
      * Gets a view for a month.
      * 
-     * @param year year which is selected
-     * @param month month whicht is selected
+     * @param year
+     *            year which is selected
+     * @param month
+     *            month whicht is selected
      * @return list of timefforts that match dates
      */
     public List<Effort> getTimeEffortsMonthlyView(Integer year, Integer month) {
@@ -55,14 +59,15 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> {
         start.set(year, month, 1);
         end.set(year, month, start.getActualMaximum(Calendar.DAY_OF_MONTH));
 
-        return findByCriteria(Restrictions.between("date", start.getTime(), end.getTime()), Restrictions.eq("deleted",
-                false));
+        return findByCriteria(Restrictions.between("date", start.getTime(), end
+                .getTime()), Restrictions.eq("deleted", false));
     }
 
     /**
      * Gets a view for a day.
      * 
-     * @param date dates which are selected
+     * @param date
+     *            dates which are selected
      * @return list of timefforts that match dates
      */
     public List<Effort> getTimeEffortsDailyView(Date date) {
@@ -88,12 +93,13 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> {
     /**
      * Gets a view for the last time efforts.
      * 
-     * @param maxresults sets the max results value for the query
+     * @param maxresults
+     *            sets the max results value for the query
      * @return list of timefforts that match dates
      */
     public List<Effort> getActualTimeEfforts(int maxresults) {
-        Query q = em.createNamedQuery("timeeffort.actual.view");
-        q.setMaxResults(maxresults);
-        return q.getResultList();
+        return findByCriteriaOrdered(new Criterion[] { Restrictions.eq(
+                "deleted", false) }, new Order[] { Order.asc("startTime") },
+                null);
     }
 }

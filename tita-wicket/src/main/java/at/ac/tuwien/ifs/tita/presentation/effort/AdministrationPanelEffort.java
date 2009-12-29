@@ -41,6 +41,7 @@ import org.apache.wicket.validation.validator.StringValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wicketstuff.table.Table;
+import org.wicketstuff.table.cell.renders.LenientTextField;
 
 import at.ac.tuwien.ifs.tita.business.service.time.IEffortService;
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
@@ -52,6 +53,7 @@ import at.ac.tuwien.ifs.tita.presentation.uihelper.ButtonEdit;
 import at.ac.tuwien.ifs.tita.presentation.uihelper.ButtonEditRenderer;
 import at.ac.tuwien.ifs.tita.presentation.uihelper.DateTextFieldRenderer;
 import at.ac.tuwien.ifs.tita.presentation.uihelper.IAdministrationPanel;
+import at.ac.tuwien.ifs.tita.presentation.uihelper.LenientDateTextField;
 import at.ac.tuwien.ifs.tita.presentation.utils.EffortUtils;
 import at.ac.tuwien.ifs.tita.presentation.utils.GlobalUtils;
 import at.ac.tuwien.ifs.tita.presentation.utils.IntegerConstants;
@@ -69,10 +71,6 @@ public class AdministrationPanelEffort extends Panel implements
     @SpringBean(name = "timeEffortService")
     private IEffortService service;
 
-    // IssueTracker dao
-    // @SpringBean(name = "mantisDAO")
-    // private IIssueTrackerDao issuetrackerDao;
-
     // Actual Date
     private final Date date = new Date();
 
@@ -88,7 +86,6 @@ public class AdministrationPanelEffort extends Panel implements
 
     // Wicket Components
     private Form<Effort> form = null;
-    // private Form timerForm = null;
 
     private Table table = null;
 
@@ -110,8 +107,6 @@ public class AdministrationPanelEffort extends Panel implements
         this.project = project;
 
         displayPanel();
-
-        // displayTasks();
     }
 
     /**
@@ -123,46 +118,8 @@ public class AdministrationPanelEffort extends Panel implements
         unfilteredList = getListEntities(EffortUtils.MAXLISTSIZE);
         timeeffortList = unfilteredList;
 
-        // // timer Form
-        // timerForm = new Form("timerForm");
-        // add(timerForm);
-
         // Data table
         displayDataTable(timeeffortList);
-
-        // AjaxFormValidatingBehavior.addToAllFormComponents(form, "onkeyup",
-        // Duration.ONE_SECOND);
-
-        // timerForm.add(new AjaxButton("startTimer", timerForm) {
-        //
-        // @Override
-        // protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
-        // generalTimer.start();
-        // }
-        // });
-        //
-        // timerForm.add(new AjaxButton("stopTimer", timerForm) {
-        // @Override
-        // protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
-        // generalTimer.stop();
-        // // for setting the value of the textfield
-        // teTimeLength.setModelObject(TiTATimeConverter
-        // .Duration2String(generalTimer.getDuration()));
-        // teTimeLength.setOutputMarkupId(true);
-        // target.addComponent(teTimeLength);
-        //
-        // teStartTime.setModelObject(GlobalUtils.TIMEFORMAT24HOURS
-        // .format(generalTimer.getStartTime()));
-        // teStartTime.setOutputMarkupId(true);
-        // target.addComponent(teStartTime);
-        //
-        // teEndTime.setModelObject(GlobalUtils.TIMEFORMAT24HOURS
-        // .format(generalTimer.getStartTime()
-        // + generalTimer.getDuration()));
-        // teEndTime.setOutputMarkupId(true);
-        // target.addComponent(teEndTime);
-        // }
-        // });
     }
 
     /**
@@ -297,49 +254,6 @@ public class AdministrationPanelEffort extends Panel implements
         timeeffortContainer.add(form);
     }
 
-    // private void displayTasks() {
-    // List<ITaskTrackable> allTasks = new ArrayList<ITaskTrackable>();
-    // // TODO: change so just the
-    // TaskService taskService = new TaskService();
-    //
-    // Map<Long, IProjectTrackable> projects = taskService.getProjects();
-    //
-    // if (projects != null) {
-    // for (IProjectTrackable p : projects.values()) {
-    //
-    // Map<Long, ITaskTrackable> tasks;
-    // try {
-    // tasks = taskService.getTasks(p, IssueStatus.NEW);
-    //
-    // for (ITaskTrackable t : tasks.values()) {
-    // allTasks.add(t);
-    // }
-    // } catch (ProjectNotFoundException e) {
-    // // TODO show user information
-    // e.printStackTrace();
-    // }
-    // }
-    // }
-
-    // add(new ListView<ITaskTrackable>("tasklist", allTasks) {
-    // @Override
-    // protected void populateItem(ListItem<ITaskTrackable> item) {
-    // ITaskTrackable task = item.getModelObject();
-    // item.add(new Label("number", task.getId().toString()));
-    // item.add(new Label("name", task.getDescription()));
-    // item.add(new Label("creation", GlobalUtils.DATEFORMAT
-    // .format(task.getCreationTime())));
-    // item.add(new Label("lastchange", GlobalUtils.DATEFORMAT
-    // .format(task.getLastChange())));
-    // item.add(new Label("owner", task.getOwner()));
-    // item.add(new Label("priority", task.getPriority().name()));
-    // item.add(new Label("resolution", task.getResolution().name()));
-    // item.add(new Label("severity", task.getSeverity().name()));
-    // item.add(new Label("status", task.getStatus().name()));
-    // }
-    // });
-    // }
-
     /**
      * Clear TextFields.
      */
@@ -389,6 +303,7 @@ public class AdministrationPanelEffort extends Panel implements
                 timeEffort.setDuration(duration);
                 timeEffort.setDeleted(false);
                 timeEffort.setStartTime(startTime);
+
                 service.saveEffort(timeEffort);
             }
         } catch (TitaDAOException e) {
@@ -402,23 +317,54 @@ public class AdministrationPanelEffort extends Panel implements
      * {@inheritDoc}
      */
     public void deleteListEntity() {
-        Effort timeEffort = (Effort) tm.getValueAt(tm.getSelectedRow(), -1);
+        Effort timeEffort = null;
         try {
+            timeEffort = (Effort) tm.getValueAt(tm.getSelectedRow(), -1);
+
             timeEffort.setDeleted(true);
             service.saveEffort(timeEffort);
 
             unfilteredList = getListEntities(EffortUtils.MAXLISTSIZE);
             timeeffortList = unfilteredList;
         } catch (TitaDAOException e) {
-            log.error("Deleting Effort with id " + timeEffort.getId()
-                    + " failed.");
+            log.error(e.getMessage());
         }
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     public void updateListEntity() {
+        Effort timeEffort = null;
+        try {
+            timeEffort = (Effort) tm.getValueAt(table.getSelectedRows()[0], -1);
+
+            timeEffort.setDate(((LenientDateTextField) table
+                    .getSelectedComponent(IntegerConstants.ONE))
+                    .getModelObject());
+            timeEffort.setDescription(((LenientTextField) table
+                    .getSelectedComponent(IntegerConstants.TWO))
+                    .getModelObject().toString());
+
+            Long startTime = GlobalUtils
+                    .getTimeFromTextField((LenientTextField) table
+                            .getSelectedComponent(IntegerConstants.THREE));
+            Long endTime = GlobalUtils
+                    .getTimeFromTextField((LenientTextField) table
+                            .getSelectedComponent(IntegerConstants.FOUR));
+
+            if (startTime != null && endTime != null) {
+                timeEffort.setDuration(endTime - startTime);
+                timeEffort.setDeleted(false);
+                timeEffort.setStartTime(startTime);
+                service.saveEffort(timeEffort);
+            }
+        } catch (TitaDAOException e) {
+            log.error(e.getMessage());
+        } catch (ParseException e) {
+            log.error(e.getMessage());
+        }
     }
 
     /**

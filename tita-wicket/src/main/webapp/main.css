@@ -186,3 +186,13 @@ tr {
 	height: 30px;
 	border: none;
 }
+
+/* Efforts Table Column Width*/
+.tecol1 { width: 45px; }
+.tecol2 { width: 90px; }
+.tecol3 { width: 300px; }
+.tecol4 { width: 80px; }
+.tecol5 { width: 80px; }
+.tecol6 { width: 78px; }
+.tecol7 { width: 30px; }
+.tecol8 { width: 30px; }

@@ -44,6 +44,7 @@ public class ButtonEditRenderer implements CellRender, CellEditor {
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public Component getRenderComponent(String id, IModel model,
             SelectableListItem parent, int row, int column) {
@@ -53,6 +54,7 @@ public class ButtonEditRenderer implements CellRender, CellEditor {
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public Component getEditorComponent(String id, IModel model,
             SelectableListItem parent, int row, int column) {
@@ -60,7 +62,7 @@ public class ButtonEditRenderer implements CellRender, CellEditor {
         return new LenientAjaxButton(id) {
             @Override
             public void onSubmit(AjaxRequestTarget target, Form<?> form1) {
-                panel.saveListEntity();
+                panel.updateListEntity();
                 panel.reloadTable(target);
             }
 

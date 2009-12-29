@@ -40,6 +40,7 @@ public class DateTextFieldRenderer implements CellEditor, CellRender {
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public Component getEditorComponent(String id, IModel model,
             SelectableListItem parent, int row, int column) {
@@ -59,6 +60,7 @@ public class DateTextFieldRenderer implements CellEditor, CellRender {
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public Component getRenderComponent(String id, IModel model,
             SelectableListItem parent, int row, int column) {

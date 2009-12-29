@@ -37,36 +37,48 @@
 			  Rows paging:  <div class="navigator" wicket:id="rowsPaging"></div>
 			  <table>
 			  		<colgroup>
-		      			<col width="45"></col>
-						<col width="90"></col>
-						<col width="300"></col>
-						<col width="80"></col>
-						<col width="80"></col>
-						<col width="78"></col>
-						<col width="30"></col>
-						<col width="30"></col>				
+		      			<col class="tecol1"></col>
+						<col class="tecol2"></col>
+						<col class="tecol3"></col>
+						<col class="tecol4"></col>
+						<col class="tecol5"></col>
+						<col class="tecol6"></col>
+						<col class="tecol7"></col>
+						<col class="tecol8"></col>				
 					</colgroup>
 					<tr>
 		        		<th></th>
 			          	<th></th>
-			            <th><input wicket:id="filterdescription" size="40"/></th>
+			            <th><input wicket:id="filterdescription" onchange="filter_list (this)" size="40"/></th>
 			            <th></th>
 			            <th></th>
 			            <th></th>
 						<th></th>
+
 		         	</tr>	   
 			  </table>
-			  <table wicket:id="tetable"></table>
+			  <table wicket:id="tetable">
+			  		<colgroup>
+		      			<col class="tecol1"></col>
+						<col class="tecol2"></col>
+						<col class="tecol3"></col>
+						<col class="tecol4"></col>
+						<col class="tecol5"></col>
+						<col class="tecol6"></col>
+						<col class="tecol7"></col>
+						<col class="tecol8"></col>				
+					</colgroup>
+			  </table>
 		      <table>
-		      		<colgroup>
-		      			<col width="45"></col>
-						<col width="90"></col>
-						<col width="300"></col>
-						<col width="80"></col>
-						<col width="80"></col>
-						<col width="78"></col>
-						<col width="30"></col>
-						<col width="30"></col>				
+			  		<colgroup>
+		      			<col class="tecol1"></col>
+						<col class="tecol2"></col>
+						<col class="tecol3"></col>
+						<col class="tecol4"></col>
+						<col class="tecol5"></col>
+						<col class="tecol6"></col>
+						<col class="tecol7"></col>
+						<col class="tecol8"></col>				
 					</colgroup>
 		        	<tr>
 		        		<th></th>
@@ -111,4 +123,5 @@
 	
 	</wicket:panel>
 </body>
+
 </html>

@@ -44,6 +44,7 @@ public class ButtonDeleteRenderer implements CellRender, CellEditor {
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public Component getRenderComponent(String id, IModel model,
             SelectableListItem parent, int row, int column) {
@@ -53,6 +54,7 @@ public class ButtonDeleteRenderer implements CellRender, CellEditor {
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public Component getEditorComponent(String id, IModel model,
             SelectableListItem parent, int row, int column) {
