@@ -14,7 +14,7 @@
    limitations under the License.
    
  */
-package at.ac.tuwien.ifs.tita.presentation.uihelper;
+package at.ac.tuwien.ifs.tita.presentation.models;
 
 import java.util.List;
 

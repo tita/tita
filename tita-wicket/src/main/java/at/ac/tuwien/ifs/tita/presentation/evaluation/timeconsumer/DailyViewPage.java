@@ -11,39 +11,59 @@
    limitations under the License.
   
  */
-package at.ac.tuwien.ifs.tita.presentation.effort.evaluation.timeconsumer;
+package at.ac.tuwien.ifs.tita.presentation.evaluation.timeconsumer;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.ServletContext;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.data.JRTableModelDataSource;
+
+import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.datetime.StyleDateConverter;
 import org.apache.wicket.datetime.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.request.target.resource.ResourceStreamRequestTarget;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.wicketstuff.table.Table;
 
 import at.ac.tuwien.ifs.tita.business.service.time.IEffortService;
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.Effort;
 import at.ac.tuwien.ifs.tita.presentation.BasePage;
-import at.ac.tuwien.ifs.tita.presentation.controls.listview.EffortEvaluationListView;
+import at.ac.tuwien.ifs.tita.presentation.models.TableModelTimeConsumerEvaluation;
+import at.ac.tuwien.ifs.tita.reporting.JasperPdfResource;
 
 /**
  * Daily evaluation.
  */
-public class DailyView extends BasePage {
+public class DailyViewPage extends BasePage {
+    private final Logger log = LoggerFactory.getLogger(MonthlyViewPage.class);
+
     @SpringBean(name = "timeEffortService")
     private IEffortService service;
 
+    @SpringBean(name = "dailyViewReport")
+    private JasperPdfResource pdfResource;
+
     private final Date date = new Date();
 
-    public DailyView() {
+    private TableModelTimeConsumerEvaluation tableModel;
+
+    public DailyViewPage() {
         initPage();
     }
 
@@ -51,7 +71,8 @@ public class DailyView extends BasePage {
      * Inits Page.
      */
     private void initPage() {
-        Form<Effort> form = new Form<Effort>("dailyviewform", new CompoundPropertyModel<Effort>(new Effort()));
+        Form<Effort> form = new Form<Effort>("timeConsumerEvaluationForm", new CompoundPropertyModel<Effort>(
+                new Effort()));
         add(form);
         form.setOutputMarkupId(true);
 
@@ -60,20 +81,19 @@ public class DailyView extends BasePage {
         dateTextField.add(new DatePicker());
         form.add(dateTextField);
 
-        final EffortEvaluationListView<Effort> listView = new EffortEvaluationListView<Effort>("dailyList",
-                getTimeEffortsDailyView(new Date()));
-        listView.setOutputMarkupId(true);
-
         final WebMarkupContainer timeeffortContainer = new WebMarkupContainer("timeeffortContainer");
         timeeffortContainer.setOutputMarkupId(true);
         timeeffortContainer.setOutputMarkupPlaceholderTag(true);
         add(timeeffortContainer);
-        timeeffortContainer.add(listView);
 
-        form.add(new AjaxButton("btnShowDaily", form) {
+        tableModel = new TableModelTimeConsumerEvaluation(getTimeEffortsDailyView(new Date()));
+        Table table = new Table("tetable", tableModel);
+        timeeffortContainer.add(table);
+
+        form.add(new AjaxButton("btnShowEvaluation", form) {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
-                listView.setList(getTimeEffortsDailyView(dateTextField.getModelObject()));
+                tableModel.reload(getTimeEffortsDailyView(dateTextField.getModelObject()));
                 target.addComponent(timeeffortContainer);
             }
 
@@ -82,6 +102,33 @@ public class DailyView extends BasePage {
                 // TODO Set border red on textfields which are'nt filled
             }
         });
+
+        form.add(new Button("btnShowPDF") {
+            @Override
+            public void onSubmit() {
+                try {
+                    loadReport();
+                    ResourceStreamRequestTarget rsrtarget = new ResourceStreamRequestTarget(pdfResource
+                            .getResourceStream());
+                    rsrtarget.setFileName(pdfResource.getFilename());
+                    RequestCycle.get().setRequestTarget(rsrtarget);
+                } catch (JRException e) {
+                    // TODO: GUI Exception Handling
+                    log.error(e.getMessage());
+                }
+            }
+        });
+    }
+
+    /**
+     * loads report and sets data source.
+     * 
+     * @throws JRException JasperReports Exception
+     */
+    private void loadReport() throws JRException {
+        ServletContext context = ((WebApplication) getApplication()).getServletContext();
+        pdfResource.loadReport(context.getRealPath(pdfResource.getDesignFilename()));
+        pdfResource.setReportDataSource(new JRTableModelDataSource(tableModel));
     }
 
     /**
@@ -97,14 +144,16 @@ public class DailyView extends BasePage {
         try {
             list = service.getEffortsDailyView(de);
         } catch (TitaDAOException e) {
-            e.printStackTrace();
+            // TODO: GUI Exception Handling
+            log.error(e.getMessage());
         }
 
         return list;
     }
-    
+
     /**
      * Sets time of date to midnight.
+     * 
      * @param d date to convert
      * @return midnight date.
      */
@@ -114,7 +163,7 @@ public class DailyView extends BasePage {
         cal.set(Calendar.MILLISECOND, 0);
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.HOUR_OF_DAY, 0); 
+        cal.set(Calendar.HOUR_OF_DAY, 0);
         return cal.getTime();
     }
 
