@@ -650,7 +650,7 @@
 		</dependency> 
 		<dependency>
 			<groupId>org.wicketstuff</groupId>
-			<version>1.4.TITA.1</version>
+			<version>1.4.TITA.2</version>
 			<artifactId>table</artifactId>
 		</dependency>
 		</dependencies>
