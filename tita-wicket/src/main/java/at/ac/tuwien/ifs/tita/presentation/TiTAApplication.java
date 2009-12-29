@@ -13,17 +13,31 @@
    See the License for the specific language governing permissions and
    limitations under the License.
    
-*/
+ */
 package at.ac.tuwien.ifs.tita.presentation;
 
-import org.apache.wicket.protocol.http.WebApplication;
+import java.net.MalformedURLException;
+
+import org.apache.wicket.Request;
+import org.apache.wicket.Response;
+import org.apache.wicket.Session;
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.security.hive.HiveMind;
+import org.apache.wicket.security.hive.authentication.LoginContext;
+import org.apache.wicket.security.hive.config.PolicyFileHiveFactory;
+import org.apache.wicket.security.hive.config.SwarmPolicyFileHiveFactory;
+import org.apache.wicket.security.swarm.SwarmWebApplication;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
+
+import at.ac.tuwien.ifs.tita.presentation.login.TitaLoginContext;
+import at.ac.tuwien.ifs.tita.presentation.login.TitaSession;
 
 /**
  * Wicket Application for testing Hello World from DB.
  */
-public class TiTAApplication extends WebApplication {
-    
+public class TiTAApplication extends SwarmWebApplication {
+
     public TiTAApplication() {
     }
 
@@ -32,7 +46,10 @@ public class TiTAApplication extends WebApplication {
     protected void init() {
         // THIS LINE IS IMPORTANT - IT INSTALLS THE COMPONENT INJECTOR THAT WILL
         // INJECT NEWLY CREATED COMPONENTS WITH THEIR SPRING DEPENDENCIES
+        super.init();
         addComponentInstantiationListener(new SpringComponentInjector(this));
+        InjectorHolder.getInjector().inject(this);
+
     }
 
     /**
@@ -40,8 +57,73 @@ public class TiTAApplication extends WebApplication {
      * 
      * @return homepage of app
      */
-    public Class<HomePage> getHomePage() {
+    @Override
+    public Class<BasePage> getHomePage() {
+        return BasePage.class;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Object getHiveKey() {
+        return getServletContext().getRealPath(CONTEXTPATH);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void setUpHive() {
+        PolicyFileHiveFactory factory = new SwarmPolicyFileHiveFactory(getActionFactory());
+
+        try {
+            factory.addPolicyFile(getServletContext().getResource("/WEB-INF/tita.hive"));
+            factory.setAlias("hp", "at.ac.tuwien.ifs.tita.presentation.BasePage");
+
+            // Aliases for Admin
+
+            // Aliases for timeconsumer
+            factory.setAlias("effortsPage", 
+                    "at.ac.tuwien.ifs.tita.presentation.effort.EffortsPage");
+            factory.setAlias("dailyView", 
+                    "at.ac.tuwien.ifs.tita.presentation.evaluation.timeconsumer.DailyViewPage");
+            factory.setAlias("monthlyView", 
+                    "at.ac.tuwien.ifs.tita.presentation.evaluation.timeconsumer.MonthlyViewPage");
+
+            // Aliases for timecontroller
+            factory.setAlias("multipleProjectsView", "at.ac.tuwien.ifs.tita.presentation.evaluation"
+                    + ".timecontroller.MultipleProjectsView");
+
+        } catch (MalformedURLException e) {
+            throw new WicketRuntimeException(e);
+        }
+
+        // register factory
+        HiveMind.registerHive(getHiveKey(), factory);
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Class<HomePage> getLoginPage() {
         return HomePage.class;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Session newSession(Request request, Response response) {
+        return new TitaSession(this, request);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public LoginContext getLogoffContext() {
+        return new TitaLoginContext();
+    }
 }

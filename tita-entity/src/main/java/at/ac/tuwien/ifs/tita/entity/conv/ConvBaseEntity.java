@@ -46,6 +46,7 @@ public class ConvBaseEntity extends BaseEntity<Long> {
         this.description = description;
     }
 
+    @Override
     public Long getId() {
         return id;
     }
@@ -56,5 +57,14 @@ public class ConvBaseEntity extends BaseEntity<Long> {
 
     public String getDescription() {
         return description;
+    }
+
+    /**
+     * Set description of entity.
+     * 
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

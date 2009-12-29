@@ -13,10 +13,13 @@
  */
 package at.ac.tuwien.ifs.tita.business.service.user;
 
+import java.util.List;
+
 import javax.persistence.PersistenceException;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.User;
 import at.ac.tuwien.ifs.tita.entity.conv.Role;
 
@@ -58,6 +61,16 @@ public interface IUserService {
     User getUserById(Long id) throws PersistenceException;
 
     /**
+     * returns a specific User found to the username given.
+     * 
+     * @param username the unique identifier of an user
+     * @throws TitaDAOException if no user was found or another Exception is
+     *         thrown
+     * @return the specified User, if found.
+     */
+    User getUserByUsername(String username) throws TitaDAOException;
+
+    /**
      * Saves a new Role or updates an existing one.
      * 
      * @param role the role to be saved
@@ -85,4 +98,22 @@ public interface IUserService {
      * @return the specified Role if id was found
      */
     Role getRoleById(Long id) throws PersistenceException;
+
+    /**
+     * returns all undeleted Users.
+     * 
+     * @throws TitaDAOException if no user was found or another Exception is
+     *         thrown
+     * @return all Users if found
+     */
+    List<User> getUndeletedUsers() throws TitaDAOException;
+
+    /**
+     * returns all Roles.
+     * 
+     * @throws TitaDAOException if no role was found or another Exception is
+     *         thrown
+     * @return all Roles if found
+     */
+    List<Role> getRoles() throws TitaDAOException;
 }

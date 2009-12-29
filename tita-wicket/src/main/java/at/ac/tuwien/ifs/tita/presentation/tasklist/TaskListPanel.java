@@ -30,9 +30,9 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.security.components.markup.html.panel.SecurePanel;
 
 import at.ac.tuwien.ifs.tita.presentation.tasklist.accordion.AccordionPanel;
 import at.ac.tuwien.ifs.tita.presentation.tasklist.accordion.AccordionPanelItem;
@@ -45,7 +45,7 @@ import at.ac.tuwien.ifs.tita.presentation.tasklist.stopwatch.TaskTimerPanel;
  * @author Christoph
  * 
  */
-public class TaskListPanel extends Panel implements IHeaderContributor {
+public class TaskListPanel extends SecurePanel implements IHeaderContributor {
 
     private WebMarkupContainer containerTaskList = null;
 

@@ -14,11 +14,25 @@
    limitations under the License.
 -->
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" >
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <head>  
         <title>TiTA</title>
         <link rel="stylesheet" type="text/css" href="main.css"/>
     </head>
     <body>
-        <wicket:link><a href="effort/EffortsPage.html">SignIn</a></wicket:link>
+        <div id="loginBox">
+		    <div class="loginTitle">
+		        <div class="loginError" wicket:id="feedback">Username or password incorrect</div>
+		    </div>
+		    <div class="loginFormBox" wicket:id="loginPanel">
+		        Login panel comes here
+		    </div>
+		</div>
+        Login with
+        <ul>
+        <li>admin/admin    OR</li>
+        <li>timecontroller/timecontroller   OR</li>
+        <li>timeconsumer/timeconsumer</li>
+        </ul>
     </body>
 </html>

@@ -29,7 +29,7 @@
                </div>
                <div id="title_right">
                    <span wicket:id="showUser">[User]</span>
-                   <wicket:link><a href="#">Signout</a></wicket:link>
+                   <a href="#" wicket:id="logoff">Signout</a>
                </div>
             </div>
             <div id="contents">
@@ -37,13 +37,13 @@
                 <div id="navigation">
                    <wicket:link>
                         <div wicket:id="timeConsumerGroup"> 
-                           <a href="effort/EffortsPage.html">Efforts</a>
-                           <a href="evaluation/timeconsumer/DailyViewPage.html">Daily View</a>
-                           <a href="evaluation/timeconsumer/MonthlyViewPage.html">Monthly View</a>
+                           <a wicket:id="effortsPageLink" href="effort/EffortsPage.html">Efforts</a>
+                           <a wicket:id="dailyViewPageLink" href="evaluation/timeconsumer/DailyViewPage.html">Daily View</a>
+                           <a wicket:id="monthlyViewPageLink" href="evaluation/timeconsumer/MonthlyViewPage.html">Monthly View</a>
                        </div> 
                        <div wicket:id="timeControllerGroup"> 
                            <a href="evaluation/timecontroller/#">Target/Actual time comparison</a>
-                           <a href="evaluation/timecontroller/MultipleProjectsView.html">multiple projects evaluation</a>
+                           <a wicket:id="multipleProjectsViewLink" href="evaluation/timecontroller/MultipleProjectsView.html">multiple projects evaluation</a>
                            <a href="evaluation/timecontroller/#">personal time evaluation</a>
                       </div>
                        <div wicket:id="administratorGroup">

@@ -20,12 +20,20 @@ import javax.persistence.Table;
 
 /**
  * Entity for storing Roles in TiTa.
+ * 
  * @author karin
- *
+ * @author rene
  */
 
 @Entity
-@Table(name="ROLE")
-public class Role extends ConvBaseEntity{
-    
+@Table(name = "ROLE")
+public class Role extends ConvBaseEntity {
+
+    public Role() {
+        super();
+    }
+
+    public Role(Long id, String description) {
+        super(id, description);
+    }
 }
