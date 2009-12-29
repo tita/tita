@@ -16,20 +16,9 @@
 */
 grant
 {
-    permission ${ComponentPermission} "${hp}", "inherit, render";
-    permission ${ComponentPermission} "${hp}", "enable, inherit";
+    permission ${ComponentPermission} "${hp}", "render";
+    permission ${ComponentPermission} "${hp}", "enable";
     
-    permission ${ComponentPermission} "${effortsPage}", "inherit, render";
-    permission ${ComponentPermission} "${effortsPage}", "enable, inherit";
-    
-    permission ${ComponentPermission} "${dailyView}", "inherit, render";
-    permission ${ComponentPermission} "${dailyView}", "enable, inherit";
-    
-    permission ${ComponentPermission} "${monthlyView}", "inherit, render";
-    permission ${ComponentPermission} "${monthlyView}", "enable, inherit";
-    
-    permission ${ComponentPermission} "${multipleProjectsView}", "inherit, render";
-    permission ${ComponentPermission} "${multipleProjectsView}", "enable, inherit";
 };
 
 grant principal org.apache.wicket.security.hive.authorization.SimplePrincipal "admin"
@@ -39,18 +28,30 @@ grant principal org.apache.wicket.security.hive.authorization.SimplePrincipal "a
 
 grant principal org.apache.wicket.security.hive.authorization.SimplePrincipal "timeconsumer"
 {
+    permission ${ComponentPermission} "${hp}:taskList", "inherit, render";
+    permission ${ComponentPermission} "${hp}:taskList", "enable";
+    
     permission ${ComponentPermission} "${effortsPage}", "inherit, render";
-    permission ${ComponentPermission} "${effortsPage}", "enable;
+    permission ${ComponentPermission} "${effortsPage}", "enable";
+    permission ${ComponentPermission} "${effortsPage}:taskList", "inherit, render";
+    permission ${ComponentPermission} "${effortsPage}:taskList", "enable";
     
     permission ${ComponentPermission} "${dailyView}", "inherit, render";
     permission ${ComponentPermission} "${dailyView}", "enable";
+    permission ${ComponentPermission} "${dailyView}:taskList", "inherit, render";
+    permission ${ComponentPermission} "${dailyView}:taskList", "enable";
     
     permission ${ComponentPermission} "${monthlyView}", "inherit, render";
     permission ${ComponentPermission} "${monthlyView}", "enable";
+    permission ${ComponentPermission} "${monthlyView}:taskList", "inherit, render";
+    permission ${ComponentPermission} "${monthlyView}:taskList", "enable";
+    
+    
+
 };
 
 grant principal org.apache.wicket.security.hive.authorization.SimplePrincipal "timecontroller"
 {
-	permission ${ComponentPermission} "${multipleProjectsView}", "inherit, render";
+    permission ${ComponentPermission} "${multipleProjectsView}", "render";
     permission ${ComponentPermission} "${multipleProjectsView}", "enable";
 };

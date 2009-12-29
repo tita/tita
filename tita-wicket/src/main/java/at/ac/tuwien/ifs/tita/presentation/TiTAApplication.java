@@ -28,10 +28,8 @@ import org.apache.wicket.security.hive.authentication.LoginContext;
 import org.apache.wicket.security.hive.config.PolicyFileHiveFactory;
 import org.apache.wicket.security.hive.config.SwarmPolicyFileHiveFactory;
 import org.apache.wicket.security.swarm.SwarmWebApplication;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 
-import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
 import at.ac.tuwien.ifs.tita.presentation.login.TitaLoginContext;
 import at.ac.tuwien.ifs.tita.presentation.login.TitaSession;
 
@@ -39,8 +37,6 @@ import at.ac.tuwien.ifs.tita.presentation.login.TitaSession;
  * Wicket Application for testing Hello World from DB.
  */
 public class TiTAApplication extends SwarmWebApplication {
-    @SpringBean(name = "userService")
-    private IUserService userService;
 
     public TiTAApplication() {
     }
@@ -88,9 +84,12 @@ public class TiTAApplication extends SwarmWebApplication {
             // Aliases for Admin
 
             // Aliases for timeconsumer
-            factory.setAlias("effortsPage", "at.ac.tuwien.ifs.tita.presentation.effort.EffortsPage");
-            factory.setAlias("dailyView", "at.ac.tuwien.ifs.tita.presentation.evaluation.timeconsumer.DailyView");
-            factory.setAlias("monthlyView", "at.ac.tuwien.ifs.tita.presentation.evaluation.timeconsumer.MonthlyView");
+            factory.setAlias("effortsPage", 
+                    "at.ac.tuwien.ifs.tita.presentation.effort.EffortsPage");
+            factory.setAlias("dailyView", 
+                    "at.ac.tuwien.ifs.tita.presentation.evaluation.timeconsumer.DailyViewPage");
+            factory.setAlias("monthlyView", 
+                    "at.ac.tuwien.ifs.tita.presentation.evaluation.timeconsumer.MonthlyViewPage");
 
             // Aliases for timecontroller
             factory.setAlias("multipleProjectsView", "at.ac.tuwien.ifs.tita.presentation.evaluation"

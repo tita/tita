@@ -40,21 +40,7 @@ public class HomePage extends WebPage {
     private IUserService userService;
 
     public HomePage() {
-        // stateless so the login page will not throw a timeout exception
-        // note that is only a hint we need to have stateless components on the
-        // page for this to work, like a statelessform
-        setStatelessHint(true);
-        add(new FeedbackPanel("feedback") {
-            private static final long serialVersionUID = 1L;
-
-            /**
-             * @see org.apache.wicket.Component#isVisible()
-             */
-            @Override
-            public boolean isVisible() {
-                return anyMessage();
-            }
-        });
+        add(new FeedbackPanel("feedback"));
         newLoginPanel("loginPanel");
     }
 
@@ -93,15 +79,8 @@ public class HomePage extends WebPage {
                     TitaSession.getSession().setUsername(username);
                 } catch (LoginException e) {
                     log.error("Could not login " + username, e);
-                    e.printStackTrace();
                     return false;
                 }
-                /*
-                 * TitaLoginContext ctx = new TitaLoginContext(username,
-                 * password, userService); try { ((WaspSession)
-                 * getSession()).login(ctx); } catch (LoginException e) { return
-                 * false; }
-                 */
                 return true;
             }
         });

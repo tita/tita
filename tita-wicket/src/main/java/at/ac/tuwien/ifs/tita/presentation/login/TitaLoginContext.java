@@ -27,12 +27,12 @@ import org.apache.wicket.security.authentication.LoginException;
 import org.apache.wicket.security.hive.authentication.DefaultSubject;
 import org.apache.wicket.security.hive.authentication.Subject;
 import org.apache.wicket.security.hive.authentication.UsernamePasswordContext;
+import org.apache.wicket.security.hive.authorization.SimplePrincipal;
 
 import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.User;
 import at.ac.tuwien.ifs.tita.entity.conv.Role;
-import at.ac.tuwien.ifs.tita.presentation.permissions.TitaPrincipal;
 
 /**
  * Login Context for Tita - to authenticate Users and grant principals.
@@ -79,16 +79,8 @@ public class TitaLoginContext extends UsernamePasswordContext {
         // e2.printStackTrace();
         // }
         // TODO: DELETE LATER
-        try {
-            if (service.getRoles().size() == 0) {
-                insertTempRoles();
-            }
-            if (service.getUndeletedUsers().size() == 0) {
-                insertTempUsers();
-            }
-        } catch (TitaDAOException e1) {
-            e1.printStackTrace();
-        }
+        //insertTempRoles();
+        //insertTempUsers();
         // TODO: DELETE LATER
 
         if (username != null) {
@@ -105,11 +97,11 @@ public class TitaLoginContext extends UsernamePasswordContext {
 
                 if (hashedPass.equals(u.getPassword())) {
                     if (u.getRole().getDescription().equals("Administrator")) {
-                        user.addPrincipal(new TitaPrincipal("admin"));
+                        user.addPrincipal(new SimplePrincipal("admin"));
                     } else if (u.getRole().getDescription().equals("Time controller")) {
-                        user.addPrincipal(new TitaPrincipal("timecontroller"));
+                        user.addPrincipal(new SimplePrincipal("timecontroller"));
                     } else if (u.getRole().getDescription().equals("Time consumer")) {
-                        user.addPrincipal(new TitaPrincipal("timeconsumer"));
+                        user.addPrincipal(new SimplePrincipal("timeconsumer"));
                     } else {
                         throw new LoginException("Login of user " + username + " failed.");
                     }
