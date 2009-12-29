@@ -17,7 +17,6 @@ package at.ac.tuwien.ifs.tita.presentation;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.PageParameters;
-import org.apache.wicket.Session;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -26,8 +25,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.security.WaspSession;
 import org.apache.wicket.security.components.SecureWebPage;
 import org.apache.wicket.security.hive.authentication.LoginContext;
-import org.apache.wicket.security.swarm.SwarmWebApplication;
 
+import at.ac.tuwien.ifs.tita.presentation.login.TitaSession;
 import at.ac.tuwien.ifs.tita.presentation.tasklist.TaskListPanel;
 
 /**
@@ -37,54 +36,50 @@ import at.ac.tuwien.ifs.tita.presentation.tasklist.TaskListPanel;
  * 
  */
 public class BasePage extends SecureWebPage {
-    
+
     public BasePage() {
-        init();
-        String username = "User1";
+        initLogoutLink();
+
+        String username = TitaSession.getSession().getUsername();
         add(new Label("showUser", "Signed in as " + username));
-        
-        final WebMarkupContainer timeConsumergroup = new WebMarkupContainer(
-            "timeConsumerGroup");
-        final WebMarkupContainer timeControllergroup = new WebMarkupContainer(
-            "timeControllerGroup");
-        final WebMarkupContainer administratorGroup = new WebMarkupContainer(
-            "administratorGroup");
+
+        final WebMarkupContainer timeConsumergroup = new WebMarkupContainer("timeConsumerGroup");
+        final WebMarkupContainer timeControllergroup = new WebMarkupContainer("timeControllerGroup");
+        final WebMarkupContainer administratorGroup = new WebMarkupContainer("administratorGroup");
         add(timeConsumergroup);
         add(timeControllergroup);
         add(administratorGroup);
         add(new TaskListPanel("taskList"));
     }
 
-    public BasePage(PageParameters parameters)  {
+    public BasePage(PageParameters parameters) {
         super(parameters);
-        init();
+        initLogoutLink();
     }
 
     public BasePage(IModel model) {
         super(model);
-        init();
+        initLogoutLink();
     }
-    
+
     /**
      * initialize the page.
      */
-    protected void init() {
+    protected void initLogoutLink() {
         // not a secure link because everyone can logoff.
-        Link logoff = new Link("logoff")
-        {
+        Link logoff = new Link("logoff") {
 
             private static final long serialVersionUID = 1L;
 
+            @Override
             public void onClick() {
-                WaspSession waspSession = ((WaspSession)getSession());
+                WaspSession waspSession = (WaspSession) getSession();
                 if (waspSession.logoff(getLogoffContext())) {
-                    // homepage is not allowed anymore so we end up at the
-                    // loginpage
+                    // goto login page
                     setResponsePage(Application.get().getHomePage());
                     waspSession.invalidate();
-                } else{
-                    error("A problem occured during the logoff process, please " +
-                            "try again or contact support");
+                } else {
+                    error("A problem occured during the logoff process, please " + "try again or contact support");
                 }
             }
         };
@@ -96,18 +91,18 @@ public class BasePage extends SecureWebPage {
      * 
      * @return the session.
      */
-    protected final WaspSession getSecureSession() {
-        return (WaspSession)Session.get();
-    }
+    // protected final WaspSession getSecureSession() {
+    // return (WaspSession) Session.get();
+    // }
 
     /**
      * Shortcut to the application.
      * 
      * @return the application
      */
-    protected final SwarmWebApplication getSecureApplication() {
-        return (SwarmWebApplication)Application.get();
-    }
+    // protected final SwarmWebApplication getSecureApplication() {
+    // return (SwarmWebApplication) Application.get();
+    // }
 
     /**
      * Allows subclasses to specify which context should be used when logging
@@ -115,12 +110,11 @@ public class BasePage extends SecureWebPage {
      * 
      * @return the context
      */
-    protected final LoginContext getLogoffContext(){
+    protected final LoginContext getLogoffContext() {
         Application app = Application.get();
-        if (app instanceof TiTAApplication){
-            return ((TiTAApplication)app).getLogoffContext();
+        if (app instanceof TiTAApplication) {
+            return ((TiTAApplication) app).getLogoffContext();
         }
-        throw new WicketRuntimeException("Application is not a subclass of "
-                + TiTAApplication.class);
+        throw new WicketRuntimeException("Application is not a subclass of " + TiTAApplication.class);
     }
 }

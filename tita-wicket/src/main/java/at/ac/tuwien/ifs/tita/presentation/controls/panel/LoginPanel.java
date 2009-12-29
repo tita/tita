@@ -14,7 +14,7 @@
    limitations under the License.
    
  */
-package at.ac.tuwien.ifs.tita.presentation.login;
+package at.ac.tuwien.ifs.tita.presentation.controls.panel;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.markup.html.form.PasswordTextField;

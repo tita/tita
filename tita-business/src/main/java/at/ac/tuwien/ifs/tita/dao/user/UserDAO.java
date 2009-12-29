@@ -15,6 +15,8 @@
  */
 package at.ac.tuwien.ifs.tita.dao.user;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import at.ac.tuwien.ifs.tita.dao.GenericHibernateDao;
@@ -34,5 +36,25 @@ public class UserDAO extends GenericHibernateDao<User, Long> {
      */
     public UserDAO() {
         super(User.class);
+    }
+
+    /**
+     * Gets a user by username.
+     * 
+     * @param username username of user
+     * @return a user
+     */
+    public User findByUserName(String username) {
+        User u = new User();
+        u.setDeleted(false);
+        u.setUserName(username);
+
+        List<User> users = findByExample(u);
+
+        if (users.size() > 0) {
+            u = users.get(0);
+        }
+
+        return u;
     }
 }

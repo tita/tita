@@ -14,158 +14,273 @@
 
 package at.ac.tuwien.ifs.tita.common.test.service.user;
 
+import static org.junit.Assert.fail;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.PersistenceException;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
 import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
+import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.User;
+import at.ac.tuwien.ifs.tita.entity.conv.Role;
 
 /**
- * Tests the UserService with various CRUD-Operations.
+ * Test.
  * 
- * @author ASE Group 10
- * 
+ * @author herbert
+ * @author rene
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:datasourceContext-test.xml" })
 @TransactionConfiguration
-@Transactional
 public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTests {
-
-    private final Logger log = LoggerFactory.getLogger(UserServiceTest.class);
 
     @Autowired
     private IUserService service;
 
-    // global user object for tests
-    private User user;
+    /**
+     * Prepare database for test -> insert 3 roles.
+     * 
+     * @return List of roles
+     */
+    private List<Role> prepareRoles() {
+        List<Role> rolesList = new ArrayList<Role>();
+
+        // CHECKSTYLE:OFF
+        rolesList.add(new Role(1L, "Administrator"));
+        rolesList.add(new Role(2L, "Time consumer"));
+        rolesList.add(new Role(3L, "Time controller"));
+        // CHECKSTYLE:ON
+
+        try {
+            for (Role r : rolesList) {
+                service.saveRole(r);
+            }
+        } catch (PersistenceException e) {
+            fail();
+        }
+        return rolesList;
+    }
 
     /**
-     * test saving a User.
+     * Prepare database for test -> insert 3 users.
+     * 
+     * @return List of users
+     */
+    private List<User> prepareUsers() {
+        List<User> userList = new ArrayList<User>();
+
+        User user1 = new User();
+        User user2 = new User();
+        User user3 = new User();
+
+        user1.setDeleted(false);
+        user2.setDeleted(false);
+        user3.setDeleted(false);
+
+        user1.setUserName("user1");
+        user2.setUserName("user2");
+        user3.setUserName("user3");
+
+        user1.setPassword("pwd1");
+        user2.setPassword("pwd2");
+        user3.setPassword("pwd3");
+
+        userList.add(user1);
+        userList.add(user2);
+        userList.add(user3);
+
+        try {
+            for (User u : userList) {
+                service.saveUser(u);
+            }
+        } catch (PersistenceException e) {
+            fail();
+        }
+        return userList;
+    }
+
+    /**
+     * Delete all inserted roles.
+     * 
+     * @param roles List
+     * @throws TitaDAOException e
+     */
+    private void deleteRoles(List<Role> roles) throws TitaDAOException {
+        for (Role r : roles) {
+            service.deleteRole(r);
+        }
+    }
+
+    /**
+     * Delete all inserted users.
+     * 
+     * @param users List
+     * @throws TitaDAOException e
+     */
+    private void deleteUsers(List<User> users) throws TitaDAOException {
+        for (User u : users) {
+            service.deleteUser(u);
+        }
+    }
+
+    /**
+     * Test.
      */
     @Test
     public void testSaveUser() {
-        log.debug("##### Save User #####");
-        user = new User();
-        user.setDeleted(false);
-        user.setEmail("test@person.at");
-        user.setFirstName("test");
-        user.setLastName("person");
-        user.setPassword("testpassword");
-        user.setUserName("testusername");
+        User u = new User();
+        u.setDeleted(false);
+        u.setUserName("user1");
+        u.setPassword("pwd1");
+        u.setFirstName("John");
+        u.setLastName("Doe");
+        u.setEmail("john.doe@usa.com");
+
+        Role r = new Role(1L, "Administrator");
 
         try {
-            user = service.saveUser(user);
-            Assert.assertNotNull(user.getId());
-            log.debug("##### Save User -> Success!! #####");
+            Role newRole = service.saveRole(r);
+            Assert.assertNotNull(newRole.getId());
+            u.setRole(newRole);
+            service.saveUser(u);
+            Assert.assertNotNull(u.getId());
+            Assert.assertNotNull(u.getRole());
         } catch (PersistenceException e) {
-            log.error("##### Save User -> Error!#####");
-            Assert.fail();
+            fail();
+        } finally {
+            service.deleteUser(u);
+            service.deleteRole(r);
         }
     }
 
     /**
-     * test updating a User.
-     */
-    @Test
-    public void testUpdateUser() {
-        log.debug("##### Update User #####");
-        user = new User();
-        user.setDeleted(false);
-        user.setEmail("test@person.at");
-        user.setFirstName("test");
-        user.setLastName("person");
-        user.setPassword("testpassword");
-        user.setUserName("testusername");
-
-        try {
-            User temp = service.saveUser(user);
-
-            temp.setDeleted(true);
-            temp.setEmail("other@person.at");
-            temp.setFirstName("other");
-            temp.setLastName("other");
-            temp.setPassword("otherpassword");
-            temp.setUserName("otherusername");
-
-            user = service.saveUser(temp);
-
-            Assert.assertEquals(temp.getId(), user.getId());
-            Assert.assertEquals(temp.getEmail(), user.getEmail());
-            Assert.assertEquals(temp.isDeleted(), user.isDeleted());
-            Assert.assertEquals(temp.getFirstName(), user.getFirstName());
-            Assert.assertEquals(temp.getLastName(), user.getLastName());
-            Assert.assertEquals(temp.getPassword(), user.getPassword());
-            Assert.assertEquals(temp.getUserName(), user.getUserName());
-
-            log.debug("##### Update User -> Success!! #####");
-        } catch (PersistenceException e) {
-            log.error("##### Update User -> Error!#####");
-            Assert.fail();
-        }
-    }
-
-    /**
-     * test deleting a User.
+     * Test.
      */
     @Test
     public void testDeleteUser() {
-        log.debug("##### Delete User #####");
-        user = new User();
-        user.setDeleted(false);
-        user.setEmail("test@person.at");
-        user.setFirstName("test");
-        user.setLastName("person");
-        user.setPassword("testpassword");
-        user.setUserName("testusername");
+        User u = new User();
+        u.setDeleted(false);
+        u.setUserName("user1");
+        u.setPassword("pwd1");
+        u.setFirstName("John");
+        u.setLastName("Doe");
+        u.setEmail("john.doe@usa.com");
+
+        Role r = new Role(1L, "Administrator");
 
         try {
-            user = service.saveUser(user);
-            Assert.assertNotNull(user.getId());
-            service.deleteUser(user);
-            Assert.assertNull(service.getUserById(user.getId()));
-            log.debug("##### Delete User -> Success!! #####");
+            Role newRole = service.saveRole(r);
+            Assert.assertNotNull(newRole.getId());
+            u.setRole(newRole);
+            service.saveUser(u);
+            Assert.assertNotNull(u.getId());
+            Assert.assertNotNull(u.getRole());
+
+            service.deleteUser(u);
+            Assert.assertNull(service.getUserById(u.getId()));
         } catch (PersistenceException e) {
-            log.error("##### Delete User -> Failed!#####");
-            Assert.fail();
+            fail();
         }
     }
 
     /**
-     * test finding a User by Id.
+     * Test: Get User by username.
      */
     @Test
-    public void testFindUserById() {
-        log.debug("##### Find User #####");
-        user = new User();
-        user.setDeleted(false);
-        user.setEmail("test@person.at");
-        user.setFirstName("test");
-        user.setLastName("person");
-        user.setPassword("testpassword");
-        user.setUserName("testusername");
+    public void testGetUserByUsername() {
+        List<User> users = prepareUsers();
+        List<Role> roles = prepareRoles();
+
+        // CHECKSTYLE:OFF
+        for (int i = 0; i < 3; i++) {
+            users.get(i).setRole(roles.get(i));
+        }
+        // CHECKSTYLE:ON
+
+        User u = null;
 
         try {
-            user = service.saveUser(user);
-            Assert.assertNotNull(user.getId());
-            Assert.assertNotNull(service.getUserById(user.getId()));
-            log.debug("##### Find User -> Success!! #####");
-        } catch (PersistenceException e) {
-            log.error("##### Find User -> Failed!#####");
-            Assert.fail();
+            for (User user : users) {
+                service.saveUser(user);
+            }
+            u = service.getUserByUsername("user1");
+            Assert.assertNotNull(u);
+            Assert.assertEquals("user1", u.getUserName());
+            Assert.assertEquals("pwd1", u.getPassword());
+            Assert.assertNotNull(u.getRole());
+            Assert.assertEquals("Administrator", u.getRole().getDescription());
+        } catch (TitaDAOException e) {
+            fail();
+        } finally {
+            try {
+                deleteUsers(users);
+                deleteRoles(roles);
+            } catch (TitaDAOException e) {
+                fail();
+            }
         }
     }
 
+    /**
+     * Test: Get all users.
+     */
+    @Test
+    public void testGetUsers() {
+        List<User> users = prepareUsers();
+        List<User> ulist = new ArrayList<User>();
+
+        try {
+            ulist = service.getUndeletedUsers();
+            Assert.assertNotNull(ulist);
+            // CHECKSTYLE:OFF
+            Assert.assertEquals(3, ulist.size());
+            // CHECKSTYLE:ON
+        } catch (TitaDAOException e) {
+            fail();
+        } finally {
+            try {
+                deleteUsers(users);
+            } catch (TitaDAOException e) {
+                fail();
+            }
+        }
+    }
+
+    /**
+     * Test: Get all roles.
+     */
+    @Test
+    public void testGetRoles() {
+        List<Role> roles = prepareRoles();
+        List<Role> rlist = new ArrayList<Role>();
+
+        try {
+            rlist = service.getRoles();
+            Assert.assertNotNull(rlist);
+            // CHECKSTYLE:OFF
+            Assert.assertEquals(3, rlist.size());
+            // CHECKSTYLE:ON
+        } catch (TitaDAOException e) {
+            fail();
+        } finally {
+            try {
+                deleteRoles(roles);
+            } catch (TitaDAOException e) {
+                fail();
+            }
+        }
+    }
 }

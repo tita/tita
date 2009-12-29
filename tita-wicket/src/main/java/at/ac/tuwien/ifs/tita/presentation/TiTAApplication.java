@@ -13,26 +13,35 @@
    See the License for the specific language governing permissions and
    limitations under the License.
    
-*/
+ */
 package at.ac.tuwien.ifs.tita.presentation;
 
 import java.net.MalformedURLException;
 
+import org.apache.wicket.Request;
+import org.apache.wicket.Response;
+import org.apache.wicket.Session;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.injection.web.InjectorHolder;
 import org.apache.wicket.security.hive.HiveMind;
+import org.apache.wicket.security.hive.authentication.LoginContext;
 import org.apache.wicket.security.hive.config.PolicyFileHiveFactory;
 import org.apache.wicket.security.hive.config.SwarmPolicyFileHiveFactory;
 import org.apache.wicket.security.swarm.SwarmWebApplication;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 
+import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
 import at.ac.tuwien.ifs.tita.presentation.login.TitaLoginContext;
+import at.ac.tuwien.ifs.tita.presentation.login.TitaSession;
 
 /**
  * Wicket Application for testing Hello World from DB.
  */
 public class TiTAApplication extends SwarmWebApplication {
-    
+    @SpringBean(name = "userService")
+    private IUserService userService;
+
     public TiTAApplication() {
     }
 
@@ -52,6 +61,7 @@ public class TiTAApplication extends SwarmWebApplication {
      * 
      * @return homepage of app
      */
+    @Override
     public Class<BasePage> getHomePage() {
         return BasePage.class;
     }
@@ -63,7 +73,7 @@ public class TiTAApplication extends SwarmWebApplication {
     protected Object getHiveKey() {
         return getServletContext().getRealPath(CONTEXTPATH);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -74,32 +84,27 @@ public class TiTAApplication extends SwarmWebApplication {
         try {
             factory.addPolicyFile(getServletContext().getResource("/WEB-INF/tita.hive"));
             factory.setAlias("hp", "at.ac.tuwien.ifs.tita.presentation.BasePage");
-            
-            //Aliases for Admin
-            
-            //Aliases for timeconsumer
-            factory.setAlias("effortsPage", 
-                    "at.ac.tuwien.ifs.tita.presentation.effort.EffortsPage");
-            factory.setAlias("dailyView", 
-                    "at.ac.tuwien.ifs.tita.presentation.effort.evaluation.timeconsumer.DailyView");
-            factory.setAlias("monthlyView", 
-                  "at.ac.tuwien.ifs.tita.presentation.effort.evaluation.timeconsumer.MonthlyView");
-            
-            
-            //Aliases for timecontroller
-            factory.setAlias("multipleProjectsView", 
-                "at.ac.tuwien.ifs.tita.presentation.effort.evaluation" +
-                ".timecontroller.MultipleProjectsView");
-      
+
+            // Aliases for Admin
+
+            // Aliases for timeconsumer
+            factory.setAlias("effortsPage", "at.ac.tuwien.ifs.tita.presentation.effort.EffortsPage");
+            factory.setAlias("dailyView", "at.ac.tuwien.ifs.tita.presentation.evaluation.timeconsumer.DailyView");
+            factory.setAlias("monthlyView", "at.ac.tuwien.ifs.tita.presentation.evaluation.timeconsumer.MonthlyView");
+
+            // Aliases for timecontroller
+            factory.setAlias("multipleProjectsView", "at.ac.tuwien.ifs.tita.presentation.evaluation"
+                    + ".timecontroller.MultipleProjectsView");
+
         } catch (MalformedURLException e) {
             throw new WicketRuntimeException(e);
         }
-        
-        //register factory
+
+        // register factory
         HiveMind.registerHive(getHiveKey(), factory);
-       
+
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -111,7 +116,15 @@ public class TiTAApplication extends SwarmWebApplication {
     /**
      * {@inheritDoc}
      */
-    public TitaLoginContext getLogoffContext(){
+    @Override
+    public Session newSession(Request request, Response response) {
+        return new TitaSession(this, request);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public LoginContext getLogoffContext() {
         return new TitaLoginContext();
     }
 }

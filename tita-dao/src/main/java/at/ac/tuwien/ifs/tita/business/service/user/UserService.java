@@ -14,8 +14,11 @@
 
 package at.ac.tuwien.ifs.tita.business.service.user;
 
+import java.util.List;
+
 import javax.persistence.PersistenceException;
 
+import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.dao.user.RoleDAO;
 import at.ac.tuwien.ifs.tita.dao.user.UserDAO;
 import at.ac.tuwien.ifs.tita.entity.User;
@@ -76,5 +79,25 @@ public class UserService implements IUserService {
     @Override
     public User saveUser(User user) throws PersistenceException {
         return userDao.save(user);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public User getUserByUsername(String username) throws TitaDAOException {
+        return userDao.findByUserName(username);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<User> getUndeletedUsers() throws TitaDAOException {
+        User u = new User();
+        u.setDeleted(false);
+        return userDao.findByExample(u);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<Role> getRoles() throws TitaDAOException {
+        return roleDao.findAll();
     }
 }

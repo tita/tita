@@ -16,60 +16,205 @@
  */
 package at.ac.tuwien.ifs.tita.presentation.login;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.PersistenceException;
+
 import org.apache.wicket.security.authentication.LoginException;
 import org.apache.wicket.security.hive.authentication.DefaultSubject;
-import org.apache.wicket.security.hive.authentication.LoginContext;
 import org.apache.wicket.security.hive.authentication.Subject;
-import org.apache.wicket.util.lang.Objects;
+import org.apache.wicket.security.hive.authentication.UsernamePasswordContext;
 
+import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
+import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
+import at.ac.tuwien.ifs.tita.entity.User;
+import at.ac.tuwien.ifs.tita.entity.conv.Role;
 import at.ac.tuwien.ifs.tita.presentation.permissions.TitaPrincipal;
 
 /**
  * Login Context for Tita - to authenticate Users and grant principals.
  * 
  * @author Karin
+ * @author rene
  * 
  */
-public class TitaLoginContext extends LoginContext {
-    private final String username;
-    private final String password;
+public class TitaLoginContext extends UsernamePasswordContext {
+    // TODO: doesn't work - always null
+    /*
+     * @SpringBean(name = "userService") private IUserService userService;
+     */
+
+    private IUserService service;
 
     /**
      * 
      * Constructor for loging off.
      */
     public TitaLoginContext() {
-        username = null;
-        password = null;
     }
 
-    public TitaLoginContext(String username, String password) {
-        this.username = username;
-        this.password = password;
+    public TitaLoginContext(String username, String password, IUserService service) {
+        super(username, password);
+        this.service = service;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Subject login() throws LoginException {
-        // TODO: check username und pwd from db
-        if (username != null && Objects.equal(username, password)) {
+    public Subject getSubject(String username, String password) throws LoginException {
+
+        // List<User> users = null;
+        // try {
+        // users = service.getUndeletedUsers();
+        //
+        // for (User us : users) {
+        // us.setDeleted(true);
+        // service.saveUser(us);
+        // }
+        // } catch (TitaDAOException e2) { // TODO Auto-generated catch block
+        // e2.printStackTrace();
+        // }
+        // TODO: DELETE LATER
+        try {
+            if (service.getRoles().size() == 0) {
+                insertTempRoles();
+            }
+            if (service.getUndeletedUsers().size() == 0) {
+                insertTempUsers();
+            }
+        } catch (TitaDAOException e1) {
+            e1.printStackTrace();
+        }
+        // TODO: DELETE LATER
+
+        if (username != null) {
             DefaultSubject user = new DefaultSubject();
-            // TODO: get role from db and check
-            if (username.equals("admin")) {
-                System.out.println("admin logged in!!!!!!!!!!!!!!");
-                user.addPrincipal(new TitaPrincipal("admin"));
-            } else if (username.equals("timecontroller")) {
-                System.out.println("timecontroller logged in!!!!!!!!!!!!!!");
-                user.addPrincipal(new TitaPrincipal("timecontroller"));
-            } else if (username.equals("timeconsumer")) {
-                System.out.println("TimeConsumer logged in!!!!!!!!!!!!!!");
-                user.addPrincipal(new TitaPrincipal("timeconsumer"));
+
+            try {
+                User u = service.getUserByUsername(username);
+                String hashedPass = "";
+                try {
+                    hashedPass = getHashedPassword(password);
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
+
+                if (hashedPass.equals(u.getPassword())) {
+                    if (u.getRole().getDescription().equals("Administrator")) {
+                        user.addPrincipal(new TitaPrincipal("admin"));
+                    } else if (u.getRole().getDescription().equals("Time controller")) {
+                        user.addPrincipal(new TitaPrincipal("timecontroller"));
+                    } else if (u.getRole().getDescription().equals("Time consumer")) {
+                        user.addPrincipal(new TitaPrincipal("timeconsumer"));
+                    } else {
+                        throw new LoginException("Login of user " + username + " failed.");
+                    }
+                } else {
+                    throw new LoginException("Login of user " + username + " failed.");
+                }
+            } catch (TitaDAOException e) {
+                throw new LoginException("Login of user " + username + " failed.");
             }
 
             return user;
         }
         throw new LoginException("Login of user " + username + " failed.");
     }
+
+    /**
+     * Insert temporary roles for testing. TODO: REMOVE LATER.
+     */
+    private void insertTempRoles() {
+        // CHECKSTYLE:OFF
+        List<Role> tempRolesList = new ArrayList<Role>(3);
+
+        tempRolesList.add(new Role(1L, "Administrator"));
+        tempRolesList.add(new Role(2L, "Time consumer"));
+        tempRolesList.add(new Role(3L, "Time controller"));
+        // CHECKSTYLE:ON
+
+        try {
+            for (Role r : tempRolesList) {
+                service.saveRole(r);
+            }
+        } catch (PersistenceException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Insert temporary users for testing. TODO: REMOVE LATER.
+     */
+    private void insertTempUsers() {
+        // CHECKSTYLE:OFF
+        List<User> tempUserList = new ArrayList<User>(3);
+        // CHECKSTYLE:ON
+        User user1 = new User();
+        User user2 = new User();
+        User user3 = new User();
+
+        user1.setDeleted(false);
+        user2.setDeleted(false);
+        user3.setDeleted(false);
+
+        user1.setUserName("admin");
+        user2.setUserName("timeconsumer");
+        user3.setUserName("timecontroller");
+
+        try {
+            user1.setPassword(getHashedPassword("admin"));
+            user2.setPassword(getHashedPassword("timeconsumer"));
+            user3.setPassword(getHashedPassword("timecontroller"));
+        } catch (NoSuchAlgorithmException e2) {
+            e2.printStackTrace();
+        }
+
+        try {
+            List<Role> rlist = service.getRoles();
+            user1.setRole(rlist.get(0));
+            user2.setRole(rlist.get(1));
+            user3.setRole(rlist.get(2));
+        } catch (TitaDAOException e1) {
+            e1.printStackTrace();
+        }
+
+        tempUserList.add(user1);
+        tempUserList.add(user2);
+        tempUserList.add(user3);
+
+        try {
+            for (User u : tempUserList) {
+                service.saveUser(u);
+            }
+        } catch (PersistenceException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Hashes the password with SHA-1 Algorithm.
+     * 
+     * @param pwd password to hash.
+     * @return hashed password
+     * @throws NoSuchAlgorithmException if algorithm wasn't found.
+     */
+    private String getHashedPassword(String pwd) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("SHA-1");
+        byte[] encryptMsg = md.digest(pwd.getBytes());
+        return new String(encryptMsg);
+    }
+
+    /**
+     * No Additional Logins allowed.
+     * 
+     * @see org.apache.wicket.security.hive.authentication.LoginContext#preventsAdditionalLogins()
+     * @return true if additonal logins allowed false otherwise
+     */
+    /*
+     * @Override public boolean preventsAdditionalLogins() { return true; }
+     */
 }
