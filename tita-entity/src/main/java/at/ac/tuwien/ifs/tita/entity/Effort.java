@@ -3,15 +3,15 @@
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
-   
+
        http://www.apache.org/licenses/LICENSE\-2.0
-       
+
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-  
+
  */
 package at.ac.tuwien.ifs.tita.entity;
 
@@ -34,9 +34,9 @@ import javax.persistence.Table;
 
 /**
  * Entity for storing time producer's effort of his/her assigned tasks.
- * 
+ *
  * @author herbert
- * 
+ *
  */
 @Entity
 @Table(name = "EFFORT")
@@ -85,22 +85,30 @@ public class Effort extends BaseEntity<Long> implements Serializable {
         this.description = description;
         this.user = user;
     }
-    
+
+    public Effort(Long id, TiTATask titaTask, IssueTrackerTask issueTTask, String description) {
+        super();
+        this.id = id;
+        this.titaTask = titaTask;
+        this.issueTTask = issueTTask;
+        this.description = description;
+    }
+
     @Override
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     public TiTATask getTitaTaskId() {
-        return titaTask;
+        return this.titaTask;
     }
 
     public IssueTrackerTask getIssueTTaskId() {
-        return issueTTask;
+        return this.issueTTask;
     }
 
     public void setDate(Date date) {
@@ -112,7 +120,7 @@ public class Effort extends BaseEntity<Long> implements Serializable {
     }
 
     public Boolean getDeleted() {
-        return deleted;
+        return this.deleted;
     }
 
     public void setDeleted(Boolean deleted) {
@@ -120,7 +128,7 @@ public class Effort extends BaseEntity<Long> implements Serializable {
     }
 
     public TiTAUser getUser() {
-        return user;
+        return this.user;
     }
 
     public void setUser(TiTAUser user) {
@@ -140,7 +148,7 @@ public class Effort extends BaseEntity<Long> implements Serializable {
     }
 
     public Date getDate() {
-        return date;
+        return this.date;
     }
 
     /**
@@ -149,45 +157,45 @@ public class Effort extends BaseEntity<Long> implements Serializable {
      */
     public Long getEndTime() {
         Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        
-        return (cal.getTimeInMillis() + duration);
+        cal.setTime(this.date);
+
+        return cal.getTimeInMillis() + this.duration;
     }
 
     public Long getDuration() {
-        return duration;
+        return this.duration;
     }
 
     public Boolean isTiTAEffort() {
-        return (titaTask.getId() != null);
+        return this.titaTask.getId() != null;
     }
 
     /**
      * filter function.
-     * 
+     *
      * @param filterString
      *            - Filter string
      * @return true if it contains the string pattern.
      */
     public Boolean matchDescription(String filterString) {
-        return description.toLowerCase().contains(filterString.toLowerCase());
+        return this.description.toLowerCase().contains(filterString.toLowerCase());
     }
 
     public TiTATask getTitaTask() {
-        return titaTask;
+        return this.titaTask;
     }
 
     public IssueTrackerTask getIssueTTask() {
-        return issueTTask;
+        return this.issueTTask;
     }
-    
+
     public Long getStartTime(){
         Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        
+        cal.setTime(this.date);
+
         return cal.getTimeInMillis();
     }
-    
+
     public void setStartTime(Long startTime){
         this.date = new Date(startTime);
     }
