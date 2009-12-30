@@ -25,7 +25,7 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name="ISSUETRACKER")
+@Table(name="CONV_ISSUE_TRACKER")
 public class IssueTracker extends ConvBaseEntity{
 
     @Column(name = "URL")
@@ -36,12 +36,15 @@ public class IssueTracker extends ConvBaseEntity{
         this.url = url;
     }
 
+    public IssueTracker(){
+        super();
+    }
+    
     public void setUrl(String url) {
         this.url = url;
     }
 
     public String getUrl() {
-        return url;
+        return url;  
     }
-   
 }

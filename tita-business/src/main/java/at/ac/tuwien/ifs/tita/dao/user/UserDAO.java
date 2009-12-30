@@ -20,7 +20,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import at.ac.tuwien.ifs.tita.dao.GenericHibernateDao;
-import at.ac.tuwien.ifs.tita.entity.User;
+import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 
 /**
  * UserDAO encapsulates CRUD-Operations for the TiTAUser.
@@ -28,14 +28,14 @@ import at.ac.tuwien.ifs.tita.entity.User;
  * @author ASE Group 10
  */
 @Repository
-public class UserDAO extends GenericHibernateDao<User, Long> {
+public class UserDAO extends GenericHibernateDao<TiTAUser, Long> {
 
     /**
      * public constructor, needed for telling the generic EntityManager the
      * actual type.
      */
     public UserDAO() {
-        super(User.class);
+        super(TiTAUser.class);
     }
 
     /**
@@ -44,12 +44,12 @@ public class UserDAO extends GenericHibernateDao<User, Long> {
      * @param username username of user
      * @return a user
      */
-    public User findByUserName(String username) {
-        User u = new User();
+    public TiTAUser findByUserName(String username) {
+    	TiTAUser u = new TiTAUser();
         u.setDeleted(false);
         u.setUserName(username);
 
-        List<User> users = findByExample(u);
+        List<TiTAUser> users = findByExample(u);
 
         if (users.size() > 0) {
             u = users.get(0);

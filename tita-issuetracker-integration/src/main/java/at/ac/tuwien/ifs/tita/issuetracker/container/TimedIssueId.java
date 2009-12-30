@@ -21,8 +21,8 @@ package at.ac.tuwien.ifs.tita.issuetracker.container;
  *
  */
 public class TimedIssueId implements Comparable<TimedIssueId>{
-    private final Long projectId;
-    private final Long issueId;
+    private Long projectId;
+    private Long issueId;
     
     public TimedIssueId(Long projectId, Long issueId){
         this.projectId = projectId;

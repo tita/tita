@@ -17,18 +17,19 @@ package at.ac.tuwien.ifs.tita.entity;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import at.ac.tuwien.ifs.tita.entity.interfaces.BaseEntity;
 
 /**
  * Entity for storing tasks coming from different issue trackers.
@@ -46,14 +47,15 @@ public class IssueTrackerTask extends BaseEntity<Long> {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_issue_task")
     private Long id;
 
-    @Column(name = "ISST_TASK_ID")
-    private Long isstTaskId;
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "ISSUE_TRACKER_PROJECT_ID") //, referencedColumnName = "ID")
+    private IssueTrackerProject isstProject;
 
     @Column(name = "DESCRIPTION")
     private String description;
-
-    @OneToMany
-    @JoinColumn(name = "ISSUET_TASK_ID")
+    
+    @OneToMany(mappedBy = "issueTTask", 
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<Effort> issueTEfforts;
 
     @SuppressWarnings("unused")
@@ -62,6 +64,10 @@ public class IssueTrackerTask extends BaseEntity<Long> {
     private Long modificationVersion;
 
     public IssueTrackerTask() {
+    }
+    
+    public IssueTrackerTask(Set<Effort> efforts) {
+        this.issueTEfforts = efforts;
     }
 
     @Override
@@ -73,14 +79,10 @@ public class IssueTrackerTask extends BaseEntity<Long> {
         return issueTEfforts;
     }
 
-    public Long getIsstTaskId() {
-        return isstTaskId;
+    public IssueTrackerProject getIsstProject(){
+        return isstProject;
     }
-
-    public void setIsstTaskId(Long isstTaskId) {
-        this.isstTaskId = isstTaskId;
-    }
-
+   
     public void setDescription(String description) {
         this.description = description;
     }
@@ -89,4 +91,7 @@ public class IssueTrackerTask extends BaseEntity<Long> {
         return description;
     }
 
+    public void setIsstProject(IssueTrackerProject isstProject) {
+        this.isstProject = isstProject;
+    }
 }

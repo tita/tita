@@ -17,6 +17,7 @@ package at.ac.tuwien.ifs.tita.entity;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,6 +25,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -31,7 +33,6 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import at.ac.tuwien.ifs.tita.entity.conv.Role;
-import at.ac.tuwien.ifs.tita.entity.interfaces.BaseEntity;
 
 /**
  * Entity for storing TiTA user.
@@ -42,7 +43,7 @@ import at.ac.tuwien.ifs.tita.entity.interfaces.BaseEntity;
 @Entity
 @Table(name = "TITA_USER")
 @SequenceGenerator(name = "seq_user", sequenceName = "USER_ID_SEQ", allocationSize = 1)
-public class User extends BaseEntity<Long> {
+public class TiTAUser extends BaseEntity<Long> {
 
     @Id
     @Column(name = "ID")
@@ -65,18 +66,18 @@ public class User extends BaseEntity<Long> {
     private String email;
 
     @Column(name = "DELETED")
-    private boolean deleted;
+    private Boolean deleted;
 
-    @ManyToOne
-    @JoinColumn(name = "ROLE", referencedColumnName = "ID")
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "ROLE_ID") //,insertable=false) //, referencedColumnName = "ID")
     private Role role;
 
     @OneToMany(mappedBy = "user")
-    @JoinTable(name = "USER_PROJECT")
     private Set<TiTAUserProject> titaProjects;
 
-    @OneToMany
-    @JoinColumn(name = "ID")
+
+    @OneToMany(mappedBy = "user", 
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<IssueTrackerLogin> issueTrackerLogins;
 
     @SuppressWarnings("unused")
@@ -84,8 +85,23 @@ public class User extends BaseEntity<Long> {
     @Version
     private Long modificationVersion;
 
-    public User() {
+    public TiTAUser() {
 
+    }
+    
+    public TiTAUser(String userName, String password, String firstName,
+            String lastName, String email, Boolean deleted, Role role,
+            Set<TiTAUserProject> titaProjects, Set<IssueTrackerLogin> issueTrackerLogins) {
+        super();
+        this.userName = userName;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.deleted = deleted;
+        this.role = role;
+        this.issueTrackerLogins = issueTrackerLogins;
+        this.titaProjects = titaProjects;
     }
 
     public String getUserName() {
@@ -152,6 +168,7 @@ public class User extends BaseEntity<Long> {
     public Set<TiTAUserProject> getTitaProjects() {
         return titaProjects;
     }
+
 
     public Set<IssueTrackerLogin> getIssueTrackerLogins() {
         return issueTrackerLogins;

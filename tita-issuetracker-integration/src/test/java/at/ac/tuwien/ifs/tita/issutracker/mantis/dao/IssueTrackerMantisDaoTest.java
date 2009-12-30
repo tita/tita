@@ -38,8 +38,8 @@ import at.ac.tuwien.ifs.tita.issuetracker.mantis.dao.IssueTrackerMantisDao;
  */
 public class IssueTrackerMantisDaoTest extends MantisBaseTest {
 
-    private final IssueTrackerLogin defaultLogin = new IssueTrackerLogin(1L, "administrator",
-            "root", new IssueTracker(1L, "test-mantis", "http://localhost/mantisbt-1.1.8"));
+    private final IssueTrackerLogin defaultLogin = new IssueTrackerLogin("administrator",
+            "root", new IssueTracker(1L, "test-mantis", "http://localhost/mantisbt-1.1.8"),null);
 
     /**
      * Test: find Project by ProjectName.

@@ -26,7 +26,7 @@ import javax.persistence.Table;
  */
 
 @Entity
-@Table(name = "ROLE")
+@Table(name = "CONV_ROLE")
 public class Role extends ConvBaseEntity {
 
     public Role() {
@@ -35,5 +35,6 @@ public class Role extends ConvBaseEntity {
 
     public Role(Long id, String description) {
         super(id, description);
+
     }
 }

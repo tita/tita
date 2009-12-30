@@ -20,7 +20,7 @@ import javax.persistence.PersistenceException;
 import org.springframework.transaction.annotation.Transactional;
 
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
-import at.ac.tuwien.ifs.tita.entity.User;
+import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.entity.conv.Role;
 
 /**
@@ -39,7 +39,7 @@ public interface IUserService {
      *         thrown
      * @return the saved User.
      */
-    User saveUser(User user) throws PersistenceException;
+    TiTAUser saveUser(TiTAUser user) throws PersistenceException;
 
     /**
      * deletes an existing user.
@@ -48,7 +48,7 @@ public interface IUserService {
      * @throws PersistenceException if Parameter is null or another Exception is
      *         thrown
      */
-    void deleteUser(User user) throws PersistenceException;
+    void deleteUser(TiTAUser user) throws PersistenceException;
 
     /**
      * returns a specific User found to the id given.
@@ -58,7 +58,7 @@ public interface IUserService {
      *         thrown
      * @return the specified User, if found.
      */
-    User getUserById(Long id) throws PersistenceException;
+    TiTAUser getUserById(Long id) throws PersistenceException;
 
     /**
      * returns a specific User found to the username given.
@@ -68,7 +68,7 @@ public interface IUserService {
      *         thrown
      * @return the specified User, if found.
      */
-    User getUserByUsername(String username) throws TitaDAOException;
+    TiTAUser getUserByUsername(String username) throws TitaDAOException;
 
     /**
      * Saves a new Role or updates an existing one.
@@ -106,7 +106,7 @@ public interface IUserService {
      *         thrown
      * @return all Users if found
      */
-    List<User> getUndeletedUsers() throws TitaDAOException;
+    List<TiTAUser> getUndeletedUsers() throws TitaDAOException;
 
     /**
      * returns all Roles.

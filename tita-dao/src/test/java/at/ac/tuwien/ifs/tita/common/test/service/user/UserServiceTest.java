@@ -33,7 +33,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 
 import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
-import at.ac.tuwien.ifs.tita.entity.User;
+import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.entity.conv.Role;
 
 /**
@@ -79,12 +79,12 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
      * 
      * @return List of users
      */
-    private List<User> prepareUsers() {
-        List<User> userList = new ArrayList<User>();
+    private List<TiTAUser> prepareTiTAUsers() {
+        List<TiTAUser> userList = new ArrayList<TiTAUser>();
 
-        User user1 = new User();
-        User user2 = new User();
-        User user3 = new User();
+        TiTAUser user1 = new TiTAUser();
+        TiTAUser user2 = new TiTAUser();
+        TiTAUser user3 = new TiTAUser();
 
         user1.setDeleted(false);
         user2.setDeleted(false);
@@ -103,7 +103,7 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
         userList.add(user3);
 
         try {
-            for (User u : userList) {
+            for (TiTAUser u : userList) {
                 service.saveUser(u);
             }
         } catch (PersistenceException e) {
@@ -130,8 +130,8 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
      * @param users List
      * @throws TitaDAOException e
      */
-    private void deleteUsers(List<User> users) throws TitaDAOException {
-        for (User u : users) {
+    private void deleteTiTAUsers(List<TiTAUser> users) throws TitaDAOException {
+        for (TiTAUser u : users) {
             service.deleteUser(u);
         }
     }
@@ -140,8 +140,8 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
      * Test.
      */
     @Test
-    public void testSaveUser() {
-        User u = new User();
+    public void testSaveTiTAUser() {
+        TiTAUser u = new TiTAUser();
         u.setDeleted(false);
         u.setUserName("user1");
         u.setPassword("pwd1");
@@ -170,8 +170,8 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
      * Test.
      */
     @Test
-    public void testDeleteUser() {
-        User u = new User();
+    public void testDeleteTiTAUser() {
+        TiTAUser u = new TiTAUser();
         u.setDeleted(false);
         u.setUserName("user1");
         u.setPassword("pwd1");
@@ -197,11 +197,11 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
     }
 
     /**
-     * Test: Get User by username.
+     * Test: Get TiTAUser by username.
      */
     @Test
-    public void testGetUserByUsername() {
-        List<User> users = prepareUsers();
+    public void testGetTiTAUserByTiTAUsername() {
+        List<TiTAUser> users = prepareTiTAUsers();
         List<Role> roles = prepareRoles();
 
         // CHECKSTYLE:OFF
@@ -210,10 +210,10 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
         }
         // CHECKSTYLE:ON
 
-        User u = null;
+        TiTAUser u = null;
 
         try {
-            for (User user : users) {
+            for (TiTAUser user : users) {
                 service.saveUser(user);
             }
             u = service.getUserByUsername("user1");
@@ -226,7 +226,7 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
             fail();
         } finally {
             try {
-                deleteUsers(users);
+                deleteTiTAUsers(users);
                 deleteRoles(roles);
             } catch (TitaDAOException e) {
                 fail();
@@ -238,9 +238,9 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
      * Test: Get all users.
      */
     @Test
-    public void testGetUsers() {
-        List<User> users = prepareUsers();
-        List<User> ulist = new ArrayList<User>();
+    public void testGetTiTAUsers() {
+        List<TiTAUser> users = prepareTiTAUsers();
+        List<TiTAUser> ulist = new ArrayList<TiTAUser>();
 
         try {
             ulist = service.getUndeletedUsers();
@@ -252,7 +252,7 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
             fail();
         } finally {
             try {
-                deleteUsers(users);
+                deleteTiTAUsers(users);
             } catch (TitaDAOException e) {
                 fail();
             }

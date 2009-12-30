@@ -16,8 +16,10 @@
 package at.ac.tuwien.ifs.tita.entity;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,8 +31,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-
-import at.ac.tuwien.ifs.tita.entity.interfaces.BaseEntity;
 
 /**
  * Entity for storing time producer's effort of his/her assigned tasks.
@@ -49,17 +49,16 @@ public class Effort extends BaseEntity<Long> implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_effort")
     private Long id;
 
-    @Column(name = "TITA_TASK_ID")
-    private Long titaTaskId;
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "TITA_TASK_ID")
+    private TiTATask titaTask;
 
-    @Column(name = "ISSUET_TASK_ID")
-    private Long issueTTaskId;
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "ISSUET_TASK_ID")
+    private IssueTrackerTask issueTTask;
 
     @Column(name = "DATE")
     private Date date;
-
-    @Column(name = "START_TIME")
-    private Long startTime;
 
     @Column(name = "DURATION")
     private Long duration;
@@ -70,22 +69,23 @@ public class Effort extends BaseEntity<Long> implements Serializable {
     @Column(name = "DELETED")
     private Boolean deleted;
 
-    @ManyToOne
-    @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
-    private User user;
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "USER_ID") //, referencedColumnName = "ID")
+    private TiTAUser user;
 
     public Effort() {
     }
 
-    public Effort(Long id, Long titaTaskId, Long issueTTaskId,
-            String description) {
+    public Effort(Date date, Long duration, Boolean deleted,
+            String description, TiTAUser user) {
         super();
-        this.id = id;
-        this.titaTaskId = titaTaskId;
-        this.issueTTaskId = issueTTaskId;
+        this.date = date;
+        this.duration = duration;
+        this.deleted = deleted;
         this.description = description;
+        this.user = user;
     }
-
+    
     @Override
     public Long getId() {
         return id;
@@ -95,16 +95,16 @@ public class Effort extends BaseEntity<Long> implements Serializable {
         return description;
     }
 
-    public Long getTitaTaskId() {
-        return titaTaskId;
+    public TiTATask getTitaTaskId() {
+        return titaTask;
     }
 
-    public Long getIssueTTaskId() {
-        return issueTTaskId;
+    public IssueTrackerTask getIssueTTaskId() {
+        return issueTTask;
     }
 
-    public void setStartTime(Long startTime) {
-        this.startTime = startTime;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public void setDuration(Long duration) {
@@ -119,48 +119,47 @@ public class Effort extends BaseEntity<Long> implements Serializable {
         this.deleted = deleted;
     }
 
-    public User getUser() {
+    public TiTAUser getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(TiTAUser user) {
         this.user = user;
     }
 
-    public void setTitaTaskId(Long titaTaskId) {
-        this.titaTaskId = titaTaskId;
+    public void setTitaTask(TiTATask titaTask) {
+        this.titaTask = titaTask;
     }
 
-    public void setIssueTTaskId(Long issueTTaskId) {
-        this.issueTTaskId = issueTTaskId;
+    public void setIssueTTask(IssueTrackerTask issueTTask) {
+        this.issueTTask = issueTTask;
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
 
-    public Long getStartTime() {
-        return startTime;
+    public Date getDate() {
+        return date;
     }
 
+    /**
+     * Returns an proper end time as Long - used for GUI perposes.
+     * @return Long end time
+     */
     public Long getEndTime() {
-        return startTime + duration;
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        
+        return (cal.getTimeInMillis() + duration);
     }
 
     public Long getDuration() {
         return duration;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
     public Boolean isTiTAEffort() {
-        return (titaTaskId != null);
+        return (titaTask.getId() != null);
     }
 
     /**
@@ -174,4 +173,22 @@ public class Effort extends BaseEntity<Long> implements Serializable {
         return description.toLowerCase().contains(filterString.toLowerCase());
     }
 
+    public TiTATask getTitaTask() {
+        return titaTask;
+    }
+
+    public IssueTrackerTask getIssueTTask() {
+        return issueTTask;
+    }
+    
+    public Long getStartTime(){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        
+        return cal.getTimeInMillis();
+    }
+    
+    public void setStartTime(Long startTime){
+        this.date = new Date(startTime);
+    }
 }

@@ -67,7 +67,7 @@ public class HomePage extends WebPage {
                 WaspSession secureSession = (WaspSession) getSession();
 
                 if (secureSession.isUserAuthenticated() && getLoggedInUser() != null) {
-                    secureSession.logoff(getLoggedInUser());
+       secureSession.logoff(getLoggedInUser());
                     secureSession.invalidateNow();
                 }
 

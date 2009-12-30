@@ -20,7 +20,7 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import at.ac.tuwien.ifs.tita.entity.interfaces.BaseEntity;
+import at.ac.tuwien.ifs.tita.entity.BaseEntity;
 
 /**
  * 

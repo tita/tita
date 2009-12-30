@@ -19,11 +19,15 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 /**
  * TiTAUserProject represents the join column of TiTAUser and TiTAProject. Extra
@@ -34,63 +38,39 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "USER_PROJECT")
-@IdClass(TiTAUserProject.TiTAUserProjectId.class)
-public class TiTAUserProject {
-
-    @Id
-    // @Column(name = "USER_ID")
-    private long userId;
-
-    @Id
-    // @Column(name = "PROJECT_ID")
-    private long projectId;
+@SequenceGenerator(name = "seq_tita_user_project", sequenceName = "TITA_USER_PROJECT_ID_SEQ", allocationSize = 1)
+public class TiTAUserProject extends BaseEntity<Long> {
+	
+	@Id
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_tita_user_project")
+    private Long id;
 
     @Column(name = "TARGET_HOURS")
     private Long targetHours;
 
     @ManyToOne
-    @PrimaryKeyJoinColumn(name = "USERID", referencedColumnName = "ID")
-    private User user;
+    @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
+    private TiTAUser user;
 
     @ManyToOne
-    @PrimaryKeyJoinColumn(name = "PROJECTID", referencedColumnName = "ID")
+    @JoinColumn(name = "PROJECT_ID", referencedColumnName = "ID")
     private TiTAProject project;
-
-    /**
-     * Method for getting the userId.
-     * 
-     * @return the userId
-     */
-    public long getUserId() {
-        return userId;
+    
+    @SuppressWarnings("unused")
+    @Column(name = "MODIFICATION_VERSION")
+    @Version
+    private Long modificationVersion;
+    
+    public TiTAUserProject() {
+    	
+    }
+    
+    public TiTAUserProject(TiTAUser user, TiTAProject project) {
+    	this.user = user;
+    	this.project = project;
     }
 
-    /**
-     * Method for setting the userId.
-     * 
-     * @param userId the userId to set
-     */
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * Method for getting the projectId.
-     * 
-     * @return the projectId
-     */
-    public long getProjectId() {
-        return projectId;
-    }
-
-    /**
-     * Method for setting the projectId.
-     * 
-     * @param projectId the projectId to set
-     */
-    public void setProjectId(long projectId) {
-        this.projectId = projectId;
-    }
 
     /**
      * Method for getting the targetHours.
@@ -115,7 +95,7 @@ public class TiTAUserProject {
      * 
      * @return the user
      */
-    public User getUser() {
+    public TiTAUser getUser() {
         return user;
     }
 
@@ -124,7 +104,7 @@ public class TiTAUserProject {
      * 
      * @param user the user to set
      */
-    public void setUser(User user) {
+    public void setUser(TiTAUser user) {
         this.user = user;
     }
 
@@ -146,50 +126,8 @@ public class TiTAUserProject {
         this.project = project;
     }
 
-    /**
-     * TiTAUserProjectId is an inner class of TiTAUserProject representing the
-     * Primary Key for the Database.
-     * 
-     * @author ASE Group 10
-     */
-    public class TiTAUserProjectId implements Serializable {
-        private long userId;
-        private long projectId;
-
-        /**
-         * Method for retrieving the UserId.
-         * 
-         * @return the userId
-         */
-        public long getUserId() {
-            return userId;
-        }
-
-        /**
-         * Method for setting the UserId.
-         * 
-         * @param userId the userId to set
-         */
-        public void setUserId(long userId) {
-            this.userId = userId;
-        }
-
-        /**
-         * Method for retrieving the ProjectId.
-         * 
-         * @return the projectId
-         */
-        public long getProjectId() {
-            return projectId;
-        }
-
-        /**
-         * Method for setting the ProjectId.
-         * 
-         * @param projectId the projectId to set
-         */
-        public void setProjectId(long projectId) {
-            this.projectId = projectId;
-        }
-    }
+	@Override
+	public Long getId() {
+		return this.id;
+	}
 }

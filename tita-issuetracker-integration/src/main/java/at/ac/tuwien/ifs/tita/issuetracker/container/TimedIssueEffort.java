@@ -23,10 +23,8 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITimedEffort;
  * @author herbert
  *
  */
-public class TimedIssueEffort extends GeneralTimer implements ITimedEffort {
-    
-    private Boolean started;
-    private final TimedIssueId id;
+public class TimedIssueEffort extends GeneralTimer implements ITimedEffort{
+    private TimedIssueId id;
     
     public TimedIssueEffort(Long projectId, Long taskId) {
         super();
@@ -41,16 +39,13 @@ public class TimedIssueEffort extends GeneralTimer implements ITimedEffort {
 
     /** {@inheritDoc} */
     @Override
-    public Boolean isStopped() {
-        return !started;
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void splitTime(Integer countRunning) {
         Long pseudoEndTime;
         
         if(startTime != null){
+            // the next line is important, because if you don't pseudo stop the current issue
+            // you want be able to start it again.
+            started = false;
             pseudoEndTime = System.currentTimeMillis() - startTime;
             duration += (pseudoEndTime / countRunning);
         }

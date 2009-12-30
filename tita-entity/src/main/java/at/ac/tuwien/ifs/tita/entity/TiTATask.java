@@ -17,18 +17,19 @@ package at.ac.tuwien.ifs.tita.entity;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import at.ac.tuwien.ifs.tita.entity.interfaces.BaseEntity;
 
 /**
  * Entity for storing tasks that a time producer has generated in TiTA.
@@ -49,11 +50,16 @@ public class TiTATask extends BaseEntity<Long> {
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @Column(name = "PROJECT_ID")
-    private Long projectId;
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "USER_ID")
+    private TiTAUser user;
+    
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "TITA_PROJECT_ID")
+    private TiTAProject titaProject;
 
-    @OneToMany
-    @JoinColumn(name = "TITA_TASK_ID")
+    @OneToMany(mappedBy ="titaTask", 
+               cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<Effort> titaEfforts;
 
     @SuppressWarnings("unused")
@@ -61,6 +67,11 @@ public class TiTATask extends BaseEntity<Long> {
     @Version
     private Long modificationVersion;
 
+    public TiTATask(TiTAUser user, Set<Effort> efforts) {
+        this.user = user;
+        this.titaEfforts = efforts;
+    }
+    
     public TiTATask() {
     }
 
@@ -73,11 +84,19 @@ public class TiTATask extends BaseEntity<Long> {
         return description;
     }
 
-    public Long getProjectId() {
-        return projectId;
+    public TiTAProject getProject() {
+        return titaProject;
     }
 
     public Set<Effort> getTitaEfforts() {
         return titaEfforts;
+    }
+    
+    public TiTAUser getUser(){
+        return user;
+    }
+
+    public void setTitaProject(TiTAProject titaProject) {
+        this.titaProject = titaProject;
     }
 }

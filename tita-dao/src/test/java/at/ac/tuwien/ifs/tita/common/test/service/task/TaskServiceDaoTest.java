@@ -15,13 +15,14 @@
  */
 package at.ac.tuwien.ifs.tita.common.test.service.task;
 
+import static org.junit.Assert.fail;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 
 import junit.framework.Assert;
-import junit.framework.TestCase;
 
 import org.junit.After;
 import org.junit.Before;
@@ -52,10 +53,10 @@ import at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus;
 @ContextConfiguration(locations = { "classpath:datasourceContext-test.xml" })
 @TransactionConfiguration
 @Transactional
-public class TaskServiceDaoTest extends TestCase {
+public class TaskServiceDaoTest{
 
-    private IssueTrackerLogin defaultLogin = new IssueTrackerLogin(1L, "administrator", "root",
-            new IssueTracker(1L, "test-mantis", "http://localhost/mantisbt-1.1.8"));
+    private IssueTrackerLogin defaultLogin = new IssueTrackerLogin("administrator", "root",
+            new IssueTracker(1L, "test-mantis", "http://localhost/mantisbt-1.1.8"),null);
 
     private TiTAProject titaProject;
     private List<IssueTrackerLogin> logins;
@@ -67,7 +68,6 @@ public class TaskServiceDaoTest extends TestCase {
      * Prepare mantis connection and create a setup in mantis with projects and
      * tasks.
      */
-    @Override
     @Before
     public void setUp() {
 
@@ -95,7 +95,6 @@ public class TaskServiceDaoTest extends TestCase {
      * @throws InterruptedException
      *             e
      */
-    @Override
     @After
     public void tearDown() throws InterruptedException {
         this.logins = null;

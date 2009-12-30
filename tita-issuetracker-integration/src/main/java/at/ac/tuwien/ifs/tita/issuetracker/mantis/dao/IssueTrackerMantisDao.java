@@ -61,9 +61,9 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
     private final Logger log = LoggerFactory.getLogger(IssueTrackerMantisDao.class);
 
     private URL url;
-    private final String urlAsString;
-    private final String user;
-    private final String pwd;
+    private String urlAsString;
+    private String user;
+    private String pwd;
     private IMCSession session;
 
 
@@ -79,6 +79,9 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
         connect();
     }
 
+    public IssueTrackerMantisDao(){    
+    }
+    
     /**
      * Opens a Session to the Mantis-Server.
      */

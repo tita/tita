@@ -31,7 +31,7 @@ import org.apache.wicket.security.hive.authorization.SimplePrincipal;
 
 import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
-import at.ac.tuwien.ifs.tita.entity.User;
+import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.entity.conv.Role;
 
 /**
@@ -80,14 +80,14 @@ public class TitaLoginContext extends UsernamePasswordContext {
         // }
         // TODO: DELETE LATER
         //insertTempRoles();
-        //insertTempUsers();
+        insertTempUsers();
         // TODO: DELETE LATER
 
         if (username != null) {
             DefaultSubject user = new DefaultSubject();
 
             try {
-                User u = service.getUserByUsername(username);
+                TiTAUser u = service.getUserByUsername(username);
                 String hashedPass = "";
                 try {
                     hashedPass = getHashedPassword(password);
@@ -143,11 +143,11 @@ public class TitaLoginContext extends UsernamePasswordContext {
      */
     private void insertTempUsers() {
         // CHECKSTYLE:OFF
-        List<User> tempUserList = new ArrayList<User>(3);
+        List<TiTAUser> tempUserList = new ArrayList<TiTAUser>(3);
         // CHECKSTYLE:ON
-        User user1 = new User();
-        User user2 = new User();
-        User user3 = new User();
+        TiTAUser user1 = new TiTAUser();
+        TiTAUser user2 = new TiTAUser();
+        TiTAUser user3 = new TiTAUser();
 
         user1.setDeleted(false);
         user2.setDeleted(false);
@@ -179,7 +179,7 @@ public class TitaLoginContext extends UsernamePasswordContext {
         tempUserList.add(user3);
 
         try {
-            for (User u : tempUserList) {
+            for (TiTAUser u : tempUserList) {
                 service.saveUser(u);
             }
         } catch (PersistenceException e) {

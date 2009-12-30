@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 
-import at.ac.tuwien.ifs.tita.entity.interfaces.BaseEntity;
+import at.ac.tuwien.ifs.tita.entity.BaseEntity;
 
 /**
  * Interface ITitaAdministrationPanel provides access to basic administration

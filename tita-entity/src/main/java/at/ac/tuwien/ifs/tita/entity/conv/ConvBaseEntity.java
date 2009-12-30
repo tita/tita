@@ -15,11 +15,13 @@
  */
 package at.ac.tuwien.ifs.tita.entity.conv;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
-import at.ac.tuwien.ifs.tita.entity.interfaces.BaseEntity;
+import at.ac.tuwien.ifs.tita.entity.BaseEntity;
 
 /**
  * Base-Entity for Conv-Tables.
@@ -28,7 +30,8 @@ import at.ac.tuwien.ifs.tita.entity.interfaces.BaseEntity;
  * 
  */
 @MappedSuperclass
-public class ConvBaseEntity extends BaseEntity<Long> {
+@org.hibernate.annotations.Entity(mutable=false)
+public class ConvBaseEntity extends BaseEntity<Long> implements Serializable{
     @Id
     @Column(name = "ID")
     private Long id;

@@ -27,7 +27,6 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
-import at.ac.tuwien.ifs.tita.entity.interfaces.BaseEntity;
 
 /**
  * Entity for storing login-Data for Users to login at IssueTrackers.
@@ -51,7 +50,11 @@ public class IssueTrackerLogin extends BaseEntity<Long> {
     private String password;
 
     @ManyToOne
-    @JoinColumn(name = "ISSUETRACKER_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "USER_ID") //, referencedColumnName = "ID")
+    private TiTAUser user;
+    
+    @ManyToOne
+    @JoinColumn(name = "ISST_ID") //, referencedColumnName = "ID")
     private IssueTracker issueTracker;
 
     @SuppressWarnings("unused")
@@ -63,13 +66,13 @@ public class IssueTrackerLogin extends BaseEntity<Long> {
         super();
     }
 
-    public IssueTrackerLogin(Long id, String userName, String password,
-            IssueTracker issueTracker) {
+    public IssueTrackerLogin(String userName, String password,
+            IssueTracker issueTracker, TiTAUser user) {
         super();
-        this.id = id;
         this.userName = userName;
         this.password = password;
         this.issueTracker = issueTracker;
+        this.user = user;
     }
 
     public String getUserName() {
@@ -100,4 +103,7 @@ public class IssueTrackerLogin extends BaseEntity<Long> {
         this.issueTracker = issueTracker;
     }
 
+    public TiTAUser getUser() {
+        return user;
+    }
 }

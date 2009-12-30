@@ -21,7 +21,7 @@ import javax.persistence.PersistenceException;
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.dao.user.RoleDAO;
 import at.ac.tuwien.ifs.tita.dao.user.UserDAO;
-import at.ac.tuwien.ifs.tita.entity.User;
+import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.entity.conv.Role;
 
 /**
@@ -52,7 +52,7 @@ public class UserService implements IUserService {
 
     /** {@inheritDoc} */
     @Override
-    public void deleteUser(User user) throws PersistenceException {
+    public void deleteUser(TiTAUser user) throws PersistenceException {
         userDao.delete(user);
 
     }
@@ -65,7 +65,7 @@ public class UserService implements IUserService {
 
     /** {@inheritDoc} */
     @Override
-    public User getUserById(Long id) throws PersistenceException {
+    public TiTAUser getUserById(Long id) throws PersistenceException {
         return userDao.findById(id);
     }
 
@@ -77,20 +77,20 @@ public class UserService implements IUserService {
 
     /** {@inheritDoc} */
     @Override
-    public User saveUser(User user) throws PersistenceException {
+    public TiTAUser saveUser(TiTAUser user) throws PersistenceException {
         return userDao.save(user);
     }
 
     /** {@inheritDoc} */
     @Override
-    public User getUserByUsername(String username) throws TitaDAOException {
+    public TiTAUser getUserByUsername(String username) throws TitaDAOException {
         return userDao.findByUserName(username);
     }
 
     /** {@inheritDoc} */
     @Override
-    public List<User> getUndeletedUsers() throws TitaDAOException {
-        User u = new User();
+    public List<TiTAUser> getUndeletedUsers() throws TitaDAOException {
+    	TiTAUser u = new TiTAUser();
         u.setDeleted(false);
         return userDao.findByExample(u);
     }

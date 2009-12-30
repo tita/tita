@@ -17,6 +17,7 @@ package at.ac.tuwien.ifs.tita.entity;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,7 +31,6 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
-import at.ac.tuwien.ifs.tita.entity.interfaces.BaseEntity;
 
 /**
  * Entity for storing projects comming from different issue trackers.
@@ -48,12 +48,17 @@ public class IssueTrackerProject extends BaseEntity<Long> {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_issue_project")
     private Long id;
 
-    @Column(name = "PROJECT_ID")
-    private Long projectId;
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "TITA_PROJECT_ID")
+    private TiTAProject titaProject;
 
     @Column(name = "PROJECT_NAME")
     private String projectName;
 
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "ISST_ID")
+    private IssueTracker issueTracker;
+    
     @Column(name = "ISST_PROJECT_ID")
     private Long isstProjectId;
 
@@ -63,12 +68,9 @@ public class IssueTrackerProject extends BaseEntity<Long> {
     // @Column(name="DESCRIPTION")
     // private String description;
 
-    @OneToMany
-    @JoinColumn(name = "ISST_PROJECT_ID")
+    @OneToMany(mappedBy="isstProject", 
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<IssueTrackerTask> issueTrackerTasks;
-
-    @ManyToOne
-    private IssueTracker issueTracker;
 
     @SuppressWarnings("unused")
     @Column(name = "MODIFICATION_VERSION")
@@ -78,11 +80,12 @@ public class IssueTrackerProject extends BaseEntity<Long> {
     public IssueTrackerProject() {
     }
 
-    public IssueTrackerProject(Long id, Long projectId, Long isstProjectId) {
+    public IssueTrackerProject(IssueTracker issTracker, Long isstProjectId, 
+                               Set<IssueTrackerTask> issueTrackerTasks){
         super();
-        this.id = id;
-        this.projectId = projectId;
+        this.issueTracker = issTracker;
         this.isstProjectId = isstProjectId;
+        this.issueTrackerTasks = issueTrackerTasks;
     }
 
     @Override
@@ -90,8 +93,12 @@ public class IssueTrackerProject extends BaseEntity<Long> {
         return this.id;
     }
 
-    public Long getProjectId() {
-        return this.projectId;
+    public TiTAProject getProject() {
+        return titaProject;
+    }
+    
+    public IssueTracker getIssueTrackerId() {
+        return issueTracker;
     }
 
     public Long getIsstProjectId() {
@@ -124,5 +131,9 @@ public class IssueTrackerProject extends BaseEntity<Long> {
 
     public String getProjectName() {
         return this.projectName;
+    }
+    
+    public void setTitaProject(TiTAProject titaProject){
+        this.titaProject = titaProject;
     }
 }
