@@ -79,7 +79,7 @@ public class TitaLoginContext extends UsernamePasswordContext {
         // e2.printStackTrace();
         // }
         // TODO: DELETE LATER
-        //insertTempRoles();
+        insertTempRoles();
         insertTempUsers();
         // TODO: DELETE LATER
 

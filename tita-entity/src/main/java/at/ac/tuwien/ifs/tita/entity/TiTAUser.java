@@ -68,7 +68,7 @@ public class TiTAUser extends BaseEntity<Long> {
     @Column(name = "DELETED")
     private Boolean deleted;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne
     @JoinColumn(name = "ROLE_ID") //,insertable=false) //, referencedColumnName = "ID")
     private Role role;
 
