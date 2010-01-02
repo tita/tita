@@ -1,3 +1,4 @@
+
 -- conv tables
 create table CONV_ROLE(
 	ID bigint,
@@ -73,7 +74,7 @@ create table USER_PROJECT(
     primary key (ID)
 );
 
-create unique index AK_USER_PROJECT on USER_TITA_PROJECT (USER_ID,TITA_PROJECT_ID);
+create unique index AK_USER_PROJECT on USER_PROJECT (USER_ID,TITA_PROJECT_ID);
 
 create table TITA_TASK( 
 	ID bigint,

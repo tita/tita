@@ -71,6 +71,7 @@
 		<docbkx.version>2.0.7</docbkx.version>
 		<maven.plugin.surefire>2.4.3</maven.plugin.surefire>
 		<maven.plugin.checkstyle>2.3</maven.plugin.checkstyle>
+		<maven.plugin.cobertura>1.4</maven.plugin.cobertura>
 	</properties>
 
   <description>
@@ -316,6 +317,14 @@
 				</configuration>
 			</plugin>
 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
@@ -665,6 +674,11 @@
 			<version>1.4.TITA.2</version>
 			<artifactId>table</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>maven-plugins</groupId>
+			<artifactId>maven-cobertura-plugin</artifactId>
+			<version>${maven.plugin.cobertura}</version>
+		</dependency> 
 		</dependencies>
 	</dependencyManagement>
 
@@ -694,5 +708,9 @@
 		
 		 
 	</distributionManagement>
+	
+	<reports>
+		<report>maven-cobertura-plugin</report>
+	</reports>
 
 </project>

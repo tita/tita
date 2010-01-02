@@ -79,8 +79,8 @@ public class TitaLoginContext extends UsernamePasswordContext {
         // e2.printStackTrace();
         // }
         // TODO: DELETE LATER
-        insertTempRoles();
-        insertTempUsers();
+//        insertTempRoles();
+//        insertTempUsers();
         // TODO: DELETE LATER
 
         if (username != null) {

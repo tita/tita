@@ -45,7 +45,7 @@ public class UserDAO extends GenericHibernateDao<TiTAUser, Long> {
      * @return a user
      */
     public TiTAUser findByUserName(String username) {
-    	TiTAUser u = new TiTAUser();
+        TiTAUser u = new TiTAUser();
         u.setDeleted(false);
         u.setUserName(username);
 

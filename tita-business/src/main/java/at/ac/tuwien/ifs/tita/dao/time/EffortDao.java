@@ -27,7 +27,6 @@ import javax.persistence.Query;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Property;
-
 import org.hibernate.criterion.Restrictions;
 
 import at.ac.tuwien.ifs.tita.dao.GenericHibernateDao;
@@ -74,8 +73,7 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
         return findByCriteriaOrdered(new Criterion[] {
                 Restrictions.between("date", start.getTime(), end.getTime()),
                 Restrictions.eq("deleted", false) }, new Order[] {
-                Property.forName("date").asc(),
-                Property.forName("startTime").asc() }, new String[] {});
+                Property.forName("date").asc()}, new String[] {});
     }
 
 
@@ -100,7 +98,7 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
         return findByCriteriaOrdered(new Criterion[] {
                 Restrictions.eq("date", date),
                 Restrictions.eq("deleted", false) }, new Order[] { Property
-                .forName("startTime").asc() }, new String[] {});
+                .forName("date").asc() }, new String[] {});
     }
 
     /** {@inheritDoc} */
@@ -124,8 +122,9 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
         q.setLong(0,projectId);
         q.setLong(1, tcId);
         q.setLong(2, projectId);
+        //CHECKSTYLE:OFF
         q.setLong(3, tcId);
-        
+        //CHECKSTYLE:ON
         return readEffortsFromDB(q);
     }
     
@@ -152,9 +151,8 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
      * @return list of timefforts that match dates
      */
     public List<Effort> getActualTimeEfforts(int maxresults) {
-        return findByCriteriaOrdered(new Criterion[] { Restrictions.eq(
-                "deleted", false) }, new Order[] { Order.asc("startTime") },
-                null);
+        return findByCriteriaOrdered(new Criterion[] { Restrictions.eq("deleted", false) }, 
+                new Order[] { Order.asc("date") }, null);
     }
         
     /**
@@ -185,9 +183,11 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
         criterions = new Criterion [] { Restrictions.eq("user.id", tcId)};
         return findByCriteriaOrdered(criterions, order, null);
     }
-	@Override
-	public List<Effort> getActualTimeEfforts(Integer maxresults) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    
+    /** {@inheritDoc} */
+    @Override
+    public List<Effort> getActualTimeEfforts(Integer maxresults) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

@@ -116,11 +116,11 @@ public class IssueTrackerTaskCoordinatorTest extends MantisBaseTest {
        
         tasks = mantisDao.findAllTasksForProject(projectId);
         
-        tiff1 = new TimedIssueEffort(tasks.get(taskId1).getProject().getId(), 
+        tiff1 = new TimedIssueEffort(projectId, 
                                      tasks.get(taskId1).getId());
-        tiff2 = new TimedIssueEffort(tasks.get(taskId2).getProject().getId(), 
+        tiff2 = new TimedIssueEffort(projectId, 
                                      tasks.get(taskId2).getId());
-        tiff3 = new TimedIssueEffort(tasks.get(taskId3).getProject().getId(), 
+        tiff3 = new TimedIssueEffort(projectId, 
                                      tasks.get(taskId3).getId());
         
         this.tiCo.startTimedIssueEffort(tiff1);
@@ -157,9 +157,9 @@ public class IssueTrackerTaskCoordinatorTest extends MantisBaseTest {
 
         tasks = mantisDao.findAllTasksForProject(projectId);
 
-        tiff1 = new TimedIssueEffort(tasks.get(taskId1).getProject().getId(),
+        tiff1 = new TimedIssueEffort(projectId,
                                      tasks.get(taskId1).getId());
-        tiff2 = new TimedIssueEffort(tasks.get(taskId2).getProject().getId(), 
+        tiff2 = new TimedIssueEffort(projectId, 
                                      tasks.get(taskId2).getId());
         
         this.tiCo.startTimedIssueEffort(tiff1);

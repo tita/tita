@@ -25,7 +25,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -135,10 +134,10 @@ public class TiTAProject extends BaseEntity<Long> implements Serializable {
     }
 
     public void setProjectStatus(ProjectStatus projectStatus) {
-		this.projectStatus = projectStatus;
-	}
+        this.projectStatus = projectStatus;
+    }
 
-	public Set<TiTATask> getTitaTasks() {
+    public Set<TiTATask> getTitaTasks() {
         return this.titaTasks;
     }
 

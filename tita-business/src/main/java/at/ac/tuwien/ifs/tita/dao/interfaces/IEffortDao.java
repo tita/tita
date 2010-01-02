@@ -1,6 +1,5 @@
 package at.ac.tuwien.ifs.tita.dao.interfaces;
 
-import java.util.Calendar;
 import java.util.List;
 
 import at.ac.tuwien.ifs.tita.entity.Effort;

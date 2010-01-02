@@ -15,8 +15,6 @@
  */
 package at.ac.tuwien.ifs.tita.entity;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,7 +22,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Version;
@@ -40,8 +37,8 @@ import javax.persistence.Version;
 @Table(name = "USER_PROJECT")
 @SequenceGenerator(name = "seq_tita_user_project", sequenceName = "TITA_USER_PROJECT_ID_SEQ", allocationSize = 1)
 public class TiTAUserProject extends BaseEntity<Long> {
-	
-	@Id
+    
+    @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_tita_user_project")
     private Long id;
@@ -63,12 +60,12 @@ public class TiTAUserProject extends BaseEntity<Long> {
     private Long modificationVersion;
     
     public TiTAUserProject() {
-    	
+
     }
     
     public TiTAUserProject(TiTAUser user, TiTAProject project) {
-    	this.user = user;
-    	this.project = project;
+        this.user = user;
+        this.project = project;
     }
 
 
@@ -126,8 +123,8 @@ public class TiTAUserProject extends BaseEntity<Long> {
         this.project = project;
     }
 
-	@Override
-	public Long getId() {
-		return this.id;
-	}
+    @Override
+    public Long getId() {
+        return this.id;
+    }
 }

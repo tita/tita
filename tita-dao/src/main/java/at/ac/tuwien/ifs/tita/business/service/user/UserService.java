@@ -90,7 +90,7 @@ public class UserService implements IUserService {
     /** {@inheritDoc} */
     @Override
     public List<TiTAUser> getUndeletedUsers() throws TitaDAOException {
-    	TiTAUser u = new TiTAUser();
+        TiTAUser u = new TiTAUser();
         u.setDeleted(false);
         return userDao.findByExample(u);
     }

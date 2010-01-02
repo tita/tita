@@ -189,6 +189,10 @@ public class Effort extends BaseEntity<Long> implements Serializable {
         return this.issueTTask;
     }
 
+    /** 
+     * Returns the startTime of the Effort.
+     * @return start time as long
+     */
     public Long getStartTime(){
         Calendar cal = Calendar.getInstance();
         cal.setTime(this.date);

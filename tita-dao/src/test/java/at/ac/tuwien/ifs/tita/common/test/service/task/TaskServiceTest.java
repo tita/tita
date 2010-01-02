@@ -35,7 +35,6 @@ import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus;
 import at.ac.tuwien.ifs.tita.issuetracker.exceptions.ProjectNotFoundException;
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
-import at.ac.tuwien.ifs.tita.common.test.service.task.IssueTrackerServiceTest;
 
 /**
  * Task Service Testcases.

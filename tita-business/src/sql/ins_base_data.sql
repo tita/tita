@@ -1,7 +1,20 @@
 insert into CONV_ISSUE_TRACKER (ID, DESCRIPTION) values (1, 'it 1');
-insert into CONV_ROLE (ID, DESCRIPTION) values (1, 'role 1');
+insert into CONV_ROLE (ID, DESCRIPTION) values (1, 'Administrator');
+insert into CONV_ROLE (ID, DESCRIPTION) values (2, 'Time consumer');
+insert into CONV_ROLE (ID, DESCRIPTION) values (3, 'Time controller');
+
 insert into CONV_PROJECT_STATUS (ID, DESCRIPTION) values (1, 'stat 1');
 insert into TITA_USER (ID,ROLE_ID) values (1,1);
+
+INSERT INTO tita_user (id, deleted, email, firstname, lastname, modification_version, password, username, role_id)
+ VALUES (5, false, NULL, NULL, NULL, 0, 'Ð3â*ãH®µfÂ
+ì5…M©—', 'admin', 1);
+INSERT INTO tita_user (id, deleted, email, firstname, lastname, modification_version, password, username, role_id)
+ VALUES (6, false, NULL, NULL, NULL, 0, 'EP¬õ{gmè!nC(Oyn¤™ú', 'timeconsumer', 2);
+INSERT INTO tita_user (id, deleted, email, firstname, lastname, modification_version, password, username, role_id)
+ VALUES (7, false, NULL, NULL, NULL, 0, 'z¡ü€»GïÑÛ
+æÙ›r¿Î&', 'timecontroller', 3);
+
 
 insert into TITA_PROJECT (ID, DESCRIPTION, NAME, DELETED, STATUS_ID, MODIFICATION_VERSION)
 values (1, 'nix', 'name', false, 1, 0);
