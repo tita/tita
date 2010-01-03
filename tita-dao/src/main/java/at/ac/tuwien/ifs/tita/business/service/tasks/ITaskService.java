@@ -164,7 +164,7 @@ public interface ITaskService {
 
     /**
      * Method to fetch all tasks from issue tracker tasks group by issue status.
-     * 
+     *
      * @param status
      *            - parameter for grouping
      * @return map of tasks for a issue tracker
@@ -183,7 +183,7 @@ public interface ITaskService {
      *             pnfe - if a project is null
      */
     void fetchTaskFromIssueTrackerProjects(Long projectTitaId, Long userTitaId)
-            throws ProjectNotFoundException, InterruptedException;
+            throws ProjectNotFoundException;
 
 
     /**
@@ -192,8 +192,8 @@ public interface ITaskService {
      * @return a map of tasks from all projects included in the tita project.
      */
     Map<Long, ITaskTrackable> getMapOfTasksFromAllProjectsIncludedInTiTAProject();
-    
+
     Map<Long, ITaskTrackable> sortingTasksByIssueTracker(String url);
-    
+
     Map<Long, ITaskTrackable> sortingTasksByIssueStatus(IssueStatus status);
 }

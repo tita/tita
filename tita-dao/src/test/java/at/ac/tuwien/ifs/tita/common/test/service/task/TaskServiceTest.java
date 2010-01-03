@@ -23,7 +23,6 @@ import java.util.Set;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -160,7 +159,6 @@ public class TaskServiceTest extends IssueTrackerServiceTest {
     @Test
     public void fetchTaskFromIssueTrackerProjects() throws ProjectNotFoundException {
 
-
         Map<Long, ITaskTrackable> map = this.taskService
                 .getMapOfTasksFromAllProjectsIncludedInTiTAProject();
 
@@ -170,7 +168,7 @@ public class TaskServiceTest extends IssueTrackerServiceTest {
         // CHECKSTYLE:OFF
         assertEquals(4, this.taskService.getMapOfTasksFromAllProjectsIncludedInTiTAProject().size());
         // CHECKSTYLE:ON
-        //getOutputOfTasks(this.taskService.getMapOfTasksFromAllProjectsIncludedInTiTAProject());
+        // getOutputOfTasks(this.taskService.getMapOfTasksFromAllProjectsIncludedInTiTAProject());
 
     }
 
@@ -178,49 +176,41 @@ public class TaskServiceTest extends IssueTrackerServiceTest {
      * The test case should return 4 tasks, because every task has the status
      * 'NEW'.
      *
-     * @throws InterruptedException
-     *             ie
      * @throws ProjectNotFoundException
      *             pnfe
      */
-    
+
     @Test
-    public void getIssueTrackerTasksGroupByIssueStatus() throws ProjectNotFoundException,
-            InterruptedException {
+    public void getIssueTrackerTasksGroupByIssueStatus() throws ProjectNotFoundException {
         this.taskService.fetchTaskFromIssueTrackerProjects(this.titaProject.getId(), this.titaUser
                 .getId());
 
-        Map<Long, ITaskTrackable> map = this.taskService
-                .sortingTasksByIssueStatus(IssueStatus.NEW);
+        Map<Long, ITaskTrackable> map = this.taskService.sortingTasksByIssueStatus(IssueStatus.NEW);
 
         // CHECKSTYLE:OFF
         assertEquals(4, this.taskService.getMapOfTasksFromAllProjectsIncludedInTiTAProject().size());
 
-        assertEquals(4, this.taskService.getIssueTrackerTasksGroupByIssueStatus(IssueStatus.NEW));
+        assertEquals(4, this.taskService.sortingTasksByIssueStatus(IssueStatus.NEW).size());
         // CHECKSTYLE:ON
-        //getOutputOfTasks(this.taskService.getMapOfTasksFromAllProjectsIncludedInTiTAProject());
+        // getOutputOfTasks(this.taskService.getMapOfTasksFromAllProjectsIncludedInTiTAProject());
     }
 
     /**
      * The test case should return 4 tasks, because every task is provided from
      * mantis with the same url.
-     *
-     * @throws InterruptedException
-     *             ie
+     * 
      * @throws ProjectNotFoundException
      *             pnfe
      */
-    @Ignore
     @Test
-    public void getIssueTrackerTasksGroupByIssueTracker() throws ProjectNotFoundException,
-            InterruptedException {
+    public void getIssueTrackerTasksGroupByIssueTracker() throws ProjectNotFoundException {
         this.taskService.fetchTaskFromIssueTrackerProjects(this.titaProject.getId(), this.titaUser
                 .getId());
         // CHECKSTYLE:OFF
         String test = this.logins.iterator().next().getIssueTracker().getUrl();
 
-        assertEquals(4, this.taskService.getIssueTrackerTasksGroupByIssueTracker(this.logins
-                .iterator().next().getIssueTracker().getUrl()));
+        assertEquals(4, this.taskService.sortingTasksByIssueTracker(
+                this.logins.iterator().next().getIssueTracker().getUrl()).size());
         // CHECKSTYLE:ON
         getOutputOfTasks(this.taskService.getMapOfTasksFromAllProjectsIncludedInTiTAProject());
     }

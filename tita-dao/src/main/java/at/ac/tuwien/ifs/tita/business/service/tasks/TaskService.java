@@ -244,11 +244,13 @@ public class TaskService implements ITaskService {
 	@Override
 	public Map<Long, ITaskTrackable> sortingTasksByIssueStatus(
 			IssueStatus status) {
+        System.out.println("status sorting");
+
         Map<Long, ITaskTrackable> taskGroupByStatus = new TreeMap<Long, ITaskTrackable>();
         Long key = 0L;
 
         for (ITaskTrackable task : this.mapOfTasksFromAllProjectsIncludedInTiTAProject.values()) {
-            if (task.getIssueTrackerType().equals(status)) {
+            if (task.getStatus().equals(status)) {
                 key++;
                 taskGroupByStatus.put(key, task);
             }
@@ -261,15 +263,19 @@ public class TaskService implements ITaskService {
         Map<Long, ITaskTrackable> taskGroupByIssueTrackerUrl = new TreeMap<Long, ITaskTrackable>();
         Long key = 0L;
 
+
+
         for (ITaskTrackable task : this.mapOfTasksFromAllProjectsIncludedInTiTAProject.values()) {
-            if (task.getProject().getUrl().equals(url)) {
+            String url2 = task.getProject().getUrl().toString();
+
+            if (task.getProject().getUrl().toString().startsWith(url)) {
                 key++;
                 taskGroupByIssueTrackerUrl.put(key, task);
             }
         }
         return taskGroupByIssueTrackerUrl;
 	}
-    
-    
+
+
 
 }

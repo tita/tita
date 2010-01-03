@@ -135,22 +135,8 @@ public class IssueTrackerService implements IIssueTrackerService {
             throw new ProjectNotFoundException("No project was set.");
         }
 
-        return dao.findAllTasksForProject(project.getId());
+        return this.dao.findAllTasksForProject(project.getId());
     }
-
-    // /** {@inheritDoc} */
-    // @Override
-    // @Deprecated
-    // public Map<Long, ITaskTrackable> getIssueTrackerTasksByProjectId(Long
-    // projectId)
-    // throws ProjectNotFoundException {
-    //
-    // if (projectId == null) {
-    // throw new ProjectNotFoundException("No project was set.");
-    // }
-    //
-    // return this.dao.findAllTasksForProject(projectId);
-    // }
 
     /** {@inheritDoc} */
     @Override
@@ -163,7 +149,7 @@ public class IssueTrackerService implements IIssueTrackerService {
 
         for (IProjectTrackable project : this.projects.values()) {
             if (project.getId().equals(projectId)) {
-                return dao.findAllTasksForProject(project.getId());
+                return project.getTasks();
             }
         }
 
