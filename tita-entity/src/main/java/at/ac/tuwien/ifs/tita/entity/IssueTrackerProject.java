@@ -63,7 +63,7 @@ public class IssueTrackerProject extends BaseEntity<Long> {
     private Long isstProjectId;
 
     @Column(name = "DELETED")
-    private boolean deleted;
+    private Boolean deleted;
 
     // @Column(name="DESCRIPTION")
     // private String description;
@@ -117,11 +117,11 @@ public class IssueTrackerProject extends BaseEntity<Long> {
         return this.issueTracker;
     }
 
-    public void setDeleted(boolean deleted) {
+    public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
     }
 
-    public boolean isDeleted() {
+    public Boolean isDeleted() {
         return this.deleted;
     }
 

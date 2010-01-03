@@ -119,7 +119,7 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
             // CHECKSTYLE:OFF
             // Sleeping because the updating is made on a other thread. This
             // thread will be quicker.
-            Thread.sleep(10000);
+            Thread.sleep(25000);
             // CHECKSTYLE:ON
 
             System.out.print(getPerformanceOutput());
@@ -385,7 +385,7 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
         // CHECKSTYLE:OFF
         // Sleeping because the updating is made on a other thread. This
         // thread will be quicker.
-        Thread.sleep(15000);
+        Thread.sleep(25000);
         // CHECKSTYLE:ON
 
         assertEquals(amountOfProjects, this.issueTrackerService.getProjects().size());

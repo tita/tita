@@ -76,17 +76,6 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
                 Property.forName("date").asc()}, new String[] {});
     }
 
-
-    /** {@inheritDoc} */
-    @SuppressWarnings("unchecked")
-    public List<Effort> getTimeEffortsDailyView(Calendar cal) {
-        Query q = em.createNamedQuery("timeeffort.daily.view");
-        q.setParameter("year", cal.get(Calendar.YEAR));
-        q.setParameter("month", cal.get(Calendar.MONTH) + 1);
-        q.setParameter("day", cal.get(Calendar.DAY_OF_MONTH));
-        return q.getResultList();
-    }
-    
     /**
      * Gets a view for a day.
      * 

@@ -146,17 +146,10 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
         } catch (ParseException e1) {
             assertTrue(false);
         }
-        Effort timeEffort1 = new Effort(null, null, null, "Das ist die Test TimeEffort 5");
-        Effort timeEffort2 = new Effort(null, null, null, "Das ist die Test TimeEffort 6");
-        Effort timeEffort3 = new Effort(null, null, null, "Das ist die Test TimeEffort 7");
-
-        timeEffort1.setDate(date1);
-        timeEffort2.setDate(date2);
-        timeEffort3.setDate(date1);
-
-        timeEffort1.setDeleted(false);
-        timeEffort2.setDeleted(false);
-        timeEffort3.setDeleted(false);
+        
+        Effort timeEffort1 = new Effort(date1, 0L, false, "Das ist die Test TimeEffort 5", null);
+        Effort timeEffort2 = new Effort(date2, 0L, false, "Das ist die Test TimeEffort 6", null);
+        Effort timeEffort3 = new Effort(date1, 0L, false, "Das ist die Test TimeEffort 7", null);
 
         effortList.add(timeEffort1);
         effortList.add(timeEffort2);
