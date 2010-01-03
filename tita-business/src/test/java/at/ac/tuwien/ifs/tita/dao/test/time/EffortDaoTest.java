@@ -3,6 +3,7 @@ package at.ac.tuwien.ifs.tita.dao.test.time;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -175,8 +176,11 @@ public class EffortDaoTest { //extends AbstractJpaTests {
      */
     @Test
     public void testfindEffortsForTiTAProjectIdShouldSucceed(){
+        List<Long> li = new ArrayList<Long>();
+        li.add(tip1.getId());
+        
         //CHECKSTYLE:OFF     
-        List<Effort> leff = timeEffortDAO.findEffortsForTiTAProjectId(tip1.getId());
+        List<Effort> leff = timeEffortDAO.findEffortsForTiTAProjectId(li);
           
         assertNotNull(leff);
         assertEquals(8, leff.size());
@@ -206,9 +210,11 @@ public class EffortDaoTest { //extends AbstractJpaTests {
      */
     @Test
     public void testfindEffortsForTiTAProjectIdAndTimeConsumerIdShouldSucceed(){
+        List<Long> li = new ArrayList<Long>();
+        li.add(tip1.getId());
         //CHECKSTYLE:OFF     
         List<Effort> leff = timeEffortDAO.findEffortsForTiTAProjectAndTimeConsumerId(
-                                                                         tip1.getId(), us2.getId());
+                                                                                    li,us2.getId());
           
         assertNotNull(leff);
         assertEquals(3, leff.size());

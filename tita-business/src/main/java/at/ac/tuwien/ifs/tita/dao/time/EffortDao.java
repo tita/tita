@@ -112,49 +112,49 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
 
     /** {@inheritDoc} */
     @Override
-    public List<Effort> findEffortsForTiTAProjectAndTimeConsumerId(Long projectId, Long tcId) {
+    public List<Effort> findEffortsForTiTAProjectAndTimeConsumerId(List<Long> projectIds,Long tcId){
+        String pIds = generateProjectIdList(projectIds);
         String queryString = C_TITA_EFFORT_SQL +
-                             "where tp.id = ? and e1.user_id = ? union " +
+                             "where tp.id in (" + pIds + ") and e1.user_id = ? union " +
                              C_ISSUE_TRACKER_EFFORT_SQL +
-                             "where tp2.id = ? and e2.user_id = ? ";
+                             "where tp2.id in (" + pIds + ") and e2.user_id = ? ";
         
         org.hibernate.SQLQuery q = getSession().createSQLQuery(queryString);
-        q.setLong(0,projectId);
+        
+        q.setLong(0, tcId);
         q.setLong(1, tcId);
-        q.setLong(2, projectId);
-        //CHECKSTYLE:OFF
-        q.setLong(3, tcId);
-        //CHECKSTYLE:ON
+
         return readEffortsFromDB(q);
     }
     
     /** {@inheritDoc} */
     @Override
-    public List<Effort> findEffortsForTiTAProjectId(Long projectId) {
+    public List<Effort> findEffortsForTiTAProjectId(List<Long> projectIds) {
+        String pIds = generateProjectIdList(projectIds);
         String queryString = C_TITA_EFFORT_SQL +
-                             "where tp.id = ? union " +
+                             "where tp.id in (" + pIds + ") union " +
                              C_ISSUE_TRACKER_EFFORT_SQL +
-                             "where tp2.id = ?";
+                             "where tp2.id in (" + pIds + ")";
         
         org.hibernate.SQLQuery q = getSession().createSQLQuery(queryString);
-        q.setLong(0,projectId);
-        q.setLong(1, projectId);
-                
+     
         return readEffortsFromDB(q);
     }
-
-    /**
-     * Gets a view for the last time efforts.
-     * 
-     * @param maxresults
-     *            sets the max results value for the query
-     * @return list of timefforts that match dates
-     */
-    public List<Effort> getActualTimeEfforts(int maxresults) {
-        return findByCriteriaOrdered(new Criterion[] { Restrictions.eq("deleted", false) }, 
-                new Order[] { Order.asc("date") }, null);
-    }
         
+    /**
+     * Generates a list of strings of project ids.
+     * @param projectIds List of Long
+     * @return String
+     */
+    private String generateProjectIdList(List<Long> projectIds) {
+        String pidList = "";
+        
+        for(Long id : projectIds){
+            pidList += id + ",";
+        }
+        
+        return pidList.substring(0, pidList.lastIndexOf(","));
+    }
     /**
      * Reads all efforts specified in query and returns it to caller.
      * @param query org.hibernate.SQLQuery
@@ -187,7 +187,7 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
     /** {@inheritDoc} */
     @Override
     public List<Effort> getActualTimeEfforts(Integer maxresults) {
-        // TODO Auto-generated method stub
-        return null;
+        return findByCriteriaOrdered(new Criterion[] { Restrictions.eq("deleted", false) }, 
+                new Order[] { Order.asc("date") }, null);
     }
 }
