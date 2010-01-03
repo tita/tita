@@ -55,6 +55,7 @@ import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 public class MantisBaseTest {
 
     protected MCSession session;
+    //TODO: delete
     protected final IssueTrackerLogin defaultLogin = new IssueTrackerLogin("administrator",
             "root", new IssueTracker(1L, "test-mantis", "http://localhost/mantisbt-1.1.8"),null);
 

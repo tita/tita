@@ -18,7 +18,6 @@ package at.ac.tuwien.ifs.tita.common.test.service.task;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
@@ -254,15 +253,26 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
      *
      * @throws ProjectNotFoundException
      *             pnfe
+     * @throws InterruptedException - ie
      */
     @Test
-    public void getIssueTrackerTasks() throws ProjectNotFoundException {
+    public void getIssueTrackerTasks() throws ProjectNotFoundException, InterruptedException {
 
         this.issueTrackerService = new IssueTrackerService(this.defaultLogin);
         IProjectTrackable project = this.issueTrackerService.getIssueTrackerDao()
                 .findProject(this.projectIds.get(0));
 
-        assertNull(this.issueTrackerService.getIssueTrackerTasks(project));
+        startTimer("Start of update for one projects:");
+        this.issueTrackerService.updateProject(project);
+        stopTimer("Stopping the upate for one projects.");
+        
+        // CHECKSTYLE:OFF
+        Thread.sleep(20000); // Sleeping because the updating is made on a
+        // other thread.
+        // This thread will be quicker.
+        // CHECKSTYLE:ON
+        
+        assertNotNull(this.issueTrackerService.getIssueTrackerTasks(project));
 
     }
 
@@ -286,14 +296,26 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
      *
      * @throws ProjectNotFoundException
      *             pnfe
+     * @throws InterruptedException - ie
      */
     @Test
-    public void getIssueTrackerTasksByProjectId() throws ProjectNotFoundException {
+    public void getIssueTrackerTasksByProjectId() 
+        throws ProjectNotFoundException, InterruptedException {
 
         this.issueTrackerService = new IssueTrackerService(this.defaultLogin);
         IProjectTrackable project = this.issueTrackerService.getIssueTrackerDao().findProject(
                 this.projectIds.get(0));
 
+        startTimer("Start of update for one projects:");
+        this.issueTrackerService.updateProject(project);
+        stopTimer("Stopping the upate for one projects.");
+        
+        // CHECKSTYLE:OFF
+        Thread.sleep(20000); // Sleeping because the updating is made on a
+        // other thread.
+        // This thread will be quicker.
+        // CHECKSTYLE:ON
+        
         assertNotNull(this.issueTrackerService.getIssueTrackerTasksByProjectId(project.getId()));
     }
 

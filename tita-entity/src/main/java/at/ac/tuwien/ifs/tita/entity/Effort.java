@@ -203,4 +203,19 @@ public class Effort extends BaseEntity<Long> implements Serializable {
     public void setStartTime(Long startTime){
         this.date = new Date(startTime);
     }
+    
+    /**
+     * Generates the Url to get to the Task of the Issuetracker.
+     * For example: projectname: Tita issue nr: 43 —> www.mantis.com/tita-issue:43 
+     * @return generated URL-String
+     */
+    public String getUrlToIssueTrackerTask(){
+        if(this.issueTTask != null){
+            String url = this.issueTTask.getIsstProject().getIssueTracker().getUrl();
+            String projectname = this.issueTTask.getIsstProject().getProjectName();
+            Long taskno = this.issueTTask.getIsstTaskId();
+            return url + "/" + projectname + ":" + taskno;
+        }
+        return "";
+    }
 }

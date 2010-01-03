@@ -71,9 +71,6 @@ public class TaskService implements ITaskService {
 
     }
 
-    public TaskService(Long titaProjectId, Long titaUserId) {
-
-    }
 
     public void setIssueTrackerDao(IssueTrackerDao issueTrackerDao) {
         this.issueTrackerDao = issueTrackerDao;

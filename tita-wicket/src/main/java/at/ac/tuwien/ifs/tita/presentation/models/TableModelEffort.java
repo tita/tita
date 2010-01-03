@@ -44,7 +44,7 @@ public class TableModelEffort extends AbstractTitaTableModel {
         super(list);
 
         columnNames = new String[] { "ID", "Date", "Description", "Start Time",
-                "End Time", "Duration", "", "" };
+                "End Time", "Duration", "", "", "Link" };
     }
 
     /**
@@ -89,7 +89,9 @@ public class TableModelEffort extends AbstractTitaTableModel {
                 return null;
             } else if (col == IntegerConstants.SEVEN) {
                 return null;
-            } else {
+            } else if (col == IntegerConstants.EIGTH) {
+                return te.getUrlToIssueTrackerTask();
+            }else {
                 return te;
             }
 

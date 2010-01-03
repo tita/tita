@@ -13,7 +13,7 @@
 --   limitations under the License.
 
 
-insert into CONV_ISSUE_TRACKER (ID, DESCRIPTION) values (1, 'it 1');
+insert into CONV_ISSUE_TRACKER (ID, DESCRIPTION, URL) values (1, 'it 1', 'www.mantis.com');
 insert into CONV_ROLE (ID, DESCRIPTION) values (1, 'Administrator');
 insert into CONV_ROLE (ID, DESCRIPTION) values (2, 'Time consumer');
 insert into CONV_ROLE (ID, DESCRIPTION) values (3, 'Time controller');
@@ -34,20 +34,20 @@ INSERT INTO tita_user (id, deleted, email, firstname, lastname, modification_ver
 insert into TITA_PROJECT (ID, DESCRIPTION, NAME, DELETED, STATUS_ID, MODIFICATION_VERSION)
 values (1, 'nix', 'name', false, 1, 0);
 
-insert into ISSUE_TRACKER_PROJECT (ID, TITA_PROJECT_ID, ISST_ID, ISST_PROJECT_ID, MODIFICATION_VERSION)
-values (1,1,1,97,0);
-insert into ISSUE_TRACKER_PROJECT (ID, TITA_PROJECT_ID, ISST_ID, ISST_PROJECT_ID, MODIFICATION_VERSION)
-values (2,1,1,39,0);
+insert into ISSUE_TRACKER_PROJECT (ID, TITA_PROJECT_ID, ISST_ID, ISST_PROJECT_ID, MODIFICATION_VERSION, PROJECT_NAME)
+values (1,1,1,97,0, 'tita-wicket');
+insert into ISSUE_TRACKER_PROJECT (ID, TITA_PROJECT_ID, ISST_ID, ISST_PROJECT_ID, MODIFICATION_VERSION, PROJECT_NAME)
+values (2,1,1,39,0, 'tita-business');
 
 insert into TITA_TASK (ID, DESCRIPTION, USER_ID, TITA_PROJECT_ID, MODIFICATION_VERSION) values
 (1, 'bla 1', 1, 1, 0);
 insert into TITA_TASK (ID, DESCRIPTION, USER_ID, TITA_PROJECT_ID, MODIFICATION_VERSION) values
 (2, 'bla 1', 1, 1, 0);
 
-insert into ISSUE_TRACKER_TASK (ID, ISSUE_TRACKER_PROJECT_ID, MODIFICATION_VERSION) values
-(1,1,0);
-insert into ISSUE_TRACKER_TASK (ID, ISSUE_TRACKER_PROJECT_ID, MODIFICATION_VERSION) values
-(2,2,0);
+insert into ISSUE_TRACKER_TASK (ID, ISSUE_TRACKER_PROJECT_ID, ISST_TASK_ID, MODIFICATION_VERSION) values
+(1,1,43, 0);
+insert into ISSUE_TRACKER_TASK (ID, ISSUE_TRACKER_PROJECT_ID, ISST_TASK_ID, MODIFICATION_VERSION) values
+(2,2,44, 0);
 
 insert into EFFORT (ID, DESCRIPTION, TITA_TASK_ID, ISSUET_TASK_ID, DATE, DURATION, DELETED, USER_ID)
 values (1, 'e1', 1, null, '2009-10-12', 2000, false, 1);

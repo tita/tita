@@ -51,6 +51,9 @@ public class IssueTrackerTask extends BaseEntity<Long> implements Serializable {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "ISSUE_TRACKER_PROJECT_ID") //, referencedColumnName = "ID")
     private IssueTrackerProject isstProject;
+    
+    @Column(name = "ISST_TASK_ID")
+    private Long isstTaskId;
 
     @Column(name = "DESCRIPTION")
     private String description;
@@ -95,4 +98,14 @@ public class IssueTrackerTask extends BaseEntity<Long> implements Serializable {
     public void setIsstProject(IssueTrackerProject isstProject) {
         this.isstProject = isstProject;
     }
+
+    public Long getIsstTaskId() {
+        return isstTaskId;
+    }
+
+    public void setIsstTaskId(Long isstTaskId) {
+        this.isstTaskId = isstTaskId;
+    }
+    
+    
 }

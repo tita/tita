@@ -135,7 +135,7 @@ public class IssueTrackerService implements IIssueTrackerService {
             throw new ProjectNotFoundException("No project was set.");
         }
 
-        return project.getTasks();
+        return dao.findAllTasksForProject(project.getId());
     }
 
     // /** {@inheritDoc} */

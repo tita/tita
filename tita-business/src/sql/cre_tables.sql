@@ -1,18 +1,3 @@
---   Copyright 2009 TiTA Project, Vienna University of Technology
---   
---   Licensed under the Apache License, Version 2.0 (the "License");
---   you may not use this file except in compliance with the License.
---   You may obtain a copy of the License at
---   
---       http://www.apache.org/licenses/LICENSE\-2.0
---       
---   Unless required by applicable law or agreed to in writing, software
---   distributed under the License is distributed on an "AS IS" BASIS,
---   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
---   See the License for the specific language governing permissions and
---   limitations under the License.
-
--- conv tables
 create table CONV_ROLE(
 	ID bigint,
 	DESCRIPTION varchar(50),
@@ -22,6 +7,7 @@ create table CONV_ROLE(
 create table CONV_ISSUE_TRACKER(
 	ID bigint,
 	DESCRIPTION varchar(50),
+	URL varchar(50),
 	primary key (ID)
 );
 
@@ -35,7 +21,7 @@ create table CONV_PROJECT_STATUS(
 create table TITA_USER(
 	ID bigint,
 	USERNAME varchar(20),
-	PASSWORD varchar(20),
+	PASSWORD varchar(50),
 	FIRSTNAME varchar(20),
 	LASTNAME varchar(20),
 	EMAIL varchar(40),
@@ -71,6 +57,7 @@ create table TITA_PROJECT(
 
 create table ISSUE_TRACKER_PROJECT(
 	ID bigint,
+	PROJECT_NAME varchar(50),
 	TITA_PROJECT_ID bigint references TITA_PROJECT(ID),
 	ISST_ID bigint references CONV_ISSUE_TRACKER (ID),
 	ISST_PROJECT_ID bigint,
@@ -92,6 +79,7 @@ create unique index AK_USER_PROJECT on USER_PROJECT (USER_ID,TITA_PROJECT_ID);
 create table TITA_TASK( 
 	ID bigint,
 	DESCRIPTION varchar(50),
+
 	USER_ID bigint references TITA_USER (ID),
 	TITA_PROJECT_ID bigint references TITA_PROJECT(ID),
 	MODIFICATION_VERSION bigint,
@@ -100,6 +88,7 @@ create table TITA_TASK(
 
 create table ISSUE_TRACKER_TASK(  
 	ID bigint,
+	ISST_TASK_ID bigint,
 	ISSUE_TRACKER_PROJECT_ID bigint references ISSUE_TRACKER_PROJECT (ID),
 	MODIFICATION_VERSION bigint,
 	primary key (ID)
