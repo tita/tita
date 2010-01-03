@@ -49,15 +49,15 @@ import at.ac.tuwien.ifs.tita.entity.conv.Role;
 
 /**
  * Test for EffortDao.
- *
+ * 
  * @author herbert
- *
+ * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:datasourceContext-test.xml" })
 @TransactionConfiguration
 @Transactional
-public class EffortDaoTest { //extends AbstractJpaTests {
+public class EffortDaoTest { // extends AbstractJpaTests {
     private TiTAProject tip1;
     private TiTAUser us1, us2;
     private Role r1;
@@ -85,38 +85,30 @@ public class EffortDaoTest { //extends AbstractJpaTests {
      * Prepare on TiTA Project for testing effort dao.
      */
     @Before
-    public void prepareProjects(){
-//        Long id, Date creationDate, Long startTime, Long duration, Boolean deleted,
-//        String description
-        //CHECKSTYLE:OFF
+    public void prepareProjects() {
+        // Long id, Date creationDate, Long startTime, Long duration, Boolean
+        // deleted,
+        // String description
+        // CHECKSTYLE:OFF
 
-        IssueTracker it = new IssueTracker(1L,"issue tracker 1",null);
+        IssueTracker it = new IssueTracker(1L, "issue tracker 1", null);
 
         this.r1 = new Role(1L, "role 1");
         this.roleDao.save(this.r1);
 
-        Effort et1 = null, et2 = null, et3 = null, et4 = null,
-               ei1 = null, ei2 = null, ei3 = null, ei4 = null;
+        Effort et1 = null, et2 = null, et3 = null, et4 = null, ei1 = null, ei2 = null, ei3 = null, ei4 = null;
 
         this.us1 = new TiTAUser(null, null, null, null, null, null, this.r1, null, null);
         this.us2 = new TiTAUser(null, null, null, null, null, null, this.r1, null, null);
 
-        et1 = new Effort(new Date(System.currentTimeMillis()), 1000L, false,
-                "tita task 1 - effort 1",this.us1);
-        et2 = new Effort(new Date(System.currentTimeMillis()),2000L, false,
-                "tita task 1 - effort 2",this.us1);
-        et3 = new Effort(new Date(System.currentTimeMillis()),5000L, false,
-                "tita task 2 - effort 1",this.us2);
-        et4 = new Effort(new Date(System.currentTimeMillis()),3000L, false,
-                "tita task 2 - effort 2",this.us1);
-        ei1 = new Effort(new Date(System.currentTimeMillis()),2000L, false,
-                "issuetracker task 1 - effort 1",this.us2);
-        ei2 = new Effort(new Date(System.currentTimeMillis()),8000L, false,
-                "issuetracker task 1 - effort 2",this.us1);
-        ei3 = new Effort(new Date(System.currentTimeMillis()),1000L, false,
-                "issuetracker task 2 - effort 1",this.us2);
-        ei4 = new Effort(new Date(System.currentTimeMillis()),7000L, false,
-                "issuetracker task 2 - effort 2",this.us1);
+        et1 = new Effort(new Date(System.currentTimeMillis()), 1000L, false, "tita task 1 - effort 1", this.us1);
+        et2 = new Effort(new Date(System.currentTimeMillis()), 2000L, false, "tita task 1 - effort 2", this.us1);
+        et3 = new Effort(new Date(System.currentTimeMillis()), 5000L, false, "tita task 2 - effort 1", this.us2);
+        et4 = new Effort(new Date(System.currentTimeMillis()), 3000L, false, "tita task 2 - effort 2", this.us1);
+        ei1 = new Effort(new Date(System.currentTimeMillis()), 2000L, false, "issuetracker task 1 - effort 1", this.us2);
+        ei2 = new Effort(new Date(System.currentTimeMillis()), 8000L, false, "issuetracker task 1 - effort 2", this.us1);
+        ei3 = new Effort(new Date(System.currentTimeMillis()), 1000L, false, "issuetracker task 2 - effort 1", this.us2);
+        ei4 = new Effort(new Date(System.currentTimeMillis()), 7000L, false, "issuetracker task 2 - effort 2", this.us1);
 
         Set<Effort> se1 = new HashSet<Effort>();
         se1.add(et1);
@@ -134,8 +126,8 @@ public class EffortDaoTest { //extends AbstractJpaTests {
         se4.add(ei3);
         se4.add(ei4);
 
-        TiTATask tit1 = new TiTATask(this.us1,se1);
-        TiTATask tit2 = new TiTATask(this.us2,se2);
+        TiTATask tit1 = new TiTATask(this.us1, se1);
+        TiTATask tit2 = new TiTATask(this.us2, se2);
 
         et1.setTitaTask(tit1);
         et2.setTitaTask(tit1);
@@ -160,20 +152,18 @@ public class EffortDaoTest { //extends AbstractJpaTests {
         Set<IssueTrackerTask> si2 = new HashSet<IssueTrackerTask>();
         si2.add(itt2);
 
-        IssueTrackerProject ip1 = new IssueTrackerProject(it,97L,si1);
+        IssueTrackerProject ip1 = new IssueTrackerProject(it, 97L, si1);
 
         itt1.setIsstProject(ip1);
         itt2.setIsstProject(ip1);
 
-        IssueTrackerProject ip2 = new IssueTrackerProject(it,98L,si2);
+        IssueTrackerProject ip2 = new IssueTrackerProject(it, 98L, si2);
 
         Set<IssueTrackerProject> sip = new HashSet<IssueTrackerProject>();
         sip.add(ip1);
         sip.add(ip2);
 
-
-        this.tip1 = new TiTAProject("bla", "bla", false, null,
-                sa1,sip);
+        this.tip1 = new TiTAProject("bla", "bla", false, null, sa1, sip);
 
         ip1.setTitaProject(this.tip1);
         ip2.setTitaProject(this.tip1);
@@ -190,7 +180,7 @@ public class EffortDaoTest { //extends AbstractJpaTests {
         this.utpDao.save(utp1);
         this.utpDao.save(utp2);
         this.utpDao.flush();
-        //CHECKSTYLE:ON
+        // CHECKSTYLE:ON
     }
 
     /**
@@ -205,24 +195,24 @@ public class EffortDaoTest { //extends AbstractJpaTests {
      * Test - returns 8 efforts for one tita project.
      */
     @Test
-    public void testfindEffortsForTiTAProjectIdShouldSucceed(){
+    public void testfindEffortsForTiTAProjectIdShouldSucceed() {
         List<Long> li = new ArrayList<Long>();
         li.add(tip1.getId());
-        
-        //CHECKSTYLE:OFF     
+
+        // CHECKSTYLE:OFF
         List<Effort> leff = timeEffortDAO.findEffortsForTiTAProjectId(li);
 
         assertNotNull(leff);
         assertEquals(8, leff.size());
-        //CHECKSTYLE:ON
+        // CHECKSTYLE:ON
     }
 
     /**
      * Test - returns 5 efforts for tita user 1 and 3 for tita user 2 project.
      */
     @Test
-    public void testfindEffortsForTimeConsumerIdShouldSucceed(){
-        //CHECKSTYLE:OFF
+    public void testfindEffortsForTimeConsumerIdShouldSucceed() {
+        // CHECKSTYLE:OFF
         List<Effort> leff = this.timeEffortDAO.findEffortsForTimeConsumerId(this.us1.getId());
 
         assertNotNull(leff);
@@ -232,22 +222,21 @@ public class EffortDaoTest { //extends AbstractJpaTests {
 
         assertNotNull(leff);
         assertEquals(3, leff.size());
-        //CHECKSTYLE:ON
+        // CHECKSTYLE:ON
     }
 
     /**
      * Test - returns 3 for tita user 2 project.
      */
     @Test
-    public void testfindEffortsForTiTAProjectIdAndTimeConsumerIdShouldSucceed(){
+    public void testfindEffortsForTiTAProjectIdAndTimeConsumerIdShouldSucceed() {
         List<Long> li = new ArrayList<Long>();
         li.add(tip1.getId());
-        //CHECKSTYLE:OFF     
-        List<Effort> leff = timeEffortDAO.findEffortsForTiTAProjectAndTimeConsumerId(
-                                                                                    li,us2.getId());
+        // CHECKSTYLE:OFF
+        List<Effort> leff = timeEffortDAO.findEffortsForTiTAProjectAndTimeConsumerId(li, us2.getId());
 
         assertNotNull(leff);
         assertEquals(3, leff.size());
-        //CHECKSTYLE:ON
+        // CHECKSTYLE:ON
     }
 }

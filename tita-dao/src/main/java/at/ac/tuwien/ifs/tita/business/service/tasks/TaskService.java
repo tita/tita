@@ -44,9 +44,9 @@ import at.ac.tuwien.ifs.tita.issuetracker.issue.service.IssueTrackerService;
  * The TaskService combines the IssueTrackerService, which fetches and manage
  * the data from the issue trackers, and encapsulates all Task-concerning
  * Database operations.
- *
+ * 
  * @author Christoph
- *
+ * 
  */
 
 public class TaskService implements ITaskService {
@@ -63,7 +63,8 @@ public class TaskService implements ITaskService {
 
     private IssueTrackerDao issueTrackerDao;
 
-    private Map<Long, ITaskTrackable> mapOfTasksFromAllProjectsIncludedInTiTAProject = new TreeMap<Long, ITaskTrackable>();
+    private Map<Long, ITaskTrackable> mapOfTasksFromAllProjectsIncludedInTiTAProject = 
+        new TreeMap<Long, ITaskTrackable>();
 
     private IIssueTrackerService issueTrackerService;
 
@@ -71,7 +72,9 @@ public class TaskService implements ITaskService {
 
     }
 
-
+    // public TaskService(Long titaProjectId, Long titaUserId) {
+    //
+    // }
     public void setIssueTrackerDao(IssueTrackerDao issueTrackerDao) {
         this.issueTrackerDao = issueTrackerDao;
     }
@@ -84,15 +87,15 @@ public class TaskService implements ITaskService {
 
     /** {@inheritDoc} */
     @Override
-    public IssueTrackerTask saveIssueTrackerTask(IssueTrackerTask issueTrackerTask)
-            throws PersistenceException {
+    public IssueTrackerTask saveIssueTrackerTask(IssueTrackerTask issueTrackerTask) 
+        throws PersistenceException {
         return this.issueTrackerTaskDao.save(issueTrackerTask);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void deleteIssueTrackerTask(IssueTrackerTask issueTrackerTask)
-            throws PersistenceException {
+    public void deleteIssueTrackerTask(IssueTrackerTask issueTrackerTask) 
+        throws PersistenceException {
         this.issueTrackerTaskDao.delete(issueTrackerTask);
     }
 
@@ -138,11 +141,11 @@ public class TaskService implements ITaskService {
         return this.issueTrackerDao.findById(id);
     }
 
-
     /** {@inheritDoc} */
     @Override
-    public void fetchTaskFromIssueTrackerProjects(Long projectTitaId, Long userTitaId)
-            throws ProjectNotFoundException, InterruptedException {
+    public void fetchTaskFromIssueTrackerProjects(Long projectTitaId, Long userTitaId) 
+        throws ProjectNotFoundException,
+            InterruptedException {
 
         this.titaProject = this.titaProjectDao.findById(projectTitaId);
 
@@ -159,8 +162,7 @@ public class TaskService implements ITaskService {
 
             Map<Long, IProjectTrackable> mapOfProjects = this.issueTrackerService.getProjects();
 
-            for (IssueTrackerProject issueTrackerProject : this.titaProject
-                    .getIssueTrackerProjects()) {
+            for (IssueTrackerProject issueTrackerProject : this.titaProject.getIssueTrackerProjects()) {
 
                 for (IProjectTrackable projectTrackable : mapOfProjects.values()) {
                     if (projectTrackable.getId().equals(issueTrackerProject.getIsstProjectId())) {
@@ -169,16 +171,13 @@ public class TaskService implements ITaskService {
                         this.issueTrackerService.updateProject(projectTrackable);
 
                         Map<Long, ITaskTrackable> mapOfTasks = this.issueTrackerService
-                                .getIssueTrackerTasksByProjectId(issueTrackerProject
-                                        .getIsstProjectId());
-
+                                .getIssueTrackerTasksByProjectId(issueTrackerProject.getIsstProjectId());
 
                         if (mapOfTasks != null) {
 
                             for (ITaskTrackable taskTrackable : mapOfTasks.values()) {
                                 key++;
-                                this.mapOfTasksFromAllProjectsIncludedInTiTAProject.put(key,
-                                        taskTrackable);
+                                this.mapOfTasksFromAllProjectsIncludedInTiTAProject.put(key, taskTrackable);
                             }
                         }
                     }

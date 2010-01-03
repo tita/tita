@@ -34,9 +34,9 @@ import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 
 /**
  * Entity for storing projects comming from different issue trackers.
- *
+ * 
  * @author herbert
- *
+ * 
  */
 @Entity
 @Table(name = "ISSUE_TRACKER_PROJECT")
@@ -55,7 +55,7 @@ public class IssueTrackerProject extends BaseEntity<Long> {
     @Column(name = "PROJECT_NAME")
     private String projectName;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "ISST_ID")
     private IssueTracker issueTracker;
 
@@ -65,8 +65,7 @@ public class IssueTrackerProject extends BaseEntity<Long> {
     @Column(name = "DELETED")
     private Boolean deleted;
 
-    @OneToMany(mappedBy = "isstProject", cascade = { CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.REMOVE })
+    @OneToMany(mappedBy = "isstProject", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE })
     private Set<IssueTrackerTask> issueTrackerTasks;
 
     @SuppressWarnings("unused")
@@ -77,8 +76,7 @@ public class IssueTrackerProject extends BaseEntity<Long> {
     public IssueTrackerProject() {
     }
 
-    public IssueTrackerProject(IssueTracker issTracker, Long isstProjectId,
-                               Set<IssueTrackerTask> issueTrackerTasks){
+    public IssueTrackerProject(IssueTracker issTracker, Long isstProjectId, Set<IssueTrackerTask> issueTrackerTasks) {
         super();
         this.issueTracker = issTracker;
         this.isstProjectId = isstProjectId;
