@@ -1,3 +1,18 @@
+--   Copyright 2009 TiTA Project, Vienna University of Technology
+--   
+--   Licensed under the Apache License, Version 2.0 (the "License");
+--   you may not use this file except in compliance with the License.
+--   You may obtain a copy of the License at
+--   
+--       http://www.apache.org/licenses/LICENSE\-2.0
+--       
+--   Unless required by applicable law or agreed to in writing, software
+--   distributed under the License is distributed on an "AS IS" BASIS,
+--   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--   See the License for the specific language governing permissions and
+--   limitations under the License.
+
+
 insert into CONV_ISSUE_TRACKER (ID, DESCRIPTION) values (1, 'it 1');
 insert into CONV_ROLE (ID, DESCRIPTION) values (1, 'Administrator');
 insert into CONV_ROLE (ID, DESCRIPTION) values (2, 'Time consumer');
@@ -7,13 +22,13 @@ insert into CONV_PROJECT_STATUS (ID, DESCRIPTION) values (1, 'stat 1');
 insert into TITA_USER (ID,ROLE_ID) values (1,1);
 
 INSERT INTO tita_user (id, deleted, email, firstname, lastname, modification_version, password, username, role_id)
- VALUES (5, false, NULL, NULL, NULL, 0, 'Ð3â*ãH®µfÂ
-ì5…M©—', 'admin', 1);
+ VALUES (5, false, NULL, NULL, NULL, 0, 'Ã�3Ã¢*Ã£HÂ®ÂµfÃ‚
+Ã¬5â€¦MÂ©â€”', 'admin', 1);
 INSERT INTO tita_user (id, deleted, email, firstname, lastname, modification_version, password, username, role_id)
- VALUES (6, false, NULL, NULL, NULL, 0, 'EP¬õ{gmè!nC(Oyn¤™ú', 'timeconsumer', 2);
+ VALUES (6, false, NULL, NULL, NULL, 0, 'EPÂ¬Ãµ{gmÃ¨!nC(OynÂ¤â„¢Ãº', 'timeconsumer', 2);
 INSERT INTO tita_user (id, deleted, email, firstname, lastname, modification_version, password, username, role_id)
- VALUES (7, false, NULL, NULL, NULL, 0, 'z¡ü€»GïÑÛ
-æÙ›r¿Î&', 'timecontroller', 3);
+ VALUES (7, false, NULL, NULL, NULL, 0, 'zÂ¡Ã¼â‚¬Â»GÃ¯Ã‘Ã›
+Ã¦Ã™â€ºrÂ¿ÃŽ&', 'timecontroller', 3);
 
 
 insert into TITA_PROJECT (ID, DESCRIPTION, NAME, DELETED, STATUS_ID, MODIFICATION_VERSION)

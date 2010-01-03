@@ -333,7 +333,7 @@
 				</configuration>
 			</plugin>
 
-			<!-- licenses 
+			<!-- licenses -->
 			<plugin>
 				<groupId>org.apache.rat</groupId>
 				<artifactId>apache-rat-plugin</artifactId>
@@ -374,7 +374,7 @@
 					</execution>
 				</executions>
 			</plugin>
--->
+
 
 			<!--
 				for automatic validating and compiling of jasper jrxml reports
