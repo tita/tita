@@ -35,7 +35,7 @@ create table CONV_PROJECT_STATUS(
 create table TITA_USER(
 	ID bigint,
 	USERNAME varchar(20),
-	PASSWORD varchar(20),
+	PASSWORD text,
 	FIRSTNAME varchar(20),
 	LASTNAME varchar(20),
 	EMAIL varchar(40),

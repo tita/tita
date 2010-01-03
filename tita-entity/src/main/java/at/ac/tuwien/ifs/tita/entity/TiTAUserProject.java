@@ -30,7 +30,7 @@ import javax.persistence.Version;
  * TiTAUserProject represents the join column of TiTAUser and TiTAProject. Extra
  * Class is necessary for storing information about the target hours that should
  * be consumed by a Time-Consumer.
- *
+ * 
  * @author ASE Group 10
  */
 @Entity
@@ -38,7 +38,7 @@ import javax.persistence.Version;
 @SequenceGenerator(name = "seq_tita_user_project", sequenceName = "TITA_USER_PROJECT_ID_SEQ", allocationSize = 1)
 public class TiTAUserProject extends BaseEntity<Long> {
 
-	@Id
+    @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_tita_user_project")
     private Long id;
@@ -63,17 +63,15 @@ public class TiTAUserProject extends BaseEntity<Long> {
 
     }
 
-
     public TiTAUserProject(TiTAUser user, TiTAProject project, Long targetHours) {
         this.user = user;
         this.project = project;
         this.targetHours = targetHours;
     }
 
-
     /**
      * Method for getting the targetHours.
-     *
+     * 
      * @return the targetHours
      */
     public Long getTargetHours() {
@@ -82,7 +80,7 @@ public class TiTAUserProject extends BaseEntity<Long> {
 
     /**
      * Method for setting the targetHours.
-     *
+     * 
      * @param targetHours the targetHours to set
      */
     public void setTargetHours(Long targetHours) {
@@ -91,7 +89,7 @@ public class TiTAUserProject extends BaseEntity<Long> {
 
     /**
      * Method for getting the user.
-     *
+     * 
      * @return the user
      */
     public TiTAUser getUser() {
@@ -100,7 +98,7 @@ public class TiTAUserProject extends BaseEntity<Long> {
 
     /**
      * Method for setting the user.
-     *
+     * 
      * @param user the user to set
      */
     public void setUser(TiTAUser user) {
@@ -109,7 +107,7 @@ public class TiTAUserProject extends BaseEntity<Long> {
 
     /**
      * Method for getting the project.
-     *
+     * 
      * @return the project
      */
     public TiTAProject getProject() {
@@ -118,7 +116,7 @@ public class TiTAUserProject extends BaseEntity<Long> {
 
     /**
      * Method for setting the project.
-     *
+     * 
      * @param project the project to set
      */
     public void setProject(TiTAProject project) {

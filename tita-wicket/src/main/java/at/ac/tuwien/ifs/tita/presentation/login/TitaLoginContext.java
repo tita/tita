@@ -50,7 +50,6 @@ public class TitaLoginContext extends UsernamePasswordContext {
     private IUserService service;
 
     /**
-     * 
      * Constructor for loging off.
      */
     public TitaLoginContext() {
@@ -66,21 +65,8 @@ public class TitaLoginContext extends UsernamePasswordContext {
      */
     @Override
     public Subject getSubject(String username, String password) throws LoginException {
-
-        // List<User> users = null;
-        // try {
-        // users = service.getUndeletedUsers();
-        //
-        // for (User us : users) {
-        // us.setDeleted(true);
-        // service.saveUser(us);
-        // }
-        // } catch (TitaDAOException e2) { // TODO Auto-generated catch block
-        // e2.printStackTrace();
-        // }
         // TODO: DELETE LATER
-//        insertTempRoles();
-//        insertTempUsers();
+        // insertTempUsers();
         // TODO: DELETE LATER
 
         if (username != null) {
@@ -115,27 +101,6 @@ public class TitaLoginContext extends UsernamePasswordContext {
             return user;
         }
         throw new LoginException("Login of user " + username + " failed.");
-    }
-
-    /**
-     * Insert temporary roles for testing. TODO: REMOVE LATER.
-     */
-    private void insertTempRoles() {
-        // CHECKSTYLE:OFF
-        List<Role> tempRolesList = new ArrayList<Role>(3);
-
-        tempRolesList.add(new Role(1L, "Administrator"));
-        tempRolesList.add(new Role(2L, "Time consumer"));
-        tempRolesList.add(new Role(3L, "Time controller"));
-        // CHECKSTYLE:ON
-
-        try {
-            for (Role r : tempRolesList) {
-                service.saveRole(r);
-            }
-        } catch (PersistenceException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
