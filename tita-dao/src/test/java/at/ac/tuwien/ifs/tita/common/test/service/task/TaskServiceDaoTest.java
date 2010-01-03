@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.persistence.PersistenceException;
 
 import junit.framework.Assert;
 
@@ -119,8 +120,12 @@ public class TaskServiceDaoTest{
         TiTATask titaTask = new TiTATask();
         try {
             this.service.saveTiTATask(titaTask);
-        } catch (TitaDAOException e) {
+            Assert.assertNotNull(titaTask.getId());
+            Assert.assertNotNull(this.service.getTiTATaskById(titaTask.getId()));
+        } catch (PersistenceException e) {
             fail("");
+        } finally {
+            this.service.deleteTiTATask(titaTask);
         }
     }
 
@@ -133,10 +138,32 @@ public class TaskServiceDaoTest{
         IssueTrackerTask issueTrackerTask = new IssueTrackerTask();
         try {
             this.service.saveIssueTrackerTask(issueTrackerTask);
-        } catch (TitaDAOException e) {
+            Assert.assertNotNull(issueTrackerTask.getId());
+            Assert.assertNotNull(this.service.getIssueTrackerTaskById(issueTrackerTask.getId()));
+        } catch (PersistenceException e) {
             fail("");
+        } finally {
+            this.service.deleteIssueTrackerTask(issueTrackerTask);
         }
-        Assert.assertNotNull(issueTrackerTask.getId());
+    }
+
+    /**
+     * The test case should save a issue tracker that is provided from the task
+     * list.
+     */
+    @Test
+    public void saveIssueTracker() {
+        IssueTracker issueTracker = new IssueTracker(1L, "Mantis",
+                "http://localhost/mantisbt-1.1.8");
+        try {
+            this.service.saveIssueTracker(issueTracker);
+            Assert.assertNotNull(issueTracker.getId());
+            Assert.assertNotNull(this.service.getIssueTrackerById(issueTracker.getId()));
+        } catch (PersistenceException e) {
+            fail("");
+        } finally {
+            this.service.deleteIssueTracker(issueTracker);
+        }
     }
 
 }

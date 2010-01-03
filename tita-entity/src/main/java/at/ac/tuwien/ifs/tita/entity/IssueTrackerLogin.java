@@ -3,17 +3,19 @@
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
-   
+
        http://www.apache.org/licenses/LICENSE\-2.0
-       
+
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-  
+
  */
 package at.ac.tuwien.ifs.tita.entity;
+
+import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,14 +32,14 @@ import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 
 /**
  * Entity for storing login-Data for Users to login at IssueTrackers.
- * 
+ *
  * @author karin
- * 
+ *
  */
 @Entity
 @Table(name = "ISST_LOGIN")
 @SequenceGenerator(name = "seq_isst_login", sequenceName = "ISST_LOGIN_ID_SEQ", allocationSize = 1)
-public class IssueTrackerLogin extends BaseEntity<Long> {
+public class IssueTrackerLogin extends BaseEntity<Long> implements Serializable {
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_isst_login")
@@ -52,7 +54,7 @@ public class IssueTrackerLogin extends BaseEntity<Long> {
     @ManyToOne
     @JoinColumn(name = "USER_ID") //, referencedColumnName = "ID")
     private TiTAUser user;
-    
+
     @ManyToOne
     @JoinColumn(name = "ISST_ID") //, referencedColumnName = "ID")
     private IssueTracker issueTracker;
@@ -76,7 +78,7 @@ public class IssueTrackerLogin extends BaseEntity<Long> {
     }
 
     public String getUserName() {
-        return userName;
+        return this.userName;
     }
 
     public void setUserName(String userName) {
@@ -84,19 +86,20 @@ public class IssueTrackerLogin extends BaseEntity<Long> {
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
+    @Override
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     public IssueTracker getIssueTracker() {
-        return issueTracker;
+        return this.issueTracker;
     }
 
     public void setIssueTracker(IssueTracker issueTracker) {
@@ -104,6 +107,6 @@ public class IssueTrackerLogin extends BaseEntity<Long> {
     }
 
     public TiTAUser getUser() {
-        return user;
+        return this.user;
     }
 }

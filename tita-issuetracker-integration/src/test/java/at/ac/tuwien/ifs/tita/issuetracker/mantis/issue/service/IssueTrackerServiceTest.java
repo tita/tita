@@ -26,7 +26,6 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mantisbt.connect.MCException;
 import org.slf4j.Logger;
@@ -203,7 +202,6 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
      *             ie
      */
     @Test
-    @Ignore
     public void updateProjectByProjectId() throws ProjectNotFoundException, InterruptedException {
         try {
 

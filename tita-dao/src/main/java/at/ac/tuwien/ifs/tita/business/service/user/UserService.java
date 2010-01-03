@@ -9,7 +9,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-   
+
  */
 
 package at.ac.tuwien.ifs.tita.business.service.user;
@@ -27,9 +27,9 @@ import at.ac.tuwien.ifs.tita.entity.conv.Role;
 /**
  * Service for manipulating (insert, update, delete, search... ) users and roles
  * in TiTA.
- * 
+ *
  * @author ASE Group 10 - TiTA
- * 
+ *
  */
 public class UserService implements IUserService {
 
@@ -47,57 +47,58 @@ public class UserService implements IUserService {
     /** {@inheritDoc} */
     @Override
     public void deleteRole(Role role) throws PersistenceException {
-        roleDao.delete(role);
+        this.roleDao.delete(role);
     }
 
     /** {@inheritDoc} */
     @Override
     public void deleteUser(TiTAUser user) throws PersistenceException {
-        userDao.delete(user);
+        this.userDao.delete(user);
 
     }
 
     /** {@inheritDoc} */
     @Override
     public Role getRoleById(Long id) throws PersistenceException {
-        return roleDao.findById(id);
+        return this.roleDao.findById(id);
     }
 
     /** {@inheritDoc} */
     @Override
     public TiTAUser getUserById(Long id) throws PersistenceException {
-        return userDao.findById(id);
+        return this.userDao.findById(id);
     }
 
     /** {@inheritDoc} */
     @Override
     public Role saveRole(Role role) throws PersistenceException {
-        return roleDao.save(role);
+        return this.roleDao.save(role);
     }
 
     /** {@inheritDoc} */
     @Override
     public TiTAUser saveUser(TiTAUser user) throws PersistenceException {
-        return userDao.save(user);
+        return this.userDao.save(user);
     }
 
     /** {@inheritDoc} */
     @Override
     public TiTAUser getUserByUsername(String username) throws TitaDAOException {
-        return userDao.findByUserName(username);
+        return this.userDao.findByUserName(username);
     }
+
 
     /** {@inheritDoc} */
     @Override
     public List<TiTAUser> getUndeletedUsers() throws TitaDAOException {
         TiTAUser u = new TiTAUser();
         u.setDeleted(false);
-        return userDao.findByExample(u);
+        return this.userDao.findByExample(u);
     }
 
     /** {@inheritDoc} */
     @Override
     public List<Role> getRoles() throws TitaDAOException {
-        return roleDao.findAll();
+        return this.roleDao.findAll();
     }
 }

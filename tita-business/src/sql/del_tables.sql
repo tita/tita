@@ -2,7 +2,7 @@ delete from EFFORT;
 delete from TITA_TASK;
 delete from ISSUE_TRACKER_TASK;
 delete from ISSUE_TRACKER_PROJECT;
-delete from USER_TITA_PROJECT;
+delete from USER_PROJECT;
 delete from TITA_PROJECT;
 delete from CONV_PROJECT_STATUS;
 delete from CONV_ISSUE_TRACKER;
