@@ -15,27 +15,33 @@
  */
 package at.ac.tuwien.ifs.tita.common.test.service.task;
 
-import java.util.ArrayList;
+import static org.junit.Assert.assertEquals;
+
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import junit.framework.Assert;
-
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import at.ac.tuwien.ifs.tita.business.service.tasks.ITaskService;
-import at.ac.tuwien.ifs.tita.business.service.tasks.TaskService;
+import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
+import at.ac.tuwien.ifs.tita.dao.IGenericHibernateDao;
+import at.ac.tuwien.ifs.tita.dao.user.UserDAO;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
-import at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus;
+import at.ac.tuwien.ifs.tita.entity.TiTAUser;
+import at.ac.tuwien.ifs.tita.entity.TiTAUserProject;
+import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
+import at.ac.tuwien.ifs.tita.entity.conv.Role;
+import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueStatus;
 import at.ac.tuwien.ifs.tita.issuetracker.exceptions.ProjectNotFoundException;
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
-import at.ac.tuwien.ifs.tita.common.test.service.task.IssueTrackerServiceTest;
 
 /**
  * Task Service Testcases.
@@ -43,55 +49,87 @@ import at.ac.tuwien.ifs.tita.common.test.service.task.IssueTrackerServiceTest;
  * @author Christoph
  *
  */
+
 public class TaskServiceTest extends IssueTrackerServiceTest {
 
     private TiTAProject titaProject;
-    private List<IssueTrackerLogin> logins;
+    private TiTAUser titaUser;
 
-    private ITaskService taskService = new TaskService();
+    private Set<IssueTrackerLogin> logins;
+
+    @Qualifier("titaProjectDao")
+    @Autowired
+    private IGenericHibernateDao<TiTAProject, Long> titaProjectDao;
+
+    @Autowired
+    private UserDAO titaUserDao;
+
+    @Autowired
+    private IUserService userService;
+
+    @Autowired
+    private ITaskService taskService;
 
     /**
      * Prepare mantis connection and create a setup in mantis with projects and
      * tasks.
      */
     @Before
-    @Override
-    public void setUp() {
+    public void prepareMantisAndTitaSetup() {
 
-        // try {
-        this.logins = new ArrayList<IssueTrackerLogin>();
+        this.logins = new HashSet<IssueTrackerLogin>();
         this.logins.add(this.defaultLogin);
+
+        super.prepareSetup();
 
         // Creating issueTrackerProjects
         // setup defines the projects in mantis
         IssueTrackerProject issueTrackerProject0 = new IssueTrackerProject();
+        issueTrackerProject0.setIsstProjectId(this.projectIds.get(0));
         issueTrackerProject0.setProjectName("projectName0");
         IssueTrackerProject issueTrackerProject1 = new IssueTrackerProject();
+        issueTrackerProject1.setIsstProjectId(this.projectIds.get(1));
         issueTrackerProject1.setProjectName("projectName1");
         Set<IssueTrackerProject> issueTrackerProjects = new HashSet<IssueTrackerProject>();
         issueTrackerProjects.add(issueTrackerProject0);
         issueTrackerProjects.add(issueTrackerProject1);
 
-        // Creating a titaproject with the issueTrackerProjects
+        // Creating a tita project with the issueTrackerProjects
         this.titaProject = new TiTAProject();
         this.titaProject.setName("TestProjektTita");
         this.titaProject.setDeleted(false);
-        this.titaProject.setProjectStatus(new ProjectStatus(1L, "open"));
+        // this.titaProject.setProjectStatus(new ProjectStatus(1L, "open"));
         this.titaProject.setIssueTrackerProjects(issueTrackerProjects);
 
-        this.taskService.setLogins(this.logins);
-        this.taskService.setProject(this.titaProject);
+        issueTrackerProject0.setTitaProject(this.titaProject);
+        issueTrackerProject1.setTitaProject(this.titaProject);
 
-        super.setUp();
-        String test = "";
+        this.titaProjectDao.save(this.titaProject);
+        this.titaProjectDao.flushnClear();
 
-        // } catch (MCException e) {
-        // fail("Mantis connection error.");
-        // } catch (ProjectNotFoundException e) {
-        // fail("Project must be set.");
-        // } catch (InterruptedException e) {
-        // fail("Interruption Failure.");
-        // }
+        // Creating a titaUser and associations
+        Role r1 = new Role(1L, "role 1");
+        this.userService.saveRole(r1);
+
+        IssueTracker iT1 = new IssueTracker(1L, "Mantis", "http://localhost/mantisbt-1.1.8");
+        this.logins.iterator().next().setIssueTracker(iT1);
+
+        this.titaUser = new TiTAUser("timeconsumer", "timeconsumer", "Christoph", "Zehetner",
+                "christoph.zehetner@gmx.at", false, r1, null, this.logins);
+
+        // CHECKSTYLE:OFF
+        TiTAUserProject titaUserProject = new TiTAUserProject(this.titaUser, this.titaProject, 12L);
+        // CHECKSTYLE:ON
+
+        Set<TiTAUserProject> tup1 = new HashSet<TiTAUserProject>();
+        tup1.add(titaUserProject);
+        this.titaUser.setTitaUserProjects(tup1);
+
+        this.taskService.saveIssueTracker(iT1);
+
+        this.titaUserDao.save(this.titaUser);
+        this.titaUserDao.flush();
+
     }
 
     /**
@@ -101,33 +139,91 @@ public class TaskServiceTest extends IssueTrackerServiceTest {
      *             e
      */
     @After
-    @Override
-    public void tearDown() throws InterruptedException {
-        this.titaProject = null;
-        deleteSetupAndChanges();
+    public void undoSetup() throws InterruptedException {
+        super.deleteSetup();
+        this.userService.saveRole(this.titaUser.getRole());
+        this.titaUserDao.delete(this.titaUser);
+        this.titaProjectDao.delete(this.titaProjectDao.findById(this.titaProject.getId()));
     }
 
     /**
      * The test case should fetch the tasks from the issue tracker projects
      * 'projectName0' and 'projectName1' from mantis and provide as a list.
      *
+     *
+     *
+     * @throws ProjectNotFoundException
+     *             pnfe
+     * @throws InterruptedException
+     *             ie
+     */
+    @Test
+    public void fetchTaskFromIssueTrackerProjects() throws ProjectNotFoundException,
+            InterruptedException {
+
+
+        Map<Long, ITaskTrackable> map = this.taskService
+                .getMapOfTasksFromAllProjectsIncludedInTiTAProject();
+
+        // Assert.assertNull(this.taskService.getMapOfTasksFromAllProjectsIncludedInTiTAProject());
+        this.taskService.fetchTaskFromIssueTrackerProjects(this.titaProject.getId(), this.titaUser
+                .getId());
+        // CHECKSTYLE:OFF
+        assertEquals(4, this.taskService.getMapOfTasksFromAllProjectsIncludedInTiTAProject().size());
+        // CHECKSTYLE:ON
+        getOutputOfTasks(this.taskService.getMapOfTasksFromAllProjectsIncludedInTiTAProject());
+
+    }
+
+    /**
+     * The test case should return 4 tasks, because every task has the status
+     * 'NEW'.
+     *
+     * @throws InterruptedException
+     *             ie
      * @throws ProjectNotFoundException
      *             pnfe
      */
+    @Ignore
     @Test
-    public void fetchTaskFromIssueTrackerProjects() throws ProjectNotFoundException {
+    public void getIssueTrackerTasksGroupByIssueStatus() throws ProjectNotFoundException,
+            InterruptedException {
+        this.taskService.fetchTaskFromIssueTrackerProjects(this.titaProject.getId(), this.titaUser
+                .getId());
 
-        Assert.assertNull(this.taskService.getMapOfTasksFromAllProjectsIncludedInTiTAProject());
-        this.taskService.fetchTaskFromIssueTrackerProjects();
-        Assert.assertNotNull(this.taskService.getMapOfTasksFromAllProjectsIncludedInTiTAProject());
+        Map<Long, ITaskTrackable> map = this.taskService
+                .getIssueTrackerTasksGroupByIssueStatus(IssueStatus.NEW);
+
+        // CHECKSTYLE:OFF
+        assertEquals(4, this.taskService.getMapOfTasksFromAllProjectsIncludedInTiTAProject().size());
+
+        assertEquals(4, this.taskService.getIssueTrackerTasksGroupByIssueStatus(IssueStatus.NEW));
+        // CHECKSTYLE:ON
         getOutputOfTasks(this.taskService.getMapOfTasksFromAllProjectsIncludedInTiTAProject());
     }
 
     /**
-     * Method.
+     * The test case should return 4 tasks, because every task is provided from
+     * mantis with the same url.
+     *
+     * @throws InterruptedException
+     *             ie
+     * @throws ProjectNotFoundException
+     *             pnfe
      */
-    public void getIssueTrackerTasksGroupByIssueTracker() {
+    @Ignore
+    @Test
+    public void getIssueTrackerTasksGroupByIssueTracker() throws ProjectNotFoundException,
+            InterruptedException {
+        this.taskService.fetchTaskFromIssueTrackerProjects(this.titaProject.getId(), this.titaUser
+                .getId());
+        // CHECKSTYLE:OFF
+        String test = this.logins.iterator().next().getIssueTracker().getUrl();
 
+        assertEquals(4, this.taskService.getIssueTrackerTasksGroupByIssueTracker(this.logins
+                .iterator().next().getIssueTracker().getUrl()));
+        // CHECKSTYLE:ON
+        getOutputOfTasks(this.taskService.getMapOfTasksFromAllProjectsIncludedInTiTAProject());
     }
 
     /**
@@ -148,5 +244,4 @@ public class TaskServiceTest extends IssueTrackerServiceTest {
 
         return null;
     }
-
 }

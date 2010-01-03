@@ -25,7 +25,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -36,9 +35,9 @@ import at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus;
 
 /**
  * Entity for storing projects that are associated with an issue tracker.
- * 
+ *
  * @author herbert
- * 
+ *
  */
 @Entity
 @Table(name = "TITA_PROJECT")
@@ -46,7 +45,7 @@ import at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus;
 public class TiTAProject extends BaseEntity<Long> implements Serializable {
 
     @Id
-    @Column(name = "ID", insertable=false)
+    @Column(name = "ID", insertable = false)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_project")
     private Long id;
 
@@ -63,12 +62,12 @@ public class TiTAProject extends BaseEntity<Long> implements Serializable {
     @JoinColumn(name = "STATUS_ID")
     private ProjectStatus projectStatus;
 
-    @OneToMany(mappedBy = "titaProject", 
-               cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "titaProject", cascade = { CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.REMOVE })
     private Set<TiTATask> titaTasks;
 
-    @OneToMany(mappedBy = "titaProject", 
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "titaProject", cascade = { CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.REMOVE })
     private Set<IssueTrackerProject> issueTrackerProjects;
 
     @OneToMany(mappedBy = "project")
@@ -78,11 +77,10 @@ public class TiTAProject extends BaseEntity<Long> implements Serializable {
     @SuppressWarnings("unused")
     @Column(name = "MODIFICATION_VERSION")
     @Version
-    private Long modificationVersion; 
-    
-    public TiTAProject(String description, String name,
-            Boolean deleted, ProjectStatus projectStatus,
-            Set<TiTATask> titaTasks,
+    private Long modificationVersion;
+
+    public TiTAProject(String description, String name, Boolean deleted,
+            ProjectStatus projectStatus, Set<TiTATask> titaTasks,
             Set<IssueTrackerProject> issueTrackerProjects) {
         super();
         this.description = description;
@@ -93,9 +91,9 @@ public class TiTAProject extends BaseEntity<Long> implements Serializable {
         this.issueTrackerProjects = issueTrackerProjects;
     }
 
-    public TiTAProject(){    
+    public TiTAProject() {
     }
-    
+
     @Override
     public Long getId() {
         return this.id;
@@ -126,7 +124,7 @@ public class TiTAProject extends BaseEntity<Long> implements Serializable {
     }
 
     public Set<TiTAUserProject> getUsers() {
-        return users;
+        return this.users;
 
     }
 
@@ -135,10 +133,10 @@ public class TiTAProject extends BaseEntity<Long> implements Serializable {
     }
 
     public void setProjectStatus(ProjectStatus projectStatus) {
-		this.projectStatus = projectStatus;
-	}
+        this.projectStatus = projectStatus;
+    }
 
-	public Set<TiTATask> getTitaTasks() {
+    public Set<TiTATask> getTitaTasks() {
         return this.titaTasks;
     }
 
