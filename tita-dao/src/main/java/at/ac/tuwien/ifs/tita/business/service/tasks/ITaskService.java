@@ -181,8 +181,6 @@ public interface ITaskService {
      *            - id of the logged in user
      * @throws ProjectNotFoundException
      *             pnfe - if a project is null
-     * @throws InterruptedException
-     *             ie
      */
     void fetchTaskFromIssueTrackerProjects(Long projectTitaId, Long userTitaId)
             throws ProjectNotFoundException, InterruptedException;
@@ -194,4 +192,8 @@ public interface ITaskService {
      * @return a map of tasks from all projects included in the tita project.
      */
     Map<Long, ITaskTrackable> getMapOfTasksFromAllProjectsIncludedInTiTAProject();
+    
+    Map<Long, ITaskTrackable> sortingTasksByIssueTracker(String url);
+    
+    Map<Long, ITaskTrackable> sortingTasksByIssueStatus(IssueStatus status);
 }

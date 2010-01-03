@@ -158,8 +158,7 @@ public class TaskServiceTest extends IssueTrackerServiceTest {
      *             ie
      */
     @Test
-    public void fetchTaskFromIssueTrackerProjects() throws ProjectNotFoundException,
-            InterruptedException {
+    public void fetchTaskFromIssueTrackerProjects() throws ProjectNotFoundException {
 
 
         Map<Long, ITaskTrackable> map = this.taskService
@@ -171,7 +170,7 @@ public class TaskServiceTest extends IssueTrackerServiceTest {
         // CHECKSTYLE:OFF
         assertEquals(4, this.taskService.getMapOfTasksFromAllProjectsIncludedInTiTAProject().size());
         // CHECKSTYLE:ON
-        getOutputOfTasks(this.taskService.getMapOfTasksFromAllProjectsIncludedInTiTAProject());
+        //getOutputOfTasks(this.taskService.getMapOfTasksFromAllProjectsIncludedInTiTAProject());
 
     }
 
@@ -184,7 +183,7 @@ public class TaskServiceTest extends IssueTrackerServiceTest {
      * @throws ProjectNotFoundException
      *             pnfe
      */
-    @Ignore
+    
     @Test
     public void getIssueTrackerTasksGroupByIssueStatus() throws ProjectNotFoundException,
             InterruptedException {
@@ -192,14 +191,14 @@ public class TaskServiceTest extends IssueTrackerServiceTest {
                 .getId());
 
         Map<Long, ITaskTrackable> map = this.taskService
-                .getIssueTrackerTasksGroupByIssueStatus(IssueStatus.NEW);
+                .sortingTasksByIssueStatus(IssueStatus.NEW);
 
         // CHECKSTYLE:OFF
         assertEquals(4, this.taskService.getMapOfTasksFromAllProjectsIncludedInTiTAProject().size());
 
         assertEquals(4, this.taskService.getIssueTrackerTasksGroupByIssueStatus(IssueStatus.NEW));
         // CHECKSTYLE:ON
-        getOutputOfTasks(this.taskService.getMapOfTasksFromAllProjectsIncludedInTiTAProject());
+        //getOutputOfTasks(this.taskService.getMapOfTasksFromAllProjectsIncludedInTiTAProject());
     }
 
     /**

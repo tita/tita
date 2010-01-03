@@ -17,14 +17,11 @@
 package at.ac.tuwien.ifs.tita.common.test.service.task;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Ignore;
-import org.junit.Test;
 import org.mantisbt.connect.MCException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +29,6 @@ import org.springframework.test.annotation.NotTransactional;
 
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueStatus;
 import at.ac.tuwien.ifs.tita.issuetracker.exceptions.ProjectNotFoundException;
-import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IProjectTrackable;
 import at.ac.tuwien.ifs.tita.issuetracker.issue.service.IssueTrackerService;
 
 /**
@@ -75,258 +71,8 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
     /**
      * Delete mantis projects for all tests.
      *
-     * @throws ProjectNotFoundException pnfe
-     * @throws InterruptedException ie
-     */
-    @Test
-    public void updateAllShouldFetchAllIssueForTheProjects() throws ProjectNotFoundException,
-            InterruptedException {
-
-        try {
-
-            Long taskid = 0L;
-
-            // Adding one task to each project to issue tracker
-            taskid = createTestTask("tita_test_issue_new0",
-                    "issue_summary_new", "projectName0");
-            this.taskIds.add(taskid);
-            taskid = createTestTask("tita_test_issue_new1",
-                    "issue_summary_new", "projectName1");
-            this.taskIds.add(taskid);
-            taskid = createTestTask("tita_test_issue_new2",
-                    "issue_summary_new", "projectName2");
-            this.taskIds.add(taskid);
-
-            startTimer("Start of update for all projects:");
-            this.issueTrackerService.updateAll();
-            stopTimer("Stopping the upate for all projects.");
-
-            // CHECKSTYLE:OFF
-            // Sleeping because the updating is made on a other thread. This
-            // thread will be quicker.
-            Thread.sleep(25000);
-            // CHECKSTYLE:ON
-
-            System.out.print(getPerformanceOutput());
-
-            assertEquals(this.numberOfProjects.intValue(), this.issueTrackerService.getProjects().size());
-            assertEquals(this.numberOfTasksForEachProject + 1, this.issueTrackerService.getIssueTrackerTasks(
-                            this.issueTrackerService.getProjects().get(this.projectIds.get(0)),
-                            IssueStatus.NEW).size());
-
-            assertNotNull(this.issueTrackerService.getIssueTrackerDao().findProject(
-                    "projectName0"));
-
-        } catch (MCException e) {
-            fail("Creating or deleting projects and issues failed.");
-            e.getStackTrace();
-        }
-    }
-
-    /**
-     * The test case should update a single project. After the update new tasks
-     * for the project should be involved.
-     *
-     * @throws ProjectNotFoundException
-     *             pnfe
      * @throws InterruptedException
-     *             ie
-     *
-     */
-    @Test
-    public void updateProject() throws ProjectNotFoundException, InterruptedException {
-        try {
-
-            Long taskid = 0L;
-
-            // Adding a task to the project in the issue tracker
-            taskid = createTestTask("tita_test_issue_new0",
-                    "issue_summary_new", "projectName0");
-            this.taskIds.add(taskid);
-
-            startTimer("Start of update for one projects:");
-            this.issueTrackerService.updateProject(this.issueTrackerService.getProjects().get(
-                    this.projectIds.get(0)));
-            stopTimer("Stopping the upate for one projects.");
-
-            // CHECKSTYLE:OFF
-            Thread.sleep(20000); // Sleeping because the updating is made on a
-            // other thread.
-            // This thread will be quicker.
-            // CHECKSTYLE:ON
-
-            System.out.print(getPerformanceOutput());
-            IProjectTrackable foundProject = null;
-
-            for (IProjectTrackable pro : this.issueTrackerService.getProjects().values()) {
-                if (pro.getName().equals("projectName0")) {
-                    foundProject = pro;
-                }
-            }
-
-            assertEquals(this.numberOfProjects.intValue(), this.issueTrackerService.getProjects()
-                    .size());
-            assertEquals(this.numberOfTasksForEachProject + 1, this.issueTrackerService
-                    .getIssueTrackerTasks(foundProject, IssueStatus.NEW).size());
-
-        } catch (MCException e) {
-            fail("Creating or deleting projects and issues failed.");
-            e.getStackTrace();
-        }
-    }
-
-    /**
-     * The test case should update a single project with the parameter
-     * projectId. After the update new tasks for the project should be involved.
-     *
-     * This test case does not run, because a additional project is produced.
-     *
-     * @throws ProjectNotFoundException
-     *             pnfe
-     * @throws InterruptedException
-     *             ie
-     */
-    @Test
-    @Ignore
-    public void updateProjectByProjectId() throws ProjectNotFoundException, InterruptedException {
-        try {
-
-            Long taskid = 0L;
-
-            // Adding a task to the project in the issue tracker
-            taskid = createTestTask("tita_test_issue_new0", "issue_summary_new", "projectName0");
-            this.taskIds.add(taskid);
-
-            IProjectTrackable foundProject = null;
-
-            for (IProjectTrackable pro : this.issueTrackerService.getProjects().values()) {
-                if (pro.getName().equals("projectName0")) {
-                    foundProject = pro;
-                }
-            }
-
-            startTimer("Start of update for one projects:");
-            this.issueTrackerService.updateProject(foundProject.getId());
-            stopTimer("Stopping the upate for one projects.");
-
-            // CHECKSTYLE:OFF
-            Thread.sleep(20000); // Sleeping because the updating is made on a
-            // other thread.
-            // This thread will be quicker.
-            // CHECKSTYLE:ON
-
-            System.out.print(getPerformanceOutput());
-
-            assertEquals(this.numberOfProjects.intValue(), this.issueTrackerService.getProjects()
-                    .size());
-            assertEquals(this.numberOfTasksForEachProject + 1, this.issueTrackerService
-                    .getIssueTrackerTasks(foundProject, IssueStatus.NEW).size());
-
-        } catch (MCException e) {
-            fail("Creating or deleting projects and issues failed.");
-            e.getStackTrace();
-        }
-    }
-
-    /**
-     * The test case shows how the issue tracker service reacts when no project
-     * is set and checking for status.
-     *
-     * @throws ProjectNotFoundException
-     *             pnfe
-     */
-    @Test(expected = ProjectNotFoundException.class)
-    public void getIssueTrackerTasksShouldThrowProjectNotFoundException()
-            throws ProjectNotFoundException {
-
-        this.issueTrackerService = new IssueTrackerService(this.defaultLogin);
-        this.issueTrackerService.getIssueTrackerTasks(null, IssueStatus.NEW);
-
-    }
-
-    /**
-     * The test case shows how the issue tracker service reacts when are no
-     * elements are found for the project.
-     *
-     * A null should be returned, that says, that a information message for the
-     * user is necessary as feedback.
-     *
-     * @throws ProjectNotFoundException
-     *             pnfe
-     * @throws InterruptedException - ie
-     */
-    @Test
-    public void getIssueTrackerTasks() throws ProjectNotFoundException, InterruptedException {
-
-        this.issueTrackerService = new IssueTrackerService(this.defaultLogin);
-        IProjectTrackable project = this.issueTrackerService.getIssueTrackerDao()
-                .findProject(this.projectIds.get(0));
-
-        startTimer("Start of update for one projects:");
-        this.issueTrackerService.updateProject(project);
-        stopTimer("Stopping the upate for one projects.");
-        
-        // CHECKSTYLE:OFF
-        Thread.sleep(20000); // Sleeping because the updating is made on a
-        // other thread.
-        // This thread will be quicker.
-        // CHECKSTYLE:ON
-        
-        assertNotNull(this.issueTrackerService.getIssueTrackerTasks(project));
-
-    }
-
-    /**
-     * The test case shows how the task service reacts when no project is set.
-     *
-     * @throws ProjectNotFoundException
-     *             pnfe
-     */
-    @Test(expected = ProjectNotFoundException.class)
-    public void getIssueTrackerTasksWithoutIssueStatusShouldThrowProjectNotFoundException()
-            throws ProjectNotFoundException {
-
-        this.issueTrackerService = new IssueTrackerService(this.defaultLogin);
-        this.issueTrackerService.getIssueTrackerTasks(null);
-
-    }
-
-    /**
-     * The test case shows how the tasks for projects can be found.
-     *
-     * @throws ProjectNotFoundException
-     *             pnfe
-     * @throws InterruptedException - ie
-     */
-    @Test
-    public void getIssueTrackerTasksByProjectId() 
-        throws ProjectNotFoundException, InterruptedException {
-
-        this.issueTrackerService = new IssueTrackerService(this.defaultLogin);
-        IProjectTrackable project = this.issueTrackerService.getIssueTrackerDao().findProject(
-                this.projectIds.get(0));
-
-        startTimer("Start of update for one projects:");
-        this.issueTrackerService.updateProject(project);
-        stopTimer("Stopping the upate for one projects.");
-        
-        // CHECKSTYLE:OFF
-        Thread.sleep(20000); // Sleeping because the updating is made on a
-        // other thread.
-        // This thread will be quicker.
-        // CHECKSTYLE:ON
-        
-        assertNotNull(this.issueTrackerService.getIssueTrackerTasksByProjectId(project.getId()));
-    }
-
-    /**
-     * The test case shows how the task service reacts when are no elements are
-     * found for the project or status.
-     *
-     * A null should be returned, that says, that a information message for the
-     * user is necessary as feedback.
-     *
-     * @throws InterruptedException ie
+     *             e
      */
     public void deleteSetup() throws InterruptedException {
         deleteSetupAndChanges();
@@ -379,7 +125,7 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
         // CHECKSTYLE:OFF
         // Sleeping because the updating is made on a other thread. This
         // thread will be quicker.
-        Thread.sleep(25000);
+        Thread.sleep(15000);
         // CHECKSTYLE:ON
 
         assertEquals(amountOfProjects, this.issueTrackerService.getProjects().size());
