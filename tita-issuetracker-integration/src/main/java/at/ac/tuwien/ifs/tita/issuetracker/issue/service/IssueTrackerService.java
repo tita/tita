@@ -163,7 +163,7 @@ public class IssueTrackerService implements IIssueTrackerService {
 
         for (IProjectTrackable project : this.projects.values()) {
             if (project.getId().equals(projectId)) {
-                return project.getTasks();
+                return dao.findAllTasksForProject(project.getId());
             }
         }
 

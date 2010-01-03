@@ -21,11 +21,7 @@ create table CONV_PROJECT_STATUS(
 create table TITA_USER(
 	ID bigint,
 	USERNAME varchar(20),
-<<<<<<< HEAD:tita-business/src/sql/cre_tables.sql
-	PASSWORD varchar(50),
-=======
 	PASSWORD text,
->>>>>>> 398f6b776a2aea7f20bf604768b8721beff8d93a:tita-business/src/sql/cre_tables.sql
 	FIRSTNAME varchar(20),
 	LASTNAME varchar(20),
 	EMAIL varchar(40),

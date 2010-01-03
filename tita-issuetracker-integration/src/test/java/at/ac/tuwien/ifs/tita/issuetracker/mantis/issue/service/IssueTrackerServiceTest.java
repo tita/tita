@@ -314,8 +314,7 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
      */
     @Test
     public void getIssueTrackerTasksByProjectId() throws ProjectNotFoundException, InterruptedException {
-
-       
+    
         this.issueTrackerService = new IssueTrackerService(this.defaultLogin);
         IProjectTrackable project = this.issueTrackerService.getIssueTrackerDao().findProject(
                 this.projectIds.get(0));
