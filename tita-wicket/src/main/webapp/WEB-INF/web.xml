@@ -73,4 +73,11 @@
  		<welcome-file>default.htm</welcome-file>
  		<welcome-file>default.jsp</welcome-file>
  	</welcome-file-list>
+ 	
+ 	<resource-ref>
+	  <description>Postgres data source</description>
+	  <res-ref-name>jdbc/titaDatasource</res-ref-name>
+	  <res-type>javax.sql.DataSource</res-type>
+	  <res-auth>Container</res-auth>
+	</resource-ref>
 </web-app>

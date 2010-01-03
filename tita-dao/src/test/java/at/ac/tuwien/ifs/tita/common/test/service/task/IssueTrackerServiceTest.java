@@ -24,13 +24,12 @@ import static org.junit.Assert.fail;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.mantisbt.connect.MCException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.test.annotation.NotTransactional;
 
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueStatus;
 import at.ac.tuwien.ifs.tita.issuetracker.exceptions.ProjectNotFoundException;
@@ -38,7 +37,9 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IProjectTrackable;
 import at.ac.tuwien.ifs.tita.issuetracker.issue.service.IssueTrackerService;
 
 /**
- * Test for testing task service that imports all tasks comming from an issue tracker.
+ * Test for testing task service that imports all tasks comming from an issue
+ * tracker.
+ *
  * @author herbert
  *
  */
@@ -58,10 +59,8 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
      * Prepare mantis connection and create a setup in mantis with projects and
      * tasks.
      */
-    @Before
-    @Override
-    public void setUp() {
-        super.setUp();
+    public void prepareSetup() {
+        super.connectToMantis();
 
         try {
             createSetup(this.numberOfProjects, this.numberOfTasksForEachProject);
@@ -77,21 +76,8 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
     /**
      * Delete mantis projects for all tests.
      *
-     * @throws InterruptedException e
-     */
-    @After
-    public void tearDown() throws InterruptedException {
-        deleteSetupAndChanges();
-    }
-
-    /**
-     * The test case should manage the update for all projects and issues. The
-     * time will be measured for the update and should be about 10 second.
-     *
-     * @throws ProjectNotFoundException
-     *             pnfe
-     * @throws InterruptedException
-     *             ie
+     * @throws ProjectNotFoundException pnfe
+     * @throws InterruptedException ie
      */
     @Test
     public void updateAllShouldFetchAllIssueForTheProjects() throws ProjectNotFoundException,
@@ -318,23 +304,10 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
      * A null should be returned, that says, that a information message for the
      * user is necessary as feedback.
      *
-     * @throws ProjectNotFoundException pnfe
+     * @throws InterruptedException ie
      */
-    @Test
-    public void getIssueTrackerTasksOnlyAssignedTasks() throws ProjectNotFoundException {
-
-        this.issueTrackerService = new IssueTrackerService(this.defaultLogin);
-        IProjectTrackable foundProject = null;
-
-        for (IProjectTrackable pro : this.issueTrackerService.getProjects().values()) {
-            if (pro.getName().equals("projectName0")) {
-                foundProject = pro;
-            }
-        }
-
-        assertNull(this.issueTrackerService
-                .getIssueTrackerTasks(foundProject, IssueStatus.ASSIGNED));
-
+    public void deleteSetup() throws InterruptedException {
+        deleteSetupAndChanges();
     }
 
     /**
@@ -352,9 +325,9 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
      * @throws InterruptedException
      *             ie
      */
-    protected void createSetup(int amountOfProjects,
-            int amountOfTasksForEachProject) throws MCException,
- ProjectNotFoundException, InterruptedException {
+    @NotTransactional
+    protected void createSetup(int amountOfProjects, int amountOfTasksForEachProject)
+            throws MCException, ProjectNotFoundException, InterruptedException {
         List<Long> taskids = new ArrayList<Long>();
         List<Long> projectids = new ArrayList<Long>();
 
@@ -364,13 +337,12 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
         Long taskid = 1L;
 
         for (int i = 0; i < amountOfProjects; i++) {
-            id = createTestProject("projectName" + i, "description" + i, true,
-                    false);
+            id = createTestProject("projectName" + i, "description" + i, true, false);
             projectids.add(id);
 
             for (int j = 0; j < amountOfTasksForEachProject; j++) {
-                taskid = createTestTask("tita_test_issue" + i + j,
-                        "issue_summary" + i + j, "projectName" + i);
+                taskid = createTestTask("tita_test_issue" + i + j, "issue_summary" + i + j,
+                        "projectName" + i);
                 taskids.add(taskid);
             }
         }
@@ -399,10 +371,12 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
     /**
      * The method undo the setup for mantis.
      *
-     * @throws InterruptedException ie
+     * @throws InterruptedException
+     *             ie
      */
+    @NotTransactional
     protected void deleteSetupAndChanges() throws InterruptedException {
-        //CHECKSTYLE:OFF
+        // CHECKSTYLE:OFF
         Thread.sleep(2000);
 
         startTimer("Starting deleting:");
@@ -418,5 +392,7 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
 
         stopTimer("End of deleting.");
         System.out.print(getPerformanceOutput());
+
+        this.issueTrackerService = null;
     }
 }
