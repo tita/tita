@@ -45,9 +45,9 @@ import at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus;
 
 /**
  * Task Service Dao Testcases.
- * 
+ *
  * @author Christoph
- * 
+ *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:datasourceContext-test.xml" })
@@ -91,7 +91,7 @@ public class TaskServiceDaoTest {
 
     /**
      * Delete mantis projects for all tests.
-     * 
+     *
      * @throws InterruptedException e
      */
     @After
@@ -159,7 +159,7 @@ public class TaskServiceDaoTest {
         } catch (PersistenceException e) {
             fail("");
         } finally {
-            this.service.deleteIssueTracker(issueTracker);
+            this.service.deleteIssueTracker(this.service.getIssueTrackerById(issueTracker.getId()));
         }
     }
 
