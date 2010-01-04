@@ -116,4 +116,11 @@ public interface IUserService {
      * @return all Roles if found
      */
     List<Role> getRoles() throws TitaDAOException;
+    
+    /**
+     * Returns a list of all existing tita users.
+     * @param projects List of tita projects
+     * @return List of TiTAUsers
+     */
+    List<TiTAUser> findAllTiTAUsersForProjects(List<String> projects);
 }

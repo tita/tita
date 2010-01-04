@@ -30,6 +30,8 @@ import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.entity.TiTAUserProject;
 import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 import at.ac.tuwien.ifs.tita.entity.conv.Role;
+import at.ac.tuwien.ifs.tita.entity.util.ProjectEffort;
+import at.ac.tuwien.ifs.tita.entity.util.UserProjectEffort;
 
 /**
  * Test for EffortDao.
@@ -76,8 +78,8 @@ public class EffortDaoTest { //extends AbstractJpaTests {
         Effort et1 = null, et2 = null, et3 = null, et4 = null, 
                ei1 = null, ei2 = null, ei3 = null, ei4 = null; 
         
-        us1 = new TiTAUser(null, null, null, null, null, null, r1, null, null); 
-        us2 = new TiTAUser(null, null, null, null, null, null, r1, null, null);
+        us1 = new TiTAUser("user1", null, null, null, null, null, r1, null, null); 
+        us2 = new TiTAUser("user2", null, null, null, null, null, r1, null, null);
         
         et1 = new Effort(new Date(System.currentTimeMillis()), 1000L, false,
                 "tita task 1 - effort 1",us1);
@@ -160,7 +162,7 @@ public class EffortDaoTest { //extends AbstractJpaTests {
         tit1.setTitaProject(tip1);
         
         titaProjectDAO.save(tip1);
-        titaProjectDAO.flushnClear();
+        titaProjectDAO.flush();
         
         TiTAUserProject utp1 = new TiTAUserProject(us1,tip1);
         TiTAUserProject utp2 = new TiTAUserProject(us2,tip1);
@@ -176,14 +178,14 @@ public class EffortDaoTest { //extends AbstractJpaTests {
      */
     @Test
     public void testfindEffortsForTiTAProjectIdShouldSucceed(){
-        List<Long> li = new ArrayList<Long>();
-        li.add(tip1.getId());
+        List<String> li = new ArrayList<String>();
+        li.add("bla");
         
         //CHECKSTYLE:OFF     
-        List<Effort> leff = timeEffortDAO.findEffortsForTiTAProjectId(li);
+        List<ProjectEffort> leff = timeEffortDAO.findEffortsForTiTAProjectId(li, "month");
           
         assertNotNull(leff);
-        assertEquals(8, leff.size());
+        assertEquals(2, leff.size());
         //CHECKSTYLE:ON
     }
     
@@ -210,14 +212,17 @@ public class EffortDaoTest { //extends AbstractJpaTests {
      */
     @Test
     public void testfindEffortsForTiTAProjectIdAndTimeConsumerIdShouldSucceed(){
-        List<Long> li = new ArrayList<Long>();
-        li.add(tip1.getId());
+        List<String> li = new ArrayList<String>();
+        li.add(tip1.getName());
+        
+        List<String> ti = new ArrayList<String>();
+        ti.add(us2.getUserName());
         //CHECKSTYLE:OFF     
-        List<Effort> leff = timeEffortDAO.findEffortsForTiTAProjectAndTimeConsumerId(
-                                                                                    li,us2.getId());
+        List<UserProjectEffort> leff = timeEffortDAO.findEffortsForTiTAProjectAndTimeConsumerId(
+                                                                                       li,ti,"day");
           
         assertNotNull(leff);
-        assertEquals(3, leff.size());
+        assertEquals(2, leff.size());
         //CHECKSTYLE:ON
     }
 }

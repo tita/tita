@@ -17,29 +17,41 @@
     <body>
         <wicket:extend>
          <form wicket:id="multipleProjectsForm">
-           <div>
-                 <label for="projectSelection">Projects</label>
-                 <select wicket:id="projectSelection" id="projectSelection">
-                   <option>Project 1</option>
-                   <option>Project 2</option>
-                 </select>
-           </div>
-           <div>
-                 <label for="timeConsumerSelection">Time Consumers</label>
-                 <select wicket:id="timeConsumerSelection" id="timeConsumerSelection">
-                   <option>TimeConsumer 1</option>
-                   <option>TimeConsumer 2</option>
-                 </select>
-           </div>      
-           <div>
-            <label for="timeSpanSelection">TimeSpan</label>
-                 <select wicket:id="timeSpanSelection" id="timeSpanSelection">
-                   <option value="daily">Daily</option>
-                   <option value="monthly">Monthly</option>
-                 </select>
-           </div>
-           <button wicket:id="btnShowMultipleProjects" type="button">Show</button>
-           </form>
+	           <table>
+	           	   <!-- div wicket:id="listContainer"-->
+	           	   	   <tr>
+	           	   	   		<th><label for="projectSelection">Projects</label></th>
+	           	   	   		<th><label for="timeConsumerSelection">Time Consumers</label></th>
+	           	   	   		<th><label for="timeSpanSelection">TimeSpan</label></th>
+	           	   	   </tr>
+			           <tr>
+			               <td>
+			               		<select wicket:id="projectSelection" />
+					       </td>
+					       <td>
+					       		<select wicket:id="timeConsumerSelection"/>
+				           </td>
+				           <td>
+					           <select wicket:id="timeSpanSelection"/>
+					       </td>
+				       </tr>
+			       <!-- div-->
+	          	   <tr>
+	          	   	  <td>
+	           				<button wicket:id="btnRefreshProjects" type="button">Refresh Projects</button>
+	           		  </td>
+	           		  <td>
+	           				<button wicket:id="btnLoadUsers" type="button">Load Users</button>
+	           		  </td>
+	          	   	  <td>
+	           				<button wicket:id="btnShowUserEfforts" type="button">Show User Efforts</button>
+	           		  </td>
+	           		  <td>
+	           				<button wicket:id="btnShowProjectEfforts" type="button">Show Project Efforts</button>
+	           		  </td>
+	           	   </tr>	
+	          </table>
+          <!-- Rows paging:  <div class="navigator" wicket:id="rowsPaging"></div>
            <div>
                    <table border="1">
                      <thead>
@@ -61,7 +73,8 @@
                          </tr>
                      </tbody>
                  </table>
-            </div>
+            </div-->
+        </form>
         </wicket:extend>
     </body>
 </html>

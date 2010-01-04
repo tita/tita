@@ -3,6 +3,8 @@ package at.ac.tuwien.ifs.tita.dao.interfaces;
 import java.util.List;
 
 import at.ac.tuwien.ifs.tita.entity.Effort;
+import at.ac.tuwien.ifs.tita.entity.util.ProjectEffort;
+import at.ac.tuwien.ifs.tita.entity.util.UserProjectEffort;
 
 /**
  * 
@@ -24,17 +26,21 @@ public interface IEffortDao {
     /**
      * Find all efforts for a specific tita-project.
      * @param projectIds List of Long
+     * @param grouping String
      * @return List of Effort
      */
-    List<Effort> findEffortsForTiTAProjectId(List<Long> projectId);
+    List<ProjectEffort> findEffortsForTiTAProjectId(List<String> projectId, String grouping);
     
     /**
      * Find all effort of a time consumer in a specific tita-project.
      * @param projectIds List of Long
-     * @param tcId Long
+     * @param tIds List of Long
+     * @param grouping String
      * @return List of Effort
      */
-    List<Effort> findEffortsForTiTAProjectAndTimeConsumerId(List<Long> projectId, Long tcId);
+    List<UserProjectEffort> findEffortsForTiTAProjectAndTimeConsumerId(List<String> projectId, 
+                                                            List<String> tIds,
+                                                            String grouping);
     
     /**
      * Find all efforts of a specific time consumer in whole tita.

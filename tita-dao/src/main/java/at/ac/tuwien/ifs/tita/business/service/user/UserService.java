@@ -100,4 +100,10 @@ public class UserService implements IUserService {
     public List<Role> getRoles() throws TitaDAOException {
         return roleDao.findAll();
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<TiTAUser> findAllTiTAUsersForProjects(List<String> projects) {
+        return userDao.findUsersForProjectNames(projects);
+    }
 }

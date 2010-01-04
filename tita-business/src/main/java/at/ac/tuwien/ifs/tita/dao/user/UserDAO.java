@@ -15,12 +15,16 @@
  */
 package at.ac.tuwien.ifs.tita.dao.user;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.NoResultException;
 
 import org.springframework.stereotype.Repository;
 
 import at.ac.tuwien.ifs.tita.dao.GenericHibernateDao;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
+import at.ac.tuwien.ifs.tita.entity.util.StringUtil;
 
 /**
  * UserDAO encapsulates CRUD-Operations for the TiTAUser.
@@ -28,7 +32,7 @@ import at.ac.tuwien.ifs.tita.entity.TiTAUser;
  * @author ASE Group 10
  */
 @Repository
-public class UserDAO extends GenericHibernateDao<TiTAUser, Long> {
+public class UserDAO extends GenericHibernateDao<TiTAUser, Long> implements IUserDAO{
 
     /**
      * public constructor, needed for telling the generic EntityManager the
@@ -38,12 +42,8 @@ public class UserDAO extends GenericHibernateDao<TiTAUser, Long> {
         super(TiTAUser.class);
     }
 
-    /**
-     * Gets a user by username.
-     * 
-     * @param username username of user
-     * @return a user
-     */
+    /** {@inheritDoc} */
+    @Override
     public TiTAUser findByUserName(String username) {
         TiTAUser u = new TiTAUser();
         u.setDeleted(false);
@@ -56,5 +56,28 @@ public class UserDAO extends GenericHibernateDao<TiTAUser, Long> {
         }
 
         return u;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<TiTAUser> findUsersForProjectNames(List<String> projects) {
+        String names = StringUtil.generateIdStringFromStringList(projects);
+        
+        String queryString = "select u.* from tita_user u join user_project up on " +
+                             "u.id = up.user_id join tita_project tp on up.project_id = tp.id " +
+                             " where tp.name in (" + names + ")";
+        
+        org.hibernate.SQLQuery query = getSession().createSQLQuery(queryString);
+        
+        List<TiTAUser> users = new ArrayList<TiTAUser>();
+        
+        query.addEntity(TiTAUser.class);
+        
+        try {
+            users = query.list();
+        } catch (NoResultException e) {
+            // nothing to do
+        }
+        return users;
     }
 }

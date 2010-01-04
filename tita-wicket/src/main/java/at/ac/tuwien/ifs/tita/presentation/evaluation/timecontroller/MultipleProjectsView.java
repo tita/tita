@@ -15,20 +15,25 @@
  */
 package at.ac.tuwien.ifs.tita.presentation.evaluation.timecontroller;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.ListMultipleChoice;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import at.ac.tuwien.ifs.tita.business.service.project.IProjectService;
+import at.ac.tuwien.ifs.tita.business.service.time.IEffortService;
+import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
+import at.ac.tuwien.ifs.tita.entity.TiTAProject;
+import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.presentation.BasePage;
 import at.ac.tuwien.ifs.tita.presentation.controls.dropdown.SelectOption;
 
@@ -39,28 +44,67 @@ import at.ac.tuwien.ifs.tita.presentation.controls.dropdown.SelectOption;
  * 
  */
 public class MultipleProjectsView extends BasePage {
-    private final SelectOption selectedTimespan;
-
+    
+    @SpringBean(name = "titaProjectService")
+    private IProjectService titaProjectService;
+    
+    @SpringBean(name = "userService")
+    private IUserService userService;
+    
+    @SpringBean(name = "timeEffortService")
+    private IEffortService effortService;
+    
+    private SelectOption selectedTimespan;
+    private ListMultipleChoice<String> projectList, tcList;   
+    private Form<Object> form;
+    private List<String> selectedProjects, selectedUsers;
+    
+    @SuppressWarnings("unchecked")
     public MultipleProjectsView() {
-        Form<Object> form = new Form<Object>("multipleProjectsForm");
+        //add form to page        
+        form = new Form<Object>("multipleProjectsForm");
         form.setOutputMarkupId(true);
         add(form);
-
-        final List<String> projects = Arrays.asList(new String[] { "Project 1", "Project 2" });
-        form.add(new ListMultipleChoice<String>("projectSelection", projects));
-
-        final List<String> timeconsumers = Arrays.asList(new String[] { "TimeConsumer 1", "TimeConsumer 2" });
-        form.add(new ListMultipleChoice<String>("timeConsumerSelection", timeconsumers));
-
-        selectedTimespan = new SelectOption("monthly", "Monthly");
-        ChoiceRenderer choiceRenderer = new ChoiceRenderer("value", "key");
-        SelectOption[] options = new SelectOption[] { new SelectOption("daily", "Daily"),
-                new SelectOption("monthly", "Monthly") };
-        final DropDownChoice ddTimeSpan = new DropDownChoice("timeSpanSelection", new PropertyModel(this,
-                "selectedTimespan"), Arrays.asList(options), choiceRenderer);
-
+                
+        //load projects from db
+        projectList = new ListMultipleChoice("projectSelection",
+                        new PropertyModel(this, "selectedProjects"), new LoadableDetachableModel(){
+            @Override
+            protected Object load() {
+              return new ArrayList<String>();
+            }
+        });
+        projectList.setOutputMarkupId(true);
+        
+        //load users from db
+        tcList = new ListMultipleChoice("timeConsumerSelection",
+                        new PropertyModel(this, "selectedUsers"), new LoadableDetachableModel(){
+            @Override
+            protected Object load() {
+              return new ArrayList<String>();
+            }
+        });
+        tcList.setOutputMarkupId(true);
+        
+        loadTiTAProjects();
+        form.add(tcList);
+        form.add(projectList);
+        
+        selectedTimespan = new SelectOption("overall", "Overall");
+        ChoiceRenderer<SelectOption> choiceRenderer = new ChoiceRenderer<SelectOption>(
+                                                                                    "value", "key");
+        SelectOption[] options = new SelectOption[] {
+                new SelectOption("daily", "Daily"),
+                new SelectOption("monthly", "Monthly"),
+                new SelectOption("overall", "Overall")};
+        
+        DropDownChoice<SelectOption> ddTimeSpan = new DropDownChoice<SelectOption>(
+                "timeSpanSelection", new PropertyModel<SelectOption>(this,"selectedTimespan"), 
+                Arrays.asList(options), choiceRenderer);
+        
         form.add(ddTimeSpan);
-        form.add(new AjaxButton("btnShowMultipleProjects", form) {
+        
+        form.add(new AjaxButton("btnShowProjectEfforts", form) {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
                 // TODO
@@ -68,22 +112,85 @@ public class MultipleProjectsView extends BasePage {
 
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form1) {
-                // TODO Set border red on textfields which are'nt filled
             }
         });
-
-        final List<String> data = Arrays.asList(new String[] { "ID 1", "Project 1", "Time", "consumer1", "..." });
-        ListView<String> dataView = new ListView<String>("multipleProjectList", data) {
+        
+        form.add(new AjaxButton("btnShowUserEfforts", form) {
             @Override
-            protected void populateItem(ListItem<String> item) {
-                item.add(new Label("projectID", item.getDefaultModelObjectAsString()));
-                item.add(new Label("projectDescription", item.getDefaultModelObjectAsString()));
-                item.add(new Label("firstName", item.getDefaultModelObjectAsString()));
-                item.add(new Label("lastName", item.getDefaultModelObjectAsString()));
-                item.add(new Label("...", item.getDefaultModelObjectAsString()));
-            };
-        };
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
+                // TODO
+            }
 
-        add(dataView);
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form1) {
+            }
+        });
+        
+        form.add(new AjaxButton("btnLoadUsers", form) {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
+                loadTiTAUsers();
+                target.addComponent(tcList);
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form1) {
+            }
+        });
+        
+        form.add(new AjaxButton("btnRefreshProjects", form) {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
+                loadTiTAProjects();
+                target.addComponent(projectList);
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form1) {
+            }
+        });
+    }
+    
+    private void loadTiTAProjects(){
+        List<TiTAProject> titaProjects = titaProjectService.findAllTiTAProjects();
+        List<String> tiP = new ArrayList<String>();
+        
+        for(TiTAProject ti : titaProjects){
+            tiP.add(ti.getName());
+        }
+        projectList.removeAll();
+        projectList.setChoices(tiP);
+    }
+    
+    private void loadTiTAUsers(){
+        List<TiTAUser> titaUsers = userService.findAllTiTAUsersForProjects(selectedProjects);
+        List<String> tuS = new ArrayList<String>();
+        
+        for(TiTAUser tu : titaUsers){
+            tuS.add(tu.getUserName());
+        }
+        tcList.removeAll();
+        tcList.setChoices(tuS);
+    }
+    
+    /**
+     * Displays a list of effort per project per timeconsumer.
+     */
+    private void displayEffortList() {
+//        final List<String> data = Arrays.asList(new String[] { "ID 1", "Project 1", "Time", "consumer1", "..." });
+//        
+//        ListView<String> dataView = new ListView<String>("multipleProjectList", data) {
+//            @Override
+//            protected void populateItem(ListItem<String> item) {
+//                item.add(new Label("projectID", item.getDefaultModelObjectAsString()));
+//                item.add(new Label("projectDescription", item.getDefaultModelObjectAsString()));
+//                item.add(new Label("firstName", item.getDefaultModelObjectAsString()));
+//                item.add(new Label("lastName", item.getDefaultModelObjectAsString()));
+//                item.add(new Label("...", item.getDefaultModelObjectAsString()));
+//            };
+//        };
+//
+//       
+//        add(dataView);
     }
 }

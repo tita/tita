@@ -55,7 +55,7 @@ public class IssueTrackerProject extends BaseEntity<Long> {
     @Column(name = "PROJECT_NAME")
     private String projectName;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne
     @JoinColumn(name = "ISST_ID")
     private IssueTracker issueTracker;
     

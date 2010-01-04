@@ -22,6 +22,11 @@
   <bean id="timeEffortDAO" class="at.ac.tuwien.ifs.tita.dao.time.EffortDao"/>
   <bean id="userDAO" class="at.ac.tuwien.ifs.tita.dao.user.UserDAO" />
   <bean id="roleDAO" class="at.ac.tuwien.ifs.tita.dao.user.RoleDAO" />
+  
+
+  <bean id="titaProjectDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
+  	<constructor-arg value="at.ac.tuwien.ifs.tita.entity.TiTAProject"/>
+  </bean>
 
   <!-- The Services -->
   <bean id="userService" class="at.ac.tuwien.ifs.tita.business.service.user.UserService">
@@ -31,6 +36,10 @@
   
   <bean id="timeEffortService" class="at.ac.tuwien.ifs.tita.business.service.time.EffortService">
     <property name="timeEffortDao" ref="timeEffortDAO"/>
+  </bean>
+  
+  <bean id="titaProjectService" class="at.ac.tuwien.ifs.tita.business.service.project.ProjectService">
+    <property name="titaProjectDao" ref="titaProjectDAO"/>
   </bean>
   
   <bean id="generalTimer" class="at.ac.tuwien.ifs.tita.entity.util.GeneralTimer"/>

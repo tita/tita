@@ -56,6 +56,8 @@ create table TITA_PROJECT(
 	primary key (ID)
 );
 
+create unique index AK_PROJECT_NAME on TITA_PROJECT (NAME);
+
 create table ISSUE_TRACKER_PROJECT(
 	ID bigint,
 	TITA_PROJECT_ID bigint references TITA_PROJECT(ID),

@@ -32,6 +32,9 @@ import org.hibernate.criterion.Restrictions;
 import at.ac.tuwien.ifs.tita.dao.GenericHibernateDao;
 import at.ac.tuwien.ifs.tita.dao.interfaces.IEffortDao;
 import at.ac.tuwien.ifs.tita.entity.Effort;
+import at.ac.tuwien.ifs.tita.entity.util.ProjectEffort;
+import at.ac.tuwien.ifs.tita.entity.util.StringUtil;
+import at.ac.tuwien.ifs.tita.entity.util.UserProjectEffort;
 
 /**
  * TimeEffortDao.
@@ -44,13 +47,15 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
     private static final String C_TITA_EFFORT_SQL = 
         "select e1.* from effort e1 " +
         "join tita_task tt on e1.tita_task_id = tt.id " +
-        "join tita_project tp on tt.tita_project_id = tp.id ";
+        "join tita_project tp on tt.tita_project_id = tp.id " +
+        "join tita_user tu on tu.id = e1.user_id ";
         
     private static final String C_ISSUE_TRACKER_EFFORT_SQL = 
         "select e2.* from effort e2 " +      
         "join issue_tracker_task it on e2.issuet_task_id = it.id " + 
         "join issue_tracker_project itp on it.issue_tracker_project_id =" +
-        "itp.id join tita_project tp2 on tp2.id = itp.tita_project_id ";
+        "itp.id join tita_project tp2 on tp2.id = itp.tita_project_id " +
+        "join tita_user tu1 on tu1.id = e2.user_id ";
     
     public EffortDao() {
         super(Effort.class);
@@ -111,69 +116,153 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
     }
 
     /** {@inheritDoc} */
+    @SuppressWarnings("unchecked")
     @Override
-    public List<Effort> findEffortsForTiTAProjectAndTimeConsumerId(List<Long> projectIds,Long tcId){
-        String pIds = generateProjectIdList(projectIds);
-        String queryString = C_TITA_EFFORT_SQL +
-                             "where tp.id in (" + pIds + ") and e1.user_id = ? union " +
-                             C_ISSUE_TRACKER_EFFORT_SQL +
-                             "where tp2.id in (" + pIds + ") and e2.user_id = ? ";
+    public List<UserProjectEffort> findEffortsForTiTAProjectAndTimeConsumerId(
+                                                                   List<String> projectIds,
+                                                                   List<String> tIds, 
+                                                                   String grouping){
+        String pIds = StringUtil.generateIdStringFromStringList(projectIds);
+        String tcIds = StringUtil.generateIdStringFromStringList(tIds);
         
-        org.hibernate.SQLQuery q = getSession().createSQLQuery(queryString);
+        String queryString =  "select sum(e1.duration) as DURATION, tu.username as USERNAME, " +
+                              "tp.name as PROJECT ";
         
-        q.setLong(0, tcId);
-        q.setLong(1, tcId);
+        if(grouping.equals("month")){
+            queryString += ", date_part('year', e1.date) as YEAR, "+ 
+                           " date_part('month', e1.date) as MONTH";
+        }else if(grouping.equals("day")){
+            queryString += ", date_part('year', e1.date) as YEAR, " +
+                           " date_part('month', e1.date) as MONTH, date_part('day', e1.date) as DAY";
+        }
+        
+        queryString += " from effort e1 " +
+                              "join tita_task tt on e1.tita_task_id = tt.id " +
+                              "join tita_project tp on tt.tita_project_id = tp.id " +
+                              "join tita_user tu on tu.id = e1.user_id " +
+                              "where tp.name in (" + pIds + ") and tu.username in (" + tcIds + 
+                              ") ";
+        
+        if(grouping.equals("month")){
+            queryString += " group by tp.name, tu.username, date_part('year', e1.date), "+ 
+                           " date_part('month', e1.date) ";
+        }else if(grouping.equals("day")){
+            queryString += " group by tp.name, tu.username, date_part('year', e1.date), " +
+                           " date_part('month', e1.date), date_part('day', e1.date) ";
+        }else if(grouping.equals("all")){
+            queryString += " group by tp.name, tu.username ";
+        }
+        
+        queryString +=       " union all" +
+                             " select sum(e2.duration) as DURATION, tu1.username as USERNAME, " +
+                             " tp2.name as PROJECT ";
+        
+        if(grouping.equals("month")){
+            queryString += ", date_part('year', e2.date) as YEAR, "+ 
+                           " date_part('month', e2.date) as MONTH";
+        }else if(grouping.equals("day")){
+            queryString += ", date_part('year', e2.date) as YEAR, " +
+                           " date_part('month', e2.date) as MONTH, date_part('day', e2.date) as DAY";
+        }
+        
+        
+        queryString +=       " from effort e2 " +      
+                             "join issue_tracker_task it on e2.issuet_task_id = it.id " + 
+                             "join issue_tracker_project itp on it.issue_tracker_project_id =" +
+                             "itp.id join tita_project tp2 on tp2.id = itp.tita_project_id " +
+                             "join tita_user tu1 on tu1.id = e2.user_id " +
+                             "where tp2.name in (" + pIds + ") and tu1.username in (" + tcIds + ")";
 
-        return readEffortsFromDB(q);
+         if(grouping.equals("month")){
+             queryString += " group by tp2.name, tu1.username, date_part('year', e2.date), "+ 
+                           " date_part('month', e2.date) ";
+         }else if(grouping.equals("day")){
+             queryString += " group by tp2.name, tu1.username, date_part('year', e2.date), " +
+                           " date_part('month', e2.date), date_part('day', e2.date) ";
+         }else if(grouping.equals("all")){
+             queryString += " group by tp2.name, tu1.username";
+         }
+         
+         org.hibernate.SQLQuery query = getSession().createSQLQuery(queryString);
+         List<UserProjectEffort> efforts = new ArrayList<UserProjectEffort>();
+             
+         query.addEntity(UserProjectEffort.class);
+         try {
+             efforts = query.list();
+         } catch (NoResultException e) {
+             // nothing to do
+         }
+         return efforts;
     }
     
     /** {@inheritDoc} */
+    @SuppressWarnings("unchecked")
     @Override
-    public List<Effort> findEffortsForTiTAProjectId(List<Long> projectIds) {
-        String pIds = generateProjectIdList(projectIds);
-        String queryString = C_TITA_EFFORT_SQL +
-                             "where tp.id in (" + pIds + ") union " +
-                             C_ISSUE_TRACKER_EFFORT_SQL +
-                             "where tp2.id in (" + pIds + ")";
+    public List<ProjectEffort> findEffortsForTiTAProjectId(List<String> projectIds, 
+                                                               String grouping) {
+        String pIds = StringUtil.generateIdStringFromStringList(projectIds);
+        String queryString =  "select sum(e1.duration) as DURATION, tp.name as PROJECT ";
         
-        org.hibernate.SQLQuery q = getSession().createSQLQuery(queryString);
-     
-        return readEffortsFromDB(q);
-    }
-        
-    /**
-     * Generates a list of strings of project ids.
-     * @param projectIds List of Long
-     * @return String
-     */
-    private String generateProjectIdList(List<Long> projectIds) {
-        String pidList = "";
-        
-        for(Long id : projectIds){
-            pidList += id + ",";
+        if(grouping.equals("month")){
+            queryString += ", date_part('year', e1.date) as YEAR, "+
+                           " date_part('month', e1.date) as MONTH ";
+        }else if(grouping.equals("day")){
+            queryString += ", date_part('year', e1.date) as YEAR, " +
+                           " date_part('month', e1.date) as MONTH, date_part('day',e1.date) as DAY";
         }
         
-        return pidList.substring(0, pidList.lastIndexOf(","));
-    }
-    /**
-     * Reads all efforts specified in query and returns it to caller.
-     * @param query org.hibernate.SQLQuery
-     * @return List of Efforts
-     */
-    @SuppressWarnings("unchecked")
-    private List<Effort> readEffortsFromDB(org.hibernate.SQLQuery query){
-        List<Effort> efforts = new ArrayList<Effort>();
+        queryString +=      " from effort e1 join tita_task tt on e1.tita_task_id = tt.id " +
+                            "join tita_project tp on tt.tita_project_id = tp.id " +
+                            "where tp.name in (" + pIds + ") ";
         
-        query.addEntity(Effort.class);
+        if(grouping.equals("month")){
+            queryString += " group by tp.name, date_part('year', e1.date), "+
+                           " date_part('month', e1.date) ";
+        }else if(grouping.equals("day")){
+            queryString += " group by tp.name, date_part('year', e1.date), " +
+                           " date_part('month', e1.date), date_part('day', e1.date) ";
+        }else if(grouping.equals("all")){
+            queryString += " group by tp.name ";
+        }
+        
+        queryString +=       " union all" +
+               " select sum(e2.duration) as DURATION, tp2.name as PROJECT ";
+        
+        if(grouping.equals("month")){
+            queryString += ", date_part('year', e2.date) as YEAR, "+
+                           " date_part('month', e2.date) as MONTH ";
+        }else if(grouping.equals("day")){
+            queryString += ", date_part('year', e2.date) as YEAR, " +
+                           " date_part('month', e2.date) as MONTH, date_part('day',e2.date) as DAY";
+        }
+        
+        queryString +=  " from effort e2 " +      
+               "join issue_tracker_task it on e2.issuet_task_id = it.id " + 
+               "join issue_tracker_project itp on it.issue_tracker_project_id =" +
+               "itp.id join tita_project tp2 on tp2.id = itp.tita_project_id " +
+               "where tp2.name in (" + pIds + ") ";
+        
+        if(grouping.equals("month")){
+            queryString += " group by tp2.name, date_part('year', e2.date), "+ 
+                           " date_part('month', e2.date) ";
+        }else if(grouping.equals("day")){
+            queryString += " group by tp2.name, date_part('year', e2.date), " +
+                           " date_part('month', e2.date), date_part('day', e2.date) ";
+        }else if(grouping.equals("all")){
+            queryString += " group by tp2.name ";
+        }
+        
+        Query query = em.createNativeQuery(queryString);
+        List<ProjectEffort> efforts = new ArrayList<ProjectEffort>();
         
         try {
-            efforts = query.list();
+            efforts = query.getResultList();
         } catch (NoResultException e) {
             // nothing to do
         }
         return efforts;
     }
-    
+            
     /** {@inheritDoc} */
     @Override
     public List<Effort> findEffortsForTimeConsumerId(Long tcId) {
