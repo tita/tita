@@ -18,7 +18,6 @@ package at.ac.tuwien.ifs.tita.presentation;
 
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.apache.wicket.security.WaspSession;
 import org.apache.wicket.security.authentication.LoginException;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
@@ -64,7 +63,7 @@ public class HomePage extends WebPage {
 
             @Override
             public boolean signIn(String username, String password) {
-                WaspSession secureSession = (WaspSession) getSession();
+                TitaSession secureSession = TitaSession.getSession();
 
                 if (secureSession.isUserAuthenticated() && getLoggedInUser() != null) {
                     secureSession.logoff(getLoggedInUser());

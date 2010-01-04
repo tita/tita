@@ -13,7 +13,7 @@
    limitations under the License.
   
  */
-package at.ac.tuwien.ifs.tita.presentation.effort;
+package at.ac.tuwien.ifs.tita.presentation.startpages;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +27,10 @@ import org.apache.wicket.model.Model;
 
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.presentation.BasePage;
+import at.ac.tuwien.ifs.tita.presentation.controls.panel.AdministrationPanelEffort;
 
 /**
- * Main Area for Efforts.
+ * Start Page for Time consumer - Main Area for Efforts.
  * 
  * @author rene
  * 

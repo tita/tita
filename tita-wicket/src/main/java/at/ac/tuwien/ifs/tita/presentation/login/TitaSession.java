@@ -29,6 +29,7 @@ import org.apache.wicket.security.WaspSession;
  */
 public class TitaSession extends WaspSession {
     private String username;
+    private String role;
 
     public TitaSession(WaspApplication application, Request request) {
         super(application, request);
@@ -59,6 +60,24 @@ public class TitaSession extends WaspSession {
      */
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    /**
+     * Returns the role of the current user.
+     * 
+     * @return the role
+     */
+    public String getRole() {
+        return role;
+    }
+
+    /**
+     * Sets the role of the current User.
+     * 
+     * @param role the role to set
+     */
+    public void setRole(String role) {
+        this.role = role;
     }
 
     /**

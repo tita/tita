@@ -14,7 +14,7 @@
    limitations under the License.
    
  */
-package at.ac.tuwien.ifs.tita.presentation.effort;
+package at.ac.tuwien.ifs.tita.presentation.controls.panel;
 
 import java.text.ParseException;
 import java.util.ArrayList;

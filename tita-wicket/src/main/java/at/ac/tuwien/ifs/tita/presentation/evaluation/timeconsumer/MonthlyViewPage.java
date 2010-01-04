@@ -71,6 +71,8 @@ public class MonthlyViewPage extends BasePage {
 
     private TableModelTimeConsumerEvaluation tableModel;
 
+    private Button btnShowAsPDF;
+
     public MonthlyViewPage() {
         String year = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
         int month = Calendar.getInstance().get(Calendar.MONTH);
@@ -109,19 +111,29 @@ public class MonthlyViewPage extends BasePage {
         timeeffortContainer.setOutputMarkupPlaceholderTag(true);
         add(timeeffortContainer);
 
+        initButtons(form, timeeffortContainer);
+
         Calendar cal = Calendar.getInstance();
         tableModel = new TableModelTimeConsumerEvaluation(getTimeEffortsMonthlyView(cal.get(Calendar.YEAR), cal
                 .get(Calendar.MONTH)));
         Table table = new Table("tetable", tableModel);
         timeeffortContainer.add(table);
+    }
 
+    /**
+     * Initializes buttons of form.
+     * 
+     * @param form form of page.
+     * @param container container of page.
+     */
+    private void initButtons(Form<Effort> form, final WebMarkupContainer container) {
         form.add(new AjaxButton("btnShowEvaluation", form) {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
                 Integer year = Integer.valueOf(selectedYear.toString());
                 Integer month = Integer.valueOf(selectedMonth.toString());
                 tableModel.reload(getTimeEffortsMonthlyView(year, month));
-                target.addComponent(timeeffortContainer);
+                target.addComponent(container);
             }
 
             @Override
@@ -130,7 +142,7 @@ public class MonthlyViewPage extends BasePage {
             }
         });
 
-        form.add(new Button("btnShowPDF") {
+        this.btnShowAsPDF = new Button("btnShowPDF") {
             @Override
             public void onSubmit() {
                 try {
@@ -144,7 +156,9 @@ public class MonthlyViewPage extends BasePage {
                     log.error(e.getMessage());
                 }
             }
-        });
+        };
+
+        form.add(this.btnShowAsPDF);
     }
 
     /**

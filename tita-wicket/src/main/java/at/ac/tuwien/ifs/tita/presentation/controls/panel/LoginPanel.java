@@ -24,6 +24,11 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.util.value.ValueMap;
 
+import at.ac.tuwien.ifs.tita.presentation.login.TitaSession;
+import at.ac.tuwien.ifs.tita.presentation.startpages.AdminPage;
+import at.ac.tuwien.ifs.tita.presentation.startpages.EffortsPage;
+import at.ac.tuwien.ifs.tita.presentation.startpages.ProjectsPage;
+
 /**
  * Panel to authenticate user.
  * 
@@ -68,9 +73,7 @@ public abstract class LoginPanel extends Panel {
         }
 
         /**
-         * .
-         * 
-         * @see org.apache.wicket.markup.html.form.Form#onSubmit()
+         * {@inheritDoc}
          */
         @Override
         public void onSubmit() {
@@ -83,9 +86,20 @@ public abstract class LoginPanel extends Panel {
             String password = values.getString("password");
 
             if (signIn(username, password)) {
-                // continue or homepage?
-                if (!getPage().continueToOriginalDestination()) {
-                    setResponsePage(Application.get().getHomePage());
+                TitaSession session = TitaSession.getSession();
+                if (session != null) {
+                    if (session.getRole().equals("admin")) {
+                        setResponsePage(AdminPage.class);
+                    } else if (session.getRole().equals("timecontroller")) {
+                        setResponsePage(ProjectsPage.class);
+                    } else if (session.getRole().equals("timeconsumer")) {
+                        setResponsePage(EffortsPage.class);
+                    }
+                } else {
+                    // continue or homepage?
+                    if (!getPage().continueToOriginalDestination()) {
+                        setResponsePage(Application.get().getHomePage());
+                    }
                 }
             } else {
                 // Try the component based localizer first. If not found try the

@@ -43,7 +43,7 @@ public class TitaLoginContext extends UsernamePasswordContext {
     private IUserService service;
 
     /**
-     * Constructor for loging off.
+     * Constructor for logging off.
      */
     public TitaLoginContext() {
     }
@@ -74,10 +74,13 @@ public class TitaLoginContext extends UsernamePasswordContext {
                 if (hashedPass.equals(u.getPassword())) {
                     if (u.getRole().getDescription().equals("Administrator")) {
                         user.addPrincipal(new SimplePrincipal("admin"));
+                        TitaSession.getSession().setRole("admin");
                     } else if (u.getRole().getDescription().equals("Time controller")) {
                         user.addPrincipal(new SimplePrincipal("timecontroller"));
+                        TitaSession.getSession().setRole("timecontroller");
                     } else if (u.getRole().getDescription().equals("Time consumer")) {
                         user.addPrincipal(new SimplePrincipal("timeconsumer"));
+                        TitaSession.getSession().setRole("timeconsumer");
                     } else {
                         throw new LoginException("Login of user " + username + " failed.");
                     }
@@ -124,12 +127,10 @@ public class TitaLoginContext extends UsernamePasswordContext {
     }
 
     /**
-     * No Additional Logins allowed.
-     * 
-     * @see org.apache.wicket.security.hive.authentication.LoginContext#preventsAdditionalLogins()
-     * @return true if additonal logins allowed false otherwise
+     * {@inheritDoc}
      */
-    /*
-     * @Override public boolean preventsAdditionalLogins() { return true; }
-     */
+    @Override
+    public boolean preventsAdditionalLogins() {
+        return true;
+    }
 }
