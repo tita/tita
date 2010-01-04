@@ -42,9 +42,9 @@ import at.ac.tuwien.ifs.tita.entity.Effort;
 
 /**
  * Effort Service Test.
- *
+ * 
  * @author herbert
- *
+ * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:datasourceContext-test.xml" })
@@ -128,7 +128,7 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
 
     /**
      * Prepare database for test -> insert 3 efforts.
-     *
+     * 
      * @return List of efforts
      */
     private List<Effort> prepareEfforts() {
@@ -146,7 +146,7 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
         } catch (ParseException e1) {
             assertTrue(false);
         }
-        
+
         Effort timeEffort1 = new Effort(date1, 0L, false, "Das ist die Test TimeEffort 5", null);
         Effort timeEffort2 = new Effort(date2, 0L, false, "Das ist die Test TimeEffort 6", null);
         Effort timeEffort3 = new Effort(date1, 0L, false, "Das ist die Test TimeEffort 7", null);
@@ -195,7 +195,7 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
 
     /**
      * Delete all inserted efforts.
-     *
+     * 
      * @param efforts List
      * @throws TitaDAOException e
      */
@@ -215,11 +215,11 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
         List<Effort> list = null;
 
         try {
-            //CHECKSTYLE:OFF
+            // CHECKSTYLE:OFF
             list = this.service.getEffortsMonthlyView(2009, 9);
-            //CHECKSTYLE:ON
+            // CHECKSTYLE:ON
             Assert.assertNotNull(list);
-            Assert.assertEquals(2, list.size());
+            Assert.assertFalse(list.isEmpty());
             deleteEfforts(efforts);
         } catch (TitaDAOException e) {
             fail();
@@ -233,7 +233,7 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
     @Test
     public void testGetTimeEffortYears() {
         List<Effort> efforts = prepareEfforts();
-        List<Integer> list = null;
+        List<Double> list = null;
 
         try {
             list = this.service.getEffortsYears();

@@ -182,9 +182,10 @@ public class MonthlyViewPage extends BasePage {
      */
     private void initYears() {
         years = new ArrayList<SelectOption>();
-        List<Integer> effortYears = service.getEffortsYears();
-        for (Integer e : effortYears) {
-            years.add(new SelectOption(e.toString(), e.toString()));
+        List<Double> effortYears = service.getEffortsYears();
+        for (Double e : effortYears) {
+            Integer i = new Double(e).intValue();
+            years.add(new SelectOption(i.toString(), i.toString()));
         }
     }
 

@@ -22,7 +22,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.NoResultException;
-import javax.persistence.Query;
 
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
@@ -41,120 +40,99 @@ import at.ac.tuwien.ifs.tita.entity.Effort;
  * 
  */
 public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEffortDao {
-    private static final String C_TITA_EFFORT_SQL = 
-        "select e1.* from effort e1 " +
-        "join tita_task tt on e1.tita_task_id = tt.id " +
-        "join tita_project tp on tt.tita_project_id = tp.id ";
-        
-    private static final String C_ISSUE_TRACKER_EFFORT_SQL = 
-        "select e2.* from effort e2 " +      
-        "join issue_tracker_task it on e2.issuet_task_id = it.id " + 
-        "join issue_tracker_project itp on it.issue_tracker_project_id =" +
-        "itp.id join tita_project tp2 on tp2.id = itp.tita_project_id ";
-    
+    private static final String C_TITA_EFFORT_SQL = "select e1.* from effort e1 "
+            + "join tita_task tt on e1.tita_task_id = tt.id " + "join tita_project tp on tt.tita_project_id = tp.id ";
+
+    private static final String C_ISSUE_TRACKER_EFFORT_SQL = "select e2.* from effort e2 "
+            + "join issue_tracker_task it on e2.issuet_task_id = it.id "
+            + "join issue_tracker_project itp on it.issue_tracker_project_id ="
+            + "itp.id join tita_project tp2 on tp2.id = itp.tita_project_id ";
+
     public EffortDao() {
         super(Effort.class);
     }
-    /**
-     * Gets a view for a month.
-     * 
-     * @param year
-     *            year which is selected
-     * @param month
-     *            month whicht is selected
-     * @return list of timefforts that match dates
-     */
+
+    /** {@inheritDoc} */
     public List<Effort> getTimeEffortsMonthlyView(Integer year, Integer month) {
         Calendar start = Calendar.getInstance();
         Calendar end = Calendar.getInstance();
         start.set(year, month, 1);
         end.set(year, month, start.getActualMaximum(Calendar.DAY_OF_MONTH));
 
-        return findByCriteriaOrdered(new Criterion[] {
-                Restrictions.between("date", start.getTime(), end.getTime()),
-                Restrictions.eq("deleted", false) }, new Order[] {
-                Property.forName("date").asc()}, new String[] {});
+        return findByCriteriaOrdered(new Criterion[] { Restrictions.between("date", start.getTime(), end.getTime()),
+                Restrictions.eq("deleted", false) }, new Order[] { Property.forName("date").asc() }, new String[] {});
     }
 
-    /**
-     * Gets a view for a day.
-     * 
-     * @param date
-     *            dates which are selected
-     * @return list of timefforts that match dates
-     */
+    /** {@inheritDoc} */
     public List<Effort> getTimeEffortsDailyView(Date date) {
-        return findByCriteriaOrdered(new Criterion[] {
-                Restrictions.eq("date", date),
-                Restrictions.eq("deleted", false) }, new Order[] { Property
-                .forName("date").asc() }, new String[] {});
+        return findByCriteriaOrdered(
+                new Criterion[] { Restrictions.eq("date", date), Restrictions.eq("deleted", false) },
+                new Order[] { Property.forName("date").asc() }, new String[] {});
     }
 
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
-    public List<Integer> getTimeEffortsYears() {
-        // return
-        // findByHqlQuery("select distinct YEAR(te.date) from Effort te where deleted=false");
-        Query q = em.createNamedQuery("effort.years");
-        return q.getResultList();
+    public List<Double> getTimeEffortsYears() {
+        String queryString = "select distinct date_part('year', te.date) from Effort te where deleted=false";
+        org.hibernate.SQLQuery q = getSession().createSQLQuery(queryString);
+        return q.list();
     }
 
     /** {@inheritDoc} */
     @Override
-    public List<Effort> findEffortsForTiTAProjectAndTimeConsumerId(List<Long> projectIds,Long tcId){
+    public List<Effort> findEffortsForTiTAProjectAndTimeConsumerId(List<Long> projectIds, Long tcId) {
         String pIds = generateProjectIdList(projectIds);
-        String queryString = C_TITA_EFFORT_SQL +
-                             "where tp.id in (" + pIds + ") and e1.user_id = ? union " +
-                             C_ISSUE_TRACKER_EFFORT_SQL +
-                             "where tp2.id in (" + pIds + ") and e2.user_id = ? ";
-        
+        String queryString = C_TITA_EFFORT_SQL + "where tp.id in (" + pIds + ") and e1.user_id = ? union "
+                + C_ISSUE_TRACKER_EFFORT_SQL + "where tp2.id in (" + pIds + ") and e2.user_id = ? ";
+
         org.hibernate.SQLQuery q = getSession().createSQLQuery(queryString);
-        
+
         q.setLong(0, tcId);
         q.setLong(1, tcId);
 
         return readEffortsFromDB(q);
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public List<Effort> findEffortsForTiTAProjectId(List<Long> projectIds) {
         String pIds = generateProjectIdList(projectIds);
-        String queryString = C_TITA_EFFORT_SQL +
-                             "where tp.id in (" + pIds + ") union " +
-                             C_ISSUE_TRACKER_EFFORT_SQL +
-                             "where tp2.id in (" + pIds + ")";
-        
+        String queryString = C_TITA_EFFORT_SQL + "where tp.id in (" + pIds + ") union " + C_ISSUE_TRACKER_EFFORT_SQL
+                + "where tp2.id in (" + pIds + ")";
+
         org.hibernate.SQLQuery q = getSession().createSQLQuery(queryString);
-     
+
         return readEffortsFromDB(q);
     }
-        
+
     /**
      * Generates a list of strings of project ids.
+     * 
      * @param projectIds List of Long
      * @return String
      */
     private String generateProjectIdList(List<Long> projectIds) {
         String pidList = "";
-        
-        for(Long id : projectIds){
+
+        for (Long id : projectIds) {
             pidList += id + ",";
         }
-        
+
         return pidList.substring(0, pidList.lastIndexOf(","));
     }
+
     /**
      * Reads all efforts specified in query and returns it to caller.
+     * 
      * @param query org.hibernate.SQLQuery
      * @return List of Efforts
      */
     @SuppressWarnings("unchecked")
-    private List<Effort> readEffortsFromDB(org.hibernate.SQLQuery query){
+    private List<Effort> readEffortsFromDB(org.hibernate.SQLQuery query) {
         List<Effort> efforts = new ArrayList<Effort>();
-        
+
         query.addEntity(Effort.class);
-        
+
         try {
             efforts = query.list();
         } catch (NoResultException e) {
@@ -162,21 +140,21 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
         }
         return efforts;
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public List<Effort> findEffortsForTimeConsumerId(Long tcId) {
         Criterion criterions[] = null;
-        Order order[] = {Order.asc("date")};
+        Order order[] = { Order.asc("date") };
 
-        criterions = new Criterion [] { Restrictions.eq("user.id", tcId)};
+        criterions = new Criterion[] { Restrictions.eq("user.id", tcId) };
         return findByCriteriaOrdered(criterions, order, null);
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public List<Effort> getActualTimeEfforts(Integer maxresults) {
-        return findByCriteriaOrdered(new Criterion[] { Restrictions.eq("deleted", false) }, 
-                new Order[] { Order.asc("date") }, null);
+        return findByCriteriaOrdered(new Criterion[] { Restrictions.eq("deleted", false) }, new Order[] { Order
+                .asc("date") }, null);
     }
 }

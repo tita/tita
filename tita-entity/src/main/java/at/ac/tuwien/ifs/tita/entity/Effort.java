@@ -27,21 +27,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
  * Entity for storing time producer's effort of his/her assigned tasks.
- *
+ * 
  * @author herbert
- *
+ * 
  */
 @Entity
 @Table(name = "EFFORT")
 @SequenceGenerator(name = "seq_effort", sequenceName = "EEFORT_ID_SEQ", allocationSize = 1)
-@NamedQueries( { @NamedQuery(name = "effort.years", query = "select distinct YEAR(te.date) from Effort te where deleted=false") })
 public class Effort extends BaseEntity<Long> implements Serializable {
 
     @Id
@@ -49,11 +46,11 @@ public class Effort extends BaseEntity<Long> implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_effort")
     private Long id;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "TITA_TASK_ID")
     private TiTATask titaTask;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "ISSUET_TASK_ID")
     private IssueTrackerTask issueTTask;
 
@@ -69,15 +66,15 @@ public class Effort extends BaseEntity<Long> implements Serializable {
     @Column(name = "DELETED")
     private Boolean deleted;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "USER_ID") //, referencedColumnName = "ID")
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinColumn(name = "USER_ID")
+    // , referencedColumnName = "ID")
     private TiTAUser user;
 
     public Effort() {
     }
 
-    public Effort(Date date, Long duration, Boolean deleted,
-            String description, TiTAUser user) {
+    public Effort(Date date, Long duration, Boolean deleted, String description, TiTAUser user) {
         super();
         this.date = date;
         this.duration = duration;
@@ -153,6 +150,7 @@ public class Effort extends BaseEntity<Long> implements Serializable {
 
     /**
      * Returns an proper end time as Long - used for GUI perposes.
+     * 
      * @return Long end time
      */
     public Long getEndTime() {
@@ -172,9 +170,8 @@ public class Effort extends BaseEntity<Long> implements Serializable {
 
     /**
      * filter function.
-     *
-     * @param filterString
-     *            - Filter string
+     * 
+     * @param filterString - Filter string
      * @return true if it contains the string pattern.
      */
     public Boolean matchDescription(String filterString) {
@@ -189,28 +186,30 @@ public class Effort extends BaseEntity<Long> implements Serializable {
         return this.issueTTask;
     }
 
-    /** 
+    /**
      * Returns the startTime of the Effort.
+     * 
      * @return start time as long
      */
-    public Long getStartTime(){
+    public Long getStartTime() {
         Calendar cal = Calendar.getInstance();
         cal.setTime(this.date);
 
         return cal.getTimeInMillis();
     }
 
-    public void setStartTime(Long startTime){
+    public void setStartTime(Long startTime) {
         this.date = new Date(startTime);
     }
-    
+
     /**
-     * Generates the Url to get to the Task of the Issuetracker.
-     * For example: projectname: Tita issue nr: 43 —> www.mantis.com/tita-issue:43 
+     * Generates the Url to get to the Task of the Issuetracker. For example:
+     * projectname: Tita issue nr: 43 ï¿½> www.mantis.com/tita-issue:43
+     * 
      * @return generated URL-String
      */
-    public String getUrlToIssueTrackerTask(){
-        if(this.issueTTask != null){
+    public String getUrlToIssueTrackerTask() {
+        if (this.issueTTask != null) {
             String url = this.issueTTask.getIsstProject().getIssueTracker().getUrl();
             String projectname = this.issueTTask.getIsstProject().getProjectName();
             Long taskno = this.issueTTask.getIsstTaskId();

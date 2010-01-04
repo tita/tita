@@ -44,9 +44,9 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
 
 /**
  * Task Service Testcases.
- *
+ * 
  * @author Christoph
- *
+ * 
  */
 
 public class TaskServiceTest extends IssueTrackerServiceTest {
@@ -133,9 +133,8 @@ public class TaskServiceTest extends IssueTrackerServiceTest {
 
     /**
      * Delete mantis projects for all tests.
-     *
-     * @throws InterruptedException
-     *             e
+     * 
+     * @throws InterruptedException e
      */
     @After
     public void undoSetup() throws InterruptedException {
@@ -148,23 +147,18 @@ public class TaskServiceTest extends IssueTrackerServiceTest {
     /**
      * The test case should fetch the tasks from the issue tracker projects
      * 'projectName0' and 'projectName1' from mantis and provide as a list.
-     *
-     *
-     *
-     * @throws ProjectNotFoundException
-     *             pnfe
-     * @throws InterruptedException
-     *             ie
+     * 
+     * 
+     * 
+     * @throws ProjectNotFoundException pnfe
      */
     @Test
     public void fetchTaskFromIssueTrackerProjects() throws ProjectNotFoundException {
 
-        Map<Long, ITaskTrackable> map = this.taskService
-                .getMapOfTasksFromAllProjectsIncludedInTiTAProject();
+        Map<Long, ITaskTrackable> map = this.taskService.getMapOfTasksFromAllProjectsIncludedInTiTAProject();
 
         // Assert.assertNull(this.taskService.getMapOfTasksFromAllProjectsIncludedInTiTAProject());
-        this.taskService.fetchTaskFromIssueTrackerProjects(this.titaProject.getId(), this.titaUser
-                .getId());
+        this.taskService.fetchTaskFromIssueTrackerProjects(this.titaProject.getId(), this.titaUser.getId());
         // CHECKSTYLE:OFF
         assertEquals(4, this.taskService.getMapOfTasksFromAllProjectsIncludedInTiTAProject().size());
         // CHECKSTYLE:ON
@@ -175,15 +169,13 @@ public class TaskServiceTest extends IssueTrackerServiceTest {
     /**
      * The test case should return 4 tasks, because every task has the status
      * 'NEW'.
-     *
-     * @throws ProjectNotFoundException
-     *             pnfe
+     * 
+     * @throws ProjectNotFoundException pnfe
      */
 
     @Test
     public void getIssueTrackerTasksGroupByIssueStatus() throws ProjectNotFoundException {
-        this.taskService.fetchTaskFromIssueTrackerProjects(this.titaProject.getId(), this.titaUser
-                .getId());
+        this.taskService.fetchTaskFromIssueTrackerProjects(this.titaProject.getId(), this.titaUser.getId());
 
         Map<Long, ITaskTrackable> map = this.taskService.sortingTasksByIssueStatus(IssueStatus.NEW);
 
@@ -199,13 +191,11 @@ public class TaskServiceTest extends IssueTrackerServiceTest {
      * The test case should return 4 tasks, because every task is provided from
      * mantis with the same url.
      * 
-     * @throws ProjectNotFoundException
-     *             pnfe
+     * @throws ProjectNotFoundException pnfe
      */
     @Test
     public void getIssueTrackerTasksGroupByIssueTracker() throws ProjectNotFoundException {
-        this.taskService.fetchTaskFromIssueTrackerProjects(this.titaProject.getId(), this.titaUser
-                .getId());
+        this.taskService.fetchTaskFromIssueTrackerProjects(this.titaProject.getId(), this.titaUser.getId());
         // CHECKSTYLE:OFF
         String test = this.logins.iterator().next().getIssueTracker().getUrl();
 
@@ -217,9 +207,8 @@ public class TaskServiceTest extends IssueTrackerServiceTest {
 
     /**
      * Helper method.
-     *
-     * @param tasks
-     *            a map of tasks
+     * 
+     * @param tasks a map of tasks
      * @return the output as a well formed string for developing tests
      */
     private String getOutputOfTasks(Map<Long, ITaskTrackable> tasks) {
@@ -227,8 +216,7 @@ public class TaskServiceTest extends IssueTrackerServiceTest {
         String output = "";
 
         for (ITaskTrackable task : tasks.values()) {
-            output += "Description: " + task.getDescription() + " Projekt: "
-                    + task.getProject().getName();
+            output += "Description: " + task.getDescription() + " Projekt: " + task.getProject().getName();
         }
 
         return null;

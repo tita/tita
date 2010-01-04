@@ -15,8 +15,10 @@
  */
 package at.ac.tuwien.ifs.tita.dao.interfaces;
 
+import java.util.Date;
 import java.util.List;
 
+import at.ac.tuwien.ifs.tita.dao.IGenericHibernateDao;
 import at.ac.tuwien.ifs.tita.entity.Effort;
 
 /**
@@ -25,7 +27,7 @@ import at.ac.tuwien.ifs.tita.entity.Effort;
  * 
  * @author herbert
  */
-public interface IEffortDao {
+public interface IEffortDao extends IGenericHibernateDao<Effort, Long> {
 
     /**
      * Gets a view for the last time efforts.
@@ -36,11 +38,32 @@ public interface IEffortDao {
     List<Effort> getActualTimeEfforts(Integer maxresults);
 
     /**
-     * Find all efforts for a specific tita-project.
-<<<<<<< HEAD:tita-business/src/main/java/at/ac/tuwien/ifs/tita/dao/interfaces/IEffortDao.java
-=======
+     * Gets a view for a month.
      * 
->>>>>>> 398f6b776a2aea7f20bf604768b8721beff8d93a:tita-business/src/main/java/at/ac/tuwien/ifs/tita/dao/interfaces/IEffortDao.java
+     * @param year year which is selected
+     * @param month month which is selected
+     * @return list of efforts that match dates
+     */
+    List<Effort> getTimeEffortsMonthlyView(Integer year, Integer month);
+
+    /**
+     * Gets a view for a day.
+     * 
+     * @param date dates which are selected
+     * @return list of efforts that match dates
+     */
+    List<Effort> getTimeEffortsDailyView(Date date);
+
+    /**
+     * Gets all years for which efforts are stored.
+     * 
+     * @return list of years as list of integer
+     */
+    List<Double> getTimeEffortsYears();
+
+    /**
+     * Find all efforts for a specific tita-project.
+     * 
      * @param projectId List of Long
      * @return List of Effort
      */
@@ -48,10 +71,7 @@ public interface IEffortDao {
 
     /**
      * Find all effort of a time consumer in a specific tita-project.
-<<<<<<< HEAD:tita-business/src/main/java/at/ac/tuwien/ifs/tita/dao/interfaces/IEffortDao.java
-=======
      * 
->>>>>>> 398f6b776a2aea7f20bf604768b8721beff8d93a:tita-business/src/main/java/at/ac/tuwien/ifs/tita/dao/interfaces/IEffortDao.java
      * @param projectId List of Long
      * @param tcId Long
      * @return List of Effort
