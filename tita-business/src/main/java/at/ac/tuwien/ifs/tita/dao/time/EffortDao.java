@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;

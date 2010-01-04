@@ -24,7 +24,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -184,8 +183,8 @@ public class EffortDaoTest { // extends AbstractJpaTests {
         titaProjectDAO.save(tip1);
         titaProjectDAO.flush();
         
-        TiTAUserProject utp1 = new TiTAUserProject(us1,tip1);
-        TiTAUserProject utp2 = new TiTAUserProject(us2,tip1);
+        TiTAUserProject utp1 = new TiTAUserProject(us1,tip1,0L);
+        TiTAUserProject utp2 = new TiTAUserProject(us2,tip1,0L);
               
         utpDao.save(utp1);
         utpDao.save(utp2);
@@ -196,10 +195,10 @@ public class EffortDaoTest { // extends AbstractJpaTests {
     /**
      * After.
      */
-    @After
-    public void tearDown() {
-        this.roleDao.delete(this.roleDao.findById(this.r1.getId()));
-    }
+//    @After
+//    public void tearDown() {
+//        this.roleDao.delete(this.roleDao.findById(this.r1.getId()));
+//    }
 
     /**
      * Test - returns 8 efforts for one tita project.
