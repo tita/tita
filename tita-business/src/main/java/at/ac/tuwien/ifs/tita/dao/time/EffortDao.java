@@ -108,7 +108,7 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
         }else if(grouping.equals("day")){
             queryString += " group by tp.name, tu.username, date_part('year', e1.date), " +
                            " date_part('month', e1.date), date_part('day', e1.date) ";
-        }else if(grouping.equals("all")){
+        }else if(grouping.equals("overall")){
             queryString += " group by tp.name, tu.username ";
         }
         
@@ -138,16 +138,15 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
          }else if(grouping.equals("day")){
              queryString += " group by tp2.name, tu1.username, date_part('year', e2.date), " +
                            " date_part('month', e2.date), date_part('day', e2.date) ";
-         }else if(grouping.equals("all")){
+         }else if(grouping.equals("overall")){
              queryString += " group by tp2.name, tu1.username";
          }
          
-         org.hibernate.SQLQuery query = getSession().createSQLQuery(queryString);
+         Query query = em.createNativeQuery(queryString);
          List<UserProjectEffort> efforts = new ArrayList<UserProjectEffort>();
-             
-         query.addEntity(UserProjectEffort.class);
+         
          try {
-             efforts = query.list();
+             efforts = query.getResultList();
          } catch (NoResultException e) {
              // nothing to do
          }
@@ -180,7 +179,7 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
         }else if(grouping.equals("day")){
             queryString += " group by tp.name, date_part('year', e1.date), " +
                            " date_part('month', e1.date), date_part('day', e1.date) ";
-        }else if(grouping.equals("all")){
+        }else if(grouping.equals("overall")){
             queryString += " group by tp.name ";
         }
         
@@ -207,7 +206,7 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
         }else if(grouping.equals("day")){
             queryString += " group by tp2.name, date_part('year', e2.date), " +
                            " date_part('month', e2.date), date_part('day', e2.date) ";
-        }else if(grouping.equals("all")){
+        }else if(grouping.equals("overall")){
             queryString += " group by tp2.name ";
         }
         

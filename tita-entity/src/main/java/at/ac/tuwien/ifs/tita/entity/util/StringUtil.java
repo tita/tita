@@ -26,8 +26,12 @@ public class StringUtil {
     public static String generateIdStringFromStringList(List<String> names) {
         String pidList = "";
         
-        for(String id : names){
-            pidList += ("'" + id + "',");
+        if(names.size() == 0){
+            pidList = "'',";
+        }else{
+            for(String id : names){
+                pidList += ("'" + id + "',");
+            }
         }
         
         return pidList.substring(0, pidList.lastIndexOf(","));

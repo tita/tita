@@ -14,22 +14,22 @@ import javax.persistence.Table;
 @Entity
 public class ProjectEffort {
 
-    @Column (name = "DURATION")
-    private Long duration;
-    
     @Id
     @Column (name = "PROJECT")
-    private String project;
+    protected String project;
     
     @Column (name = "YEAR")
-    private Integer year;
+    protected Integer year;
     
     @Column (name = "MONTH")
-    private Integer month;
+    protected Integer month;
     
     @Column (name = "DAY")
-    private Integer day;
+    protected Integer day;
     
+    @Column (name = "DURATION")
+    protected Long duration;
+       
     public ProjectEffort() {
     }
 

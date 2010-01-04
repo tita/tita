@@ -44,36 +44,17 @@
 	           				<button wicket:id="btnLoadUsers" type="button">Load Users</button>
 	           		  </td>
 	          	   	  <td>
-	           				<button wicket:id="btnShowUserEfforts" type="button">Show User Efforts</button>
+	           				<button wicket:id="btnShowEfforts" type="button">Show Efforts</button>
 	           		  </td>
 	           		  <td>
-	           				<button wicket:id="btnShowProjectEfforts" type="button">Show Project Efforts</button>
+	           				<button wicket:id="btnResetLists" type="button">Reset Lists</button>
 	           		  </td>
 	           	   </tr>	
 	          </table>
-          <!-- Rows paging:  <div class="navigator" wicket:id="rowsPaging"></div>
+           Rows paging:  <div class="navigator" wicket:id="rowsPaging"></div>
            <div>
-                   <table border="1">
-                     <thead>
-                         <tr>
-                             <th>Project ID</th>
-                             <th>Project Description</th>
-                             <th>First name</th>
-                             <th>Last name</th>
-                             <th>...</th>
-                         </tr>
-                     </thead>
-                     <tbody>
-                         <tr wicket:id="multipleProjectList" >
-                             <td wicket:id="projectID">[]</td>
-                             <td wicket:id="projectDescription">[]</td>
-                             <td wicket:id="firstName" style="text-align:center">[]</td>
-                             <td wicket:id="lastName" style="text-align:center">[]</td>
-                             <td wicket:id="..." style="text-align:right">[]</td>
-                         </tr>
-                     </tbody>
-                 </table>
-            </div-->
+                   <table wicket:id="evaluationTable" border="1" />
+            </div>
         </form>
         </wicket:extend>
     </body>

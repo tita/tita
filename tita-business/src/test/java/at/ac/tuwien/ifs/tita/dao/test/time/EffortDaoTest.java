@@ -246,7 +246,7 @@ public class EffortDaoTest { // extends AbstractJpaTests {
         ti.add(us2.getUserName());
         //CHECKSTYLE:OFF     
         List<UserProjectEffort> leff = timeEffortDAO.findEffortsForTiTAProjectAndTimeConsumerId(
-                                                                                       li,ti,"day");
+                                                                                   li,ti,"overall");
           
         assertNotNull(leff);
         assertEquals(2, leff.size());

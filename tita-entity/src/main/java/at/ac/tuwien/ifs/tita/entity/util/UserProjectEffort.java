@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Table(name="DUMMY2")
 @Entity
 public class UserProjectEffort extends ProjectEffort{
-    
+   
     @Column(name = "USERNAME")
     private String username;
     

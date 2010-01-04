@@ -21,6 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.Effort;
+import at.ac.tuwien.ifs.tita.entity.util.ProjectEffort;
+import at.ac.tuwien.ifs.tita.entity.util.UserProjectEffort;
 
 /**
  * ITimeEffortService encapsulates all TimeEffort-concerning Database
@@ -94,4 +96,25 @@ public interface IEffortService {
      * @throws TitaDAOException if anything goes wrong with db access.
      */
     List<Effort> getActualEfforts(int maxresults) throws TitaDAOException;
+    
+    
+    /**
+     * Gets a summary of Effort for List of user and projects - overall, monthly, daily.
+     * @param projects List of String
+     * @param usernames List of String
+     * @param grouping String
+     * @return UserProjectEffort List
+     */
+    List<UserProjectEffort> getEffortsSummaryForProjectAndUserNames(List<String> projects, 
+                                                         List<String> usernames,
+                                                         String grouping);
+    
+    /**
+     * Gets a summary of Effort for and projects - overall, monthly, daily.
+     * @param projects List of String
+     * @param grouping String
+     * @return ProjectEffort List
+     */
+    List<ProjectEffort> getEffortsSummaryForProjectNames(List<String> projects,
+                                                             String grouping);
 }
