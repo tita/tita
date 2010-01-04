@@ -43,7 +43,7 @@ public class TableModelEffort extends AbstractTitaTableModel {
     public TableModelEffort(List<Effort> list) {
         super(list);
 
-        columnNames = new String[] { "ID", "Date", "Description", "Start Time",
+        columnNames = new String[] { "Date", "Description", "Start Time",
                 "End Time", "Duration", "", "", "Link" };
     }
 
@@ -52,11 +52,11 @@ public class TableModelEffort extends AbstractTitaTableModel {
      */
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        if (columnIndex == IntegerConstants.ONE) {
+        if (columnIndex == IntegerConstants.ZERO) {
             return Date.class;
-        } else if (columnIndex == IntegerConstants.SIX) {
+        } else if (columnIndex == IntegerConstants.FIVE) {
             return ButtonEdit.class;
-        } else if (columnIndex == IntegerConstants.SEVEN) {
+        } else if (columnIndex == IntegerConstants.SIX) {
             return ButtonDelete.class;
         } else {
             return super.getColumnClass(columnIndex);
@@ -74,24 +74,22 @@ public class TableModelEffort extends AbstractTitaTableModel {
             te = (Effort) list.get(row);
 
             if (col == IntegerConstants.ZERO) {
-                return te.getId();
-            } else if (col == IntegerConstants.ONE) {
                 return te.getDate();
-            } else if (col == IntegerConstants.TWO) {
+            } else if (col == IntegerConstants.ONE) {
                 return te.getDescription();
-            } else if (col == IntegerConstants.THREE) {
+            } else if (col == IntegerConstants.TWO) {
                 return GlobalUtils.TIMEFORMAT24HOURS.format(te.getStartTime());
-            } else if (col == IntegerConstants.FOUR) {
+            } else if (col == IntegerConstants.THREE) {
                 return GlobalUtils.TIMEFORMAT24HOURS.format(te.getEndTime());
-            } else if (col == IntegerConstants.FIVE) {
+            } else if (col == IntegerConstants.FOUR) {
                 return GlobalUtils.TIMELENGTHFORMAT.format(te.getDuration());
+            } else if (col == IntegerConstants.FIVE) {
+                return null;
             } else if (col == IntegerConstants.SIX) {
                 return null;
             } else if (col == IntegerConstants.SEVEN) {
-                return null;
-            } else if (col == IntegerConstants.EIGTH) {
                 return te.getUrlToIssueTrackerTask();
-            }else {
+            } else {
                 return te;
             }
 
@@ -113,7 +111,7 @@ public class TableModelEffort extends AbstractTitaTableModel {
         try {
             te = (Effort) list.get(row);
 
-            if (col == IntegerConstants.ONE) {
+            if (col == IntegerConstants.ZERO) {
                 Date date = null;
                 if (aValue.getClass() == Date.class) {
                     date = (Date) aValue;
@@ -123,19 +121,19 @@ public class TableModelEffort extends AbstractTitaTableModel {
                 if (date != null) {
                     te.setDate(date);
                 }
-            } else if (col == IntegerConstants.TWO) {
+            } else if (col == IntegerConstants.ONE) {
                 te.setDescription(aValue.toString());
-            } else if (col == IntegerConstants.THREE) {
+            } else if (col == IntegerConstants.TWO) {
                 Long startTime = GlobalUtils.getTimeFromObject(aValue);
                 if (startTime != null) {
                     te.setStartTime(startTime);
                 }
-            } else if (col == IntegerConstants.FOUR) {
+            } else if (col == IntegerConstants.THREE) {
                 Long endTime = GlobalUtils.getTimeFromObject(aValue);
                 if (endTime != null) {
                     te.setDuration(endTime - te.getStartTime());
                 }
-            } else if (col == IntegerConstants.FIVE) {
+            } else if (col == IntegerConstants.FOUR) {
                 Long duration = GlobalUtils.getDurationFromObject(aValue);
                 if (duration != null) {
                     te.setDuration(duration);
@@ -148,7 +146,6 @@ public class TableModelEffort extends AbstractTitaTableModel {
         } catch (ClassCastException e) {
             log.error(e.getMessage());
         }
-
     }
 
     /**
@@ -156,7 +153,7 @@ public class TableModelEffort extends AbstractTitaTableModel {
      */
     @Override
     public boolean isCellEditable(int row, int column) {
-        if (column != IntegerConstants.ZERO && column != IntegerConstants.FIVE) {
+        if (column != IntegerConstants.FOUR) {
             if (selectedRow != -1) {
                 if (selectedRow == row) {
                     return true;
