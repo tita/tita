@@ -3,18 +3,19 @@
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
-   
+
        http://www.apache.org/licenses/LICENSE\-2.0
-       
+
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-  
+
  */
 package at.ac.tuwien.ifs.tita.entity;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -34,14 +35,14 @@ import at.ac.tuwien.ifs.tita.entity.conv.Role;
 
 /**
  * Entity for storing TiTA user.
- * 
+ *
  * @author karin
- * 
+ *
  */
 @Entity
 @Table(name = "TITA_USER")
 @SequenceGenerator(name = "seq_user", sequenceName = "USER_ID_SEQ", allocationSize = 1)
-public class TiTAUser extends BaseEntity<Long> {
+public class TiTAUser extends BaseEntity<Long> implements Serializable {
 
     @Id
     @Column(name = "ID")
@@ -70,11 +71,11 @@ public class TiTAUser extends BaseEntity<Long> {
     @JoinColumn(name = "ROLE_ID") //,insertable=false) //, referencedColumnName = "ID")
     private Role role;
 
-    @OneToMany(mappedBy = "user")
-    private Set<TiTAUserProject> titaProjects;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<TiTAUserProject> titaUserProjects;
 
 
-    @OneToMany(mappedBy = "user", 
+    @OneToMany(mappedBy = "user",
             cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<IssueTrackerLogin> issueTrackerLogins;
 
@@ -86,10 +87,11 @@ public class TiTAUser extends BaseEntity<Long> {
     public TiTAUser() {
 
     }
-    
+
     public TiTAUser(String userName, String password, String firstName,
             String lastName, String email, Boolean deleted, Role role,
-            Set<TiTAUserProject> titaProjects, Set<IssueTrackerLogin> issueTrackerLogins) {
+ Set<TiTAUserProject> titaUserProjects,
+            Set<IssueTrackerLogin> issueTrackerLogins) {
         super();
         this.userName = userName;
         this.password = password;
@@ -99,11 +101,23 @@ public class TiTAUser extends BaseEntity<Long> {
         this.deleted = deleted;
         this.role = role;
         this.issueTrackerLogins = issueTrackerLogins;
-        this.titaProjects = titaProjects;
+        this.titaUserProjects = titaUserProjects;
+    }
+
+    public Boolean getDeleted() {
+        return this.deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public void setIssueTrackerLogins(Set<IssueTrackerLogin> issueTrackerLogins) {
+        this.issueTrackerLogins = issueTrackerLogins;
     }
 
     public String getUserName() {
-        return userName;
+        return this.userName;
     }
 
     public void setUserName(String userName) {
@@ -111,7 +125,7 @@ public class TiTAUser extends BaseEntity<Long> {
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     public void setPassword(String password) {
@@ -119,7 +133,7 @@ public class TiTAUser extends BaseEntity<Long> {
     }
 
     public String getFirstName() {
-        return firstName;
+        return this.firstName;
     }
 
     public void setFirstName(String firstName) {
@@ -127,7 +141,7 @@ public class TiTAUser extends BaseEntity<Long> {
     }
 
     public String getLastName() {
-        return lastName;
+        return this.lastName;
     }
 
     public void setLastName(String lastName) {
@@ -135,7 +149,7 @@ public class TiTAUser extends BaseEntity<Long> {
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public void setEmail(String email) {
@@ -143,7 +157,7 @@ public class TiTAUser extends BaseEntity<Long> {
     }
 
     public boolean isDeleted() {
-        return deleted;
+        return this.deleted;
     }
 
     public void setDeleted(boolean deleted) {
@@ -152,24 +166,27 @@ public class TiTAUser extends BaseEntity<Long> {
 
     @Override
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     public Role getRole() {
-        return role;
+        return this.role;
     }
 
     public void setRole(Role role) {
         this.role = role;
     }
 
-    public Set<TiTAUserProject> getTitaProjects() {
-        return titaProjects;
+    public Set<IssueTrackerLogin> getIssueTrackerLogins() {
+        return this.issueTrackerLogins;
     }
 
+    public void setTitaUserProjects(Set<TiTAUserProject> titaUserProjects) {
+        this.titaUserProjects = titaUserProjects;
+    }
 
-    public Set<IssueTrackerLogin> getIssueTrackerLogins() {
-        return issueTrackerLogins;
+    public Set<TiTAUserProject> getTitaUserProjects() {
+        return this.titaUserProjects;
     }
 
 }

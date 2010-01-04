@@ -23,7 +23,8 @@ grant
 
 grant principal org.apache.wicket.security.hive.authorization.SimplePrincipal "admin"
 {
-
+    permission ${ComponentPermission} "${adminPage}", "render";
+    permission ${ComponentPermission} "${adminPage}", "enable";
 };
 
 grant principal org.apache.wicket.security.hive.authorization.SimplePrincipal "timeconsumer"
@@ -52,6 +53,9 @@ grant principal org.apache.wicket.security.hive.authorization.SimplePrincipal "t
 
 grant principal org.apache.wicket.security.hive.authorization.SimplePrincipal "timecontroller"
 {
+    permission ${ComponentPermission} "${projectsPage}", "render";
+    permission ${ComponentPermission} "${projectsPage}", "enable";
+        
     permission ${ComponentPermission} "${multipleProjectsView}", "render";
     permission ${ComponentPermission} "${multipleProjectsView}", "enable";
 };

@@ -15,18 +15,24 @@
  */
 package at.ac.tuwien.ifs.tita.business.service.tasks;
 
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.persistence.PersistenceException;
+
+import at.ac.tuwien.ifs.tita.dao.IGenericHibernateDao;
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
+import at.ac.tuwien.ifs.tita.dao.issuetracker.IssueTrackerDao;
 import at.ac.tuwien.ifs.tita.dao.issuetracker.task.IssueTrackerTaskDao;
 import at.ac.tuwien.ifs.tita.dao.titatask.TiTATaskDao;
+import at.ac.tuwien.ifs.tita.dao.user.UserDAO;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerProject;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerTask;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTATask;
+import at.ac.tuwien.ifs.tita.entity.TiTAUser;
+import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueStatus;
 import at.ac.tuwien.ifs.tita.issuetracker.exceptions.ProjectNotFoundException;
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IProjectTrackable;
@@ -38,118 +44,137 @@ import at.ac.tuwien.ifs.tita.issuetracker.issue.service.IssueTrackerService;
  * The TaskService combines the IssueTrackerService, which fetches and manage
  * the data from the issue trackers, and encapsulates all Task-concerning
  * Database operations.
- *
+ * 
  * @author Christoph
- *
+ * 
  */
+
 public class TaskService implements ITaskService {
 
+    private UserDAO titaUserDao;
+
+    private IGenericHibernateDao<TiTAProject, Long> titaProjectDao;
+
+    private TiTAProject titaProject;
+    private TiTAUser titaUser;
 
     private IssueTrackerTaskDao issueTrackerTaskDao;
     private TiTATaskDao titaTaskDao;
+    private IssueTrackerDao issueTrackerDao;
 
-    private Map<Long, ITaskTrackable> mapOfTasksFromAllProjectsIncludedInTiTAProject;
-    private TiTAProject project;
-    private List<IssueTrackerLogin> logins;
+    private Map<Long, ITaskTrackable> mapOfTasksFromAllProjectsIncludedInTiTAProject = new TreeMap<Long, ITaskTrackable>();
 
     private IIssueTrackerService issueTrackerService;
 
-    /** {@inheritDoc} */
-    @Override
-    public Map<Long, TiTATask> getTiTATasks(TiTAProject titaProject) throws TitaDAOException {
-        return this.issueTrackerTaskDao.getTiTATasksForTitaProject(titaProject);
+    public TaskService() {
+
+    }
+
+    // public TaskService(Long titaProjectId, Long titaUserId) {
+    //
+    // }
+
+    public void setIssueTrackerDao(IssueTrackerDao issueTrackerDao) {
+        this.issueTrackerDao = issueTrackerDao;
     }
 
     /** {@inheritDoc} */
     @Override
-    public IssueTrackerTask saveIssueTrackerTask(IssueTrackerTask issueTrackerTask)
-            throws TitaDAOException {
+    public Map<Long, TiTATask> getTiTATasks(TiTAProject pojectTita) throws TitaDAOException {
+        return this.issueTrackerTaskDao.getTiTATasksForTitaProject(pojectTita);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public IssueTrackerTask saveIssueTrackerTask(IssueTrackerTask issueTrackerTask) throws PersistenceException {
         return this.issueTrackerTaskDao.save(issueTrackerTask);
     }
 
     /** {@inheritDoc} */
     @Override
-    public TiTATask saveTiTATask(TiTATask titaTask) throws TitaDAOException {
+    public void deleteIssueTrackerTask(IssueTrackerTask issueTrackerTask) throws PersistenceException {
+        this.issueTrackerTaskDao.delete(issueTrackerTask);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public IssueTrackerTask getIssueTrackerTaskById(Long id) throws PersistenceException {
+        return this.issueTrackerTaskDao.findById(id);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public TiTATask saveTiTATask(TiTATask titaTask) throws PersistenceException {
         return this.titaTaskDao.save(titaTask);
     }
 
     /** {@inheritDoc} */
     @Override
-    public Map<Long, ITaskTrackable> getIssueTrackerTasksGroupByIssueStatus(String url) {
-
-        Map<Long, ITaskTrackable> taskGroupByIssueTrackerUrl = new TreeMap<Long, ITaskTrackable>();
-        // Long key = 0L;
-        //
-        // for (ITaskTrackable task :
-        // this.mapOfTasksFromAllProjectsIncludedInTiTAProject.values()) {
-        // if (task.getProject().getUrl().equals(url)) {
-        // key++;
-        // taskGroupByIssueTrackerUrl.put(key, task);
-        // }
-        // }
-        return taskGroupByIssueTrackerUrl;
+    public void deleteTiTATask(TiTATask titaTask) throws PersistenceException {
+        this.titaTaskDao.delete(titaTask);
     }
 
     /** {@inheritDoc} */
     @Override
-    public Map<Long, ITaskTrackable> getIssueTrackerTasksGroupByIssueTracker(IssueStatus status) {
-
-        Map<Long, ITaskTrackable> taskGroupByStatus = new TreeMap<Long, ITaskTrackable>();
-        // Long key = 0L;
-        //
-        // for (ITaskTrackable task :
-        // this.mapOfTasksFromAllProjectsIncludedInTiTAProject.values()) {
-        // if (task.getIssueTrackerType().equals(status)) {
-        // key++;
-        // taskGroupByStatus.put(key, task);
-        // }
-        // }
-        return taskGroupByStatus;
+    public TiTATask getTiTATaskById(Long id) throws PersistenceException {
+        return this.titaTaskDao.findById(id);
     }
 
-    public TiTAProject getProject() {
-        return this.project;
+    /** {@inheritDoc} */
+    @Override
+    public IssueTracker saveIssueTracker(IssueTracker issueTracker) throws PersistenceException {
+        return this.issueTrackerDao.save(issueTracker);
     }
 
-    public void setProject(TiTAProject project) {
-        this.project = project;
+    /** {@inheritDoc} */
+    @Override
+    public void deleteIssueTracker(IssueTracker issueTracker) throws PersistenceException {
+        this.issueTrackerDao.delete(issueTracker);
     }
 
-    public void setTitaTaskDao(TiTATaskDao titaTaskDao) {
-        this.titaTaskDao = titaTaskDao;
+    /** {@inheritDoc} */
+    @Override
+    public IssueTracker getIssueTrackerById(Long id) throws PersistenceException {
+        return this.issueTrackerDao.findById(id);
     }
 
-    public void setIssueTrackerTaskDao(IssueTrackerTaskDao issueTrackerTaskDao) {
-        this.issueTrackerTaskDao = issueTrackerTaskDao;
-    }
+    /** {@inheritDoc} */
+    @Override
+    public void fetchTaskFromIssueTrackerProjects(Long projectTitaId, Long userTitaId) throws ProjectNotFoundException {
 
-    /**
-     * Method to fetch all tasks for the tita project and the added issue
-     * tracker projects.
-     *
-     * @throws ProjectNotFoundException
-     *             pnfe - if a project is null
-     */
-    public void fetchTaskFromIssueTrackerProjects()
-            throws ProjectNotFoundException {
+        this.titaProject = this.titaProjectDao.findById(projectTitaId);
+
+        if (this.titaProject == null) {
+            throw new ProjectNotFoundException("Project not found.");
+        }
+
+        this.titaUser = this.titaUserDao.findById(userTitaId);
 
         Long key = 0L;
 
-        for (IssueTrackerLogin login : this.logins) {
+        for (IssueTrackerLogin login : this.titaUser.getIssueTrackerLogins()) {
             this.issueTrackerService = new IssueTrackerService(login);
 
             Map<Long, IProjectTrackable> mapOfProjects = this.issueTrackerService.getProjects();
 
-            for (IssueTrackerProject issueTrackerProject : this.project.getIssueTrackerProjects()) {
-                if (mapOfProjects.containsValue(issueTrackerProject)) {
-                    // TODO Flag setzen
+            for (IssueTrackerProject issueTrackerProject : this.titaProject.getIssueTrackerProjects()) {
 
-                    Map<Long, ITaskTrackable> mapOfTasks = this.issueTrackerService
-                            .getIssueTrackerTasksByProjectId(issueTrackerProject.getProject().getId());
+                for (IProjectTrackable projectTrackable : mapOfProjects.values()) {
+                    if (projectTrackable.getId().equals(issueTrackerProject.getIsstProjectId())) {
+                        // TODO Flag setzen
 
-                    for (ITaskTrackable taskTrackable : mapOfTasks.values()) {
-                        key++;
-                        this.mapOfTasksFromAllProjectsIncludedInTiTAProject.put(key, taskTrackable);
+                        this.issueTrackerService.updateProject(projectTrackable);
+
+                        Map<Long, ITaskTrackable> mapOfTasks = this.issueTrackerService
+                                .getIssueTrackerTasksByProjectId(issueTrackerProject.getIsstProjectId());
+
+                        if (mapOfTasks != null) {
+
+                            for (ITaskTrackable taskTrackable : mapOfTasks.values()) {
+                                key++;
+                                this.mapOfTasksFromAllProjectsIncludedInTiTAProject.put(key, taskTrackable);
+                            }
+                        }
                     }
                 }
             }
@@ -160,12 +185,86 @@ public class TaskService implements ITaskService {
         return this.mapOfTasksFromAllProjectsIncludedInTiTAProject;
     }
 
-    public void setLogins(List<IssueTrackerLogin> logins) {
-        this.logins = logins;
+    public void setTitaUserDao(UserDAO titaUserDao) {
+        this.titaUserDao = titaUserDao;
     }
 
-    public List<IssueTrackerLogin> getLogins() {
-        return this.logins;
+    public void setTitaProjectDao(IGenericHibernateDao<TiTAProject, Long> titaProjectDao) {
+        this.titaProjectDao = titaProjectDao;
+    }
+
+    public void setIssueTrackerTaskDao(IssueTrackerTaskDao issueTrackerTaskDao) {
+        this.issueTrackerTaskDao = issueTrackerTaskDao;
+    }
+
+    public void setTitaTaskDao(TiTATaskDao titaTaskDao) {
+        this.titaTaskDao = titaTaskDao;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Map<Long, ITaskTrackable> getIssueTrackerTasksGroupByIssueStatus(IssueStatus status) {
+
+        Map<Long, ITaskTrackable> taskGroupByStatus = new TreeMap<Long, ITaskTrackable>();
+        Long key = 0L;
+
+        for (ITaskTrackable task : this.mapOfTasksFromAllProjectsIncludedInTiTAProject.values()) {
+            if (task.getIssueTrackerType().equals(status)) {
+                key++;
+                taskGroupByStatus.put(key, task);
+            }
+        }
+        return taskGroupByStatus;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Map<Long, ITaskTrackable> getIssueTrackerTasksGroupByIssueTracker(String url) {
+
+        Map<Long, ITaskTrackable> taskGroupByIssueTrackerUrl = new TreeMap<Long, ITaskTrackable>();
+        Long key = 0L;
+
+        for (ITaskTrackable task : this.mapOfTasksFromAllProjectsIncludedInTiTAProject.values()) {
+            if (task.getProject().getUrl().equals(url)) {
+                key++;
+                taskGroupByIssueTrackerUrl.put(key, task);
+            }
+        }
+        return taskGroupByIssueTrackerUrl;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Map<Long, ITaskTrackable> sortingTasksByIssueStatus(IssueStatus status) {
+        System.out.println("status sorting");
+
+        Map<Long, ITaskTrackable> taskGroupByStatus = new TreeMap<Long, ITaskTrackable>();
+        Long key = 0L;
+
+        for (ITaskTrackable task : this.mapOfTasksFromAllProjectsIncludedInTiTAProject.values()) {
+            if (task.getStatus().equals(status)) {
+                key++;
+                taskGroupByStatus.put(key, task);
+            }
+        }
+        return taskGroupByStatus;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Map<Long, ITaskTrackable> sortingTasksByIssueTracker(String url) {
+        Map<Long, ITaskTrackable> taskGroupByIssueTrackerUrl = new TreeMap<Long, ITaskTrackable>();
+        Long key = 0L;
+
+        for (ITaskTrackable task : this.mapOfTasksFromAllProjectsIncludedInTiTAProject.values()) {
+            String url2 = task.getProject().getUrl().toString();
+
+            if (task.getProject().getUrl().toString().startsWith(url)) {
+                key++;
+                taskGroupByIssueTrackerUrl.put(key, task);
+            }
+        }
+        return taskGroupByIssueTrackerUrl;
     }
 
 }

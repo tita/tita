@@ -84,7 +84,7 @@ public interface IEffortService {
      * 
      * @return list of years
      */
-    List<Integer> getEffortsYears();
+    List<Double> getEffortsYears();
 
     /**
      * Gets a view for the last time efforts.

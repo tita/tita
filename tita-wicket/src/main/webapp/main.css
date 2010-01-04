@@ -196,6 +196,116 @@ tr {
 .tecol7 { width: 30px; }
 .tecol8 { width: 30px; }
 
+/* TaskList Accoridion */
+#dummy {
+    width: 30px;
+    background-color: #2b5286;
+}
+
+#tasklistheader {
+    float:left;
+}
+
+#accordion {
+    clear: both;
+}
+
+#taskTimer_content {
+    border: 1px #ffffff outset;
+    padding: 10px 10px 10px 10px;
+    color: #FFFFFF;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+dl.accordion-menu {
+    margin: 0;
+    padding: 0;
+    width: 25em;
+    
+
+}
+
+dl.accordion-menu dt.a-m-t {
+    margin: 0;
+    background: #2b5286;
+    padding: 0.3em 1em;
+    color: #444444;
+    border: solid 1px #222222;
+    border-left-color: #dfdfdf;
+    border-top-color: #dfdfdf;
+    
+    background-color: #2b5286;
+    font-size: 0.8em;
+    color: #FFFFFF;
+    font-family: 'Trebuchet MS';
+    font-weight: bold;
+    height: 1.2em;
+}
+
+dl.accordion-menu dt.a-m-t-hover{
+    background:#87CEFA;
+}
+
+
+dl.accordion-menu dt.a-m-t-down{
+    border: solid 1px #222222;
+    border-right-color: #dfdfdf;
+    border-bottom-color: #dfdfdf;
+}
+
+html.accordion-menu-js dt.a-m-t{
+    cursor:pointer;
+    zoom:1;
+}
+
+dl.accordion-menu dd.a-m-d {
+    margin: 0;
+    padding: 0;
+    padding:0;
+}
+
+html.accordion-menu-js dd.a-m-d{
+    display:none;
+}
+
+
+html.accordion-menu-js dd.a-m-d-expand {
+    display:block;
+}
+
+html.accordion-menu-js dd.a-m-d-before-expand {
+    display:block;
+    position:relative;
+    z-index:-1;
+    opacity:0;
+    height:auto !important;
+/* patch from jchapelle*/
+/*  visibility:hidden; */
+    overflow:visible;
+}
+
+
+html.accordion-menu-js dt.a-m-t-expand {
+    border-left-color:#222222;
+    color:white;
+    background:#0000FF;
+}
+
+html.accordion-menu-js dd.a-m-d-anim {
+    overflow:hidden;
+    display:block;  
+}
+
+dl.accordion-menu dd.a-m-d .bd{
+    padding:0.5em;
+    border:Solid 1px #aaaaaa;
+    background-color: #6495ED;
+}
+
+/* TaskList Accoridion */
+
 
 /*
 .loginFormBox {

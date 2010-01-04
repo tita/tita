@@ -26,7 +26,6 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mantisbt.connect.MCException;
 import org.slf4j.Logger;
@@ -203,7 +202,6 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
      *             ie
      */
     @Test
-    @Ignore
     public void updateProjectByProjectId() throws ProjectNotFoundException, InterruptedException {
         try {
 
@@ -222,7 +220,7 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
             }
 
             startTimer("Start of update for one projects:");
-            this.issueTrackerService.updateProject(foundProject.getId());
+            this.issueTrackerService.updateProject(foundProject);
             stopTimer("Stopping the upate for one projects.");
 
             // CHECKSTYLE:OFF
@@ -269,15 +267,26 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
      *
      * @throws ProjectNotFoundException
      *             pnfe
+     * @throws InterruptedException - ie
      */
     @Test
-    public void getIssueTrackerTasks() throws ProjectNotFoundException {
+    public void getIssueTrackerTasks() throws ProjectNotFoundException, InterruptedException {
 
         this.issueTrackerService = new IssueTrackerService(this.defaultLogin);
         IProjectTrackable project = this.issueTrackerService.getIssueTrackerDao()
                 .findProject(this.projectIds.get(0));
 
-        assertNull(this.issueTrackerService.getIssueTrackerTasks(project));
+        startTimer("Start of update for one projects:");
+        this.issueTrackerService.updateProject(project);
+        stopTimer("Stopping the upate for one projects.");
+
+        // CHECKSTYLE:OFF
+        Thread.sleep(20000); // Sleeping because the updating is made on a
+        // other thread.
+        // This thread will be quicker.
+        // CHECKSTYLE:ON
+        
+        assertNotNull(this.issueTrackerService.getIssueTrackerTasks(project));
 
     }
 
@@ -301,14 +310,25 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
      *
      * @throws ProjectNotFoundException
      *             pnfe
+     * @throws InterruptedException - ie
      */
     @Test
-    public void getIssueTrackerTasksByProjectId() throws ProjectNotFoundException {
-
+    public void getIssueTrackerTasksByProjectId() throws ProjectNotFoundException, InterruptedException {
+    
         this.issueTrackerService = new IssueTrackerService(this.defaultLogin);
         IProjectTrackable project = this.issueTrackerService.getIssueTrackerDao().findProject(
                 this.projectIds.get(0));
 
+        startTimer("Start of update for one projects:");
+        this.issueTrackerService.updateProject(project);
+        stopTimer("Stopping the upate for one projects.");
+
+        // CHECKSTYLE:OFF
+        Thread.sleep(20000); // Sleeping because the updating is made on a
+        // other thread.
+        // This thread will be quicker.
+        // CHECKSTYLE:ON
+        
         assertNotNull(this.issueTrackerService.getIssueTrackerTasksByProjectId(project.getId()));
     }
 

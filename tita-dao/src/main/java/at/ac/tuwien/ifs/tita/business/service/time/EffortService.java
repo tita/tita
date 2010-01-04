@@ -20,21 +20,21 @@ import java.util.Date;
 import java.util.List;
 
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
-import at.ac.tuwien.ifs.tita.dao.time.EffortDao;
+import at.ac.tuwien.ifs.tita.dao.interfaces.IEffortDao;
 import at.ac.tuwien.ifs.tita.entity.Effort;
 
 /**
  * Service for manipulating (insert, update, delete, search... ) efforts in
  * TiTA.
- *
+ * 
  * @author herbert
- *
+ * 
  */
 public class EffortService implements IEffortService {
 
-    private EffortDao timeEffortDao;
+    private IEffortDao timeEffortDao;
 
-    public void setTimeEffortDao(EffortDao timeEffortDao) {
+    public void setTimeEffortDao(IEffortDao timeEffortDao) {
         this.timeEffortDao = timeEffortDao;
     }
 
@@ -75,7 +75,7 @@ public class EffortService implements IEffortService {
     /**
      * {@inheritDoc}
      */
-    public List<Integer> getEffortsYears() {
+    public List<Double> getEffortsYears() {
         return this.timeEffortDao.getTimeEffortsYears();
     }
 

@@ -30,9 +30,9 @@ import at.ac.tuwien.ifs.tita.issuetracker.mantis.dao.IssueTrackerMantisDao;
  * The IssueTrackerService manage the synchronization between mantis and TiTA.
  * Therefore are two methods that starts the update functions. In addition you
  * can fetch the updated tasks from a project an status.
- * 
+ *
  * @author Christoph
- * 
+ *
  */
 public class IssueTrackerService implements IIssueTrackerService {
     private static DispatcherThread dispatcher = null;
@@ -74,12 +74,21 @@ public class IssueTrackerService implements IIssueTrackerService {
     /** {@inheritDoc} */
     @Override
     public void updateProject(IProjectTrackable project) {
-        worker = new WorkerThread(project, this.loggedUser);
-        worker.start();
+        // worker = new WorkerThread(project, this.loggedUser);
+        // worker.start();
+
+        Map<Long, ITaskTrackable> tasklist = this.dao.findAllTasksForProject(project.getId());
+
+        for (ITaskTrackable task : tasklist.values()) {
+            task.setProject(project);
+        }
+
+        project.setTasks(tasklist);
     }
 
     /** {@inheritDoc} */
     @Override
+    @Deprecated
     public void updateProject(Long projectId) {
         worker = new WorkerThread(projectId, this.loggedUser);
         worker.start();
@@ -126,20 +135,24 @@ public class IssueTrackerService implements IIssueTrackerService {
             throw new ProjectNotFoundException("No project was set.");
         }
 
-        return project.getTasks();
+        return this.dao.findAllTasksForProject(project.getId());
     }
 
     /** {@inheritDoc} */
     @Override
-    @Deprecated
     public Map<Long, ITaskTrackable> getIssueTrackerTasksByProjectId(Long projectId)
             throws ProjectNotFoundException {
 
         if (projectId == null) {
-            throw new ProjectNotFoundException("No project was set.");
+             throw new ProjectNotFoundException("No project was set.");
         }
 
-        return this.dao.findAllTasksForProject(projectId);
-    }
+        for (IProjectTrackable project : this.projects.values()) {
+            if (project.getId().equals(projectId)) {
+                return project.getTasks();
+            }
+        }
 
+        return null;
+    }
 }

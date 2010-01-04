@@ -23,7 +23,7 @@
   <bean id="titaProjectDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
   	<constructor-arg value="at.ac.tuwien.ifs.tita.entity.TiTAProject"/>
   </bean>
-  
+    
   <bean id="timeEffortDAO" class="at.ac.tuwien.ifs.tita.dao.time.EffortDao"/>
 
   <bean id="issueTrackerDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">

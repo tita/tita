@@ -19,7 +19,7 @@ import static org.junit.Assert.assertTrue;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.junit.Before;
+import org.junit.runner.RunWith;
 import org.mantisbt.connect.AccessLevel;
 import org.mantisbt.connect.MCException;
 import org.mantisbt.connect.axis.MCSession;
@@ -32,6 +32,11 @@ import org.mantisbt.connect.model.Note;
 import org.mantisbt.connect.model.Project;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.test.annotation.NotTransactional;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin;
 import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
@@ -42,9 +47,15 @@ import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
  * @author herbert
  *
  */
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "classpath:datasourceContext-test.xml" })
+@TransactionConfiguration
+@Transactional
 public class MantisBaseTest {
 
     protected MCSession session;
+    //TODO: delete
     protected final IssueTrackerLogin defaultLogin = new IssueTrackerLogin("administrator",
             "root", new IssueTracker(1L, "test-mantis", "http://localhost/mantisbt-1.1.8"),null);
 
@@ -61,8 +72,7 @@ public class MantisBaseTest {
     /**
      * Connects to Mantis-Server.
      */
-    @Before
-    public void setUp() {
+    public void connectToMantis() {
         try {
             URL u = new URL(this.url);
             this.session = new MCSession(u, this.user, this.pwd);
@@ -88,6 +98,7 @@ public class MantisBaseTest {
      * @throws MCException
      *             - if error occurs, when project is added
      */
+    @NotTransactional
     protected Long createTestProject(String projectName, String description,
             Boolean enabled, Boolean viewStatePrivate) throws MCException {
 
@@ -115,6 +126,7 @@ public class MantisBaseTest {
      * @throws MCException
      *             - if error occurs, when task is added
      */
+    @NotTransactional
     protected Long createTestTask(String description, String summary,
             String projectName) throws MCException {
 
@@ -145,6 +157,7 @@ public class MantisBaseTest {
      * @throws MCException
      *             - MCException - if error occurs, when comment is added
      */
+    @NotTransactional
     protected Long createTestComment(String text, boolean isPrivate,
             long issueId) throws MCException {
         INote newNote = new Note();
@@ -161,6 +174,7 @@ public class MantisBaseTest {
      * @param projectName
      *            - name of the project to delete
      */
+    @NotTransactional
     protected void deleteTestProject(String projectName) {
         IProject old;
         try {
@@ -180,6 +194,7 @@ public class MantisBaseTest {
      * @param taskId
      *            - id of the task to delete
      */
+    @NotTransactional
     protected void deleteTestTask(long taskId) {
         try {
             this.session.deleteIssue(taskId);
@@ -195,6 +210,7 @@ public class MantisBaseTest {
      * @param commentId
      *            - id of the comment to delete
      */
+    @NotTransactional
     protected void deleteTestComment(long commentId) {
         try {
             this.session.deleteNote(commentId);
@@ -210,6 +226,7 @@ public class MantisBaseTest {
      * @param description
      *            - It describes the measured situation.
      */
+    @NotTransactional
     protected void startTimer(String description) {
         this.log.debug(description);
         this.performanceOutput = "";
@@ -223,6 +240,7 @@ public class MantisBaseTest {
      * @param description
      *            - It describes the measured situation.
      */
+    @NotTransactional
     protected void stopTimer(String description) {
         this.log.debug(description);
         this.performanceOutput += description + "\n";
@@ -233,6 +251,7 @@ public class MantisBaseTest {
     /**
      * Shows the duration that was measured.
      */
+    @NotTransactional
     private void showDuration() {
         // CHECKSTYLE:OFF
         this.log.debug("Duration:" + (getEndTime() - getStartTime()) / 1000 + " sec.");
@@ -245,6 +264,7 @@ public class MantisBaseTest {
      *
      * @return startTime of the measured activity.
      */
+    @NotTransactional
     private Long getStartTime() {
         return this.startTime;
     }
@@ -254,10 +274,12 @@ public class MantisBaseTest {
      *
      * @return endTime of the measured activity.
      */
+    @NotTransactional
     private Long getEndTime() {
         return this.endTime;
     }
 
+    @NotTransactional
     protected String getPerformanceOutput() {
         return this.performanceOutput;
     }

@@ -14,9 +14,8 @@
 package at.ac.tuwien.ifs.tita.business.service.project;
 
 import java.util.List;
-
 import org.springframework.transaction.annotation.Transactional;
-
+import javax.persistence.PersistenceException;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 
 /**
@@ -27,6 +26,37 @@ import at.ac.tuwien.ifs.tita.entity.TiTAProject;
  */
 @Transactional
 public interface IProjectService {
+    /**
+     * Saves a new project or updates an existing one.
+     *
+     * @param project
+     *            the project to be saved
+     * @throws PersistenceException
+     *             if Parameter is null or another Exception is thrown
+     * @return the saved Project.
+     */
+    TiTAProject saveProject(TiTAProject project) throws PersistenceException;
+
+    /**
+     * deletes an existing project.
+     * 
+     * @param project
+     *            the project to be deleted
+     * @throws PersistenceException
+     *             if Parameter is null or another Exception is thrown
+     */
+    void deleteProject(TiTAProject project) throws PersistenceException;
+
+    /**
+     * returns a specific Project found to the id given.
+     *
+     * @param id
+     *            the unique identifier of an project
+     * @throws PersistenceException
+     *             if no project was found or another Exception is thrown
+     * @return the specified Project, if found.
+     */
+    TiTAProject getProjectById(Long id) throws PersistenceException;
     
     /**
      * Returns a list of all existing tita projects.

@@ -84,16 +84,18 @@ public class TiTAApplication extends SwarmWebApplication {
             // Aliases for Admin
 
             // Aliases for timeconsumer
-            factory.setAlias("effortsPage", 
-                    "at.ac.tuwien.ifs.tita.presentation.effort.EffortsPage");
-            factory.setAlias("dailyView", 
-                    "at.ac.tuwien.ifs.tita.presentation.evaluation.timeconsumer.DailyViewPage");
-            factory.setAlias("monthlyView", 
+            factory.setAlias("effortsPage", "at.ac.tuwien.ifs.tita.presentation.startpages.EffortsPage");
+            factory.setAlias("dailyView", "at.ac.tuwien.ifs.tita.presentation.evaluation.timeconsumer.DailyViewPage");
+            factory.setAlias("monthlyView",
                     "at.ac.tuwien.ifs.tita.presentation.evaluation.timeconsumer.MonthlyViewPage");
 
             // Aliases for timecontroller
+            factory.setAlias("projectsPage", "at.ac.tuwien.ifs.tita.presentation.startpages" + ".ProjectsPage");
             factory.setAlias("multipleProjectsView", "at.ac.tuwien.ifs.tita.presentation.evaluation"
                     + ".timecontroller.MultipleProjectsView");
+
+            // Aliases for admin
+            factory.setAlias("adminPage", "at.ac.tuwien.ifs.tita.presentation.startpages" + ".AdminPage");
 
         } catch (MalformedURLException e) {
             throw new WicketRuntimeException(e);

@@ -18,21 +18,18 @@ package at.ac.tuwien.ifs.tita.presentation.login;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.PersistenceException;
 
 import org.apache.wicket.security.authentication.LoginException;
 import org.apache.wicket.security.hive.authentication.DefaultSubject;
 import org.apache.wicket.security.hive.authentication.Subject;
 import org.apache.wicket.security.hive.authentication.UsernamePasswordContext;
 import org.apache.wicket.security.hive.authorization.SimplePrincipal;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
-import at.ac.tuwien.ifs.tita.entity.conv.Role;
 
 /**
  * Login Context for Tita - to authenticate Users and grant principals.
@@ -42,16 +39,11 @@ import at.ac.tuwien.ifs.tita.entity.conv.Role;
  * 
  */
 public class TitaLoginContext extends UsernamePasswordContext {
-    // TODO: doesn't work - always null
-    /*
-     * @SpringBean(name = "userService") private IUserService userService;
-     */
-
+    private final Logger log = LoggerFactory.getLogger(TitaLoginContext.class);
     private IUserService service;
 
     /**
-     * 
-     * Constructor for loging off.
+     * Constructor for logging off.
      */
     public TitaLoginContext() {
     }
@@ -67,22 +59,6 @@ public class TitaLoginContext extends UsernamePasswordContext {
     @Override
     public Subject getSubject(String username, String password) throws LoginException {
 
-        // List<User> users = null;
-        // try {
-        // users = service.getUndeletedUsers();
-        //
-        // for (User us : users) {
-        // us.setDeleted(true);
-        // service.saveUser(us);
-        // }
-        // } catch (TitaDAOException e2) { // TODO Auto-generated catch block
-        // e2.printStackTrace();
-        // }
-        // TODO: DELETE LATER
-//        insertTempRoles();
-//        insertTempUsers();
-        // TODO: DELETE LATER
-
         if (username != null) {
             DefaultSubject user = new DefaultSubject();
 
@@ -92,16 +68,19 @@ public class TitaLoginContext extends UsernamePasswordContext {
                 try {
                     hashedPass = getHashedPassword(password);
                 } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
+                    log.error("Hash Algorithm not found!");
                 }
 
                 if (hashedPass.equals(u.getPassword())) {
                     if (u.getRole().getDescription().equals("Administrator")) {
                         user.addPrincipal(new SimplePrincipal("admin"));
+                        TitaSession.getSession().setRole("admin");
                     } else if (u.getRole().getDescription().equals("Time controller")) {
                         user.addPrincipal(new SimplePrincipal("timecontroller"));
+                        TitaSession.getSession().setRole("timecontroller");
                     } else if (u.getRole().getDescription().equals("Time consumer")) {
                         user.addPrincipal(new SimplePrincipal("timeconsumer"));
+                        TitaSession.getSession().setRole("timeconsumer");
                     } else {
                         throw new LoginException("Login of user " + username + " failed.");
                     }
@@ -118,76 +97,6 @@ public class TitaLoginContext extends UsernamePasswordContext {
     }
 
     /**
-     * Insert temporary roles for testing. TODO: REMOVE LATER.
-     */
-    private void insertTempRoles() {
-        // CHECKSTYLE:OFF
-        List<Role> tempRolesList = new ArrayList<Role>(3);
-
-        tempRolesList.add(new Role(1L, "Administrator"));
-        tempRolesList.add(new Role(2L, "Time consumer"));
-        tempRolesList.add(new Role(3L, "Time controller"));
-        // CHECKSTYLE:ON
-
-        try {
-            for (Role r : tempRolesList) {
-                service.saveRole(r);
-            }
-        } catch (PersistenceException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Insert temporary users for testing. TODO: REMOVE LATER.
-     */
-    private void insertTempUsers() {
-        // CHECKSTYLE:OFF
-        List<TiTAUser> tempUserList = new ArrayList<TiTAUser>(3);
-        // CHECKSTYLE:ON
-        TiTAUser user1 = new TiTAUser();
-        TiTAUser user2 = new TiTAUser();
-        TiTAUser user3 = new TiTAUser();
-
-        user1.setDeleted(false);
-        user2.setDeleted(false);
-        user3.setDeleted(false);
-
-        user1.setUserName("admin");
-        user2.setUserName("timeconsumer");
-        user3.setUserName("timecontroller");
-
-        try {
-            user1.setPassword(getHashedPassword("admin"));
-            user2.setPassword(getHashedPassword("timeconsumer"));
-            user3.setPassword(getHashedPassword("timecontroller"));
-        } catch (NoSuchAlgorithmException e2) {
-            e2.printStackTrace();
-        }
-
-        try {
-            List<Role> rlist = service.getRoles();
-            user1.setRole(rlist.get(0));
-            user2.setRole(rlist.get(1));
-            user3.setRole(rlist.get(2));
-        } catch (TitaDAOException e1) {
-            e1.printStackTrace();
-        }
-
-        tempUserList.add(user1);
-        tempUserList.add(user2);
-        tempUserList.add(user3);
-
-        try {
-            for (TiTAUser u : tempUserList) {
-                service.saveUser(u);
-            }
-        } catch (PersistenceException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
      * Hashes the password with SHA-1 Algorithm.
      * 
      * @param pwd password to hash.
@@ -195,18 +104,33 @@ public class TitaLoginContext extends UsernamePasswordContext {
      * @throws NoSuchAlgorithmException if algorithm wasn't found.
      */
     private String getHashedPassword(String pwd) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance("SHA-1");
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
         byte[] encryptMsg = md.digest(pwd.getBytes());
-        return new String(encryptMsg);
+        return bytes2String(encryptMsg);
     }
 
     /**
-     * No Additional Logins allowed.
+     * Converts byte array in readable String.
      * 
-     * @see org.apache.wicket.security.hive.authentication.LoginContext#preventsAdditionalLogins()
-     * @return true if additonal logins allowed false otherwise
+     * @param bytes digest to convert.
+     * @return digest as readable String.
      */
-    /*
-     * @Override public boolean preventsAdditionalLogins() { return true; }
+    private String bytes2String(byte[] bytes) {
+        StringBuilder string = new StringBuilder();
+        for (byte b : bytes) {
+            // CHECKSTYLE:OFF
+            String hexString = Integer.toHexString(0x00FF & b);
+            // CHKECKSTYLE:ON
+            string.append(hexString.length() == 1 ? "0" + hexString : hexString);
+        }
+        return string.toString();
+    }
+
+    /**
+     * {@inheritDoc}
      */
+    @Override
+    public boolean preventsAdditionalLogins() {
+        return true;
+    }
 }

@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.persistence.PersistenceException;
 
 import junit.framework.Assert;
 
@@ -35,7 +36,6 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import at.ac.tuwien.ifs.tita.business.service.tasks.ITaskService;
-import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerTask;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
@@ -45,18 +45,18 @@ import at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus;
 
 /**
  * Task Service Dao Testcases.
- *
+ * 
  * @author Christoph
- *
+ * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:datasourceContext-test.xml" })
 @TransactionConfiguration
 @Transactional
-public class TaskServiceDaoTest{
+public class TaskServiceDaoTest {
 
-    private IssueTrackerLogin defaultLogin = new IssueTrackerLogin("administrator", "root",
-            new IssueTracker(1L, "test-mantis", "http://localhost/mantisbt-1.1.8"),null);
+    private IssueTrackerLogin defaultLogin = new IssueTrackerLogin("administrator", "root", new IssueTracker(1L,
+            "test-mantis", "http://localhost/mantisbt-1.1.8"), null);
 
     private TiTAProject titaProject;
     private List<IssueTrackerLogin> logins;
@@ -72,17 +72,17 @@ public class TaskServiceDaoTest{
     public void setUp() {
 
         // try {
-            this.logins = new ArrayList<IssueTrackerLogin>();
-            this.logins.add(this.defaultLogin);
+        this.logins = new ArrayList<IssueTrackerLogin>();
+        this.logins.add(this.defaultLogin);
 
-            this.titaProject = new TiTAProject();
-            this.titaProject.setName("TestProjektTita");
-            this.titaProject.setDeleted(false);
-            this.titaProject.setProjectStatus(new ProjectStatus(1L, "open"));
+        this.titaProject = new TiTAProject();
+        this.titaProject.setName("TestProjektTita");
+        this.titaProject.setDeleted(false);
+        this.titaProject.setProjectStatus(new ProjectStatus(1L, "open"));
 
-            // this.taskService.setLogins(this.logins);
-            // this.taskService.setProject(this.titaProject);
-            // this.taskService.fetchTaskFromIssueTrackerProjects();
+        // this.taskService.setLogins(this.logins);
+        // this.taskService.setProject(this.titaProject);
+        // this.taskService.fetchTaskFromIssueTrackerProjects();
         //
         // } catch (ProjectNotFoundException e) {
         // fail("Project must be set.");
@@ -91,9 +91,8 @@ public class TaskServiceDaoTest{
 
     /**
      * Delete mantis projects for all tests.
-     *
-     * @throws InterruptedException
-     *             e
+     * 
+     * @throws InterruptedException e
      */
     @After
     public void tearDown() throws InterruptedException {
@@ -119,8 +118,12 @@ public class TaskServiceDaoTest{
         TiTATask titaTask = new TiTATask();
         try {
             this.service.saveTiTATask(titaTask);
-        } catch (TitaDAOException e) {
+            Assert.assertNotNull(titaTask.getId());
+            Assert.assertNotNull(this.service.getTiTATaskById(titaTask.getId()));
+        } catch (PersistenceException e) {
             fail("");
+        } finally {
+            this.service.deleteTiTATask(titaTask);
         }
     }
 
@@ -133,10 +136,31 @@ public class TaskServiceDaoTest{
         IssueTrackerTask issueTrackerTask = new IssueTrackerTask();
         try {
             this.service.saveIssueTrackerTask(issueTrackerTask);
-        } catch (TitaDAOException e) {
+            Assert.assertNotNull(issueTrackerTask.getId());
+            Assert.assertNotNull(this.service.getIssueTrackerTaskById(issueTrackerTask.getId()));
+        } catch (PersistenceException e) {
             fail("");
+        } finally {
+            this.service.deleteIssueTrackerTask(issueTrackerTask);
         }
-        Assert.assertNotNull(issueTrackerTask.getId());
+    }
+
+    /**
+     * The test case should save a issue tracker that is provided from the task
+     * list.
+     */
+    @Test
+    public void saveIssueTracker() {
+        IssueTracker issueTracker = new IssueTracker(1L, "Mantis", "http://localhost/mantisbt-1.1.8");
+        try {
+            this.service.saveIssueTracker(issueTracker);
+            Assert.assertNotNull(issueTracker.getId());
+            Assert.assertNotNull(this.service.getIssueTrackerById(issueTracker.getId()));
+        } catch (PersistenceException e) {
+            fail("");
+        } finally {
+            this.service.deleteIssueTracker(issueTracker);
+        }
     }
 
 }

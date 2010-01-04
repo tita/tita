@@ -13,7 +13,7 @@
    limitations under the License.
   
  */
-package at.ac.tuwien.ifs.tita.presentation.effort;
+package at.ac.tuwien.ifs.tita.presentation.startpages;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +27,10 @@ import org.apache.wicket.model.Model;
 
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.presentation.BasePage;
+import at.ac.tuwien.ifs.tita.presentation.controls.panel.AdministrationPanelEffort;
 
 /**
- * Main Area for Efforts.
+ * Start Page for Time consumer - Main Area for Efforts.
  * 
  * @author rene
  * 
@@ -45,21 +46,17 @@ public class EffortsPage extends BasePage {
 
         initTempProjects();
         initTabbedPanels();
-        add(new TabbedPanel("effortsTabbedPanel", tabs)
-                .add(new AttributeModifier("class", true, EffortsPage.this
-                        .getDefaultModel())));
+        add(new TabbedPanel("effortsTabbedPanel", tabs).add(new AttributeModifier("class", true, EffortsPage.this
+                .getDefaultModel())));
     }
 
     /**
      * Creates temporary Projects. TODO: Remove Later
      */
     private void initTempProjects() {
-        TiTAProject p1 = new TiTAProject();
-        TiTAProject p2 = new TiTAProject();
-        TiTAProject p3 = new TiTAProject();
-        p1.setName("Project 1");
-        p2.setName("Project 2");
-        p3.setName("Project 3");
+        TiTAProject p1 = new TiTAProject("Project 1", "Project 1", false, null, null, null);
+        TiTAProject p2 = new TiTAProject("Project 2", "Project 1", false, null, null, null);
+        TiTAProject p3 = new TiTAProject("Project 3", "Project 1", false, null, null, null);
         projects.add(p1);
         projects.add(p2);
         projects.add(p3);

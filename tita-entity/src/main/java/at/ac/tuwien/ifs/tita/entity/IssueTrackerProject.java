@@ -34,9 +34,9 @@ import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 
 /**
  * Entity for storing projects comming from different issue trackers.
- *
+ * 
  * @author herbert
- *
+ * 
  */
 @Entity
 @Table(name = "ISSUE_TRACKER_PROJECT")
@@ -48,7 +48,7 @@ public class IssueTrackerProject extends BaseEntity<Long> {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_issue_project")
     private Long id;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "TITA_PROJECT_ID")
     private TiTAProject titaProject;
 
@@ -58,18 +58,14 @@ public class IssueTrackerProject extends BaseEntity<Long> {
     @ManyToOne
     @JoinColumn(name = "ISST_ID")
     private IssueTracker issueTracker;
-    
+
     @Column(name = "ISST_PROJECT_ID")
     private Long isstProjectId;
 
     @Column(name = "DELETED")
-    private boolean deleted;
+    private Boolean deleted;
 
-    // @Column(name="DESCRIPTION")
-    // private String description;
-
-    @OneToMany(mappedBy="isstProject", 
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "isstProject", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE })
     private Set<IssueTrackerTask> issueTrackerTasks;
 
     @SuppressWarnings("unused")
@@ -80,8 +76,7 @@ public class IssueTrackerProject extends BaseEntity<Long> {
     public IssueTrackerProject() {
     }
 
-    public IssueTrackerProject(IssueTracker issTracker, Long isstProjectId, 
-                               Set<IssueTrackerTask> issueTrackerTasks){
+    public IssueTrackerProject(IssueTracker issTracker, Long isstProjectId, Set<IssueTrackerTask> issueTrackerTasks) {
         super();
         this.issueTracker = issTracker;
         this.isstProjectId = isstProjectId;
@@ -94,11 +89,11 @@ public class IssueTrackerProject extends BaseEntity<Long> {
     }
 
     public TiTAProject getProject() {
-        return titaProject;
+        return this.titaProject;
     }
-    
+
     public IssueTracker getIssueTrackerId() {
-        return issueTracker;
+        return this.issueTracker;
     }
 
     public Long getIsstProjectId() {
@@ -117,11 +112,11 @@ public class IssueTrackerProject extends BaseEntity<Long> {
         return this.issueTracker;
     }
 
-    public void setDeleted(boolean deleted) {
+    public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
     }
 
-    public boolean isDeleted() {
+    public Boolean isDeleted() {
         return this.deleted;
     }
 
@@ -132,8 +127,16 @@ public class IssueTrackerProject extends BaseEntity<Long> {
     public String getProjectName() {
         return this.projectName;
     }
-    
-    public void setTitaProject(TiTAProject titaProject){
+
+    public void setTitaProject(TiTAProject titaProject) {
         this.titaProject = titaProject;
+    }
+
+    public void setIsstProjectId(Long isstProjectId) {
+        this.isstProjectId = isstProjectId;
+    }
+
+    public void setIssueTrackerTasks(Set<IssueTrackerTask> issueTrackerTasks) {
+        this.issueTrackerTasks = issueTrackerTasks;
     }
 }
