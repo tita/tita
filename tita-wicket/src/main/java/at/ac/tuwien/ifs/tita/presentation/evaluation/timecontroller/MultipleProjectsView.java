@@ -174,6 +174,7 @@ public class MultipleProjectsView extends BasePage {
         table = new Table("evaluationTable", mpem);
         table.setRowsPerPage(EffortUtils.ROWS_PER_PAGE);
         table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        table.setWidths(new String [] {"100","100","100","100","100","100"});
         
         form.add(table.getRowsAjaxPagingNavigator("rowsPaging"));
         form.add(table);
@@ -224,7 +225,6 @@ public class MultipleProjectsView extends BasePage {
             mpem.setColumnNames(new String [] {"PROJECT", "YEAR", "MONTH", "DAY", "DURATION"});
         }
         mpem.reload(pe);
-        table.setWidths(new String [] {"100","100","100","100","100","100"});
     }
 
     private void createUserProjectEffortTable(List<UserProjectEffort> upe, String grouping){
@@ -237,7 +237,6 @@ public class MultipleProjectsView extends BasePage {
                                                "DURATION", "USERNAME"});
         }
         mpem.reload(upe);
-        table.setWidths(new String [] {"100","100","100","100","100","100"});
     }
     
     private void loadTiTAUsers(){

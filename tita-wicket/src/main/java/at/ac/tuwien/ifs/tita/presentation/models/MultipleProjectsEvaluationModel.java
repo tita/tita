@@ -47,39 +47,41 @@ public class MultipleProjectsEvaluationModel extends AbstractTableModel {
     /** {@inheritDoc} */
     @Override
     public Object getValueAt(int row, int col) {
-        Object pEff = list.get(row);
-        
-//        if (pEff instanceof ProjectEffort){
-//            ProjectEffort pe = (ProjectEffort) pEff;
-//            
-//            Class<?> clazz = pe.getClass();
-//            try {
-//                Field fi = clazz.getField(columnNames[col].toLowerCase());
-//                
-//                return fi.get(pe);
-//            }catch(Exception e){
-//                return null;
-//            }
-//        }else if(pEff instanceof UserProjectEffort){
-//            UserProjectEffort spe = (UserProjectEffort) pEff;
-//            
-            Class<?> clazz = pEff.getClass();
-            try {
-                Field fi = clazz.getField(columnNames[col].toLowerCase());
-                
-                return fi.get(pEff);
-            }catch(Exception e){
-                return null;
-            }
-//        }else{
-//            return null;
-//        }        
+        Object obj = list.get(row);
+        return extractFieldValueFromClass(obj.getClass(), obj, col);
     }
     
+    private Object extractFieldValueFromClass(Class<?> clazz, Object obj, Integer col){
+        Field fi;
+        Class<?> superClass = clazz.getSuperclass();
+             
+        try {
+            fi = clazz.getDeclaredField(columnNames[col].toLowerCase());
+            fi.setAccessible(true);
+            return fi.get(obj);
+        }catch (Exception e) {
+            try{
+                fi = superClass.getDeclaredField(columnNames[col].toLowerCase());
+                fi.setAccessible(true);
+                return fi.get(obj);
+            }catch(Exception ex){
+                return null;
+            }
+        }
+    }
+   
     public void setColumnNames (String [] colNames){
         columnNames = colNames;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getColumnName(int c) {
+        return columnNames[c];
+    }
+    
     /** {@inheritDoc} */
     @Override
     public int getColumnCount() {
