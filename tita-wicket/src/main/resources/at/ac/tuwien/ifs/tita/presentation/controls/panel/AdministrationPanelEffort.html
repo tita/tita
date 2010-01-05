@@ -34,27 +34,19 @@
 		</form>	 -->
     	<div wicket:id="timeeffortContainer"> 
 		    <form wicket:id="timeeffortForm">
-			  Rows paging:  <div class="navigator" wicket:id="rowsPaging"></div>
 			  <table>
-			  		<colgroup>
-		      			<col class="tecol1"></col>
-						<col class="tecol2"></col>
-						<col class="tecol3"></col>
-						<col class="tecol4"></col>
-						<col class="tecol5"></col>
-						<col class="tecol6"></col>
-						<col class="tecol7"></col>
-						<col class="tecol8"></col>				
-					</colgroup>
+			  		<tr>
+				  		<th>Rows paging:  </th>
+				  		<th><div class="navigator" wicket:id="rowsPaging"></div></th>
+			  		</tr>
+			  </table>
+			  <table>
 					<tr>
-		        		<th></th>
-			          	<th></th>
-			            <th><input wicket:id="filterdescription" onchange="filter_list (this)" size="40"/></th>
-			            <th></th>
-			            <th></th>
-			            <th></th>
-						<th></th>
-
+		        		<th><input wicket:id="filterdatefrom" size="7"/></th>
+			        	<th><button wicket:id="buttonCancelDateFrom" class="buttonCancelDateFrom" type="button"></button></th>
+			        	<th><input wicket:id="filterdateuntil" size="7"/></th>
+			        	<th><button wicket:id="buttonCancelDateUntil" class="buttonCancelDateUntil" type="button"></button></th>
+			            <th><input wicket:id="filterdescription" size="40"/></th>
 		         	</tr>	   
 			  </table>
 			  <table wicket:id="tetable">
@@ -65,8 +57,7 @@
 						<col class="tecol4"></col>
 						<col class="tecol5"></col>
 						<col class="tecol6"></col>
-						<col class="tecol7"></col>
-						<col class="tecol8"></col>				
+						<col class="tecol7"></col>			
 					</colgroup>
 			  </table>
 		      <table>
@@ -77,11 +68,9 @@
 						<col class="tecol4"></col>
 						<col class="tecol5"></col>
 						<col class="tecol6"></col>
-						<col class="tecol7"></col>
-						<col class="tecol8"></col>				
+						<col class="tecol7"></col>			
 					</colgroup>
 		        	<tr>
-		        		<th></th>
 			          	<th><input wicket:id="tedate" size="7"/></th>
 			            <th><input wicket:id="tedescription" size="40"/></th>
 			            <th><input wicket:id="testarttime" size="5"/></th>
@@ -92,35 +81,6 @@
 		        </table>
 		    </form>
 	    </div>
-		
-		<!--  <h3>Mantis - Issues</h3>
-		<table border=1>
-		  <thead>
-               <tr>
-                   <th>Id</th>
-                   <th>Description</th>
-                   <th>Creation time</th>
-                   <th>Last Change</th>
-                   <th>Owner</th>
-                   <th>Priority</th>
-                   <th>Resolution</th>
-                   <th>Severity</th>
-                   <th>Status</th>
-               </tr>
-           </thead>
-		  <tr wicket:id="tasklist">
-		    <td><span wicket:id="number"></span></td>
-		    <td><span wicket:id="name"></span></td>
-		    <td><span wicket:id="creation"></span></td>
-		    <td><span wicket:id="lastchange"></span></td>
-		    <td><span wicket:id="owner"></span></td>
-		    <td><span wicket:id="priority"></span></td>
-		    <td><span wicket:id="resolution"></span></td>
-		    <td><span wicket:id="severity"></span></td>
-		    <td><span wicket:id="status"></span></td>
-		  </tr>
-	</table>-->
-	
 	</wicket:panel>
 </body>
 

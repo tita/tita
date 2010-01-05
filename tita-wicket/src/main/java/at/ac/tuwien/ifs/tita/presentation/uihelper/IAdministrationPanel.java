@@ -16,11 +16,7 @@
  */
 package at.ac.tuwien.ifs.tita.presentation.uihelper;
 
-import java.util.List;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
-
-import at.ac.tuwien.ifs.tita.entity.BaseEntity;
 
 /**
  * Interface ITitaAdministrationPanel provides access to basic administration
@@ -37,13 +33,9 @@ public interface IAdministrationPanel {
     void deleteListEntity();
 
     /**
-     * Gets list entities.
-     * 
-     * @param maxsize
-     *            max size of list
-     * @return list of entities
+     * Loads list entities.
      */
-    List<? extends BaseEntity<Long>> getListEntities(int maxsize);
+    void loadListEntities();
 
     /**
      * Saves list entity to database and table.

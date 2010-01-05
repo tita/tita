@@ -186,15 +186,37 @@ tr {
 	border: none;
 }
 
+.buttonCancelDateFrom  {
+	display: block;
+	background-color: transparent;
+	background-image: url(images/bt-delete.png);
+	background-position:center;
+	background-repeat: no-repeat;
+	width: 20px;
+	height: 20px;
+	border: none;
+}
+
+.buttonCancelDateUntil  {
+	display: block;
+	background-color: transparent;
+	background-image: url(images/bt-delete.png);
+	background-position:center;
+	background-repeat: no-repeat;
+	width: 20px;
+	height: 20px;
+	border: none;
+}
+
 /* Efforts Table Column Width*/
-.tecol1 { width: 45px; }
-.tecol2 { width: 90px; }
-.tecol3 { width: 300px; }
+.tecol1 { width: 95px; }
+.tecol2 { width: 300px; }
+.tecol3 { width: 80px; }
 .tecol4 { width: 80px; }
-.tecol5 { width: 80px; }
-.tecol6 { width: 78px; }
+.tecol5 { width: 78px; }
+.tecol6 { width: 30px; }
 .tecol7 { width: 30px; }
-.tecol8 { width: 30px; }
+.tecol8 { width: 50px; }
 
 /* TaskList Accoridion */
 #dummy {
