@@ -45,7 +45,6 @@ import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.entity.TiTAUserProject;
 import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 import at.ac.tuwien.ifs.tita.entity.conv.Role;
-import at.ac.tuwien.ifs.tita.entity.util.ProjectEffort;
 import at.ac.tuwien.ifs.tita.entity.util.UserProjectEffort;
 
 /**
@@ -210,11 +209,11 @@ public class EffortDaoTest { // extends AbstractJpaTests {
         li.add("bla");
 
         // CHECKSTYLE:OFF
-        List<ProjectEffort> leff = timeEffortDAO.findEffortsForTiTAProjectId(
+        List<UserProjectEffort> leff = timeEffortDAO.findEffortsForTiTAProjectId(
                 li, "month");
 
         assertNotNull(leff);
-        assertEquals(2, leff.size());
+        assertEquals(1, leff.size());
         // CHECKSTYLE:ON
     }
 
@@ -253,7 +252,7 @@ public class EffortDaoTest { // extends AbstractJpaTests {
                 .findEffortsForTiTAProjectAndTimeConsumerId(li, ti, "overall");
 
         assertNotNull(leff);
-        assertEquals(2, leff.size());
+        assertEquals(1, leff.size());
         // CHECKSTYLE:ON
     }
 }

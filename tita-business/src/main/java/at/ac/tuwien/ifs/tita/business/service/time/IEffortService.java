@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.Effort;
-import at.ac.tuwien.ifs.tita.entity.util.ProjectEffort;
 import at.ac.tuwien.ifs.tita.entity.util.UserProjectEffort;
 
 /**
@@ -115,6 +114,6 @@ public interface IEffortService {
      * @param grouping String
      * @return ProjectEffort List
      */
-    List<ProjectEffort> getEffortsSummaryForProjectNames(List<String> projects,
+    List<UserProjectEffort> getEffortsSummaryForProjectNames(List<String> projects,
                                                              String grouping);
 }

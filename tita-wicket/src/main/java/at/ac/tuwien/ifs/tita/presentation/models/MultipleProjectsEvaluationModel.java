@@ -24,7 +24,8 @@ import javax.swing.table.AbstractTableModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import at.ac.tuwien.ifs.tita.entity.util.ProjectEffort;
+import at.ac.tuwien.ifs.tita.entity.util.UserProjectEffort;
+import at.ac.tuwien.ifs.tita.issuetracker.util.TiTATimeConverter;
 
 /**
  * Implementation of AbstractTableModel for displaying multiple view on tita projects.
@@ -35,10 +36,10 @@ public class MultipleProjectsEvaluationModel extends AbstractTableModel {
     // Logger
     private final Logger log = LoggerFactory.getLogger(MultipleProjectsEvaluationModel.class);
     
-    private List<? extends ProjectEffort> list;
+    private List<UserProjectEffort> list;
     protected String[] columnNames;
     
-    public MultipleProjectsEvaluationModel(List<? extends ProjectEffort> list,
+    public MultipleProjectsEvaluationModel(List<UserProjectEffort> list,
                                            String [] colNames) {
         this.list = list;
         this.columnNames = colNames;
@@ -47,39 +48,41 @@ public class MultipleProjectsEvaluationModel extends AbstractTableModel {
     /** {@inheritDoc} */
     @Override
     public Object getValueAt(int row, int col) {
-        Object pEff = list.get(row);
-        
-//        if (pEff instanceof ProjectEffort){
-//            ProjectEffort pe = (ProjectEffort) pEff;
-//            
-//            Class<?> clazz = pe.getClass();
-//            try {
-//                Field fi = clazz.getField(columnNames[col].toLowerCase());
-//                
-//                return fi.get(pe);
-//            }catch(Exception e){
-//                return null;
-//            }
-//        }else if(pEff instanceof UserProjectEffort){
-//            UserProjectEffort spe = (UserProjectEffort) pEff;
-//            
-            Class<?> clazz = pEff.getClass();
-            try {
-                Field fi = clazz.getField(columnNames[col].toLowerCase());
-                
-                return fi.get(pEff);
-            }catch(Exception e){
-                return null;
-            }
-//        }else{
-//            return null;
-//        }        
+        Object obj = list.get(row);
+        return extractFieldValueFromClass(obj.getClass(), obj, col);
     }
     
+    private Object extractFieldValueFromClass(Class<?> clazz, Object obj, Integer col){
+        Field fi;
+        String fieldName = columnNames[col].toLowerCase();
+        Object objField;
+        
+        try {
+            fi = clazz.getDeclaredField(fieldName);
+            fi.setAccessible(true);
+            objField = fi.get(obj);
+            if(fieldName.equals("duration")){
+                String dur = TiTATimeConverter.getDuration2String((Long) objField);
+                return dur;
+            }
+            return objField; 
+        }catch (Exception e) {
+            return null; 
+        }
+    }
+   
     public void setColumnNames (String [] colNames){
         columnNames = colNames;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getColumnName(int c) {
+        return columnNames[c];
+    }
+    
     /** {@inheritDoc} */
     @Override
     public int getColumnCount() {
@@ -97,7 +100,7 @@ public class MultipleProjectsEvaluationModel extends AbstractTableModel {
      * 
      * @param list1 the list to set
      */
-    public void reload(List<? extends ProjectEffort> list1) {
+    public void reload(List<UserProjectEffort> list1) {
         this.list = list1;
         reload();
     };

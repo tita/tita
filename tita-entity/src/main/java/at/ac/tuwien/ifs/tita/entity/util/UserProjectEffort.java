@@ -15,8 +15,11 @@
  */
 package at.ac.tuwien.ifs.tita.entity.util;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
@@ -24,11 +27,29 @@ import javax.persistence.Table;
  * @author herbert
  *
  */
-@Table(name="DUMMY2")
+@Table(name="DUMMY1")
 @Entity
-public class UserProjectEffort extends ProjectEffort{
-   
-    @Column(name = "USERNAME")
+public class UserProjectEffort implements Serializable{
+    @Id
+    @Column (name = "ID", insertable=false, updatable=false)
+    private Long id;
+    
+    @Column (name = "PROJECT", insertable=false, updatable=false)
+    private String project;
+    
+    @Column (name = "YEAR", insertable=false, updatable=false)
+    private Integer year;
+    
+    @Column (name = "MONTH", insertable=false, updatable=false)
+    private Integer month;
+    
+    @Column (name = "DAY", insertable=false, updatable=false)
+    private Integer day;
+    
+    @Column (name = "DURATION", insertable=false, updatable=false)
+    private Long duration;
+       
+    @Column(name = "USERNAME", insertable=false, updatable=false)
     private String username;
     
     public UserProjectEffort() {
@@ -36,5 +57,29 @@ public class UserProjectEffort extends ProjectEffort{
 
     public String getUsername() {
         return username;
+    }
+    
+    public Long getDuration() {
+        return duration;
+    }
+
+    public String getProject() {
+        return project;
+    }
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public Integer getMonth() {
+        return month;
+    }
+
+    public Integer getDay() {
+        return day;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

@@ -57,6 +57,8 @@ insert into EFFORT (ID, DESCRIPTION, TITA_TASK_ID, ISSUET_TASK_ID, DATE, DURATIO
 values (3, 'e3', 2, null, '2009-07-09', 2000, false, 7);
 insert into EFFORT (ID, DESCRIPTION, TITA_TASK_ID, ISSUET_TASK_ID, DATE, DURATION, DELETED, USER_ID)
 values (4, 'e4', 2, null, '2009-05-17', 2000, false, 6);
+insert into EFFORT (ID, DESCRIPTION, TITA_TASK_ID, ISSUET_TASK_ID, DATE, DURATION, DELETED, USER_ID)
+values (9, 'e9', 2, null, '2009-05-18', 3000, false, 6);
 
 insert into EFFORT (ID, DESCRIPTION, TITA_TASK_ID, ISSUET_TASK_ID, DATE, DURATION, DELETED, USER_ID)
 values (5, 'e5', null, 1, '2009-01-012', 2000, false, 6);
@@ -67,6 +69,8 @@ insert into EFFORT (ID, DESCRIPTION, TITA_TASK_ID, ISSUET_TASK_ID, DATE, DURATIO
 values (7, 'e7', null, 2, '2009-06-29', 2000, false, 5);
 insert into EFFORT (ID, DESCRIPTION, TITA_TASK_ID, ISSUET_TASK_ID, DATE, DURATION, DELETED, USER_ID)
 values (8, 'e8', null, 2, '2009-10-24', 2000, false, 5);
+insert into EFFORT (ID, DESCRIPTION, TITA_TASK_ID, ISSUET_TASK_ID, DATE, DURATION, DELETED, USER_ID)
+values (10, 'e10', null, 2, '2009-05-18', 3000, false, 6);
 
 insert into USER_PROJECT (ID, USER_ID, PROJECT_ID) values (1, 5, 1);
 insert into USER_PROJECT (ID, USER_ID, PROJECT_ID) values (2, 6, 1);
