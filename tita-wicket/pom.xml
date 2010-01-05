@@ -22,7 +22,7 @@
 	<parent>
 		<groupId>at.ac.tuwien.ifs</groupId>
 		<artifactId>tita-parent</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>1.0.0.M4</version>
 	</parent>
 
 	<artifactId>tita-wicket</artifactId>
@@ -197,27 +197,27 @@
 		<dependency>
 			<groupId>at.ac.tuwien.ifs</groupId>
 			<artifactId>tita-entity</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<version>1.0.0.M4</version>
 		</dependency>
 		<dependency>
 			<groupId>at.ac.tuwien.ifs</groupId>
 			<artifactId>tita-dao</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<version>1.0.0.M4</version>
 		</dependency>
 		<dependency>
 			<groupId>at.ac.tuwien.ifs</groupId>
 			<artifactId>tita-business</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<version>1.0.0.M4</version>
 		</dependency>
 		<dependency>
 			<groupId>at.ac.tuwien.ifs</groupId>
 			<artifactId>tita-jasperreports</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<version>1.0.0.M4</version>
 		</dependency>
 		<dependency>
 			<groupId>at.ac.tuwien.ifs</groupId>
 			<artifactId>tita-issuetracker-integration</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<version>1.0.0.M4</version>
 		</dependency>
 
 		<!--  SELENIUM DEPENDENCY FOR TESTING -->
