@@ -33,7 +33,13 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.security.components.markup.html.panel.SecurePanel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import at.ac.tuwien.ifs.tita.business.service.tasks.ITaskService;
+import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
+import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
+import at.ac.tuwien.ifs.tita.entity.TiTAUser;
+import at.ac.tuwien.ifs.tita.presentation.login.TitaSession;
 import at.ac.tuwien.ifs.tita.presentation.tasklist.accordion.AccordionPanel;
 import at.ac.tuwien.ifs.tita.presentation.tasklist.accordion.AccordionPanelItem;
 import at.ac.tuwien.ifs.tita.presentation.tasklist.stopwatch.TaskTimerPanel;
@@ -47,20 +53,19 @@ import at.ac.tuwien.ifs.tita.presentation.tasklist.stopwatch.TaskTimerPanel;
  */
 public class TaskListPanel extends SecurePanel implements IHeaderContributor {
 
+    @SpringBean(name = "taskService")
+    private ITaskService taskService;
+    
+    @SpringBean(name = "userService")
+    private IUserService userService;
+    
+    private TiTAUser user;
+    
     private WebMarkupContainer containerTaskList = null;
-
     private final Form tasklistForm;
-    
     private final List<String> groupingList;
-    
     private boolean groupingIssueTracker = true;
-    
     private AccordionPanel accordionPanel = new AccordionPanel("accordionMenu");
-    
-    private final int dummyvalue2 = 2;
-    private final int dummyvalue3 = 3;
-    private final int dummyvalue4 = 4;
-
     private final ResourceReference style = new CompressedResourceReference(
             TaskListPanel.class, "tasklist.css");
     
@@ -83,8 +88,13 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
         
         displayHeader();
         accordionPanel = displayAccordionOrderByStatus();
+        try{
+            user = userService.getUserByUsername(TitaSession.getSession().getUsername());
+        }catch (TitaDAOException e) {
+            throw new RuntimeException("Couldn't find user currently logged in.", e);
+        }
     }
-
+    
     /**
      * Shows the header and configuration for the tasklist.
      */
@@ -164,7 +174,7 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
         accordionPanel.addMenu(accordionPanelItem);
         
         markupItems = new ArrayList<List<WebMarkupContainer>>();
-        markupItems.add(getListOfTaskTimer(dummyvalue3));
+        markupItems.add(getListOfTaskTimer(1));
         accordionPanelItem = new AccordionPanelItem("Closed", markupItems, true);
         accordionPanel.addMenu(accordionPanelItem);
         
@@ -183,6 +193,8 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
      * @return listOfTaskTimer
      */
     private List<WebMarkupContainer> getListOfTaskTimer(int numberOfTaskTimer) {
+        
+//        taskService.fetchTaskFromIssueTrackerProjects(projectTitaId, userTitaId)
         
         listOfTaskTimer = new ArrayList<WebMarkupContainer>();
         for(int i=0; i<numberOfTaskTimer; i++) {
@@ -204,12 +216,12 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
         accordionPanel.removeAllAccordionPanelItems();
 
         List<List<WebMarkupContainer>> markupItems = new ArrayList<List<WebMarkupContainer>>();
-        markupItems.add(getListOfTaskTimer(dummyvalue4));
+        markupItems.add(getListOfTaskTimer(1));
         AccordionPanelItem accordionPanelItem = new AccordionPanelItem("Mantis", markupItems, true);
         accordionPanel.addMenu(accordionPanelItem);
         
         markupItems = new ArrayList<List<WebMarkupContainer>>();
-        markupItems.add(getListOfTaskTimer(dummyvalue3));
+        markupItems.add(getListOfTaskTimer(1));
         accordionPanelItem = new AccordionPanelItem("Github", markupItems, true);
         accordionPanel.addMenu(accordionPanelItem);
         

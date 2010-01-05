@@ -16,7 +16,6 @@
 package at.ac.tuwien.ifs.tita.entity;
 
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -57,6 +56,12 @@ public class Effort extends BaseEntity<Long> implements Serializable {
     @Column(name = "DATE")
     private Date date;
 
+    @Column(name = "START_TIME")
+    private Long startTime;
+    
+    @Column(name = "END_TIME")
+    private Long endTime;
+    
     @Column(name = "DURATION")
     private Long duration;
 
@@ -150,16 +155,8 @@ public class Effort extends BaseEntity<Long> implements Serializable {
         return this.date;
     }
 
-    /**
-     * Returns an proper end time as Long - used for GUI perposes.
-     * 
-     * @return Long end time
-     */
     public Long getEndTime() {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(this.date);
-
-        return cal.getTimeInMillis() + this.duration;
+        return endTime;
     }
 
     public Long getDuration() {
@@ -208,20 +205,17 @@ public class Effort extends BaseEntity<Long> implements Serializable {
         return this.issueTTask;
     }
 
-    /**
-     * Returns the startTime of the Effort.
-     * 
-     * @return start time as long
-     */
-    public Long getStartTime() {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(this.date);
+    
+    public void setEndTime(Long endTime) {
+        this.endTime = endTime;
+    }
 
-        return cal.getTimeInMillis();
+    public Long getStartTime() {
+        return startTime;
     }
 
     public void setStartTime(Long startTime) {
-        this.date = new Date(startTime);
+        this.startTime = startTime;
     }
 
     /**

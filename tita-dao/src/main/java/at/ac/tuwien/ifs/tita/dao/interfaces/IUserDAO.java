@@ -13,7 +13,7 @@
    limitations under the License.
   
  */
-package at.ac.tuwien.ifs.tita.dao.user;
+package at.ac.tuwien.ifs.tita.dao.interfaces;
 
 import java.util.List;
 

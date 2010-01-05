@@ -13,7 +13,7 @@
    limitations under the License.
    
  */
-package at.ac.tuwien.ifs.tita.dao;
+package at.ac.tuwien.ifs.tita.dao.interfaces;
 
 import java.io.Serializable;
 import java.util.Iterator;

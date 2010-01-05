@@ -20,8 +20,8 @@ import java.util.TreeMap;
 
 import javax.persistence.PersistenceException;
 
-import at.ac.tuwien.ifs.tita.dao.IGenericHibernateDao;
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
+import at.ac.tuwien.ifs.tita.dao.interfaces.IGenericHibernateDao;
 import at.ac.tuwien.ifs.tita.dao.issuetracker.IssueTrackerDao;
 import at.ac.tuwien.ifs.tita.dao.issuetracker.task.IssueTrackerTaskDao;
 import at.ac.tuwien.ifs.tita.dao.titatask.TiTATaskDao;
@@ -62,7 +62,8 @@ public class TaskService implements ITaskService {
     private TiTATaskDao titaTaskDao;
     private IssueTrackerDao issueTrackerDao;
 
-    private Map<Long, ITaskTrackable> mapOfTasksFromAllProjectsIncludedInTiTAProject = new TreeMap<Long, ITaskTrackable>();
+    private Map<Long, ITaskTrackable> mapOfTasksFromAllProjectsIncludedInTiTAProject = 
+                                                                new TreeMap<Long, ITaskTrackable>();
 
     private IIssueTrackerService issueTrackerService;
 

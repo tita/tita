@@ -18,7 +18,6 @@ package at.ac.tuwien.ifs.tita.dao.interfaces;
 import java.util.Date;
 import java.util.List;
 
-import at.ac.tuwien.ifs.tita.dao.IGenericHibernateDao;
 import at.ac.tuwien.ifs.tita.entity.Effort;
 import at.ac.tuwien.ifs.tita.entity.util.UserProjectEffort;
 

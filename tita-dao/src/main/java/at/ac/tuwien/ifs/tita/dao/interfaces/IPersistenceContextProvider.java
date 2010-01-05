@@ -13,7 +13,7 @@
    limitations under the License.
    
  */
-package at.ac.tuwien.ifs.tita.dao;
+package at.ac.tuwien.ifs.tita.dao.interfaces;
 
 /**
  * Interface to allow Spring Injection of PersistenceContext.

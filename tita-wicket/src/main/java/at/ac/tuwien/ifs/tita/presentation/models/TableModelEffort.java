@@ -78,11 +78,23 @@ public class TableModelEffort extends AbstractTitaTableModel {
             } else if (col == IntegerConstants.ONE) {
                 return te.getDescription();
             } else if (col == IntegerConstants.TWO) {
-                return GlobalUtils.TIMEFORMAT24HOURS.format(te.getStartTime());
+                if(te.getStartTime() != null){
+                    return GlobalUtils.TIMEFORMAT24HOURS.format(te.getStartTime());
+                }else{
+                    return 0;
+                }
             } else if (col == IntegerConstants.THREE) {
-                return GlobalUtils.TIMEFORMAT24HOURS.format(te.getEndTime());
+                if(te.getEndTime() != null){
+                    return GlobalUtils.TIMEFORMAT24HOURS.format(te.getEndTime());
+                }else{
+                    return 0;
+                }
             } else if (col == IntegerConstants.FOUR) {
-                return GlobalUtils.TIMELENGTHFORMAT.format(te.getDuration());
+                if(te.getDuration() != null){
+                    return GlobalUtils.TIMELENGTHFORMAT.format(te.getDuration());
+                }else{
+                    return 0;
+                }
             } else if (col == IntegerConstants.FIVE) {
                 return null;
             } else if (col == IntegerConstants.SIX) {

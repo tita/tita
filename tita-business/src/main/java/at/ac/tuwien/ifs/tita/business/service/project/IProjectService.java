@@ -17,6 +17,7 @@ import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.PersistenceException;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
+import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 
 /**
  * IProjectService encapsulates all tita project based db operations.
@@ -64,9 +65,9 @@ public interface IProjectService {
      */
     List<TiTAProject> findAllTiTAProjects();
     
-//    /**
-//     * Returns a list of all existing tita projects.
-//     * @return List of TiTAProjects
-//     */
-//    List<TiTAProject> findAllTiTAProjects();
+    /**
+     * Returns a list of all tita projects for a given user.
+     * @return List of TiTAProjects
+     */
+    List<TiTAProject> findTiTAProjectsForUser(TiTAUser user);
 }

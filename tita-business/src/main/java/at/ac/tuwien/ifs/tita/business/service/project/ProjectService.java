@@ -16,12 +16,14 @@ package at.ac.tuwien.ifs.tita.business.service.project;
 
 import java.util.List;
 
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Property;
 import javax.persistence.PersistenceException;
 
-import at.ac.tuwien.ifs.tita.dao.IGenericHibernateDao;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Property;
+
+import at.ac.tuwien.ifs.tita.dao.project.TiTAProjectDao;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
+import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 
 /**
  * Service for manipulating (insert, update, delete, search... ) tita projects
@@ -32,10 +34,9 @@ import at.ac.tuwien.ifs.tita.entity.TiTAProject;
  */
 public class ProjectService implements IProjectService {
 
+    private TiTAProjectDao titaProjectDao;
 
-    private IGenericHibernateDao<TiTAProject, Long> titaProjectDao;
-
-    public void setTitaProjectDao(IGenericHibernateDao<TiTAProject, Long> titaProjectDao) {
+    public void setTitaProjectDao(TiTAProjectDao titaProjectDao) {
         this.titaProjectDao = titaProjectDao;
     }
 
@@ -59,8 +60,15 @@ public class ProjectService implements IProjectService {
         return null;
     }
     
+    /** {@inheritDoc} */
     @Override
     public List<TiTAProject> findAllTiTAProjects() {
         return titaProjectDao.findAllOrdered(new Order[] { Property.forName("name").asc() });
+    }
+    
+    /** {@inheritDoc} */
+    @Override
+    public List<TiTAProject> findTiTAProjectsForUser(TiTAUser user) {
+        return titaProjectDao.findTiTAProjectsForUsername(user.getUserName());
     }  
 }

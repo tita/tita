@@ -21,6 +21,8 @@ import javax.persistence.PersistenceException;
 
 import org.hibernate.Session;
 
+import at.ac.tuwien.ifs.tita.dao.interfaces.IPersistenceContextProvider;
+
 
 /**
  * The top class of all daos. 

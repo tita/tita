@@ -24,10 +24,16 @@ import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.extensions.markup.html.tabs.TabbedPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import at.ac.tuwien.ifs.tita.business.service.project.IProjectService;
+import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
+import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
+import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.presentation.BasePage;
 import at.ac.tuwien.ifs.tita.presentation.controls.panel.AdministrationPanelEffort;
+import at.ac.tuwien.ifs.tita.presentation.login.TitaSession;
 
 /**
  * Start Page for Time consumer - Main Area for Efforts.
@@ -36,30 +42,41 @@ import at.ac.tuwien.ifs.tita.presentation.controls.panel.AdministrationPanelEffo
  * 
  */
 public class EffortsPage extends BasePage {
+    @SpringBean (name = "titaProjectService")
+    private IProjectService titaProService;
+    
+    @SpringBean (name = "userService")
+    private IUserService userService;
+   
+    private TiTAUser user;
     private final List<ITab> tabs = new ArrayList<ITab>();
     private final List<TiTAProject> projects;
 
     public EffortsPage() {
         setDefaultModel(new Model<String>("effortsTabbedPanel"));
-
         projects = new ArrayList<TiTAProject>();
-
+        try{
+            user = userService.getUserByUsername(TitaSession.getSession().getUsername());
+        }catch (TitaDAOException e) {
+            throw new RuntimeException("Couldn't find user currently logged in.", e);
+        }
         initTempProjects();
         initTabbedPanels();
-        add(new TabbedPanel("effortsTabbedPanel", tabs).add(new AttributeModifier("class", true, EffortsPage.this
-                .getDefaultModel())));
+        add(new TabbedPanel("effortsTabbedPanel", tabs).add(new AttributeModifier("class", true, 
+                                                            this.getDefaultModel())));
     }
 
     /**
-     * Creates temporary Projects. TODO: Remove Later
+     * Initialize user's tita projects.
      */
     private void initTempProjects() {
-        TiTAProject p1 = new TiTAProject("Project 1", "Project 1", false, null, null, null);
-        TiTAProject p2 = new TiTAProject("Project 2", "Project 1", false, null, null, null);
-        TiTAProject p3 = new TiTAProject("Project 3", "Project 1", false, null, null, null);
-        projects.add(p1);
-        projects.add(p2);
-        projects.add(p3);
+        List<TiTAProject> tips = titaProService.findTiTAProjectsForUser(user);
+        
+        if (tips != null){
+            for(TiTAProject tip : tips){
+                projects.add(tip);
+            }
+        }
     }
 
     /**

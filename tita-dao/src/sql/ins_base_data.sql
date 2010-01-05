@@ -34,7 +34,7 @@ insert into TITA_PROJECT (ID, DESCRIPTION, NAME, DELETED, STATUS_ID, MODIFICATIO
 values (2, 'nix', 'name2', false, 1, 0);
 
 insert into ISSUE_TRACKER_PROJECT (ID, TITA_PROJECT_ID, ISST_ID, ISST_PROJECT_ID, MODIFICATION_VERSION, PROJECT_NAME)
-values (1,1,1,97,0, 'tita-wicket');
+values (1,1,1,97,0, 'tita_test');
 insert into ISSUE_TRACKER_PROJECT (ID, TITA_PROJECT_ID, ISST_ID, ISST_PROJECT_ID, MODIFICATION_VERSION, PROJECT_NAME)
 values (2,1,1,39,0, 'tita-business');
 
@@ -74,4 +74,5 @@ values (10, 'e10', null, 2, '2009-05-18', 3000, false, 6);
 
 insert into USER_PROJECT (ID, USER_ID, PROJECT_ID) values (1, 5, 1);
 insert into USER_PROJECT (ID, USER_ID, PROJECT_ID) values (2, 6, 1);
-insert into USER_PROJECT (ID, USER_ID, PROJECT_ID) values (3, 5, 2);
+insert into USER_PROJECT (ID, USER_ID, PROJECT_ID) values (3, 5, 1);
+insert into USER_PROJECT (ID, USER_ID, PROJECT_ID) values (4, 6, 2);
