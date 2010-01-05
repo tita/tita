@@ -9,16 +9,17 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-   
+
  */
 
 package at.ac.tuwien.ifs.tita.business.service.project;
 
 import java.util.List;
 
+import javax.persistence.PersistenceException;
+
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Property;
-import javax.persistence.PersistenceException;
 
 import at.ac.tuwien.ifs.tita.dao.IGenericHibernateDao;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
@@ -26,9 +27,9 @@ import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 /**
  * Service for manipulating (insert, update, delete, search... ) tita projects
  * in TiTA.
- * 
+ *
  * @author herbert
- * 
+ *
  */
 public class ProjectService implements IProjectService {
 
@@ -58,9 +59,10 @@ public class ProjectService implements IProjectService {
         // TODO Auto-generated method stub
         return null;
     }
-    
+
+    /** {@inheritDoc} */
     @Override
     public List<TiTAProject> findAllTiTAProjects() {
-        return titaProjectDao.findAllOrdered(new Order[] { Property.forName("name").asc() });
-    }  
+        return this.titaProjectDao.findAllOrdered(new Order[] { Property.forName("name").asc() });
+    }
 }

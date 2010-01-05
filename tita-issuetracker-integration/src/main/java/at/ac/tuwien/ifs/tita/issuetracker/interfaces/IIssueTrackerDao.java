@@ -80,10 +80,22 @@ public interface IIssueTrackerDao {
     Map<Long, ICommentTrackable> findAllCommentsForTask(Long taskId);
 
     /**
-     * Closes the Task with the specified taskId.
-     *
-     * @param taskId - id of the task to close
-     * @exception MCException - if closing fails
+     * Assign the Task with the specified taskId.
+     * 
+     * @param taskId
+     *            - id of the task to assign
+     * @exception MCException
+     *                - if closing fails
      */
-    void closeTask(long taskId) throws MCException;
+    void assignTask(Long taskId) throws MCException;
+
+    /**
+     * Closes the Task with the specified taskId.
+     * 
+     * @param taskId
+     *            - id of the task to close
+     * @exception MCException
+     *                - if closing fails
+     */
+    void closeTask(Long taskId) throws MCException;
 }

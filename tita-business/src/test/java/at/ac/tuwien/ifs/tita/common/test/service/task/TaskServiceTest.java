@@ -44,9 +44,9 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
 
 /**
  * Task Service Testcases.
- * 
+ *
  * @author Christoph
- * 
+ *
  */
 
 public class TaskServiceTest extends IssueTrackerServiceTest {
@@ -133,7 +133,7 @@ public class TaskServiceTest extends IssueTrackerServiceTest {
 
     /**
      * Delete mantis projects for all tests.
-     * 
+     *
      * @throws InterruptedException e
      */
     @After
@@ -147,9 +147,9 @@ public class TaskServiceTest extends IssueTrackerServiceTest {
     /**
      * The test case should fetch the tasks from the issue tracker projects
      * 'projectName0' and 'projectName1' from mantis and provide as a list.
-     * 
-     * 
-     * 
+     *
+     *
+     *
      * @throws ProjectNotFoundException pnfe
      */
     @Test
@@ -169,12 +169,12 @@ public class TaskServiceTest extends IssueTrackerServiceTest {
     /**
      * The test case should return 4 tasks, because every task has the status
      * 'NEW'.
-     * 
+     *
      * @throws ProjectNotFoundException pnfe
      */
 
     @Test
-    public void getIssueTrackerTasksGroupByIssueStatus() throws ProjectNotFoundException {
+    public void sortingTasksByIssueStatus() throws ProjectNotFoundException {
         this.taskService.fetchTaskFromIssueTrackerProjects(this.titaProject.getId(), this.titaUser.getId());
 
         Map<Long, ITaskTrackable> map = this.taskService.sortingTasksByIssueStatus(IssueStatus.NEW);
@@ -190,11 +190,11 @@ public class TaskServiceTest extends IssueTrackerServiceTest {
     /**
      * The test case should return 4 tasks, because every task is provided from
      * mantis with the same url.
-     * 
+     *
      * @throws ProjectNotFoundException pnfe
      */
     @Test
-    public void getIssueTrackerTasksGroupByIssueTracker() throws ProjectNotFoundException {
+    public void sortingTasksByIssueTracker() throws ProjectNotFoundException {
         this.taskService.fetchTaskFromIssueTrackerProjects(this.titaProject.getId(), this.titaUser.getId());
         // CHECKSTYLE:OFF
         String test = this.logins.iterator().next().getIssueTracker().getUrl();
@@ -207,7 +207,7 @@ public class TaskServiceTest extends IssueTrackerServiceTest {
 
     /**
      * Helper method.
-     * 
+     *
      * @param tasks a map of tasks
      * @return the output as a well formed string for developing tests
      */

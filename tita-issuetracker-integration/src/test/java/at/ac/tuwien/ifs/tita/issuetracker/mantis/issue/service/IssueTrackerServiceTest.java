@@ -31,9 +31,11 @@ import org.mantisbt.connect.MCException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueResolution;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueStatus;
 import at.ac.tuwien.ifs.tita.issuetracker.exceptions.ProjectNotFoundException;
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IProjectTrackable;
+import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
 import at.ac.tuwien.ifs.tita.issuetracker.issue.service.IssueTrackerService;
 import at.ac.tuwien.ifs.tita.issuetracker.mantis.base.MantisBaseTest;
 
@@ -52,6 +54,8 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
     protected List<Long> taskIds = new ArrayList<Long>();
     protected List<Long> projectIds = new ArrayList<Long>();
 
+    // Logging is not really useful in the debug mode, because of the mantis
+    // webservice logging.
     private final Logger log = LoggerFactory.getLogger(IssueTrackerServiceTest.class);
 
     /**
@@ -164,12 +168,6 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
                     this.projectIds.get(0)));
             stopTimer("Stopping the upate for one projects.");
 
-            // CHECKSTYLE:OFF
-            Thread.sleep(20000); // Sleeping because the updating is made on a
-            // other thread.
-            // This thread will be quicker.
-            // CHECKSTYLE:ON
-
             System.out.print(getPerformanceOutput());
             IProjectTrackable foundProject = null;
 
@@ -223,12 +221,6 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
             this.issueTrackerService.updateProject(foundProject);
             stopTimer("Stopping the upate for one projects.");
 
-            // CHECKSTYLE:OFF
-            Thread.sleep(20000); // Sleeping because the updating is made on a
-            // other thread.
-            // This thread will be quicker.
-            // CHECKSTYLE:ON
-
             System.out.print(getPerformanceOutput());
 
             assertEquals(this.numberOfProjects.intValue(), this.issueTrackerService.getProjects()
@@ -280,12 +272,6 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
         this.issueTrackerService.updateProject(project);
         stopTimer("Stopping the upate for one projects.");
 
-        // CHECKSTYLE:OFF
-        Thread.sleep(20000); // Sleeping because the updating is made on a
-        // other thread.
-        // This thread will be quicker.
-        // CHECKSTYLE:ON
-        
         assertNotNull(this.issueTrackerService.getIssueTrackerTasks(project));
 
     }
@@ -306,15 +292,17 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
     }
 
     /**
-     * The test case shows how the tasks for projects can be found.
+     * The test case shows how the tasks for projects can be found by the
+     * projectId.
      *
      * @throws ProjectNotFoundException
      *             pnfe
-     * @throws InterruptedException - ie
+     * @throws InterruptedException
+     *             - ie
      */
     @Test
     public void getIssueTrackerTasksByProjectId() throws ProjectNotFoundException, InterruptedException {
-    
+
         this.issueTrackerService = new IssueTrackerService(this.defaultLogin);
         IProjectTrackable project = this.issueTrackerService.getIssueTrackerDao().findProject(
                 this.projectIds.get(0));
@@ -323,13 +311,33 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
         this.issueTrackerService.updateProject(project);
         stopTimer("Stopping the upate for one projects.");
 
-        // CHECKSTYLE:OFF
-        Thread.sleep(20000); // Sleeping because the updating is made on a
-        // other thread.
-        // This thread will be quicker.
-        // CHECKSTYLE:ON
-        
         assertNotNull(this.issueTrackerService.getIssueTrackerTasksByProjectId(project.getId()));
+    }
+
+    /**
+     * The test case shows how the tasks for projects can be found by the
+     * projectName.
+     *
+     * @throws ProjectNotFoundException
+     *             pnfe
+     * @throws InterruptedException
+     *             - ie
+     */
+    @Test
+    public void getIssueTrackerTasksByProjectName() throws ProjectNotFoundException,
+            InterruptedException {
+
+        this.issueTrackerService = new IssueTrackerService(this.defaultLogin);
+        IProjectTrackable project = this.issueTrackerService.getIssueTrackerDao().findProject(
+                "projectName1");
+
+        assertNotNull(project);
+
+        startTimer("Start of update for one projects:");
+        this.issueTrackerService.updateProject(project);
+        stopTimer("Stopping the upate for one projects.");
+
+        assertNotNull(this.issueTrackerService.getIssueTrackerTasksByProjectName(project.getName()));
     }
 
     /**
@@ -356,6 +364,53 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
         assertNull(this.issueTrackerService
                 .getIssueTrackerTasks(foundProject, IssueStatus.ASSIGNED));
 
+    }
+
+    /**
+     * The test case shows how a task status could be switch from assigned or
+     * new to closed.
+     */
+    @Test
+    public void closeTaskShouldSetTheResolutionToFixedInTheIssueTracker() {
+
+        this.log.info("Close the first task from the project with the name: projectName0");
+        this.issueTrackerService.closeTask(this.taskIds.get(0));
+
+        ITaskTrackable taskFound = this.issueTrackerService.getIssueTrackerDao().findTask(
+                this.taskIds.get(0), this.projectIds.get(0));
+
+        assertEquals(IssueResolution.FIXED, taskFound.getResolution());
+    }
+
+    /**
+     * The test case shows how a task status could be switch from assigned or
+     * new to closed.
+     */
+    @Test
+    public void closeTaskShouldSetTheStatusToCloseInTheIssueTracker() {
+
+        this.log.info("Close the first task from the project with the name: projectName0");
+        this.issueTrackerService.closeTask(this.taskIds.get(0));
+
+        ITaskTrackable taskFound = this.issueTrackerService.getIssueTrackerDao().findTask(
+                this.taskIds.get(0), this.projectIds.get(0));
+
+        assertEquals(IssueStatus.CLOSED, taskFound.getStatus());
+    }
+
+    /**
+     * The test case shows how a task status could be switch new to assigned.
+     */
+    @Test
+    public void assignTaskShouldSetTheStatusToCloseInTheIssueTracker() {
+
+        this.log.info("Assign the first task from the project with the name: projectName0");
+        this.issueTrackerService.assignTask(this.taskIds.get(0));
+
+        ITaskTrackable taskFound = this.issueTrackerService.getIssueTrackerDao().findTask(
+                this.taskIds.get(0), this.projectIds.get(0));
+
+        assertEquals(IssueStatus.ASSIGNED, taskFound.getStatus());
     }
 
     /**

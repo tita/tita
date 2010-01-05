@@ -18,6 +18,10 @@ package at.ac.tuwien.ifs.tita.issuetracker.issue.service;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.mantisbt.connect.MCException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueStatus;
 import at.ac.tuwien.ifs.tita.issuetracker.exceptions.ProjectNotFoundException;
@@ -42,6 +46,7 @@ public class IssueTrackerService implements IIssueTrackerService {
     private Map<Long, IProjectTrackable> projects;
     private final IssueTrackerLogin loggedUser;
 
+    private final Logger log = LoggerFactory.getLogger(IssueTrackerService.class);
 
     public IssueTrackerService(IssueTrackerLogin login) {
         this.loggedUser = login;
@@ -65,6 +70,8 @@ public class IssueTrackerService implements IIssueTrackerService {
     @Override
     public void updateAll() {
         this.dao = new IssueTrackerMantisDao(this.loggedUser);
+
+        this.log.debug("Fetching all projects");
         this.projects = this.dao.findAccessibleProjects();
 
         dispatcher = new DispatcherThread(this.projects, this.loggedUser);
@@ -74,9 +81,8 @@ public class IssueTrackerService implements IIssueTrackerService {
     /** {@inheritDoc} */
     @Override
     public void updateProject(IProjectTrackable project) {
-        // worker = new WorkerThread(project, this.loggedUser);
-        // worker.start();
 
+        this.log.debug("Fetching all tasks for the project: " + project.getName());
         Map<Long, ITaskTrackable> tasklist = this.dao.findAllTasksForProject(project.getId());
 
         for (ITaskTrackable task : tasklist.values()) {
@@ -84,6 +90,8 @@ public class IssueTrackerService implements IIssueTrackerService {
         }
 
         project.setTasks(tasklist);
+
+        this.projects.put(project.getId(), project);
     }
 
     /** {@inheritDoc} */
@@ -97,10 +105,10 @@ public class IssueTrackerService implements IIssueTrackerService {
     /** {@inheritDoc} */
     @Override
     public Map<Long, ITaskTrackable> getIssueTrackerTasks(IProjectTrackable project,
-            IssueStatus status)
-            throws ProjectNotFoundException {
+            IssueStatus status) throws ProjectNotFoundException {
 
         if (project == null) {
+            this.log.error("Project not found.");
             throw new ProjectNotFoundException("No project was set.");
         }
 
@@ -132,9 +140,11 @@ public class IssueTrackerService implements IIssueTrackerService {
             throws ProjectNotFoundException {
 
         if (project == null) {
+            this.log.error("Project not found.");
             throw new ProjectNotFoundException("No project was set.");
         }
 
+        this.log.debug("Fetching Tasks from project over the webservice: " + project.getName());
         return this.dao.findAllTasksForProject(project.getId());
     }
 
@@ -144,15 +154,57 @@ public class IssueTrackerService implements IIssueTrackerService {
             throws ProjectNotFoundException {
 
         if (projectId == null) {
-             throw new ProjectNotFoundException("No project was set.");
+            this.log.error("Project not found.");
+            throw new ProjectNotFoundException("No project was set.");
         }
 
         for (IProjectTrackable project : this.projects.values()) {
             if (project.getId().equals(projectId)) {
+                this.log.debug("Fetching Tasks from project: " + project.getName());
                 return project.getTasks();
             }
         }
 
         return null;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Map<Long, ITaskTrackable> getIssueTrackerTasksByProjectName(String projectName)
+            throws ProjectNotFoundException {
+
+        if (projectName == null) {
+            this.log.error("Project not found.");
+            throw new ProjectNotFoundException("No project was set.");
+        }
+
+        for (IProjectTrackable project : this.projects.values()) {
+            if (project.getName().equals(projectName)) {
+                this.log.debug("Fetching Tasks from project: " + project.getName());
+                return project.getTasks();
+            }
+        }
+
+        return null;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void assignTask(Long taskId) {
+        try {
+            this.dao.assignTask(taskId);
+        } catch (MCException e) {
+            this.log.error("Assign Task was not succesful.");
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void closeTask(Long taskId) {
+        try {
+            this.dao.closeTask(taskId);
+        } catch (MCException e) {
+            this.log.error("Closing Task was not succesful.");
+        }
     }
 }
