@@ -20,7 +20,6 @@ import java.util.List;
 
 import at.ac.tuwien.ifs.tita.dao.IGenericHibernateDao;
 import at.ac.tuwien.ifs.tita.entity.Effort;
-import at.ac.tuwien.ifs.tita.entity.util.ProjectEffort;
 import at.ac.tuwien.ifs.tita.entity.util.UserProjectEffort;
 
 /**
@@ -69,7 +68,7 @@ public interface IEffortDao extends IGenericHibernateDao<Effort, Long> {
      * @param grouping String
      * @return List of Effort
      */
-    List<ProjectEffort> findEffortsForTiTAProjectId(List<String> projectId, String grouping);
+    List<UserProjectEffort> findEffortsForTiTAProjectId(List<String> projectId, String grouping);
     
     /**
      * Find all effort of a time consumer in a specific tita-project.

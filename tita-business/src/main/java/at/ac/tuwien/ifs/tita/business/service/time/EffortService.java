@@ -22,7 +22,6 @@ import java.util.List;
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.dao.interfaces.IEffortDao;
 import at.ac.tuwien.ifs.tita.entity.Effort;
-import at.ac.tuwien.ifs.tita.entity.util.ProjectEffort;
 import at.ac.tuwien.ifs.tita.entity.util.UserProjectEffort;
 
 /**
@@ -103,7 +102,7 @@ public class EffortService implements IEffortService {
      * {@inheritDoc}
      */
     @Override
-    public List<ProjectEffort> getEffortsSummaryForProjectNames(
+    public List<UserProjectEffort> getEffortsSummaryForProjectNames(
             List<String> projects, String grouping) {
         return timeEffortDao.findEffortsForTiTAProjectId(projects, grouping);
     }

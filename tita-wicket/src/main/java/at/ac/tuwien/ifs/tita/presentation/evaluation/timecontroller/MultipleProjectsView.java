@@ -37,7 +37,6 @@ import at.ac.tuwien.ifs.tita.business.service.time.IEffortService;
 import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
-import at.ac.tuwien.ifs.tita.entity.util.ProjectEffort;
 import at.ac.tuwien.ifs.tita.entity.util.UserProjectEffort;
 import at.ac.tuwien.ifs.tita.presentation.BasePage;
 import at.ac.tuwien.ifs.tita.presentation.controls.dropdown.SelectOption;
@@ -82,7 +81,7 @@ public class MultipleProjectsView extends BasePage {
             @Override
             protected Object load() {
               return new ArrayList<String>();
-            }
+            }            
         });
         projectList.setOutputMarkupId(true);
         
@@ -169,7 +168,8 @@ public class MultipleProjectsView extends BasePage {
             }
         });
         
-        mpem = new MultipleProjectsEvaluationModel(new ArrayList<ProjectEffort>(),new String [] {});
+        mpem = new MultipleProjectsEvaluationModel(new ArrayList<UserProjectEffort>(),
+                                                   new String [] {});
         
         table = new Table("evaluationTable", mpem);
         table.setRowsPerPage(EffortUtils.ROWS_PER_PAGE);
@@ -194,49 +194,52 @@ public class MultipleProjectsView extends BasePage {
     private void loadMultipleProjectEvaluation() {
         Boolean userProject = null;
         List<UserProjectEffort> upe = null;
-        List<ProjectEffort> pe = null;
         
-        if(selectedProjects != null){
-            if(selectedUsers != null){
+        if(selectedProjects.size() > 0 ){
+            if(selectedUsers.size() > 0){
                 upe = effortService.getEffortsSummaryForProjectAndUserNames(selectedProjects, 
                                        selectedUsers, ddTimeSpan.getModel().getObject().getKey());
                 userProject = true;
             }else{
-                pe = effortService.getEffortsSummaryForProjectNames(selectedProjects, 
+                upe = effortService.getEffortsSummaryForProjectNames(selectedProjects, 
                                                       ddTimeSpan.getModel().getObject().getKey());
                 userProject = false;
             }
         }
         if(userProject != null){
-            if(userProject){
-                createUserProjectEffortTable(upe, ddTimeSpan.getModel().getObject().getKey());
-            }else{
-                createProjectEffortTable(pe, ddTimeSpan.getModel().getObject().getKey());
+            createUserProjectEffortTable(ddTimeSpan.getModel().getObject().getKey(),
+                                         userProject);
+            if(upe != null){
+                if(upe.size() > 0){
+                    mpem.reload(upe);
+                }else{
+                    mpem.setColumnNames(new String [] {});
+                    mpem.reload(new ArrayList<UserProjectEffort>());
+                }
             }
         }
     }
     
-    private void createProjectEffortTable(List<ProjectEffort> pe, String grouping) {
-        if(grouping.equals("overall")){
-            mpem.setColumnNames(new String [] {"PROJECT", "DURATION"});
-        }else if(grouping.equals("month")){
-            mpem.setColumnNames(new String [] {"PROJECT", "YEAR", "MONTH", "DURATION"});
-        }else if(grouping.equals("day")){
-            mpem.setColumnNames(new String [] {"PROJECT", "YEAR", "MONTH", "DAY", "DURATION"});
+    private void createUserProjectEffortTable(String grouping, Boolean userProject) {
+        if(userProject){
+            if(grouping.equals("overall")){
+                mpem.setColumnNames(new String [] {"PROJECT", "DURATION"});
+            }else if(grouping.equals("month")){
+                mpem.setColumnNames(new String [] {"PROJECT", "YEAR", "MONTH", "DURATION"});
+            }else if(grouping.equals("day")){
+                mpem.setColumnNames(new String [] {"PROJECT", "YEAR", "MONTH", "DAY", "DURATION"});
+            }
+        }else{
+            if(grouping.equals("overall")){
+                mpem.setColumnNames(new String [] {"PROJECT", "DURATION", "USERNAME"});
+            }else if(grouping.equals("month")){
+                mpem.setColumnNames(new String [] {"PROJECT", "YEAR", "MONTH", "DURATION", 
+                                                   "USERNAME"});
+            }else if(grouping.equals("day")){
+                mpem.setColumnNames(new String [] {"PROJECT", "YEAR", "MONTH", "DAY", 
+                                                   "DURATION", "USERNAME"});
+            }
         }
-        mpem.reload(pe);
-    }
-
-    private void createUserProjectEffortTable(List<UserProjectEffort> upe, String grouping){
-        if(grouping.equals("overall")){
-            mpem.setColumnNames(new String [] {"PROJECT", "DURATION", "USERNAME"});
-        }else if(grouping.equals("month")){
-            mpem.setColumnNames(new String [] {"PROJECT", "YEAR", "MONTH", "DURATION", "USERNAME"});
-        }else if(grouping.equals("day")){
-            mpem.setColumnNames(new String [] {"PROJECT", "YEAR", "MONTH", "DAY", 
-                                               "DURATION", "USERNAME"});
-        }
-        mpem.reload(upe);
     }
     
     private void loadTiTAUsers(){

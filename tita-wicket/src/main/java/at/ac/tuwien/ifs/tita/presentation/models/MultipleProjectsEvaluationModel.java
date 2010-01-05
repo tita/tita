@@ -24,7 +24,8 @@ import javax.swing.table.AbstractTableModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import at.ac.tuwien.ifs.tita.entity.util.ProjectEffort;
+import at.ac.tuwien.ifs.tita.entity.util.UserProjectEffort;
+import at.ac.tuwien.ifs.tita.issuetracker.util.TiTATimeConverter;
 
 /**
  * Implementation of AbstractTableModel for displaying multiple view on tita projects.
@@ -35,10 +36,10 @@ public class MultipleProjectsEvaluationModel extends AbstractTableModel {
     // Logger
     private final Logger log = LoggerFactory.getLogger(MultipleProjectsEvaluationModel.class);
     
-    private List<? extends ProjectEffort> list;
+    private List<UserProjectEffort> list;
     protected String[] columnNames;
     
-    public MultipleProjectsEvaluationModel(List<? extends ProjectEffort> list,
+    public MultipleProjectsEvaluationModel(List<UserProjectEffort> list,
                                            String [] colNames) {
         this.list = list;
         this.columnNames = colNames;
@@ -53,20 +54,20 @@ public class MultipleProjectsEvaluationModel extends AbstractTableModel {
     
     private Object extractFieldValueFromClass(Class<?> clazz, Object obj, Integer col){
         Field fi;
-        Class<?> superClass = clazz.getSuperclass();
-             
+        String fieldName = columnNames[col].toLowerCase();
+        Object objField;
+        
         try {
-            fi = clazz.getDeclaredField(columnNames[col].toLowerCase());
+            fi = clazz.getDeclaredField(fieldName);
             fi.setAccessible(true);
-            return fi.get(obj);
-        }catch (Exception e) {
-            try{
-                fi = superClass.getDeclaredField(columnNames[col].toLowerCase());
-                fi.setAccessible(true);
-                return fi.get(obj);
-            }catch(Exception ex){
-                return null;
+            objField = fi.get(obj);
+            if(fieldName.equals("duration")){
+                String dur = TiTATimeConverter.getDuration2String((Long) objField);
+                return dur;
             }
+            return objField; 
+        }catch (Exception e) {
+            return null; 
         }
     }
    
@@ -99,7 +100,7 @@ public class MultipleProjectsEvaluationModel extends AbstractTableModel {
      * 
      * @param list1 the list to set
      */
-    public void reload(List<? extends ProjectEffort> list1) {
+    public void reload(List<UserProjectEffort> list1) {
         this.list = list1;
         reload();
     };

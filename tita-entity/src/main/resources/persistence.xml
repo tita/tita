@@ -33,7 +33,6 @@
     <class>at.ac.tuwien.ifs.tita.entity.TiTAUserProject</class>
     <class>at.ac.tuwien.ifs.tita.entity.Effort</class>
     <class>at.ac.tuwien.ifs.tita.entity.TiTAUser</class>
-    <class>at.ac.tuwien.ifs.tita.entity.util.ProjectEffort</class>
     <class>at.ac.tuwien.ifs.tita.entity.util.UserProjectEffort</class>
     <properties>
       <property name="hibernate.archive.autodetection" value="class, hbm" />
