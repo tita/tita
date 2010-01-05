@@ -221,7 +221,7 @@ public class MultipleProjectsView extends BasePage {
     }
     
     private void createUserProjectEffortTable(String grouping, Boolean userProject) {
-        if(userProject){
+        if(!userProject){
             if(grouping.equals("overall")){
                 mpem.setColumnNames(new String [] {"PROJECT", "DURATION"});
             }else if(grouping.equals("month")){
