@@ -15,702 +15,737 @@
    limitations under the License.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-	<modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-	<groupId>at.ac.tuwien.ifs</groupId>
-	<artifactId>tita-parent</artifactId>
-	<packaging>pom</packaging>
-	<version>1.0.0-SNAPSHOT</version>
-	<name>tita-parent</name>
+  <groupId>at.ac.tuwien.ifs</groupId>
+  <artifactId>tita-parent</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0.0-SNAPSHOT</version>
+  <name>tita-parent</name>
 
-	<licenses>
-		<license>
-			<name>Propietary</name>
-			<comments>(C) 2009 TiTA</comments>
-		</license>
-	</licenses>
+  <licenses>
+    <license>
+      <name>Propietary</name>
+      <comments>(C) 2009 TiTA</comments>
+    </license>
+  </licenses>
 
-	<properties>
+  <properties>
 
-		<!-- Library Versions -->
-		<spring.version>2.5.6.SEC01</spring.version>
-		<jdk.version>1.6</jdk.version>
-        <jetty.version>6.1.15</jetty.version>
-		<persistence.version>1.0</persistence.version>
-		<hibcore.version>3.3.2.GA</hibcore.version>
-		<hibentity.version>3.4.0.GA</hibentity.version>
-		<h2db.version>1.2.121</h2db.version>
-		<slf4j.version>1.5.8</slf4j.version>
-		<jgit.version>0.5.0</jgit.version>
-		<log4j.version>1.2.14</log4j.version>
-		<commons.lang.version>2.4</commons.lang.version>
-		<commons.dbcp.version>1.2.2</commons.dbcp.version>
-		<junit.version>4.4</junit.version>
-		<mockito.version>1.7</mockito.version>
-		<xmlunit.version>1.3</xmlunit.version>
-		<jcommon.version>1.0.16</jcommon.version>
-		<jasperreports.version>3.6.1</jasperreports.version>
-		<jfreechart.version>1.0.13</jfreechart.version>
-		<wicket.version>1.4.5</wicket.version>
-		<velocity.version>1.4</velocity.version>
-		<jhighlight.version>1.0</jhighlight.version>
-		<portlet.version>1.0</portlet.version>
-		<httpunit.version>1.6.1</httpunit.version>
-		<cglib-nodep.version>2.2</cglib-nodep.version>
-		<portlet.version>1.0</portlet.version>
-		<httpunit.version>1.6.1</httpunit.version>
-		<commons-digester.version>2.0</commons-digester.version>
-		<itext.version>2.1.7</itext.version>
-		<commons-collections.version>20040616</commons-collections.version>
+    <!-- Library Versions -->
+    <spring.version>2.5.6.SEC01</spring.version>
+    <jdk.version>1.6</jdk.version>
+    <jetty.version>6.1.15</jetty.version>
+    <persistence.version>1.0</persistence.version>
+    <hibcore.version>3.3.2.GA</hibcore.version>
+    <hibentity.version>3.4.0.GA</hibentity.version>
+    <h2db.version>1.2.121</h2db.version>
+    <slf4j.version>1.5.8</slf4j.version>
+    <jgit.version>0.5.0</jgit.version>
+    <log4j.version>1.2.14</log4j.version>
+    <commons.lang.version>2.4</commons.lang.version>
+    <commons.dbcp.version>1.2.2</commons.dbcp.version>
+    <junit.version>4.4</junit.version>
+    <mockito.version>1.7</mockito.version>
+    <xmlunit.version>1.3</xmlunit.version>
+    <jcommon.version>1.0.16</jcommon.version>
+    <jasperreports.version>3.6.1</jasperreports.version>
+    <jfreechart.version>1.0.13</jfreechart.version>
+    <wicket.version>1.4.5</wicket.version>
+    <velocity.version>1.4</velocity.version>
+    <jhighlight.version>1.0</jhighlight.version>
+    <portlet.version>1.0</portlet.version>
+    <httpunit.version>1.6.1</httpunit.version>
+    <cglib-nodep.version>2.2</cglib-nodep.version>
+    <portlet.version>1.0</portlet.version>
+    <httpunit.version>1.6.1</httpunit.version>
+    <commons-digester.version>2.0</commons-digester.version>
+    <itext.version>2.1.7</itext.version>
+    <commons-collections.version>20040616</commons-collections.version>
+    
+    <!-- mantis libs versions -->
+    <mantis.connect.version>1.1.1.0</mantis.connect.version>
+    <axis.version>1.4</axis.version>
+    <wsdl4j.version>1.5.1</wsdl4j.version>
+    <axis.ant.version>1.4</axis.ant.version>
+    <commons.discovery.version>0.2</commons.discovery.version>
+    <commons.logging.version>1.1.1</commons.logging.version>
+    <javax.xml.rpc.version>1.1</javax.xml.rpc.version>
 
-		<wicket-security.version>1.4-SNAPSHOT</wicket-security.version>
-		
-		<!-- Plugin Version -->
-		<docbkx.version>2.0.7</docbkx.version>
-		<maven.plugin.surefire>2.4.3</maven.plugin.surefire>
-		<maven.plugin.checkstyle>2.3</maven.plugin.checkstyle>
-		<maven.plugin.cobertura>1.4</maven.plugin.cobertura>
-	</properties>
+    <wicket-security.version>1.4-SNAPSHOT</wicket-security.version>
+
+    <!-- Plugin Version -->
+    <docbkx.version>2.0.7</docbkx.version>
+    <maven.plugin.surefire>2.4.3</maven.plugin.surefire>
+    <maven.plugin.checkstyle>2.3</maven.plugin.checkstyle>
+    <maven.plugin.cobertura>1.4</maven.plugin.cobertura>
+  </properties>
 
   <description>
 	Parent project of all TiTA subprojects. 
   </description>
 
- <modules>
-      <module>tita-entity</module>
-      <module>tita-dao</module>
-      <module>tita-issuetracker-integration</module>
-      <module>tita-jasperreports</module>
-      <module>tita-business</module>
-      <module>tita-wicket</module>
- </modules>
+  <modules>
+    <module>tita-entity</module>
+    <module>tita-dao</module>
+    <module>tita-issuetracker-integration</module>
+    <module>tita-jasperreports</module>
+    <module>tita-business</module>
+    <module>tita-wicket</module>
+  </modules>
 
-	<inceptionYear>2009</inceptionYear>
+  <inceptionYear>2009</inceptionYear>
 
-	<scm>
-		<connection>scm:git:git://github.com/tita/tita.git</connection>
-		<developerConnection>scm:git:git@github.com:tita/tita.git</developerConnection>
-		<url>http://github.com/tita/tita</url>
-	</scm>
+  <scm>
+    <connection>scm:git:git://github.com/tita/tita.git</connection>
+    <developerConnection>scm:git:git@github.com:tita/tita.git</developerConnection>
+    <url>http://github.com/tita/tita</url>
+  </scm>
 
-	<issueManagement>
-		<system>GitHub</system>
-		<url>.....</url>
-	</issueManagement>
+  <issueManagement>
+    <system>GitHub</system>
+    <url>.....</url>
+  </issueManagement>
 
-	<ciManagement>
-		<!--Hudson -->
-	</ciManagement>
+  <ciManagement>
+    <!--Hudson -->
+  </ciManagement>
 
-	<mailingLists>
+  <mailingLists>
 
-		<mailingList>
-			<name>Developer Mailing List</name>
-			<post>tita_ase@googlegroups.com</post>
-			<archive>http://groups.google.com/group/tita_ase</archive>
-		</mailingList>
+    <mailingList>
+      <name>Developer Mailing List</name>
+      <post>tita_ase@googlegroups.com</post>
+      <archive>http://groups.google.com/group/tita_ase</archive>
+    </mailingList>
 
-	</mailingLists>
+  </mailingLists>
 
-	<developers>
-		<developer>
-			<id>api</id>
-			<name>Christoph Zehetner</name>
-			<organization>ASE Group 10 TiTA</organization>
-			<email>chris.zehetner@gmail.com</email>
-			<timezone>+1</timezone>
-			<roles>
-				<role>Team coordinator</role>
-				<role>Developer</role>
-				<role>Git Expert</role>
-			</roles>
-		</developer>
-		<developer>
-			<id>fwa</id>
-			<name>Johannes Ferner</name>
-			<organization>ASE Group 10 TiTA</organization>
-			<email>johannes_ferner@yahoo.de</email>
-			<timezone>+1</timezone>
-			<roles>
-				<role>2nd Team coordniator</role>
-				<role>Developer</role>
-				<role>Spring Expert</role>
-			</roles>
-		</developer>
-		<developer>
-			<name>Herbert Brunner</name>
-			<email>herbert.brunner@gmail.com</email>
-			<organization>ASE Group 10 TiTA</organization>
-			<timezone>+1</timezone>
-			<roles>
-				<role>Technical architect</role>
-				<role>Developer</role>
-				<role>Wicket Expert</role>
-			</roles>
-		</developer>
-		<developer>
-			<name>Rene Kernegger</name>
-			<email>rene.kernegger@tele2.at</email>
-			<organization>ASE Group 10 TiTA</organization>
-			<timezone>+1</timezone>
-			<roles>
-				<role>2nd Technical Archtect</role>
-				<role>Developer</role>
-				<role>Jasper Reports Expert</role>
-			</roles>
-		</developer>
-		<developer>
-			<name>Karin Popp</name>
-			<email>karin.popp@telering.at</email>
-			<organization>ASE Group 10 TiTA</organization>
-			<timezone>+1</timezone>
-			<roles>
-				<role>Tester</role>
-				<role>Developer</role>
-				<role>Issue Tracker Expert</role>
-			</roles>
-		</developer>
-		<developer>
-			<name>Markus Siedler</name>
-			<email>markus.siedler@gmail.com</email>
-			<organization>ASE Group 10 TiTA</organization>
-			<timezone>+1</timezone>
-			<roles>
-				<role>Document Manager</role>
-				<role>Developer</role>
-				<role>Issue Tracker Expert</role>
-			</roles>
-		</developer>
-	</developers>
+  <developers>
+    <developer>
+      <id>api</id>
+      <name>Christoph Zehetner</name>
+      <organization>ASE Group 10 TiTA</organization>
+      <email>chris.zehetner@gmail.com</email>
+      <timezone>+1</timezone>
+      <roles>
+        <role>Team coordinator</role>
+        <role>Developer</role>
+        <role>Git Expert</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>fwa</id>
+      <name>Johannes Ferner</name>
+      <organization>ASE Group 10 TiTA</organization>
+      <email>johannes_ferner@yahoo.de</email>
+      <timezone>+1</timezone>
+      <roles>
+        <role>2nd Team coordniator</role>
+        <role>Developer</role>
+        <role>Spring Expert</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Herbert Brunner</name>
+      <email>herbert.brunner@gmail.com</email>
+      <organization>ASE Group 10 TiTA</organization>
+      <timezone>+1</timezone>
+      <roles>
+        <role>Technical architect</role>
+        <role>Developer</role>
+        <role>Wicket Expert</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Rene Kernegger</name>
+      <email>rene.kernegger@tele2.at</email>
+      <organization>ASE Group 10 TiTA</organization>
+      <timezone>+1</timezone>
+      <roles>
+        <role>2nd Technical Archtect</role>
+        <role>Developer</role>
+        <role>Jasper Reports Expert</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Karin Popp</name>
+      <email>karin.popp@telering.at</email>
+      <organization>ASE Group 10 TiTA</organization>
+      <timezone>+1</timezone>
+      <roles>
+        <role>Tester</role>
+        <role>Developer</role>
+        <role>Issue Tracker Expert</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Markus Siedler</name>
+      <email>markus.siedler@gmail.com</email>
+      <organization>ASE Group 10 TiTA</organization>
+      <timezone>+1</timezone>
+      <roles>
+        <role>Document Manager</role>
+        <role>Developer</role>
+        <role>Issue Tracker Expert</role>
+      </roles>
+    </developer>
+  </developers>
 
-	<build>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<includes>
-					<include>**/*</include>
-				</includes>
-			</resource>
-		</resources>
-		<testResources>
-			<testResource>
-				<directory>src/test/resources</directory>
-				<includes>
-					<include>**/*</include>
-				</includes>
-			</testResource>
-		</testResources>
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>**/*</include>
+        </includes>
+      </resource>
+    </resources>
+    <testResources>
+      <testResource>
+        <directory>src/test/resources</directory>
+        <includes>
+          <include>**/*</include>
+        </includes>
+      </testResource>
+    </testResources>
 
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>${jdk.version}</source>
-					<target>${jdk.version}</target>
-					<targetJdk>${jdk.version}</targetJdk>
-					<fork>true</fork>
-					<meminitial>128m</meminitial>
-					<maxmem>512m</maxmem>
-					<encoding>UTF-8</encoding>
-				</configuration>
-			</plugin>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>${jdk.version}</source>
+          <target>${jdk.version}</target>
+          <targetJdk>${jdk.version}</targetJdk>
+          <fork>true</fork>
+          <meminitial>128m</meminitial>
+          <maxmem>512m</maxmem>
+          <encoding>UTF-8</encoding>
+        </configuration>
+      </plugin>
 
-           <plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<configuration>
-					<webResources>
-						<resource>
-							<directory>${basedir}/src/main/java</directory>
-							<targetPath>WEB-INF/classes</targetPath>
-							<includes>
-								<include>**/*.html</include>
-							</includes>
-						</resource>
-					</webResources>
-				</configuration>
-			</plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <webResources>
+            <resource>
+              <directory>${basedir}/src/main/java</directory>
+              <targetPath>WEB-INF/classes</targetPath>
+              <includes>
+                <include>**/*.html</include>
+              </includes>
+            </resource>
+          </webResources>
+        </configuration>
+      </plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-report-plugin</artifactId>
-				<version>${maven.plugin.surefire}</version>
-				<configuration>
-					<reportSets>
-						<reportSet>
-							<reports>
-								<report>report-only</report>
-							</reports>
-						</reportSet>
-					</reportSets>
-				</configuration>
-			</plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+        <version>${maven.plugin.surefire}</version>
+        <configuration>
+          <reportSets>
+            <reportSet>
+              <reports>
+                <report>report-only</report>
+              </reports>
+            </reportSet>
+          </reportSets>
+        </configuration>
+      </plugin>
 
-			<!--
-				code covarge for hudson <plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>cobertura-maven-plugin</artifactId> <configuration>
+      <!--
+        code covarge for hudson <plugin> <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cobertura-maven-plugin</artifactId> <configuration>
 
-				<outputDirectory>results/cobertura</outputDirectory> <formats>
+        <outputDirectory>results/cobertura</outputDirectory> <formats> <format>xml</format>
+        </formats> <instrumentation> <excludes> <exclude>**/*Test*.class</exclude> </excludes>
+        </instrumentation> </configuration> </plugin> <plugin>
+        <groupId>com.keyboardsamurais.maven</groupId>
+        <artifactId>maven-timestamp-plugin</artifactId> <version>0.1</version> <configuration>
+        <propertyName>build.timestamp</propertyName> <timestampPattern>yyyyMMdd</timestampPattern>
+        </configuration> <executions> <execution> <goals> <goal>create</goal> </goals> </execution>
+        </executions> </plugin> <plugin> <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId> <configuration> <linkXref>false</linkXref>
+        <sourceEncoding>UTF-8</sourceEncoding> <minimumTokens>30</minimumTokens>
+        <targetJdk>{jdk.version}</targetJdk> <rulesets> <ruleset>/rulesets/unusedcode.xml</ruleset>
+        <ruleset>/rulesets/basic.xml</ruleset> <ruleset>/rulesets/design.xml</ruleset>
+        <ruleset>/rulesets/braces.xml</ruleset> <ruleset>/rulesets/naming.xml</ruleset> </rulesets>
+        </configuration> </plugin>
+      -->
 
-				<format>xml</format> </formats> <instrumentation> <excludes>
-				<exclude>**/*Test*.class</exclude> </excludes> </instrumentation>
-				</configuration> </plugin> <plugin>
-				<groupId>com.keyboardsamurais.maven</groupId>
-				<artifactId>maven-timestamp-plugin</artifactId>
-				<version>0.1</version> <configuration>
-				<propertyName>build.timestamp</propertyName>
-				<timestampPattern>yyyyMMdd</timestampPattern> </configuration>
-				<executions> <execution> <goals> <goal>create</goal> </goals>
-				</execution> </executions> </plugin> <plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-pmd-plugin</artifactId> <configuration>
-				<linkXref>false</linkXref> <sourceEncoding>UTF-8</sourceEncoding>
-				<minimumTokens>30</minimumTokens>
-				<targetJdk>{jdk.version}</targetJdk> <rulesets>
-				<ruleset>/rulesets/unusedcode.xml</ruleset>
-				<ruleset>/rulesets/basic.xml</ruleset>
-				<ruleset>/rulesets/design.xml</ruleset>
-				<ruleset>/rulesets/braces.xml</ruleset>
-				<ruleset>/rulesets/naming.xml</ruleset> </rulesets> </configuration>
-				</plugin>
-			-->
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-					<archive>
-						<addMavenDescriptor>false</addMavenDescriptor>
-						<manifest>
-							<addDefaultImplementationEntries> true 
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <addMavenDescriptor>false</addMavenDescriptor>
+            <manifest>
+              <addDefaultImplementationEntries> true 
 						</addDefaultImplementationEntries>
-						</manifest>
-						<manifestEntries>
-							<!--
-								siehe
-								http://hudson.gotdns.com/wiki/display/HUDSON/Building+a+software+project
-							-->
-							<Revision>${SVN_REVISION}</Revision>
-							<BuildTag>${BUILD_TAG}</BuildTag>
-							<BuildTimestamp>${build.timestamp}</BuildTimestamp>
-							<JDKVersion>${jdk.version}</JDKVersion>
-						</manifestEntries>
-					</archive>
-				</configuration>
-			</plugin>
+            </manifest>
+            <manifestEntries>
+              <!--
+                siehe http://hudson.gotdns.com/wiki/display/HUDSON/Building+a+software+project
+              -->
+              <Revision>${SVN_REVISION}</Revision>
+              <BuildTag>${BUILD_TAG}</BuildTag>
+              <BuildTimestamp>${build.timestamp}</BuildTimestamp>
+              <JDKVersion>${jdk.version}</JDKVersion>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>${maven.plugin.checkstyle}</version>
-				<configuration>
-					<!--
-						<configLocation>checkstyle.xml</configLocation>
-						<cacheFile>${project.build.directory}/resources/checkstyle-cachefile</cacheFile>
-						<outputFile>${project.build.directory}/checkstyle/checkstyle-result.xml</outputFile>
-						<enableRSS>false</enableRSS>
-					-->
-				</configuration>
-			</plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>${maven.plugin.checkstyle}</version>
+        <configuration>
+          <!--
+            <configLocation>checkstyle.xml</configLocation>
+            <cacheFile>${project.build.directory}/resources/checkstyle-cachefile</cacheFile>
+            <outputFile>${project.build.directory}/checkstyle/checkstyle-result.xml</outputFile>
+            <enableRSS>false</enableRSS>
+          -->
+        </configuration>
+      </plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-				<configuration>
-					<encoding>UTF-8</encoding>
-				</configuration>
-			</plugin>
-			
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-				<configuration>
-					<encoding>UTF-8</encoding>
-				</configuration>
-			</plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <configuration>
+          <encoding>UTF-8</encoding>
+        </configuration>
+      </plugin>
 
-			<!-- licenses -->
-			<plugin>
-				<groupId>org.apache.rat</groupId>
-				<artifactId>apache-rat-plugin</artifactId>
-				<configuration>
-					<excludeSubProjects>false</excludeSubProjects>
-					<excludes>
-						<exclude>**/.gitignore</exclude>
-						<exclude>**/.git/**</exclude>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <configuration>
+          <encoding>UTF-8</encoding>
+        </configuration>
+      </plugin>
 
-						<exclude>**/target/**</exclude>
-						<exclude>**/.classpath</exclude>
-						<exclude>**/.project</exclude>
-						<exclude>**/.settings/**</exclude>
-						<exclude>**/.metadata/**</exclude>
-						
-						<exclude>**/*.pdf</exclude>
-						<exclude>**/*.jpg</exclude>
-						<exclude>**/*.dia</exclude>
-						<exclude>**/*.zargo</exclude>
-						<exclude>**/*.jasper</exclude>
-						<exclude>**/*.log</exclude>
-						<exclude>**/*.MF</exclude>
-						<exclude>**/*.checkstyle</exclude>
-						<exclude>**/*.js</exclude>
-						<exclude>**/*.db</exclude>
-						<exclude>**/*.springBeans</exclude>
-			
-						<exclude>NOTICE</exclude>
-						<exclude>LICENSE</exclude>
-					</excludes>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>verify</phase>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+      <!-- licenses -->
+      <plugin>
+        <groupId>org.apache.rat</groupId>
+        <artifactId>apache-rat-plugin</artifactId>
+        <configuration>
+          <excludeSubProjects>false</excludeSubProjects>
+          <excludes>
+            <exclude>**/.gitignore</exclude>
+            <exclude>**/.git/**</exclude>
+
+            <exclude>**/target/**</exclude>
+            <exclude>**/.classpath</exclude>
+            <exclude>**/.project</exclude>
+            <exclude>**/.settings/**</exclude>
+            <exclude>**/.metadata/**</exclude>
+
+            <exclude>**/*.pdf</exclude>
+            <exclude>**/*.jpg</exclude>
+            <exclude>**/*.dia</exclude>
+            <exclude>**/*.zargo</exclude>
+            <exclude>**/*.jasper</exclude>
+            <exclude>**/*.log</exclude>
+            <exclude>**/*.MF</exclude>
+            <exclude>**/*.checkstyle</exclude>
+            <exclude>**/*.js</exclude>
+            <exclude>**/*.db</exclude>
+            <exclude>**/*.springBeans</exclude>
+
+            <exclude>NOTICE</exclude>
+            <exclude>LICENSE</exclude>
+          </excludes>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>verify</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
 
 
-			<!--
-				for automatic validating and compiling of jasper jrxml reports
-				<plugin> <groupId>org.codehaus.mojo</groupId>
-				<artifactId>jasperreports-maven-plugin</artifactId> <configuration>
-				<outputDirectory>${project.build.directory}/jasper</outputDirectory>
-				</configuration> <executions> <execution> <goals>
-				<goal>compile-reports</goal> </goals> </execution> </executions>
-			-->
-			<!--
-				do not delete is needed a second time <dependencies> <dependency>
-				<groupId>jasperreports</groupId>
-				<artifactId>jasperreports</artifactId>
-				<version>${jasperreports.version}</version> </dependency>
-				</dependencies> </plugin>
-			-->
-			
-			
-		</plugins>
-	</build>
+      <!--
+        for automatic validating and compiling of jasper jrxml reports <plugin>
+        <groupId>org.codehaus.mojo</groupId> <artifactId>jasperreports-maven-plugin</artifactId>
+        <configuration> <outputDirectory>${project.build.directory}/jasper</outputDirectory>
+        </configuration> <executions> <execution> <goals> <goal>compile-reports</goal> </goals>
+        </execution> </executions>
+      -->
+      <!--
+        do not delete is needed a second time <dependencies> <dependency>
+        <groupId>jasperreports</groupId> <artifactId>jasperreports</artifactId>
+        <version>${jasperreports.version}</version> </dependency> </dependencies> </plugin>
+      -->
 
-	<dependencyManagement>
-		<dependencies>
 
-			<!-- Documentation -->
+    </plugins>
+  </build>
 
-			<!-- Logging Dependencies -->
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-log4j12</artifactId>
-				<version>${slf4j.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>jcl-over-slf4j</artifactId>
-				<version>${slf4j.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-api</artifactId>
-				<version>${slf4j.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>log4j</groupId>
-				<artifactId>log4j</artifactId>
-				<version>${log4j.version}</version>
-			</dependency>
-		
-			<!-- Spring Dependencies -->
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-context</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-test</artifactId>
-				<version>${spring.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-aop</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-jms</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			
-			<dependency>
-				<groupId>cglib</groupId>
-				<artifactId>cglib-nodep</artifactId>
-				<version>${cglib-nodep.version}</version>
-			</dependency> 
+  <dependencyManagement>
+    <dependencies>
 
-			<!-- JPA & Hibernate -->
-			<dependency>
-				<groupId>javax.persistence</groupId>
-				<artifactId>persistence-api</artifactId>
-				<version>${persistence.version}</version>
-			</dependency>
-		
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-core</artifactId>
-				<version>${hibcore.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>javax.transaction</groupId>
-						<artifactId>jta</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>asm</groupId>
-						<artifactId>asm</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>asm</groupId>
-						<artifactId>asm-attrs</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>cglib</groupId>
-						<artifactId>cglib</artifactId>
-					</exclusion>
-				</exclusions> 
-			</dependency>
-		
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-entitymanager</artifactId>
-				<version>${hibentity.version}</version>
-			</dependency>
-			
-			<!--  H2 Database -->
-			<!-- dependency>
-				<groupId>com.h2database</groupId>
-				<artifactId>h2</artifactId>
-				<version>${h2db.version}</version>
-			</dependency-->
-			<dependency>
-			    <groupId>postgresql</groupId>
-			    <artifactId>postgresql</artifactId>
-			    <version>8.4-701.jdbc4</version>
-			</dependency> 
-		
-			<!-- Util Dependencies -->
-			<dependency>
-				<groupId>commons-lang</groupId>
-				<artifactId>commons-lang</artifactId>
-				<version>${commons.lang.version}</version>
-			</dependency>
+      <!-- Documentation -->
 
-			<!-- Test Dependencies -->
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>${junit.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.mockito</groupId>
-				<artifactId>mockito-all</artifactId>
-				<version>${mockito.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>xmlunit</groupId>
-				<artifactId>xmlunit</artifactId>
-				<version>${xmlunit.version}</version>
-				<scope>test</scope>
-			</dependency>
-			
-			<!-- JFreeChart dependencies -->
-			<dependency>
-				<groupId>jcommon</groupId>
-				<artifactId>jcommon</artifactId>
-				<version>${jcommon.version}</version>
-			</dependency>
-			
-			<dependency>
-				<groupId>jfreechart</groupId>
-				<artifactId>jfreechart</artifactId>
-				<version>${jfreechart.version}</version>
-			</dependency>
-			
-			<!-- Jasper dependencies -->
-			<dependency>
-				<groupId>jasperreports</groupId>
-				<artifactId>jasperreports</artifactId>
-				<version>${jasperreports.version}</version>
-			</dependency>
+      <!-- Logging Dependencies -->
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-log4j12</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>jcl-over-slf4j</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>log4j</groupId>
+        <artifactId>log4j</artifactId>
+        <version>${log4j.version}</version>
+      </dependency>
+
+      <!-- Spring Dependencies -->
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-test</artifactId>
+        <version>${spring.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-aop</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-jms</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>cglib</groupId>
+        <artifactId>cglib-nodep</artifactId>
+        <version>${cglib-nodep.version}</version>
+      </dependency>
+
+      <!-- JPA & Hibernate -->
+      <dependency>
+        <groupId>javax.persistence</groupId>
+        <artifactId>persistence-api</artifactId>
+        <version>${persistence.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-core</artifactId>
+        <version>${hibcore.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>javax.transaction</groupId>
+            <artifactId>jta</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>asm</groupId>
+            <artifactId>asm</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>asm</groupId>
+            <artifactId>asm-attrs</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+
+      <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-entitymanager</artifactId>
+        <version>${hibentity.version}</version>
+      </dependency>
+
+      <!--  H2 Database -->
+      <!--
+        dependency> <groupId>com.h2database</groupId> <artifactId>h2</artifactId>
+        <version>${h2db.version}</version> </dependency
+      -->
+      <dependency>
+        <groupId>postgresql</groupId>
+        <artifactId>postgresql</artifactId>
+        <version>8.4-701.jdbc4</version>
+      </dependency>
+
+      <!-- Util Dependencies -->
+      <dependency>
+        <groupId>commons-lang</groupId>
+        <artifactId>commons-lang</artifactId>
+        <version>${commons.lang.version}</version>
+      </dependency>
+
+      <!-- Test Dependencies -->
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-all</artifactId>
+        <version>${mockito.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>xmlunit</groupId>
+        <artifactId>xmlunit</artifactId>
+        <version>${xmlunit.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <!-- JFreeChart dependencies -->
+      <dependency>
+        <groupId>jcommon</groupId>
+        <artifactId>jcommon</artifactId>
+        <version>${jcommon.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>jfreechart</groupId>
+        <artifactId>jfreechart</artifactId>
+        <version>${jfreechart.version}</version>
+      </dependency>
+
+      <!-- Jasper dependencies -->
+      <dependency>
+        <groupId>jasperreports</groupId>
+        <artifactId>jasperreports</artifactId>
+        <version>${jasperreports.version}</version>
+      </dependency>
+
+      <!-- Jetty Dependencies -->
+
+      <dependency>
+        <groupId>org.mortbay.jetty</groupId>
+        <artifactId>jetty</artifactId>
+        <version>${jetty.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.mortbay.jetty</groupId>
+        <artifactId>jetty-util</artifactId>
+        <version>${jetty.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.mortbay.jetty</groupId>
+        <artifactId>jetty-management</artifactId>
+        <version>${jetty.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.mortbay.jetty</groupId>
+        <artifactId>jetty-plus</artifactId>
+        <version>${jetty.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.mortbay.jetty</groupId>
+        <artifactId>jetty-naming</artifactId>
+        <version>${jetty.version}</version>
+      </dependency>
+
+      <!-- wicket dependencies -->
+
+      <dependency>
+        <groupId>org.apache.wicket</groupId>
+        <artifactId>wicket</artifactId>
+        <version>${wicket.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.wicket</groupId>
+        <artifactId>wicket-extensions</artifactId>
+        <version>${wicket.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.wicket</groupId>
+        <artifactId>wicket-guice</artifactId>
+        <version>${wicket.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.wicket</groupId>
+        <artifactId>wicket-jmx</artifactId>
+        <version>${wicket.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.wicket</groupId>
+        <artifactId>wicket-auth-roles</artifactId>
+        <version>${wicket.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.wicket.wicket-security</groupId>
+        <artifactId>swarm</artifactId>
+        <version>${wicket-security.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.wicket</groupId>
+        <artifactId>wicket-datetime</artifactId>
+        <version>${wicket.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.wicket</groupId>
+        <artifactId>wicket-velocity</artifactId>
+        <version>${wicket.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.wicket</groupId>
+        <artifactId>wicket-spring</artifactId>
+        <version>${wicket.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>velocity</groupId>
+        <artifactId>velocity</artifactId>
+        <version>${velocity.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.uwyn</groupId>
+        <artifactId>jhighlight</artifactId>
+        <version>${jhighlight.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>httpunit</groupId>
+        <artifactId>httpunit</artifactId>
+        <version>${httpunit.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.portlet</groupId>
+        <artifactId>portlet-api</artifactId>
+        <version>${portlet.version}</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>commons-digester</groupId>
+        <artifactId>commons-digester</artifactId>
+        <version>${commons-digester.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-dbcp</groupId>
+        <artifactId>commons-dbcp</artifactId>
+        <version>${commons.dbcp.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.lowagie</groupId>
+        <artifactId>itext</artifactId>
+        <version>${itext.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-collections</groupId>
+        <artifactId>commons-collections</artifactId>
+        <version>${commons-collections.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.wicketstuff</groupId>
+        <version>1.4.TITA.2</version>
+        <artifactId>table</artifactId>
+      </dependency>
+      <dependency>
+        <groupId>maven-plugins</groupId>
+        <artifactId>maven-cobertura-plugin</artifactId>
+        <version>${maven.plugin.cobertura}</version>
+      </dependency>
+
+
+    <!-- mantis connect dependencies -->
+    <dependency>
+      <groupId>javax.xml</groupId>
+      <artifactId>jaxrpc</artifactId>
+      <version>${javax.xml.rpc.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>${commons.logging.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-discovery</groupId>
+      <artifactId>commons-discovery</artifactId>
+      <version>${commons.discovery.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.axis</groupId>
+      <artifactId>axis-ant</artifactId>
+      <version>${axis.ant.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>wsdl4j</groupId>
+      <artifactId>wsdl4j</artifactId>
+      <version>${wsdl4j.version}</version>
+    </dependency>
+
+      <dependency>
+        <groupId>mantisconnect</groupId>
+        <artifactId>mantisconnect</artifactId>
+        <version>${mantis.connect.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>axis</groupId>
+        <artifactId>axis</artifactId>
+        <version>${axis.version}</version>
+      </dependency>
       
-          <!-- Jetty Dependencies -->
+    </dependencies>
+  </dependencyManagement>
 
-            <dependency>
-              <groupId>org.mortbay.jetty</groupId>
-              <artifactId>jetty</artifactId>
-              <version>${jetty.version}</version>
-            </dependency>
-            <dependency>
-              <groupId>org.mortbay.jetty</groupId>
-              <artifactId>jetty-util</artifactId>
-              <version>${jetty.version}</version>
-            </dependency>
-            <dependency>
-              <groupId>org.mortbay.jetty</groupId>
-              <artifactId>jetty-management</artifactId>
-              <version>${jetty.version}</version>
-            </dependency>
-            <dependency>
-              <groupId>org.mortbay.jetty</groupId>
-              <artifactId>jetty-plus</artifactId>
-              <version>${jetty.version}</version>
-            </dependency>
-            <dependency>
-              <groupId>org.mortbay.jetty</groupId>
-              <artifactId>jetty-naming</artifactId>
-              <version>${jetty.version}</version>
-            </dependency>
+  <repositories>
+    <repository>
+      <id>org.wicketstuff</id>
+      <name>Wicket Stuff Repository</name>
+      <url>http://wicketstuff.org/maven/repository</url>
+    </repository>
 
-			<!-- wicket dependencies -->
+    <repository>
+      <id>thirdparty</id>
+      <url>http://maven.openengsb.org/nexus/content/repositories/thirdparty</url>
+    </repository>
+  </repositories>
 
-			<dependency> 
-				<groupId>org.apache.wicket</groupId>
-				<artifactId>wicket</artifactId>
-				<version>${wicket.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.wicket</groupId>
-				<artifactId>wicket-extensions</artifactId>
-				<version>${wicket.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.wicket</groupId>
-				<artifactId>wicket-guice</artifactId>
-				<version>${wicket.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.wicket</groupId>
-				<artifactId>wicket-jmx</artifactId>
-				<version>${wicket.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.wicket</groupId>
-				<artifactId>wicket-auth-roles</artifactId>
-				<version>${wicket.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.wicket.wicket-security</groupId>
-				<artifactId>swarm</artifactId>
-				<version>${wicket-security.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.wicket</groupId>
-				<artifactId>wicket-datetime</artifactId>
-				<version>${wicket.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.wicket</groupId>
-				<artifactId>wicket-velocity</artifactId>
-				<version>${wicket.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.wicket</groupId>
-				<artifactId>wicket-spring</artifactId>
-				<version>${wicket.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>velocity</groupId>
-				<artifactId>velocity</artifactId>
-				<version>${velocity.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.uwyn</groupId>
-				<artifactId>jhighlight</artifactId>
-				<version>${jhighlight.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>httpunit</groupId>
-				<artifactId>httpunit</artifactId>
-				<version>${httpunit.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>javax.portlet</groupId>
-				<artifactId>portlet-api</artifactId>
-				<version>${portlet.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-			<groupId>commons-digester</groupId>
-			<artifactId>commons-digester</artifactId>
-			<version>${commons-digester.version}</version>
-		</dependency> 
-		<dependency>
-			<groupId>commons-dbcp</groupId>
-			<artifactId>commons-dbcp</artifactId>
-			<version>${commons.dbcp.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.lowagie</groupId>
-			<artifactId>itext</artifactId>
-			<version>${itext.version}</version>
-		</dependency> 
-		<dependency>
-			<groupId>commons-collections</groupId>
-			<artifactId>commons-collections</artifactId>
-			<version>${commons-collections.version}</version>
-		</dependency> 
-		<dependency>
-			<groupId>org.wicketstuff</groupId>
-			<version>1.4.TITA.2</version>
-			<artifactId>table</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>maven-plugins</groupId>
-			<artifactId>maven-cobertura-plugin</artifactId>
-			<version>${maven.plugin.cobertura}</version>
-		</dependency> 
-		</dependencies>
-	</dependencyManagement>
+  <distributionManagement>
+    <!--
+      <repository> <id>internal</id> <name>Internal Release Repository</name> <url>
+      dav:http://svnmaster:8181/archiva/repository/internal/ </url> </repository>
+      <snapshotRepository> <id>snapshots</id> <name>Internal Snapshot Repository</name> <url>
+      dav:http://svnmaster:8181/archiva/repository/snapshots/ </url> </snapshotRepository>
+    -->
 
-	<repositories>
-		<repository>
-			<id>org.wicketstuff</id>
-			<name>Wicket Stuff Repository</name>
-			<url>http://wicketstuff.org/maven/repository</url>
-		</repository>
 
-		<repository>
-			<id>thirdparty</id>
-			<url>http://maven.openengsb.org/nexus/content/repositories/thirdparty</url>
-		</repository>
-	</repositories>
+  </distributionManagement>
 
-	<distributionManagement>
-		<!--
-			<repository> <id>internal</id> <name>Internal Release
-			Repository</name> <url>
-			dav:http://svnmaster:8181/archiva/repository/internal/ </url>
-			</repository> <snapshotRepository> <id>snapshots</id> <name>Internal
-			Snapshot Repository</name> <url>
-			dav:http://svnmaster:8181/archiva/repository/snapshots/ </url>
-			</snapshotRepository>
-		-->
-		
-		 
-	</distributionManagement>
-	
-	<reports>
-		<report>maven-cobertura-plugin</report>
-	</reports>
+  <reports>
+    <report>maven-cobertura-plugin</report>
+  </reports>
 
 </project>

@@ -3,15 +3,15 @@
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
-   
+
        http://www.apache.org/licenses/LICENSE\-2.0
-       
+
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-   
+
  */
 
 package at.ac.tuwien.ifs.tita.dao;
@@ -36,6 +36,8 @@ import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.dao.interfaces.IGenericHibernateDao;
@@ -43,9 +45,9 @@ import at.ac.tuwien.ifs.tita.entity.BaseEntity;
 
 /**
  * Concrete implementation of IGenericHibernateDao Interface.
- * 
+ *
  * @author herbert
- * 
+ *
  * @param <T> class of entity
  * @param <ID> class of associated key (Long, Integer, ...)
  */
@@ -53,6 +55,8 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
         IGenericHibernateDao<T, ID> {
 
     protected Class<T> persistenceClass;
+
+    private final Logger log = LoggerFactory.getLogger(GenericHibernateDao.class);
 
     public GenericHibernateDao() {
         super();
@@ -69,7 +73,7 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
         Criteria criteria = null;
 
         try {
-            criteria = getSession().createCriteria(persistenceClass);
+            criteria = getSession().createCriteria(this.persistenceClass);
             criteria.add(Restrictions.idEq(id));
             for (String prop : joinProps) {
                 criteria.setFetchMode(prop, FetchMode.JOIN);
@@ -78,7 +82,7 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
             myEntity = (T) criteria.uniqueResult();
         } catch (Exception e) {
             throw new PersistenceException("Fehler beim lesen eines Entities: Class="
-                    + persistenceClass.getSimpleName() + " Key=" + id.toString() + "\n" + e.getMessage(), e);
+                    + this.persistenceClass.getSimpleName() + " Key=" + id.toString() + "\n" + e.getMessage(), e);
         }
 
         return myEntity;
@@ -91,12 +95,12 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
         T entity;
         try {
             if (lock) {
-                entity = (T) getSession().load(persistenceClass, id, LockMode.UPGRADE);
+                entity = (T) getSession().load(this.persistenceClass, id, LockMode.UPGRADE);
             } else {
-                entity = (T) getSession().load(persistenceClass, id);
+                entity = (T) getSession().load(this.persistenceClass, id);
             }
         } catch (Exception e) {
-            throw new PersistenceException("Failure during reading entity. Class=" + persistenceClass.getSimpleName()
+            throw new PersistenceException("Failure during reading entity. Class=" + this.persistenceClass.getSimpleName()
                     + "\n" + e.getMessage(), e);
         }
 
@@ -110,10 +114,10 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
         List<T> myList = null;
 
         try {
-            myList = getSession().createCriteria(persistenceClass).setResultTransformer(
+            myList = getSession().createCriteria(this.persistenceClass).setResultTransformer(
                     CriteriaSpecification.DISTINCT_ROOT_ENTITY).list();
         } catch (Exception e) {
-            throw new PersistenceException("Failure during reading entities. Class=" + persistenceClass.getSimpleName()
+            throw new PersistenceException("Failure during reading entities. Class=" + this.persistenceClass.getSimpleName()
                     + "\n" + e.getMessage(), e);
         }
 
@@ -127,14 +131,14 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
         List<T> myList = null;
 
         try {
-            Criteria crit = getSession().createCriteria(persistenceClass);
+            Criteria crit = getSession().createCriteria(this.persistenceClass);
             for (Order order : orders) {
                 crit.addOrder(order);
             }
             crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
             myList = crit.list();
         } catch (Exception e) {
-            throw new PersistenceException("Failure during reading entities. Class=" + persistenceClass.getSimpleName()
+            throw new PersistenceException("Failure during reading entities. Class=" + this.persistenceClass.getSimpleName()
                     + "\n" + e.getMessage(), e);
         }
 
@@ -148,7 +152,7 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
         List<T> myList = null;
 
         try {
-            Criteria crit = getSession().createCriteria(persistenceClass);
+            Criteria crit = getSession().createCriteria(this.persistenceClass);
             Example example = Example.create(exampleInstance);
             for (String exclude : excludeProps) {
                 example.excludeProperty(exclude);
@@ -162,7 +166,7 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
             myList = crit.list();
         } catch (Exception e) {
             throw new PersistenceException("Failure during reading entities (by example). Class="
-                    + persistenceClass.getSimpleName() + "\n" + e.getMessage(), e);
+                    + this.persistenceClass.getSimpleName() + "\n" + e.getMessage(), e);
         }
 
         return myList;
@@ -174,11 +178,11 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
         ScrollableResults myList = null;
 
         try {
-            Criteria crit = getSession().createCriteria(persistenceClass);
+            Criteria crit = getSession().createCriteria(this.persistenceClass);
             crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
             myList = crit.scroll(ScrollMode.FORWARD_ONLY);
         } catch (Exception e) {
-            throw new PersistenceException("Failure during reading entities. Class=" + persistenceClass.getSimpleName()
+            throw new PersistenceException("Failure during reading entities. Class=" + this.persistenceClass.getSimpleName()
                     + "\n" + e.getMessage(), e);
         }
 
@@ -191,7 +195,7 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
         ScrollableResults myList = null;
 
         try {
-            Criteria crit = getSession().createCriteria(persistenceClass);
+            Criteria crit = getSession().createCriteria(this.persistenceClass);
             Example example = Example.create(exampleInstance);
             for (String exclude : excludeProps) {
                 example.excludeProperty(exclude);
@@ -205,7 +209,7 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
             myList = crit.scroll(ScrollMode.FORWARD_ONLY);
         } catch (Exception e) {
             throw new PersistenceException("Failure during reading entities (by example). Class="
-                    + persistenceClass.getSimpleName() + "\n" + e.getMessage(), e);
+                    + this.persistenceClass.getSimpleName() + "\n" + e.getMessage(), e);
         }
 
         return new ScrollableWrapper<T>(myList);
@@ -227,7 +231,7 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
 
     /**
      * Stores an entity of type T the first time.
-     * 
+     *
      * @param entity to persist.
      */
     private void persist(T entity) {
@@ -235,7 +239,7 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
             getSession().persist(entity);
         } catch (Exception e) {
             throw new PersistenceException("Failure during persisting entity. Class="
-                    + persistenceClass.getSimpleName() + "\n" + e.getMessage(), e);
+                    + this.persistenceClass.getSimpleName() + "\n" + e.getMessage(), e);
         }
     }
 
@@ -244,7 +248,7 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
         try {
             getSession().delete(entity);
         } catch (Exception e) {
-            throw new PersistenceException("Failure during deleting entity. Class=" + persistenceClass.getSimpleName()
+            throw new PersistenceException("Failure during deleting entity. Class=" + this.persistenceClass.getSimpleName()
                     + "\n" + e.getMessage(), e);
         }
     }
@@ -262,7 +266,7 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
     /**
      * Merges an entity into session and returns an instance of this entity,
      * which is different from passed entity.
-     * 
+     *
      * @param entity to merge
      * @return new merged entity in session
      */
@@ -287,13 +291,13 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
 
     /**
      * Find several entities via criterion.
-     * 
+     *
      * @param criterion beliebige Kriterien
      * @return (leere) Liste von Entities
      */
     @SuppressWarnings("unchecked")
     protected List<T> findByCriteria(Criterion... criterion) {
-        Criteria crit = getSession().createCriteria(persistenceClass);
+        Criteria crit = getSession().createCriteria(this.persistenceClass);
         for (Criterion c : criterion) {
             crit.add(c);
         }
@@ -304,7 +308,7 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
     /**
      * Search by use of the specified search criterions, order by specified
      * order criterions.
-     * 
+     *
      * @param criterions - search criterions
      * @param orders - order criterions
      * @param aliases list of aliasnames
@@ -312,7 +316,7 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
      */
     @SuppressWarnings("unchecked")
     protected List<T> findByCriteriaOrdered(Criterion criterions[], Order orders[], String aliases[]) {
-        Criteria crit = getSession().createCriteria(persistenceClass);
+        Criteria crit = getSession().createCriteria(this.persistenceClass);
         if (aliases != null) {
             for (String alias : aliases) {
                 crit.createAlias(alias, alias);
@@ -331,7 +335,7 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
 
     /**
      * Find several entities via criterion.
-     * 
+     *
      * @param exceptionKeyString for clear exception handling
      * @param criterion random criterias
      * @return entitiy or null
@@ -357,12 +361,12 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
 
     /**
      * Find entities for given criterions.
-     * 
+     *
      * @param criterion random criterias
      * @return (empty) list of entities
      */
     protected Iterator<T> findScrollListByCriteria(Criterion... criterion) {
-        Criteria crit = getSession().createCriteria(persistenceClass);
+        Criteria crit = getSession().createCriteria(this.persistenceClass);
         for (Criterion c : criterion) {
             crit.add(c);
         }
@@ -375,7 +379,7 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
      * aggregate functions like sum,count in the query will return a Java Long,
      * i.e. in the statement "sum(Entity.items) as items", the alias items must
      * map to a Java Long in the result entity "public Long getItems()".
-     * 
+     *
      * @param query a HQL query String
      * @return a List of type persistenceClass
      */
@@ -384,7 +388,7 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
         Query q = getSession().createQuery(query);
         List<T> result = null;
         try {
-            q.setResultTransformer(new AliasToBeanResultTransformer(persistenceClass));
+            q.setResultTransformer(new AliasToBeanResultTransformer(this.persistenceClass));
             result = q.list();
         } catch (HibernateException e) {
             throw new PersistenceException("Failure during HQL-query.\n" + e.getMessage(), e);

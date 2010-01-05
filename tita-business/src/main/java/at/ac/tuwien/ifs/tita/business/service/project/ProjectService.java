@@ -9,7 +9,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-   
+
  */
 
 package at.ac.tuwien.ifs.tita.business.service.project;
@@ -28,9 +28,9 @@ import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 /**
  * Service for manipulating (insert, update, delete, search... ) tita projects
  * in TiTA.
- * 
+ *
  * @author herbert
- * 
+ *
  */
 public class ProjectService implements IProjectService {
 

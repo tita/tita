@@ -72,6 +72,19 @@ public interface IIssueTrackerService {
             throws ProjectNotFoundException;
 
     /**
+     * Method returns a map of all tasks for the chosen project. If the method
+     * returns null, no elements found for the project.
+     *
+     * @param projectName
+     *            - the name of the project, from where the tasks are wanted
+     * @return a map of tasks from the chosen project.
+     * @throws ProjectNotFoundException
+     *             if project is null
+     */
+    Map<Long, ITaskTrackable> getIssueTrackerTasksByProjectName(String projectName)
+            throws ProjectNotFoundException;
+
+    /**
      * Method manages a update of a single project.
      *
      * @param project
@@ -98,6 +111,22 @@ public interface IIssueTrackerService {
      * @return projects
      */
     Map<Long, IProjectTrackable> getProjects();
+
+    /**
+     * Method to assign a task in the issue tracker.
+     *
+     * @param taskId
+     *            - the id of the task that should be assigned.
+     */
+    void assignTask(Long taskId);
+
+    /**
+     * Method to close a task in the issue tracker.
+     *
+     * @param taskId
+     *            - the id of the task that should be closed.
+     */
+    void closeTask(Long taskId);
 
 
 

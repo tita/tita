@@ -58,6 +58,10 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
  */
 public class IssueTrackerMantisDao implements IIssueTrackerDao {
 
+
+    private static final int C_ASSIGEND = 4;
+    private static final int C_CLOSED = 6;
+
     private final Logger log = LoggerFactory.getLogger(IssueTrackerMantisDao.class);
 
     private URL url;
@@ -79,9 +83,9 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
         connect();
     }
 
-    public IssueTrackerMantisDao(){    
+    public IssueTrackerMantisDao(){
     }
-    
+
     /**
      * Opens a Session to the Mantis-Server.
      */
@@ -209,10 +213,21 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
     }
 
     /** {@inheritDoc} */
-    public void closeTask(long taskId) throws MCException {
+    public void assignTask(Long taskId) throws MCException {
+        IIssue issue = this.session.getIssue(taskId);
+        IMCAttribute[] status = this.session.getEnum(Enumeration.STATUS);
+        issue.setStatus(status[this.C_ASSIGEND]); // 4...assigned
+        this.session.updateIssue(issue);
+        this.session.flush();
+    }
+
+    /** {@inheritDoc} */
+    public void closeTask(Long taskId) throws MCException {
         IIssue issue = this.session.getIssue(taskId);
         IMCAttribute[] resolutions = this.session.getEnum(Enumeration.RESOLUTIONS);
+        IMCAttribute[] status = this.session.getEnum(Enumeration.STATUS);
         issue.setResolution(resolutions[1]);// fixed
+        issue.setStatus(status[this.C_CLOSED]); // 6...closed
         this.session.updateIssue(issue);
         this.session.flush();
     }

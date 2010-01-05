@@ -31,9 +31,9 @@ import javax.persistence.Table;
 
 /**
  * Entity for storing time producer's effort of his/her assigned tasks.
- * 
+ *
  * @author herbert
- * 
+ *
  */
 @Entity
 @Table(name = "EFFORT")
@@ -169,7 +169,7 @@ public class Effort extends BaseEntity<Long> implements Serializable {
 
     /**
      * filter function.
-     * 
+     *
      * @param filterString
      *            - Filter string
      * @return true if it contains the string pattern.
@@ -180,21 +180,25 @@ public class Effort extends BaseEntity<Long> implements Serializable {
     }
 
     /**
+     * TODO write javadoc.
      * 
      * @param date1
-     * @return
+     *            TODO write javadoc.
+     * @return TODO write javadoc.
      */
     public Boolean matchDateFrom(Date date1) {
-        return date.after(date1) || date.compareTo(date1) == 0;
+        return this.date.after(date1) || this.date.compareTo(date1) == 0;
     }
 
     /**
+     * TODO write javadoc.
      * 
      * @param date1
-     * @return
+     *            TODO write javadoc.
+     * @return TODO write javadoc.
      */
     public Boolean matchDateUntil(Date date1) {
-        return date.before(date1) || date.compareTo(date1) == 0;
+        return this.date.before(date1) || this.date.compareTo(date1) == 0;
     }
 
     public TiTATask getTitaTask() {
@@ -204,7 +208,6 @@ public class Effort extends BaseEntity<Long> implements Serializable {
     public IssueTrackerTask getIssueTTask() {
         return this.issueTTask;
     }
-
     
     public void setEndTime(Long endTime) {
         this.endTime = endTime;
@@ -221,7 +224,7 @@ public class Effort extends BaseEntity<Long> implements Serializable {
     /**
      * Generates the Url to get to the Task of the Issuetracker. For example:
      * projectname: Tita issue nr: 43 �> www.mantis.com/tita-issue:43
-     * 
+     *
      * @return generated URL-String
      */
     public String getUrlToIssueTrackerTask() {

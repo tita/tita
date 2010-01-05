@@ -111,6 +111,7 @@ public class IssueTrackerMantisDaoTest extends MantisBaseTest {
             // check
             IIssue issue = this.session.getIssue(taskId);
             assertEquals("fixed", issue.getResolution().getName());
+            assertEquals("closed", issue.getStatus().getName());
 
         } catch (Exception e) {
             fail();
