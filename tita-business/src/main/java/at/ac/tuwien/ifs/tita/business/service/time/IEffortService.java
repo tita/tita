@@ -87,7 +87,7 @@ public interface IEffortService {
      * 
      * @return list of years
      */
-    List<Double> getEffortsYears();
+    List<Integer> getEffortsYears();
 
     /**
      * Gets a view for the last time efforts.
@@ -97,21 +97,22 @@ public interface IEffortService {
      * @throws TitaDAOException if anything goes wrong with db access.
      */
     List<Effort> getActualEfforts(int maxresults) throws TitaDAOException;
-    
-    
+
     /**
-     * Gets a summary of Effort for List of user and projects - overall, monthly, daily.
+     * Gets a summary of Effort for List of user and projects - overall,
+     * monthly, daily.
+     * 
      * @param projects List of String
      * @param usernames List of String
      * @param grouping String
      * @return UserProjectEffort List
      */
-    List<UserProjectEffort> getEffortsSummaryForProjectAndUserNames(List<String> projects, 
-                                                         List<String> usernames,
-                                                         String grouping);
-    
+    List<UserProjectEffort> getEffortsSummaryForProjectAndUserNames(List<String> projects, List<String> usernames,
+            String grouping);
+
     /**
      * Gets a summary of Effort for and projects - overall, monthly, daily.
+     * 
      * @param projects List of String
      * @param grouping String
      * @return ProjectEffort List

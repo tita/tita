@@ -153,6 +153,7 @@
               <exclude>**/MantisBaseTest.java</exclude>
               <exclude>**/IssueTrackerServiceTest.java</exclude>
               <exclude>**/TaskServiceTest.java</exclude>
+			  <exclude>**/UserServiceTest.java</exclude>
             </excludes>
           </configuration>
         </plugin>

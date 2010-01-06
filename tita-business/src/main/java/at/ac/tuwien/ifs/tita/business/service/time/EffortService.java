@@ -78,7 +78,7 @@ public class EffortService implements IEffortService {
     /**
      * {@inheritDoc}
      */
-    public List<Double> getEffortsYears() {
+    public List<Integer> getEffortsYears() {
         return this.timeEffortDao.getTimeEffortsYears();
     }
 
@@ -94,18 +94,16 @@ public class EffortService implements IEffortService {
      * {@inheritDoc}
      */
     @Override
-    public List<UserProjectEffort> getEffortsSummaryForProjectAndUserNames(
-            List<String> projects, List<String> usernames, String grouping) {
-        return timeEffortDao.findEffortsForTiTAProjectAndTimeConsumerId(projects, 
-                                                                        usernames, grouping);
+    public List<UserProjectEffort> getEffortsSummaryForProjectAndUserNames(List<String> projects,
+            List<String> usernames, String grouping) {
+        return timeEffortDao.findEffortsForTiTAProjectAndTimeConsumerId(projects, usernames, grouping);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<UserProjectEffort> getEffortsSummaryForProjectNames(
-            List<String> projects, String grouping) {
+    public List<UserProjectEffort> getEffortsSummaryForProjectNames(List<String> projects, String grouping) {
         return timeEffortDao.findEffortsForTiTAProjectId(projects, grouping);
     }
     

@@ -22,16 +22,16 @@ import at.ac.tuwien.ifs.tita.entity.Effort;
 import at.ac.tuwien.ifs.tita.entity.util.UserProjectEffort;
 
 /**
- *
+ * 
  * Interface for EffortDao.
- *
+ * 
  * @author herbert
  */
 public interface IEffortDao extends IGenericHibernateDao<Effort, Long> {
 
     /**
      * Gets a view for the last time efforts.
-     *
+     * 
      * @param maxresults sets the max results value for the query
      * @return list of timefforts that match dates
      */
@@ -39,7 +39,7 @@ public interface IEffortDao extends IGenericHibernateDao<Effort, Long> {
 
     /**
      * Gets a view for a month.
-     *
+     * 
      * @param year year which is selected
      * @param month month which is selected
      * @return list of efforts that match dates
@@ -48,7 +48,7 @@ public interface IEffortDao extends IGenericHibernateDao<Effort, Long> {
 
     /**
      * Gets a view for a day.
-     *
+     * 
      * @param date dates which are selected
      * @return list of efforts that match dates
      */
@@ -56,13 +56,14 @@ public interface IEffortDao extends IGenericHibernateDao<Effort, Long> {
 
     /**
      * Gets all years for which efforts are stored.
-     *
+     * 
      * @return list of years as list of integer
      */
-    List<Double> getTimeEffortsYears();
+    List<Integer> getTimeEffortsYears();
 
     /**
      * Find all efforts for a specific tita-project.
+     * 
      * @param projectIds List of Long
      * @param grouping String
      * @return List of Effort
@@ -71,18 +72,18 @@ public interface IEffortDao extends IGenericHibernateDao<Effort, Long> {
 
     /**
      * Find all effort of a time consumer in a specific tita-project.
+     * 
      * @param projectIds List of Long
      * @param tIds List of Long
      * @param grouping String
      * @return List of Effort
      */
-    List<UserProjectEffort> findEffortsForTiTAProjectAndTimeConsumerId(List<String> projectIds,
-                                                            List<String> tIds,
-                                                            String grouping);
+    List<UserProjectEffort> findEffortsForTiTAProjectAndTimeConsumerId(List<String> projectIds, List<String> tIds,
+            String grouping);
 
     /**
      * Find all efforts of a specific time consumer in whole tita.
-     *
+     * 
      * @param tcId Long
      * @return List of Effort
      */
