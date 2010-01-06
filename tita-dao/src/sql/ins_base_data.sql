@@ -1,4 +1,4 @@
---   Copyright 2009 TiTA Project, Vienna University of Technology
+﻿--   Copyright 2009 TiTA Project, Vienna University of Technology
 --   
 --   Licensed under the Apache License, Version 2.0 (the "License");
 --   you may not use this file except in compliance with the License.
@@ -49,29 +49,29 @@ insert into ISSUE_TRACKER_TASK (ID, ISSUE_TRACKER_PROJECT_ID, ISST_TASK_ID, MODI
 (2,2,44, 0);
 
 insert into EFFORT (ID, DESCRIPTION, TITA_TASK_ID, ISSUET_TASK_ID, DATE, DURATION, DELETED, USER_ID)
-values (1, 'e1', 1, null, '2009-10-12', 2000, false, 5);
+values (1, 'e1', 1, null, '2009-10-12 08:00', 2000, false, 5);
 insert into EFFORT (ID, DESCRIPTION, TITA_TASK_ID, ISSUET_TASK_ID, DATE, DURATION, DELETED, USER_ID)
-values (2, 'e2', 1, null, '2009-03-24', 2000, false, 6);
+values (2, 'e2', 1, null, '2009-03-24 9:00', 2000, false, 6);
 
 insert into EFFORT (ID, DESCRIPTION, TITA_TASK_ID, ISSUET_TASK_ID, DATE, DURATION, DELETED, USER_ID)
-values (3, 'e3', 2, null, '2009-07-09', 2000, false, 7);
+values (3, 'e3', 2, null, '2009-07-09 10:00', 2000, false, 7);
 insert into EFFORT (ID, DESCRIPTION, TITA_TASK_ID, ISSUET_TASK_ID, DATE, DURATION, DELETED, USER_ID)
-values (4, 'e4', 2, null, '2009-05-17', 2000, false, 6);
+values (4, 'e4', 2, null, '2009-05-17 11:00', 2000, false, 6);
 insert into EFFORT (ID, DESCRIPTION, TITA_TASK_ID, ISSUET_TASK_ID, DATE, DURATION, DELETED, USER_ID)
-values (9, 'e9', 2, null, '2009-05-18', 3000, false, 6);
+values (9, 'e9', 2, null, '2009-05-18 12:00', 3000, false, 6);
 
 insert into EFFORT (ID, DESCRIPTION, TITA_TASK_ID, ISSUET_TASK_ID, DATE, DURATION, DELETED, USER_ID)
-values (5, 'e5', null, 1, '2009-01-012', 2000, false, 6);
+values (5, 'e5', null, 1, '2009-01-12 13:00', 2000, false, 6);
 insert into EFFORT (ID, DESCRIPTION, TITA_TASK_ID, ISSUET_TASK_ID, DATE, DURATION, DELETED, USER_ID)
-values (6, 'e6', null, 1, '2009-11-18', 2000, false, 7);
+values (6, 'e6', null, 1, '2009-11-18 14:00', 2000, false, 7);
 
 insert into EFFORT (ID, DESCRIPTION, TITA_TASK_ID, ISSUET_TASK_ID, DATE, DURATION, DELETED, USER_ID)
-values (7, 'e7', null, 2, '2009-06-29', 2000, false, 5);
+values (7, 'e7', null, 2, '2009-06-29 15:00', 2000, false, 5);
 insert into EFFORT (ID, DESCRIPTION, TITA_TASK_ID, ISSUET_TASK_ID, DATE, DURATION, DELETED, USER_ID)
-values (8, 'e8', null, 2, '2009-10-24', 2000, false, 5);
+values (8, 'e8', null, 2, '2009-10-24 16:00', 2000, false, 5);
 insert into EFFORT (ID, DESCRIPTION, TITA_TASK_ID, ISSUET_TASK_ID, DATE, DURATION, DELETED, USER_ID)
-values (10, 'e10', null, 2, '2009-05-18', 3000, false, 6);
+values (10, 'e10', null, 2, '2009-05-18 17:00', 3000, false, 6);
 
-insert into USER_PROJECT (ID, USER_ID, PROJECT_ID) values (1, 5, 1);
-insert into USER_PROJECT (ID, USER_ID, PROJECT_ID) values (2, 6, 1);
-insert into USER_PROJECT (ID, USER_ID, PROJECT_ID) values (3, 5, 2);
+insert into USER_PROJECT (ID, USER_ID, TITA_PROJECT_ID) values (1, 5, 1);
+insert into USER_PROJECT (ID, USER_ID, TITA_PROJECT_ID) values (2, 6, 1);
+insert into USER_PROJECT (ID, USER_ID, TITA_PROJECT_ID) values (3, 5, 2);

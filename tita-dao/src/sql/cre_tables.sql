@@ -115,7 +115,7 @@ create table EFFORT(
 	DESCRIPTION varchar(50),
 	TITA_TASK_ID bigint references TITA_TASK (ID),
 	ISSUET_TASK_ID bigint references ISSUE_TRACKER_TASK (ID),
-	DATE date,
+	DATE timestamp,
 	DURATION bigint,
 	DELETED boolean,
 	USER_ID bigint references TITA_USER (ID),

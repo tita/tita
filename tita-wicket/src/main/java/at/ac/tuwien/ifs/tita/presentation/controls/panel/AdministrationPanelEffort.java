@@ -68,8 +68,7 @@ import at.ac.tuwien.ifs.tita.presentation.utils.IntegerConstants;
  * @author msiedler
  * 
  */
-public class AdministrationPanelEffort extends Panel implements
-        IAdministrationPanel {
+public class AdministrationPanelEffort extends Panel implements IAdministrationPanel {
 
     @SpringBean(name = "timeEffortService")
     private IEffortService service;
@@ -83,8 +82,7 @@ public class AdministrationPanelEffort extends Panel implements
     private TiTAUser user = null;
 
     // Logger
-    private final Logger log = LoggerFactory
-            .getLogger(AdministrationPanelEffort.class);
+    private final Logger log = LoggerFactory.getLogger(AdministrationPanelEffort.class);
 
     // Actual time effort list
     private List<Effort> timeeffortList = new ArrayList<Effort>();
@@ -207,19 +205,15 @@ public class AdministrationPanelEffort extends Panel implements
      * Displays all effort textfields.
      */
     private void displayTextFields() {
-        teDescription = new TextField<String>("tedescription",
-                new Model<String>(""));
-        teDescription
-                .add(StringValidator.maximumLength(IntegerConstants.FIFTY));
+        teDescription = new TextField<String>("tedescription", new Model<String>(""));
+        teDescription.add(StringValidator.maximumLength(IntegerConstants.FIFTY));
         form.add(teDescription);
 
-        teDate = new DateTextField("tedate", new PropertyModel<Date>(this,
-                "date"), new StyleDateConverter("S-", true));
+        teDate = new DateTextField("tedate", new PropertyModel<Date>(this, "date"), new StyleDateConverter("S-", true));
         teDate.add(new DatePicker());
         form.add(teDate);
 
-        teTimeLength = new TextField<String>("tetimelength", new Model<String>(
-                ""));
+        teTimeLength = new TextField<String>("tetimelength", new Model<String>(""));
         teTimeLength.setType(String.class);
         teTimeLength.add(new AjaxFormComponentUpdatingBehavior("onchange") {
             @Override
@@ -228,8 +222,7 @@ public class AdministrationPanelEffort extends Panel implements
         });
         form.add(teTimeLength);
 
-        teStartTime = new TextField<String>("testarttime",
-                new Model<String>(""));
+        teStartTime = new TextField<String>("testarttime", new Model<String>(""));
         teStartTime.setType(String.class);
         teStartTime.add(new AjaxFormComponentUpdatingBehavior("onchange") {
             @Override
@@ -252,12 +245,10 @@ public class AdministrationPanelEffort extends Panel implements
      * Display all FilterFields.
      */
     private void displayFilterFields() {
-        teFilterDescription = new TextField<String>("filterdescription",
-                new Model<String>("")) {
+        teFilterDescription = new TextField<String>("filterdescription", new Model<String>("")) {
 
         };
-        teFilterDescription.add(StringValidator
-                .maximumLength(IntegerConstants.FIFTY));
+        teFilterDescription.add(StringValidator.maximumLength(IntegerConstants.FIFTY));
         teFilterDescription.setType(String.class);
         teFilterDescription.add(new OnChangeAjaxBehavior() {
             @Override
@@ -267,8 +258,7 @@ public class AdministrationPanelEffort extends Panel implements
         });
         form.add(teFilterDescription);
 
-        teFilterDateFrom = new DateTextField("filterdatefrom",
-                new PropertyModel<Date>(this, "dateFrom"),
+        teFilterDateFrom = new DateTextField("filterdatefrom", new PropertyModel<Date>(this, "dateFrom"),
                 new StyleDateConverter("S-", true));
         teFilterDateFrom.add(new DatePicker());
         teFilterDateFrom.add(new AjaxFormComponentUpdatingBehavior("onchange") {
@@ -297,38 +287,33 @@ public class AdministrationPanelEffort extends Panel implements
             }
         });
 
-        teFilterDateUntil = new DateTextField("filterdateuntil",
-                new PropertyModel<Date>(this, "dateUntil"),
+        teFilterDateUntil = new DateTextField("filterdateuntil", new PropertyModel<Date>(this, "dateUntil"),
                 new StyleDateConverter("S-", true));
         teFilterDateUntil.add(new DatePicker());
-        teFilterDateUntil
-                .add(new AjaxFormComponentUpdatingBehavior("onchange") {
-                    @Override
-                    protected void onUpdate(AjaxRequestTarget target) {
-                        filterList(target);
-                    }
-                });
+        teFilterDateUntil.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                filterList(target);
+            }
+        });
         form.add(teFilterDateUntil);
     }
 
     /**
      * Filter effort list.
      * 
-     * @param target
-     *            AjaxRequestTarget
+     * @param target AjaxRequestTarget
      */
     private void filterList(AjaxRequestTarget target) {
         timeeffortList = new ArrayList<Effort>();
-        if (teFilterDescription.getModelObject().trim().compareTo("") == -1
-                && dateFrom == null && dateUntil == null) {
+        if (teFilterDescription.getModelObject().trim().compareTo("") == -1 && dateFrom == null && dateUntil == null) {
             timeeffortList = fullTimeEffortList.size() <= EffortUtils.MAXLISTSIZE ? fullTimeEffortList
                     : fullTimeEffortList.subList(0, EffortUtils.MAXLISTSIZE);
         } else {
             for (int i = 0; i < fullTimeEffortList.size(); i++) {
                 int match = -1;
                 if (teFilterDescription.getModelObject().trim().compareTo("") != -1) {
-                    if (fullTimeEffortList.get(i).matchDescription(
-                            teFilterDescription.getModelObject())) {
+                    if (fullTimeEffortList.get(i).matchDescription(teFilterDescription.getModelObject())) {
                         match = 1;
                     } else {
                         match = 0;
@@ -385,8 +370,7 @@ public class AdministrationPanelEffort extends Panel implements
      */
     public void loadListEntities() {
         try {
-            fullTimeEffortList = service
-                    .getActualEfforts(EffortUtils.MAXLISTSIZE);
+            fullTimeEffortList = service.getActualEfforts(EffortUtils.MAXLISTSIZE);
 
             timeeffortList = fullTimeEffortList.size() <= EffortUtils.MAXLISTSIZE ? fullTimeEffortList
                     : fullTimeEffortList.subList(0, EffortUtils.MAXLISTSIZE);
@@ -454,19 +438,15 @@ public class AdministrationPanelEffort extends Panel implements
         try {
             timeEffort = (Effort) tm.getValueAt(table.getSelectedRows()[0], -1);
 
-            timeEffort.setDate(((LenientDateTextField) table
-                    .getSelectedComponent(IntegerConstants.ZERO))
+            timeEffort.setDate(((LenientDateTextField) table.getSelectedComponent(IntegerConstants.ZERO))
                     .getModelObject());
-            timeEffort.setDescription(((LenientTextField) table
-                    .getSelectedComponent(IntegerConstants.ONE))
+            timeEffort.setDescription(((LenientTextField) table.getSelectedComponent(IntegerConstants.ONE))
                     .getModelObject().toString());
 
-            Long startTime = GlobalUtils
-                    .getTimeFromTextField((LenientTextField) table
-                            .getSelectedComponent(IntegerConstants.TWO));
-            Long endTime = GlobalUtils
-                    .getTimeFromTextField((LenientTextField) table
-                            .getSelectedComponent(IntegerConstants.THREE));
+            Long startTime = GlobalUtils.getTimeFromTextField((LenientTextField) table
+                    .getSelectedComponent(IntegerConstants.TWO));
+            Long endTime = GlobalUtils.getTimeFromTextField((LenientTextField) table
+                    .getSelectedComponent(IntegerConstants.THREE));
 
             if (startTime != null && endTime != null) {
                 timeEffort.setDuration(endTime - startTime);

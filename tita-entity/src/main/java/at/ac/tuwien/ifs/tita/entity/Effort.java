@@ -27,18 +27,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
  * Entity for storing time producer's effort of his/her assigned tasks.
- *
+ * 
  * @author herbert
- *
+ * 
  */
 @Entity
 @Table(name = "EFFORT")
 @SequenceGenerator(name = "seq_effort", sequenceName = "EEFORT_ID_SEQ", allocationSize = 1)
+@NamedQueries( { @NamedQuery(name = "Effort.getYears", query = "select distinct year(te.date) from Effort te where deleted=false order by 1 desc") })
 public class Effort extends BaseEntity<Long> implements Serializable {
 
     @Id
@@ -74,8 +77,7 @@ public class Effort extends BaseEntity<Long> implements Serializable {
     public Effort() {
     }
 
-    public Effort(Date date, Long duration, Boolean deleted,
-            String description, TiTAUser user) {
+    public Effort(Date date, Long duration, Boolean deleted, String description, TiTAUser user) {
         super();
         this.date = date;
         this.duration = duration;
@@ -84,8 +86,7 @@ public class Effort extends BaseEntity<Long> implements Serializable {
         this.user = user;
     }
 
-    public Effort(Long id, TiTATask titaTask, IssueTrackerTask issueTTask,
-            String description) {
+    public Effort(Long id, TiTATask titaTask, IssueTrackerTask issueTTask, String description) {
         super();
         this.id = id;
         this.titaTask = titaTask;
@@ -152,7 +153,7 @@ public class Effort extends BaseEntity<Long> implements Serializable {
 
     /**
      * Returns an proper end time as Long - used for GUI perposes.
-     *
+     * 
      * @return Long end time
      */
     public Long getEndTime() {
@@ -172,21 +173,18 @@ public class Effort extends BaseEntity<Long> implements Serializable {
 
     /**
      * filter function.
-     *
-     * @param filterString
-     *            - Filter string
+     * 
+     * @param filterString - Filter string
      * @return true if it contains the string pattern.
      */
     public Boolean matchDescription(String filterString) {
-        return this.description.toLowerCase().contains(
-                filterString.toLowerCase());
+        return this.description.toLowerCase().contains(filterString.toLowerCase());
     }
 
     /**
      * TODO write javadoc.
      * 
-     * @param date1
-     *            TODO write javadoc.
+     * @param date1 TODO write javadoc.
      * @return TODO write javadoc.
      */
     public Boolean matchDateFrom(Date date1) {
@@ -196,8 +194,7 @@ public class Effort extends BaseEntity<Long> implements Serializable {
     /**
      * TODO write javadoc.
      * 
-     * @param date1
-     *            TODO write javadoc.
+     * @param date1 TODO write javadoc.
      * @return TODO write javadoc.
      */
     public Boolean matchDateUntil(Date date1) {
@@ -214,7 +211,7 @@ public class Effort extends BaseEntity<Long> implements Serializable {
 
     /**
      * Returns the startTime of the Effort.
-     *
+     * 
      * @return start time as long
      */
     public Long getStartTime() {
@@ -231,15 +228,13 @@ public class Effort extends BaseEntity<Long> implements Serializable {
     /**
      * Generates the Url to get to the Task of the Issuetracker. For example:
      * projectname: Tita issue nr: 43 �> www.mantis.com/tita-issue:43
-     *
+     * 
      * @return generated URL-String
      */
     public String getUrlToIssueTrackerTask() {
         if (this.issueTTask != null) {
-            String url = this.issueTTask.getIsstProject().getIssueTracker()
-                    .getUrl();
-            String projectname = this.issueTTask.getIsstProject()
-                    .getProjectName();
+            String url = this.issueTTask.getIsstProject().getIssueTracker().getUrl();
+            String projectname = this.issueTTask.getIsstProject().getProjectName();
             Long taskno = this.issueTTask.getIsstTaskId();
             return url + "/" + projectname + ":" + taskno;
         }

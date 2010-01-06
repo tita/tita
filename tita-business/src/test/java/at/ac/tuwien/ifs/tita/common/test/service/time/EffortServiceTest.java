@@ -233,7 +233,7 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
     @Test
     public void testGetTimeEffortYears() {
         List<Effort> efforts = prepareEfforts();
-        List<Double> list = null;
+        List<Integer> list = null;
 
         try {
             list = this.service.getEffortsYears();

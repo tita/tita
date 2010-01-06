@@ -66,193 +66,176 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
 
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
-    public List<Double> getTimeEffortsYears() {
-        String queryString = "select distinct date_part('year', te.date) from Effort te where deleted=false";
-        org.hibernate.SQLQuery q = getSession().createSQLQuery(queryString);
-        return q.list();
+    public List<Integer> getTimeEffortsYears() {
+        javax.persistence.Query years = this.em.createNamedQuery("Effort.getYears");
+        return years.getResultList();
     }
 
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
     @Override
-    public List<UserProjectEffort> findEffortsForTiTAProjectAndTimeConsumerId(
-                                                                   List<String> projectIds,
-                                                                   List<String> tIds, 
-                                                                   String grouping){
+    public List<UserProjectEffort> findEffortsForTiTAProjectAndTimeConsumerId(List<String> projectIds,
+            List<String> tIds, String grouping) {
         String pIds = StringUtil.generateIdStringFromStringList(projectIds);
         String tcIds = StringUtil.generateIdStringFromStringList(tIds);
-        
-        String queryString = "select nextval('USER_PROJECT_EFFORT_1_ID_SEQ') as ID, "+
-                             " sum(duration) as DURATION, username as USERNAME, project as PROJECT";
-           
-        if(grouping.equals("month")){
-                queryString += ", year as YEAR, month as MONTH, null as DAY";
-        }else if(grouping.equals("day")){
-                queryString += ", year as YEAR, month as MONTH, day as DAY";
-        }else if(grouping.equals("overall")){
-                queryString += ", null as YEAR, null as MONTH, null as DAY";
-        }
-        
-        queryString +=  " from (select sum(e1.duration) as duration, tu.username as username," +
-                        " tp.name as project ";
-      
-        if(grouping.equals("month")){
-            queryString += ", date_part('year', e1.date) as YEAR, "+ 
-                           " date_part('month', e1.date) as MONTH, null as DAY";
-        }else if(grouping.equals("day")){
-            queryString += ", date_part('year', e1.date) as YEAR, " +
-                           " date_part('month', e1.date) as MONTH, "+
-                           " date_part('day', e1.date) as DAY";
-        }else if(grouping.equals("overall")){
+
+        String queryString = "select nextval('USER_PROJECT_EFFORT_1_ID_SEQ') as ID, "
+                + " sum(duration) as DURATION, username as USERNAME, project as PROJECT";
+
+        if (grouping.equals("month")) {
+            queryString += ", year as YEAR, month as MONTH, null as DAY";
+        } else if (grouping.equals("day")) {
+            queryString += ", year as YEAR, month as MONTH, day as DAY";
+        } else if (grouping.equals("overall")) {
             queryString += ", null as YEAR, null as MONTH, null as DAY";
         }
-        
-        queryString += " from effort e1 " +
-                        "join tita_task tt on e1.tita_task_id = tt.id " +
-                        "join tita_project tp on tt.tita_project_id = tp.id " +
-                        "join tita_user tu on tu.id = e1.user_id " +
-                        "where tp.name in (" + pIds + ") and tu.username in (" + tcIds + 
-                        ") ";
-        
-        if(grouping.equals("month")){
-            queryString += " group by tp.name, tu.username, date_part('year', e1.date), "+ 
-                           " date_part('month', e1.date) ";
-        }else if(grouping.equals("day")){
-            queryString += " group by tp.name, tu.username, date_part('year', e1.date), " +
-                           " date_part('month', e1.date), date_part('day', e1.date) ";
-        }else if(grouping.equals("overall")){
+
+        queryString += " from (select sum(e1.duration) as duration, tu.username as username," + " tp.name as project ";
+
+        if (grouping.equals("month")) {
+            queryString += ", date_part('year', e1.date) as YEAR, "
+                    + " date_part('month', e1.date) as MONTH, null as DAY";
+        } else if (grouping.equals("day")) {
+            queryString += ", date_part('year', e1.date) as YEAR, " + " date_part('month', e1.date) as MONTH, "
+                    + " date_part('day', e1.date) as DAY";
+        } else if (grouping.equals("overall")) {
+            queryString += ", null as YEAR, null as MONTH, null as DAY";
+        }
+
+        queryString += " from effort e1 " + "join tita_task tt on e1.tita_task_id = tt.id "
+                + "join tita_project tp on tt.tita_project_id = tp.id " + "join tita_user tu on tu.id = e1.user_id "
+                + "where tp.name in (" + pIds + ") and tu.username in (" + tcIds + ") ";
+
+        if (grouping.equals("month")) {
+            queryString += " group by tp.name, tu.username, date_part('year', e1.date), "
+                    + " date_part('month', e1.date) ";
+        } else if (grouping.equals("day")) {
+            queryString += " group by tp.name, tu.username, date_part('year', e1.date), "
+                    + " date_part('month', e1.date), date_part('day', e1.date) ";
+        } else if (grouping.equals("overall")) {
             queryString += " group by tp.name, tu.username ";
         }
-          
-        queryString += " union all" +
-                        " select sum(e2.duration) as duration, tu1.username as username, " +
-                        " tp2.name as project ";
-         
-        if(grouping.equals("month")){
-            queryString += ", date_part('year', e2.date) as YEAR, "+ 
-                           " date_part('month', e2.date) as MONTH, null as DAY";
-        }else if(grouping.equals("day")){
-            queryString += ", date_part('year', e2.date) as YEAR, " +
-                       " date_part('month', e2.date) as MONTH, date_part('day',e2.date) as DAY";
-        }else if(grouping.equals("overall")){
+
+        queryString += " union all" + " select sum(e2.duration) as duration, tu1.username as username, "
+                + " tp2.name as project ";
+
+        if (grouping.equals("month")) {
+            queryString += ", date_part('year', e2.date) as YEAR, "
+                    + " date_part('month', e2.date) as MONTH, null as DAY";
+        } else if (grouping.equals("day")) {
+            queryString += ", date_part('year', e2.date) as YEAR, "
+                    + " date_part('month', e2.date) as MONTH, date_part('day',e2.date) as DAY";
+        } else if (grouping.equals("overall")) {
             queryString += ", null as YEAR, null as MONTH, null as DAY";
         }
-         
-        queryString += " from effort e2 " +      
-                        "join issue_tracker_task it on e2.issuet_task_id = it.id " + 
-                        "join issue_tracker_project itp on it.issue_tracker_project_id =" +
-                        "itp.id join tita_project tp2 on tp2.id = itp.tita_project_id " +
-                        "join tita_user tu1 on tu1.id = e2.user_id " +
-                        "where tp2.name in (" + pIds + ") and tu1.username in (" + tcIds + ")";
-         
-        if(grouping.equals("month")){
-            queryString += " group by tp2.name, tu1.username, date_part('year', e2.date), "+ 
-                           " date_part('month', e2.date)";
-        }else if(grouping.equals("day")){
-            queryString += " group by tp2.name, tu1.username, date_part('year', e2.date), " +
-                           " date_part('month', e2.date), date_part('day', e2.date)";
-        }else if(grouping.equals("overall")){
+
+        queryString += " from effort e2 " + "join issue_tracker_task it on e2.issuet_task_id = it.id "
+                + "join issue_tracker_project itp on it.issue_tracker_project_id ="
+                + "itp.id join tita_project tp2 on tp2.id = itp.tita_project_id "
+                + "join tita_user tu1 on tu1.id = e2.user_id " + "where tp2.name in (" + pIds
+                + ") and tu1.username in (" + tcIds + ")";
+
+        if (grouping.equals("month")) {
+            queryString += " group by tp2.name, tu1.username, date_part('year', e2.date), "
+                    + " date_part('month', e2.date)";
+        } else if (grouping.equals("day")) {
+            queryString += " group by tp2.name, tu1.username, date_part('year', e2.date), "
+                    + " date_part('month', e2.date), date_part('day', e2.date)";
+        } else if (grouping.equals("overall")) {
             queryString += " group by tp2.name, tu1.username";
         }
-           
-        queryString += ") as U group by project, username, year, month, day "+
-                       " order by project, year, month, day, duration, username";
+
+        queryString += ") as U group by project, username, year, month, day "
+                + " order by project, year, month, day, duration, username";
 
         org.hibernate.SQLQuery q = getSession().createSQLQuery(queryString);
         q.addEntity(UserProjectEffort.class);
         q.setFetchSize(1000);
-    
+
         List<UserProjectEffort> efforts = null;
-        
+
         try {
             efforts = q.list();
         } catch (NoResultException e) {
-             // nothing to do
+            // nothing to do
         }
         return efforts;
     }
-    
+
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
     @Override
-    public List<UserProjectEffort> findEffortsForTiTAProjectId(List<String> projectIds, 
-                                                               String grouping) {
+    public List<UserProjectEffort> findEffortsForTiTAProjectId(List<String> projectIds, String grouping) {
         String pIds = StringUtil.generateIdStringFromStringList(projectIds);
-        
-        String queryString = "select nextval('USER_PROJECT_EFFORT_1_ID_SEQ') as ID, "+
-                             " sum(duration) as DURATION, project as PROJECT, null as USERNAME";
 
-        if(grouping.equals("month")){
+        String queryString = "select nextval('USER_PROJECT_EFFORT_1_ID_SEQ') as ID, "
+                + " sum(duration) as DURATION, project as PROJECT, null as USERNAME";
+
+        if (grouping.equals("month")) {
             queryString += ", year as YEAR, month as MONTH, null as DAY";
-        }else if(grouping.equals("day")){
+        } else if (grouping.equals("day")) {
             queryString += ", year as YEAR, month as MONTH, day as DAY";
-        }else if(grouping.equals("overall")){
+        } else if (grouping.equals("overall")) {
             queryString += ", null as YEAR, null as MONTH, null as DAY";
         }
-        
-        queryString +=  " from (select sum(e1.duration) as duration, tp.name as project ";
-        
-        if(grouping.equals("month")){
-            queryString += ", date_part('year', e1.date) as YEAR, "+
-                           " date_part('month', e1.date) as MONTH, null as DAY ";
-        }else if(grouping.equals("day")){
-            queryString += ", date_part('year', e1.date) as YEAR, " +
-                           " date_part('month', e1.date) as MONTH, date_part('day',e1.date) as DAY";
-        }else if(grouping.equals("overall")){
+
+        queryString += " from (select sum(e1.duration) as duration, tp.name as project ";
+
+        if (grouping.equals("month")) {
+            queryString += ", date_part('year', e1.date) as YEAR, "
+                    + " date_part('month', e1.date) as MONTH, null as DAY ";
+        } else if (grouping.equals("day")) {
+            queryString += ", date_part('year', e1.date) as YEAR, "
+                    + " date_part('month', e1.date) as MONTH, date_part('day',e1.date) as DAY";
+        } else if (grouping.equals("overall")) {
             queryString += ", null as YEAR, null as MONTH, null as DAY";
         }
-        
-        queryString +=      " from effort e1 join tita_task tt on e1.tita_task_id = tt.id " +
-                            "join tita_project tp on tt.tita_project_id = tp.id " +
-                            "where tp.name in (" + pIds + ") ";
-        
-        if(grouping.equals("month")){
-            queryString += " group by tp.name, date_part('year', e1.date), "+
-                           " date_part('month', e1.date) ";
-        }else if(grouping.equals("day")){
-            queryString += " group by tp.name, date_part('year', e1.date), " +
-                           " date_part('month', e1.date), date_part('day', e1.date) ";
-        }else if(grouping.equals("overall")){
+
+        queryString += " from effort e1 join tita_task tt on e1.tita_task_id = tt.id "
+                + "join tita_project tp on tt.tita_project_id = tp.id " + "where tp.name in (" + pIds + ") ";
+
+        if (grouping.equals("month")) {
+            queryString += " group by tp.name, date_part('year', e1.date), " + " date_part('month', e1.date) ";
+        } else if (grouping.equals("day")) {
+            queryString += " group by tp.name, date_part('year', e1.date), "
+                    + " date_part('month', e1.date), date_part('day', e1.date) ";
+        } else if (grouping.equals("overall")) {
             queryString += " group by tp.name ";
         }
-        
-        queryString +=       " union all" +
-               " select sum(e2.duration) as duration, tp2.name as project ";
-        
-        if(grouping.equals("month")){
-            queryString += ", date_part('year', e2.date) as year, "+
-                           " date_part('month', e2.date) as month, null as day ";
-        }else if(grouping.equals("day")){
-            queryString += ", date_part('year', e2.date) as year, " +
-                           " date_part('month', e2.date) as month, date_part('day',e2.date) as day";
-        }else if(grouping.equals("overall")){
+
+        queryString += " union all" + " select sum(e2.duration) as duration, tp2.name as project ";
+
+        if (grouping.equals("month")) {
+            queryString += ", date_part('year', e2.date) as year, "
+                    + " date_part('month', e2.date) as month, null as day ";
+        } else if (grouping.equals("day")) {
+            queryString += ", date_part('year', e2.date) as year, "
+                    + " date_part('month', e2.date) as month, date_part('day',e2.date) as day";
+        } else if (grouping.equals("overall")) {
             queryString += ", null as year, null as month, null as day";
         }
-        
-        queryString +=  " from effort e2 " +      
-               "join issue_tracker_task it on e2.issuet_task_id = it.id " + 
-               "join issue_tracker_project itp on it.issue_tracker_project_id =" +
-               "itp.id join tita_project tp2 on tp2.id = itp.tita_project_id " +
-               "where tp2.name in (" + pIds + ") ";
-        
-        if(grouping.equals("month")){
-            queryString += " group by tp2.name, date_part('year', e2.date), "+ 
-                           " date_part('month', e2.date) ";
-        }else if(grouping.equals("day")){
-            queryString += " group by tp2.name, date_part('year', e2.date), " +
-                           " date_part('month', e2.date), date_part('day', e2.date) ";
-        }else if(grouping.equals("overall")){
+
+        queryString += " from effort e2 " + "join issue_tracker_task it on e2.issuet_task_id = it.id "
+                + "join issue_tracker_project itp on it.issue_tracker_project_id ="
+                + "itp.id join tita_project tp2 on tp2.id = itp.tita_project_id " + "where tp2.name in (" + pIds + ") ";
+
+        if (grouping.equals("month")) {
+            queryString += " group by tp2.name, date_part('year', e2.date), " + " date_part('month', e2.date) ";
+        } else if (grouping.equals("day")) {
+            queryString += " group by tp2.name, date_part('year', e2.date), "
+                    + " date_part('month', e2.date), date_part('day', e2.date) ";
+        } else if (grouping.equals("overall")) {
             queryString += " group by tp2.name ";
         }
-        
-        queryString += ") as U group by project, year, month, day, username "+
-                       " order by project, year, month, day, duration";
-        
+
+        queryString += ") as U group by project, year, month, day, username "
+                + " order by project, year, month, day, duration";
+
         org.hibernate.SQLQuery q = getSession().createSQLQuery(queryString);
         q.addEntity(UserProjectEffort.class);
         q.setFetchSize(1000);
         List<UserProjectEffort> efforts = new ArrayList<UserProjectEffort>();
-        
+
         try {
             efforts = q.list();
         } catch (NoResultException e) {
@@ -278,9 +261,10 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
                 .asc("date") }, null);
     }
 
+    /** {@inheritDoc} */
     @Override
-    public List<UserProjectEffort> findEffortsForIssueTrackerProjectAndTimeConsumerId(
-            List<String> projectId, List<String> ids, String grouping) {
+    public List<UserProjectEffort> findEffortsForIssueTrackerProjectAndTimeConsumerId(List<String> projectId,
+            List<String> ids, String grouping) {
         // TODO Auto-generated method stub
         return null;
     }
