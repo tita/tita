@@ -26,9 +26,9 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 
-import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueStatus;
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
 import at.ac.tuwien.ifs.tita.issuetracker.util.TiTATimeConverter;
+import at.ac.tuwien.ifs.tita.presentation.tasklist.TaskListPanel;
 
 /**
  * The TaskTimerPanel is a ui element to measure the time for a specific task.
@@ -36,19 +36,21 @@ import at.ac.tuwien.ifs.tita.issuetracker.util.TiTATimeConverter;
  * @author Christoph
  * 
  */
-public class TaskTimerPanel extends Panel implements IHeaderContributor {
+public class AssignedTaskTimerPanel extends Panel implements IHeaderContributor {
 
     private ResourceReference style = new CompressedResourceReference(
-            TaskTimerPanel.class, "tasktimer.css");
+            AssignedTaskTimerPanel.class, "tasktimer.css");
 //    private WebMarkupContainer container = null;
-    private Form taskTimerForm;
+    private Form<Object> taskTimerForm;
     private ITaskTrackable task;
     private Long effort;
+    private TaskListPanel owner;
     
-    public TaskTimerPanel(String id, ITaskTrackable task, Long effort){
+    public AssignedTaskTimerPanel(String id, ITaskTrackable task, Long effort, TaskListPanel owner){
         super(id);
         this.task = task;
         this.effort = effort;
+        this.owner = owner;
         displayPanel();
     }
 
@@ -56,11 +58,7 @@ public class TaskTimerPanel extends Panel implements IHeaderContributor {
      * Displays the Panel with all wicket elements.
      */
     private void displayPanel() {
-//        container = new WebMarkupContainer("tasktimer");
-//        container.setOutputMarkupId(true);
-//        container.setOutputMarkupPlaceholderTag(true);
-//        this.add(container);
-        taskTimerForm = new Form("timerTaskForm");
+        taskTimerForm = new Form<Object>("timerTaskForm");
         add(taskTimerForm);
         
         taskTimerForm.add(new Label("taskId", task.getId().toString()));
@@ -71,19 +69,15 @@ public class TaskTimerPanel extends Panel implements IHeaderContributor {
 
             }
         });
-        if(task.getStatus().compareTo(IssueStatus.ASSIGNED) == 0){
-            taskTimerForm.add(new AjaxButton("closeTask", taskTimerForm) {
+        taskTimerForm.add(new AjaxButton("closeTask", taskTimerForm) {
 
-                @Override
-                protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
-    
-                }
-            });
-        }else{
-            taskTimerForm.add(new Label("closeTask", ""));
-        }
-        taskTimerForm.add(new Label("totalEffort", TiTATimeConverter.getDuration2String(effort)));
-//        container.add(taskTimerForm);
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
+                owner.closeTask(task,target);
+            }
+        });
+        taskTimerForm.add(new Label("totalEffort", TiTATimeConverter.getDuration2String(
+                          effort != null ? effort : 0L)));
     }
 
     /** {@inheritDoc} */

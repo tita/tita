@@ -51,7 +51,9 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
 import at.ac.tuwien.ifs.tita.presentation.login.TitaSession;
 import at.ac.tuwien.ifs.tita.presentation.tasklist.accordion.AccordionPanel;
 import at.ac.tuwien.ifs.tita.presentation.tasklist.accordion.AccordionPanelItem;
-import at.ac.tuwien.ifs.tita.presentation.tasklist.stopwatch.TaskTimerPanel;
+import at.ac.tuwien.ifs.tita.presentation.tasklist.stopwatch.AssignedTaskTimerPanel;
+import at.ac.tuwien.ifs.tita.presentation.tasklist.stopwatch.ClosedTaskTimerPanel;
+import at.ac.tuwien.ifs.tita.presentation.tasklist.stopwatch.NewTaskTimerPanel;
 
 /**
  * The TaskListPanel defines the position and the user interface design to
@@ -63,7 +65,9 @@ import at.ac.tuwien.ifs.tita.presentation.tasklist.stopwatch.TaskTimerPanel;
  */
 public class TaskListPanel extends SecurePanel implements IHeaderContributor {
     private final Logger log = LoggerFactory.getLogger(TaskListPanel.class);
-
+    private static final String C_HOST = "http://localhost";
+    private static final String C_ISSUE_TRACKER = "Mantis";
+    
     @SpringBean(name = "taskService")
     private ITaskService taskService;
     
@@ -76,9 +80,8 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
     private TiTAUser user;
     private TiTAProject project;
     private WebMarkupContainer containerTaskList = null;
-    private final Form tasklistForm;
+    private final Form<Object> tasklistForm;
     private final List<String> groupingList;
-    private boolean groupingIssueTracker = true;
     private AccordionPanel accordionPanel = new AccordionPanel("accordionMenu");
     private final ResourceReference style = new CompressedResourceReference(
             TaskListPanel.class, "tasklist.css");
@@ -95,14 +98,14 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
         containerTaskList.setOutputMarkupPlaceholderTag(true);
         add(containerTaskList);
 
-        tasklistForm = new Form("taskListForm");
+        tasklistForm = new Form<Object>("taskListForm");
         add(tasklistForm);
         
         displayHeader();
         try{
             this.project = titaProject;
             user = userService.getUserByUsername(TitaSession.getSession().getUsername());
-            createIssueListForTiTAProjectAndUser(project, user);
+//            createIssueListForTiTAProjectAndUser(project, user);
         }catch (TitaDAOException e) {
             throw new RuntimeException("Couldn't find user currently logged in.", e);
         }
@@ -154,7 +157,8 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
 
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
-
+                createIssueListForTiTAProjectAndUser(project, user);
+                target.addComponent(containerTaskList);
             }
         });
 
@@ -207,8 +211,8 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
                 issueMap = taskService.sortingTasksByIssueStatus(IssueStatus.CLOSED);
                 generateAccordionDisplaySection("Closed", issueMap);
             }else{
-                issueMap = taskService.sortingTasksByIssueTracker("www.mantis.com");
-                generateAccordionDisplaySection("Mantis", issueMap);
+                issueMap = taskService.sortingTasksByIssueTracker(C_HOST);
+                generateAccordionDisplaySection(C_ISSUE_TRACKER, issueMap);
             }
             accordionPanel.setOutputMarkupId(true);
             tasklistForm.add(accordionPanel);
@@ -237,7 +241,16 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
                 //TODO: issue tracker id should be fixed and read from db
                 effort = effortService.findEffortsForIssueTrackerTask(project, user, 
                                                         task.getProject().getId(), task.getId(),1L);
-                listOfTaskTimer.add(new TaskTimerPanel(AccordionPanelItem.ITEM_ID, task, effort));
+                if(task.getStatus().compareTo(IssueStatus.ASSIGNED) == 0){
+                    listOfTaskTimer.add(new AssignedTaskTimerPanel(
+                                                    AccordionPanelItem.ITEM_ID, task, effort,this));
+                }else if (task.getStatus().compareTo(IssueStatus.NEW) == 0){
+                    listOfTaskTimer.add(new NewTaskTimerPanel(
+                                                    AccordionPanelItem.ITEM_ID, task,this));
+                }else if(task.getStatus().compareTo(IssueStatus.CLOSED) == 0){
+                    listOfTaskTimer.add(new ClosedTaskTimerPanel(
+                                                    AccordionPanelItem.ITEM_ID, task, effort));
+                }
             }
         }
         return listOfTaskTimer;
@@ -249,4 +262,25 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
         response.renderCSSReference(style);
     }
     
+    /**
+     * Methode to close a task in tita and mantis.
+     * @param task ITaskTrackable
+     * @param target AjaxRequestTarget
+     */
+    public void closeTask(ITaskTrackable task, AjaxRequestTarget target){
+        taskService.closeTask(task.getId());
+        createIssueListForTiTAProjectAndUser(project, user);
+        target.addComponent(containerTaskList);
+    }
+    
+    /**
+     * Methode to assign a new task of mantis.
+     * @param task ITaskTrackable
+     * @param target AjaxRequestTarget
+     */
+    public void assignTask(ITaskTrackable task, AjaxRequestTarget target){
+        taskService.assignTask(task.getId());
+        createIssueListForTiTAProjectAndUser(project, user);
+        target.addComponent(containerTaskList);
+    }
 }

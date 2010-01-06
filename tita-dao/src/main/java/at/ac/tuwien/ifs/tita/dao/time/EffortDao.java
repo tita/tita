@@ -16,6 +16,7 @@
 
 package at.ac.tuwien.ifs.tita.dao.time;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -282,7 +283,6 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
     @Override
     public Long findEffortsForIssueTrackerTask(
             Long tpId, String username, Long issTProjectId, Long isstTTaskId, Long isstId) {
-        
         String queryString = "select sum(duration) as duration from effort e "+
                         "join issue_tracker_task itt on e.issuet_task_id = itt.id "+
                         "join issue_tracker_project itp on itt.issue_tracker_project_id = itp.id "+
@@ -299,6 +299,11 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
         q.setParameter(3, isstTTaskId);
         q.setParameter(4, username);
                 
-        return (Long) q.uniqueResult();
+        Object obj = q.uniqueResult();
+        
+        if(obj != null){
+            return new Long(((BigDecimal)obj).longValue());
+        }
+        return null;
     }
 }

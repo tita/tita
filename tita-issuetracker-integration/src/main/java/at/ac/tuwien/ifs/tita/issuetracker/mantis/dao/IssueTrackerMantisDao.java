@@ -216,7 +216,7 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
     public void assignTask(Long taskId) throws MCException {
         IIssue issue = this.session.getIssue(taskId);
         IMCAttribute[] status = this.session.getEnum(Enumeration.STATUS);
-        issue.setStatus(status[this.C_ASSIGEND]); // 4...assigned
+        issue.setStatus(status[C_ASSIGEND]); // 4...assigned
         this.session.updateIssue(issue);
         this.session.flush();
     }
@@ -227,7 +227,7 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
         IMCAttribute[] resolutions = this.session.getEnum(Enumeration.RESOLUTIONS);
         IMCAttribute[] status = this.session.getEnum(Enumeration.STATUS);
         issue.setResolution(resolutions[1]);// fixed
-        issue.setStatus(status[this.C_CLOSED]); // 6...closed
+        issue.setStatus(status[C_CLOSED]); // 6...closed
         this.session.updateIssue(issue);
         this.session.flush();
     }

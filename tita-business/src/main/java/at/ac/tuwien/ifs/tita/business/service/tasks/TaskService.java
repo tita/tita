@@ -148,7 +148,8 @@ public class TaskService implements ITaskService {
             this.log.debug("TaskService - fetchTaskFromIssueTrackerProjects: Project not found.");
             throw new ProjectNotFoundException("Project not found.");
         }
-
+        this.mapOfTasksFromAllProjectsIncludedInTiTAProject.clear();
+        
         this.titaUser = this.titaUserDao.findById(userTitaId);
 
         Long key = 0L;
