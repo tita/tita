@@ -134,6 +134,9 @@ public class MultipleProjectsView extends BasePage {
                 projectList.getModel().setObject(new ArrayList<String>());
                 tcList.getModel().setObject(new ArrayList<String>());
                 ddTimeSpan.getModel().setObject(new SelectOption("overall", "Overall"));
+                mpem.setColumnNames(new String[] {});
+                mpem.reload(new ArrayList<UserProjectEffort>());
+                target.addComponent(table);
                 target.addComponent(projectList);
                 target.addComponent(tcList);
                 target.addComponent(ddTimeSpan);
