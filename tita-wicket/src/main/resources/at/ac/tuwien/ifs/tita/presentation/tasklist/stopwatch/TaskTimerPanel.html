@@ -18,22 +18,21 @@
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <body>
 <wicket:panel>
-  <div wicket:id="tasktimer" id="taskTimer_content">
-  <form wicket:id="timerTaskForm">
-
-  <table>
-    <tr>
-      <td><span wicket:id="taskId" /></td>
-      <td><span wicket:id="taskDescription" /></td>
-      <td><input wicket:id="startStopTimer" type="submit" value="Start Stop" /></td>
-      <td><input wicket:id="closeTask" type="submit" value="close Task" /></td>
-      <td><span wicket:id="workingTime" /></td>
-      <td><span wicket:id="totalTime" /></td>
-    </tr>
-  </table>
-
-  </form>
+  <!-- div wicket:id="tasktimer" id="taskTimer_content"-->
+  <div>
+	  <form wicket:id="timerTaskForm">
+		  <table>
+		    <tr>
+		      <td><span wicket:id="taskId" /></td>
+		      <td><span wicket:id="taskDescription" /></td>
+		      <td><input wicket:id="startStopTimer" type="submit" value="Start"/></td>
+		      <td><input wicket:id="closeTask" type="submit" value="Close Task"/></td>
+		      <td><span wicket:id="totalEffort" /></td>
+		    </tr>
+		  </table>
+	  </form>
   </div>
+  <!-- /div-->
 </wicket:panel>
 </body>
 </html>

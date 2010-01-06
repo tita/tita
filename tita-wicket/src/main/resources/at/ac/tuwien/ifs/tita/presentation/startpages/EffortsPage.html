@@ -16,7 +16,13 @@
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" >
     <body>
         <wicket:extend>
-		  <div wicket:id="effortsTabbedPanel" id="effortsTabbedPanel"></div>
+        	<table>
+        		<tr><td>
+				  <div wicket:id="effortsTabbedPanel" id="effortsTabbedPanel"></div>
+				</td><td>
+				  <div id="taskBar"><div id="tita_taskList" wicket:id="taskList">Task List</div></div>
+				</td></tr>
+			</table>
         </wicket:extend>
     </body>
 </html>

@@ -274,14 +274,31 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
     /** {@inheritDoc} */
     @Override
     public List<Effort> getActualTimeEfforts(Integer maxresults) {
-        return findByCriteriaOrdered(new Criterion[] { Restrictions.eq("deleted", false) }, new Order[] { Order
-                .asc("date") }, null);
+        return findByCriteriaOrdered(new Criterion[] { Restrictions.eq("deleted", false) }, 
+                                     new Order[] { Order.asc("date") }, null);
     }
 
+    /** {inheritDoc} */
     @Override
-    public List<UserProjectEffort> findEffortsForIssueTrackerProjectAndTimeConsumerId(
-            List<String> projectId, List<String> ids, String grouping) {
-        // TODO Auto-generated method stub
-        return null;
+    public Long findEffortsForIssueTrackerTask(
+            Long tpId, String username, Long issTProjectId, Long isstTTaskId, Long isstId) {
+        
+        String queryString = "select sum(duration) as duration from effort e "+
+                        "join issue_tracker_task itt on e.issuet_task_id = itt.id "+
+                        "join issue_tracker_project itp on itt.issue_tracker_project_id = itp.id "+
+                        "join tita_project tp on itp.tita_project_id = tp.id "+
+                        "join tita_user tu on e.user_id = tu.id "+
+                        "where tp.id = ? and itp.isst_id = ? and itp.isst_project_id = ? "+ 
+                        "and itt.isst_task_id = ? and tu.username = ?";
+        
+        org.hibernate.SQLQuery q = getSession().createSQLQuery(queryString);
+//        q.addEntity(Long.class);
+        q.setParameter(0, tpId);
+        q.setParameter(1, isstId);
+        q.setParameter(2, issTProjectId); 
+        q.setParameter(3, isstTTaskId);
+        q.setParameter(4, username);
+                
+        return (Long) q.uniqueResult();
     }
 }

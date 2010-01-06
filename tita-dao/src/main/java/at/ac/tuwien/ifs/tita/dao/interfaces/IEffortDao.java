@@ -81,21 +81,23 @@ public interface IEffortDao extends IGenericHibernateDao<Effort, Long> {
                                                             String grouping);
 
     /**
-     * Find all effort of a time consumer in a specific issue tracker project.
-     * @param projectIds List of Long
-     * @param tIds List of Long
-     * @param grouping String
-     * @return List of Effort
-     */
-    List<UserProjectEffort> findEffortsForIssueTrackerProjectAndTimeConsumerId(
-            List<String> projectIds,
-                                                                             List<String> tIds,
-                                                                             String grouping);
-    /**
      * Find all efforts of a specific time consumer in whole tita.
      *
      * @param tcId Long
      * @return List of Effort
      */
     List<Effort> findEffortsForTimeConsumerId(Long tcId);
+    
+    /**
+     * Returns sum of Efforts per tita project, tita user, issue tracker project, issue tracker 
+     * task id, issue tracker id.
+     * @param tp Long
+     * @param tu String
+     * @param issTProjectId Long
+     * @param isstTTaskId Long
+     * @param isstId Long
+     * @return sum of duration of efforts
+     */
+    Long findEffortsForIssueTrackerTask(
+            Long tp, String username, Long issTProjectId, Long isstTTaskId, Long isstId);
 }

@@ -21,11 +21,14 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
+
+import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueStatus;
+import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
+import at.ac.tuwien.ifs.tita.issuetracker.util.TiTATimeConverter;
 
 /**
  * The TaskTimerPanel is a ui element to measure the time for a specific task.
@@ -37,60 +40,50 @@ public class TaskTimerPanel extends Panel implements IHeaderContributor {
 
     private ResourceReference style = new CompressedResourceReference(
             TaskTimerPanel.class, "tasktimer.css");
-    
-    private WebMarkupContainer container = null;
-    
+//    private WebMarkupContainer container = null;
     private Form taskTimerForm;
-
-    public TaskTimerPanel(String id) {
-        super(id);
-        displayPanel();
-
-    }
+    private ITaskTrackable task;
+    private Long effort;
     
-    public TaskTimerPanel(String id, ResourceReference style) {
-        this(id);
-        this.style=style;
+    public TaskTimerPanel(String id, ITaskTrackable task, Long effort){
+        super(id);
+        this.task = task;
+        this.effort = effort;
+        displayPanel();
     }
 
     /**
      * Displays the Panel with all wicket elements.
      */
     private void displayPanel() {
-        
-        container = new WebMarkupContainer("tasktimer");
-        container.setOutputMarkupId(true);
-        container.setOutputMarkupPlaceholderTag(true);
-        this.add(container);
-        
+//        container = new WebMarkupContainer("tasktimer");
+//        container.setOutputMarkupId(true);
+//        container.setOutputMarkupPlaceholderTag(true);
+//        this.add(container);
         taskTimerForm = new Form("timerTaskForm");
         add(taskTimerForm);
         
-        taskTimerForm.add(new Label("taskId", "ID"));
-        taskTimerForm.add(new Label("taskDescription", "Description"));
-
-
+        taskTimerForm.add(new Label("taskId", task.getId().toString()));
+        taskTimerForm.add(new Label("taskDescription", task.getDescription()));
         taskTimerForm.add(new AjaxButton("startStopTimer", taskTimerForm) {
-
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
 
             }
         });
+        if(task.getStatus().compareTo(IssueStatus.ASSIGNED) == 0){
+            taskTimerForm.add(new AjaxButton("closeTask", taskTimerForm) {
 
-        taskTimerForm.add(new AjaxButton("closeTask", taskTimerForm) {
-
-            @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
-
-            }
-        });
-
-        taskTimerForm.add(new Label("workingTime", "02:30"));
-        taskTimerForm.add(new Label("totalTime", "04:52"));
-        
-        container.add(taskTimerForm);
-
+                @Override
+                protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
+    
+                }
+            });
+        }else{
+            taskTimerForm.add(new Label("closeTask", ""));
+        }
+        taskTimerForm.add(new Label("totalEffort", TiTATimeConverter.getDuration2String(effort)));
+//        container.add(taskTimerForm);
     }
 
     /** {@inheritDoc} */

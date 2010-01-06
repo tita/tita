@@ -19,14 +19,14 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import javax.persistence.PersistenceException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import at.ac.tuwien.ifs.tita.dao.IGenericHibernateDao;
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
-import at.ac.tuwien.ifs.tita.dao.interfaces.IGenericHibernateDao;
 import at.ac.tuwien.ifs.tita.dao.issuetracker.IssueTrackerDao;
 import at.ac.tuwien.ifs.tita.dao.issuetracker.task.IssueTrackerTaskDao;
+import at.ac.tuwien.ifs.tita.dao.project.TiTAProjectDao;
 import at.ac.tuwien.ifs.tita.dao.titatask.TiTATaskDao;
 import at.ac.tuwien.ifs.tita.dao.user.UserDAO;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin;
@@ -56,7 +56,7 @@ public class TaskService implements ITaskService {
 
     private UserDAO titaUserDao;
 
-    private IGenericHibernateDao<TiTAProject, Long> titaProjectDao;
+    private TiTAProjectDao titaProjectDao;
 
     private TiTAProject titaProject;
     private TiTAUser titaUser;
@@ -221,7 +221,7 @@ public class TaskService implements ITaskService {
         Long key = 0L;
 
         for (ITaskTrackable task : this.mapOfTasksFromAllProjectsIncludedInTiTAProject.values()) {
-            String url2 = task.getProject().getUrl().toString();
+//            String url2 = task.getProject().getUrl().toString();
 
             if (task.getProject().getUrl().toString().startsWith(url)) {
                 key++;
@@ -232,7 +232,8 @@ public class TaskService implements ITaskService {
         this.log.debug("Return all task with the specified issue tracker url: " + url);
         return taskGroupByIssueTrackerUrl;
     }
-
+    
+    
     /** {@inheritDoc} */
     @Override
     public void assignTask(Long taskId) {
@@ -253,7 +254,7 @@ public class TaskService implements ITaskService {
         this.titaUserDao = titaUserDao;
     }
 
-    public void setTitaProjectDao(IGenericHibernateDao<TiTAProject, Long> titaProjectDao) {
+    public void setTitaProjectDao(TiTAProjectDao titaProjectDao) {
         this.titaProjectDao = titaProjectDao;
     }
 

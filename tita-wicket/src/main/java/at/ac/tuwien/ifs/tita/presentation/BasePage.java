@@ -31,7 +31,6 @@ import at.ac.tuwien.ifs.tita.presentation.login.TitaSession;
 import at.ac.tuwien.ifs.tita.presentation.startpages.AdminPage;
 import at.ac.tuwien.ifs.tita.presentation.startpages.EffortsPage;
 import at.ac.tuwien.ifs.tita.presentation.startpages.ProjectsPage;
-import at.ac.tuwien.ifs.tita.presentation.tasklist.TaskListPanel;
 
 /**
  * BaseClass for sites.
@@ -58,7 +57,6 @@ public class BasePage extends SecureWebPage {
         add(timeConsumergroup);
         add(timeControllergroup);
         add(administratorGroup);
-        add(new TaskListPanel("taskList"));
     }
 
     /**

@@ -21,6 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.Effort;
+import at.ac.tuwien.ifs.tita.entity.TiTAProject;
+import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.entity.util.UserProjectEffort;
 
 /**
@@ -116,4 +118,17 @@ public interface IEffortService {
      */
     List<UserProjectEffort> getEffortsSummaryForProjectNames(List<String> projects,
                                                              String grouping);
+    
+    /**
+     * Returns sum of Efforts per tita project, tita user, issue tracker project, issue tracker 
+     * task id, issue tracker id.
+     * @param tp TiTAProject
+     * @param tu TiTAUser
+     * @param issTProjectId Long
+     * @param isstTTaskId Long
+     * @param isstId Long
+     * @return sum of duration of efforts
+     */
+    Long findEffortsForIssueTrackerTask(
+            TiTAProject tp, TiTAUser tu, Long issTProjectId, Long isstTTaskId, Long isstId);
 }

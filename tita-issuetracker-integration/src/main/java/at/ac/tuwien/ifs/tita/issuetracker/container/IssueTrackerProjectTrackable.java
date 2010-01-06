@@ -13,6 +13,7 @@
  */
 package at.ac.tuwien.ifs.tita.issuetracker.container;
 
+import java.io.Serializable;
 import java.net.URL;
 import java.util.Map;
 
@@ -27,7 +28,7 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
  * @author Karin
  *
  */
-public class IssueTrackerProjectTrackable implements IProjectTrackable {
+public class IssueTrackerProjectTrackable implements IProjectTrackable, Serializable {
     private long id;
     private String name;
     private String description;

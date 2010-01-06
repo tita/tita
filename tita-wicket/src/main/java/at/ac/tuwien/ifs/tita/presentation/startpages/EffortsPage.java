@@ -34,6 +34,7 @@ import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.presentation.BasePage;
 import at.ac.tuwien.ifs.tita.presentation.controls.panel.AdministrationPanelEffort;
 import at.ac.tuwien.ifs.tita.presentation.login.TitaSession;
+import at.ac.tuwien.ifs.tita.presentation.tasklist.TaskListPanel;
 
 /**
  * Start Page for Time consumer - Main Area for Efforts.
@@ -51,7 +52,8 @@ public class EffortsPage extends BasePage {
     private TiTAUser user;
     private final List<ITab> tabs = new ArrayList<ITab>();
     private final List<TiTAProject> projects;
-
+    private TaskListPanel taskListPanel;
+    
     public EffortsPage() {
         setDefaultModel(new Model<String>("effortsTabbedPanel"));
         projects = new ArrayList<TiTAProject>();
@@ -64,6 +66,8 @@ public class EffortsPage extends BasePage {
         initTabbedPanels();
         add(new TabbedPanel("effortsTabbedPanel", tabs).add(new AttributeModifier("class", true, 
                                                             this.getDefaultModel())));
+        taskListPanel =  new TaskListPanel("taskList",projects.get(0));
+        add(taskListPanel);
     }
 
     /**
@@ -88,9 +92,9 @@ public class EffortsPage extends BasePage {
 
                 @Override
                 public Panel getPanel(String panelId) {
+                    taskListPanel.createIssueListForTiTAProjectAndUser(p,user);
                     return new AdministrationPanelEffort(panelId, p);
                 }
-
             });
         }
     }
