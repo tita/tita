@@ -1,18 +1,18 @@
 /**
    Copyright 2009 TiTA Project, Vienna University of Technology
-   
+
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
-   
+
        http://www.apache.org/licenses/LICENSE\-2.0
-       
+
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-   
+
  */
 package at.ac.tuwien.ifs.tita.presentation.tasklist;
 
@@ -58,25 +58,27 @@ import at.ac.tuwien.ifs.tita.presentation.tasklist.stopwatch.NewTaskTimerPanel;
 /**
  * The TaskListPanel defines the position and the user interface design to
  * manage the TaskTimer Panels.
- * 
+ *
  * @author Christoph
  * @author herbert
- * 
+ *
  */
 public class TaskListPanel extends SecurePanel implements IHeaderContributor {
-    private final Logger log = LoggerFactory.getLogger(TaskListPanel.class);
+
     private static final String C_HOST = "http://localhost";
     private static final String C_ISSUE_TRACKER = "Mantis";
-    
+
+    private final Logger log = LoggerFactory.getLogger(TaskListPanel.class);
+
     @SpringBean(name = "taskService")
     private ITaskService taskService;
-    
+
     @SpringBean(name = "userService")
     private IUserService userService;
-    
+
     @SpringBean(name = "timeEffortService")
     private IEffortService effortService;
-    
+
     private TiTAUser user;
     private TiTAProject project;
     private WebMarkupContainer containerTaskList = null;
@@ -86,13 +88,13 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
     private final ResourceReference style = new CompressedResourceReference(
             TaskListPanel.class, "tasklist.css");
     private DropDownChoice<String> dropDownView;
-    
+
     public TaskListPanel(String id, TiTAProject titaProject) {
         super(id);
-        
+
         groupingList = Arrays.asList(new String[] { "Groups by task state",
                 "Group by issuetracker" });
-        
+
         containerTaskList = new WebMarkupContainer("tasklistContainer");
         containerTaskList.setOutputMarkupId(true);
         containerTaskList.setOutputMarkupPlaceholderTag(true);
@@ -100,33 +102,33 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
 
         tasklistForm = new Form<Object>("taskListForm");
         add(tasklistForm);
-        
+
         displayHeader();
         try{
-            this.project = titaProject;
+            project = titaProject;
             user = userService.getUserByUsername(TitaSession.getSession().getUsername());
 //            createIssueListForTiTAProjectAndUser(project, user);
         }catch (TitaDAOException e) {
             throw new RuntimeException("Couldn't find user currently logged in.", e);
         }
     }
-    
-    
-    
+
+
+
     /**
      * Shows the header and configuration for the tasklist.
      */
     private void displayHeader() {
-        
+
         dropDownView = new DropDownChoice<String>(
                 "dropdownGrouping", new Model<String>(), groupingList) {
-            
+
             @Override
             protected boolean wantOnSelectionChangedNotifications() {
                 return true;
             }
 
-            
+
             /**
              * Called when a option is selected of a dropdown list that wants to be
              * notified of this event.
@@ -175,10 +177,10 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
         }
         return false;
     }
-    
+
     /**
      * Generates a part of an accordion panel consisting of caption and issues.
-     * @param caption String 
+     * @param caption String
      * @param issueMap Map with issues of specified issue state or issue tracker
      *
      */
@@ -188,18 +190,22 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
         AccordionPanelItem accordionPanelItem = new AccordionPanelItem(caption, markupItems, true);
         accordionPanel.addMenu(accordionPanelItem);
     }
-    
+
     /**
-     * Creates the proper list of issues comming from issue tracker(s) and displays it in tita.
-     * @param project TiTAProject of current selected tita project
-     * @param titauser TiTAUser of logged in user
+     * Creates the proper list of issues comming from issue tracker(s) and
+     * displays it in tita.
+     *
+     * @param titaProject
+     *            - TiTAProject of current selected tita project
+     * @param titaUser
+     *            - TiTAUser of logged in user
      */
     public void createIssueListForTiTAProjectAndUser(TiTAProject titaProject, TiTAUser titaUser){
         Map<Long, ITaskTrackable> issueMap = null;
-      
-        this.project = titaProject;
-        this.user = titaUser;
-        
+
+        project = titaProject;
+        user = titaUser;
+
         try {
             taskService.fetchTaskFromIssueTrackerProjects(project.getId(), user.getId());
             accordionPanel.removeAllAccordionPanelItems();
@@ -224,8 +230,9 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
 
     /**
      * Helper Method for producing dummies.
-     * @param projectId Long of current selected tita project
-     * @param userId Long of logged in user
+     *
+     * @param issueMap
+     *            - map of tasks
      * @return listOfTaskTimer
      */
     private List<WebMarkupContainer> generateTaskPanel(Map<Long, ITaskTrackable> issueMap) {
@@ -233,13 +240,13 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
         Iterator<ITaskTrackable> tasks;
         ITaskTrackable task;
         Long effort = null;
-        
+
         if(issueMap.values() != null){
             tasks = issueMap.values().iterator();
             while(tasks.hasNext()){
                 task = tasks.next();
                 //TODO: issue tracker id should be fixed and read from db
-                effort = effortService.findEffortsForIssueTrackerTask(project, user, 
+                effort = effortService.findEffortsForIssueTrackerTask(project, user,
                                                         task.getProject().getId(), task.getId(),1L);
                 if(task.getStatus().compareTo(IssueStatus.ASSIGNED) == 0){
                     listOfTaskTimer.add(new AssignedTaskTimerPanel(
@@ -255,13 +262,13 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
         }
         return listOfTaskTimer;
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public void renderHead(IHeaderResponse response) {
         response.renderCSSReference(style);
     }
-    
+
     /**
      * Methode to close a task in tita and mantis.
      * @param task ITaskTrackable
@@ -272,7 +279,7 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
         createIssueListForTiTAProjectAndUser(project, user);
         target.addComponent(containerTaskList);
     }
-    
+
     /**
      * Methode to assign a new task of mantis.
      * @param task ITaskTrackable
