@@ -12,7 +12,9 @@
 --   See the License for the specific language governing permissions and
 --   limitations under the License.
 
-insert into CONV_ISSUE_TRACKER (ID, DESCRIPTION, URL) values (1, 'it 1', 'www.mantis.com');
+
+--insert into CONV_ISSUE_TRACKER (ID, DESCRIPTION, URL) values (1, 'it 1', 'www.mantis.com');
+insert into CONV_ISSUE_TRACKER (ID, DESCRIPTION, URL) values (1, 'it 1', 'http://localhost/mantisbt-1.1.8');
 
 insert into CONV_ROLE (ID, DESCRIPTION) values (1, 'Administrator');
 insert into CONV_ROLE (ID, DESCRIPTION) values (2, 'Time consumer');
@@ -78,13 +80,13 @@ insert into USER_PROJECT (ID, USER_ID, PROJECT_ID) values (3, 5, 1);
 insert into USER_PROJECT (ID, USER_ID, PROJECT_ID) values (4, 6, 2);
 
 -- for testing mantis
---insert into isst_login (id, modification_version, password, name, isst_id, user_id)
---values (1,0,'root','administrator',1,6);
--- insert into ISSUE_TRACKER_TASK (ID, ISSUE_TRACKER_PROJECT_ID, ISST_TASK_ID, MODIFICATION_VERSION) values
---(3,1,789, 0);
---insert into EFFORT (ID, DESCRIPTION, TITA_TASK_ID, ISSUET_TASK_ID, DATE, DURATION, DELETED, USER_ID)
---values (11, 'e11', null, 3, '2010-01-06', 20000, false, 6);
---insert into ISSUE_TRACKER_TASK (ID, ISSUE_TRACKER_PROJECT_ID, ISST_TASK_ID, MODIFICATION_VERSION) values
---(4,1,785, 0);
---insert into EFFORT (ID, DESCRIPTION, TITA_TASK_ID, ISSUET_TASK_ID, DATE, DURATION, DELETED, USER_ID)
---values (13, 'e12', null, 4, '2010-01-07', 20000, false, 6);
+insert into isst_login (id, modification_version, password, name, isst_id, user_id)
+values (1,0,'root','administrator',1,6);
+ insert into ISSUE_TRACKER_TASK (ID, ISSUE_TRACKER_PROJECT_ID, ISST_TASK_ID, MODIFICATION_VERSION) values
+(3,1,789, 0);
+insert into EFFORT (ID, DESCRIPTION, TITA_TASK_ID, ISSUET_TASK_ID, DATE, DURATION, DELETED, USER_ID)
+values (11, 'e11', null, 3, '2010-01-06', 20000, false, 6);
+insert into ISSUE_TRACKER_TASK (ID, ISSUE_TRACKER_PROJECT_ID, ISST_TASK_ID, MODIFICATION_VERSION) values
+(4,1,785, 0);
+insert into EFFORT (ID, DESCRIPTION, TITA_TASK_ID, ISSUET_TASK_ID, DATE, DURATION, DELETED, USER_ID)
+values (13, 'e12', null, 4, '2010-01-07', 20000, false, 6);
