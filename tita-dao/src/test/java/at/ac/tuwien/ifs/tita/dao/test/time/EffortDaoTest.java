@@ -86,13 +86,8 @@ public class EffortDaoTest { // extends AbstractJpaTests {
      */
     @Before
     public void prepareProjects() {
-        // Long id, Date creationDate, Long startTime, Long duration, Boolean
-        // deleted,
-        // String description
         // CHECKSTYLE:OFF
-
         IssueTracker it = new IssueTracker(1L, "issue tracker 1", null);
-
         Role r11 = new Role(1L, "role 1");
 
         Effort et1 = null, et2 = null, et3 = null, et4 = null, ei1 = null, ei2 = null, ei3 = null, ei4 = null;
@@ -261,10 +256,26 @@ public class EffortDaoTest { // extends AbstractJpaTests {
      */
     @Test
     public void findEffortsForTiTAProjectAndTiTAUser() {
+
         List<Effort> list = timeEffortDAO.findEffortsForTiTAProjectAndTiTAUser(tip1.getId(), us2
                 .getId());
-
+        // CHECKSTYLE:OFF
+        assertNotNull(list);
         assertEquals(3, list.size());
+        // CHECKSTYLE:ON
+    }
 
+    /**
+     * Method.
+     */
+    @Test
+    public void totalizeEffortsForTiTAProjectAndTiTAUser() {
+
+        Long sumOfEfforts = timeEffortDAO.totalizeEffortsForTiTAProjectAndTiTAUser(tip1.getId(),
+                us2.getId());
+        // CHECKSTYLE:OFF
+        assertNotNull(sumOfEfforts);
+        assertEquals(8000.0, sumOfEfforts, 0.0);
+        // CHECKSTYLE:ON
     }
 }

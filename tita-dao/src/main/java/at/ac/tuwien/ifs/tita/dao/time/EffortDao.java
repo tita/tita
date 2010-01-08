@@ -44,6 +44,8 @@ import at.ac.tuwien.ifs.tita.entity.util.UserProjectEffort;
  *
  */
 public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEffortDao {
+    private static final int C_FETCHSIZE = 1000;
+
     public EffortDao() {
         super(Effort.class);
     }
@@ -159,7 +161,7 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
 
         org.hibernate.SQLQuery q = getSession().createSQLQuery(queryString);
         q.addEntity(UserProjectEffort.class);
-        q.setFetchSize(1000);
+        q.setFetchSize(C_FETCHSIZE);
 
         List<UserProjectEffort> efforts = null;
 
@@ -248,7 +250,7 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
 
         org.hibernate.SQLQuery q = getSession().createSQLQuery(queryString);
         q.addEntity(UserProjectEffort.class);
-        q.setFetchSize(1000);
+        q.setFetchSize(C_FETCHSIZE);
         List<UserProjectEffort> efforts = new ArrayList<UserProjectEffort>();
 
         try {
@@ -276,7 +278,7 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
                 new Order[] { Order.asc("date") }, null);
     }
 
-    /** {inheritDoc} */
+    /** {@inheritDoc} */
     @Override
     public Long findEffortsForIssueTrackerTask(Long tpId, String username, Long issTProjectId,
             Long isstTTaskId, Long isstId) {
@@ -290,11 +292,13 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
 
         org.hibernate.SQLQuery q = getSession().createSQLQuery(queryString);
         // q.addEntity(Long.class);
+        // CHECKSTYLE:OFF
         q.setParameter(0, tpId);
         q.setParameter(1, isstId);
         q.setParameter(2, issTProjectId);
         q.setParameter(3, isstTTaskId);
         q.setParameter(4, username);
+        // CHECKSTYLE:ON
 
         Object obj = q.uniqueResult();
 
@@ -304,6 +308,29 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
         return null;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public Long totalizeEffortsForTiTAProjectAndTiTAUser(Long projectId, Long userId) {
+
+        String first = "select sum(e.duration) as sum " + "from Effort e "
+                + "join e.titaTask as tt " + "join tt.titaProject as tp " + "where e.user = "
+                + userId + " and tp.id = " + projectId + " and e.deleted != true";
+
+        String second = "select sum(e.duration) as sum " + "from Effort e "
+                + "join e.issueTTask as itt " + "join itt.isstProject as itp "
+                + "join itp.titaProject as tp " + "where e.user = " + userId + " and tp.id = "
+                + projectId + " and e.deleted != true";
+
+        Query query1 = getSession().createQuery(first);
+        Query query2 = getSession().createQuery(second);
+        Long sumQuery1 = (Long) query1.uniqueResult();
+        Long sumQuery2 = (Long) query2.uniqueResult();
+
+        return sumQuery1 + sumQuery2;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public List<Effort> findEffortsForTiTAProjectAndTiTAUser(Long projectId, Long userId) {
 
         String first = "select e.id, e.description, e.date, e.startTime, e.endTime, e.duration, e.deleted "

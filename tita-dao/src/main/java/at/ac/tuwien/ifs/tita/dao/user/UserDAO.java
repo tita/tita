@@ -20,6 +20,7 @@ import java.util.List;
 
 import javax.persistence.NoResultException;
 
+import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 import at.ac.tuwien.ifs.tita.dao.GenericHibernateDao;
@@ -33,7 +34,7 @@ import at.ac.tuwien.ifs.tita.entity.util.StringUtil;
  * @author ASE Group 10
  */
 @Repository
-public class UserDAO extends GenericHibernateDao<TiTAUser, Long> implements IUserDAO{
+public class UserDAO extends GenericHibernateDao<TiTAUser, Long> implements IUserDAO {
 
     /**
      * public constructor, needed for telling the generic EntityManager the
@@ -64,9 +65,9 @@ public class UserDAO extends GenericHibernateDao<TiTAUser, Long> implements IUse
     public List<TiTAUser> findUsersForProjectNames(List<String> projects) {
         String names = StringUtil.generateIdStringFromStringList(projects);
 
-        String queryString = "select u.* from tita_user u join user_project up on " +
-                             "u.id = up.user_id join tita_project tp on up.project_id = tp.id " +
-                             " where tp.name in (" + names + ")";
+        String queryString = "select u.* from tita_user u join user_project up on "
+                + "u.id = up.user_id join tita_project tp on up.project_id = tp.id "
+                + " where tp.name in (" + names + ")";
 
         org.hibernate.SQLQuery query = getSession().createSQLQuery(queryString);
 
@@ -80,5 +81,22 @@ public class UserDAO extends GenericHibernateDao<TiTAUser, Long> implements IUse
             // nothing to do
         }
         return users;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Long findTargetHoursForTiTAProjectAndTiTAUser(Long userId, Long projectId) {
+
+        String queryString = "select tup.targetHours " + "from TiTAUserProject tup "
+                + "where tup.user = " + userId + " and tup.project = " + projectId;
+
+        Query query = getSession().createQuery(queryString);
+        Long targetHours = (Long) query.uniqueResult();
+
+        if (targetHours == null || targetHours == -1) {
+            return null;
+        } else {
+            return targetHours;
+        }
     }
 }
