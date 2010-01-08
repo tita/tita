@@ -3,6 +3,7 @@ package at.ac.tuwien.ifs.tita.dao.test.user;
 import static org.junit.Assert.assertEquals;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import junit.framework.Assert;
@@ -23,6 +24,7 @@ import at.ac.tuwien.ifs.tita.dao.user.UserDAO;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.entity.TiTAUserProject;
+import at.ac.tuwien.ifs.tita.entity.conv.Role;
 
 /**
  * Test for UserDao.
@@ -41,6 +43,7 @@ public class UserDAOTest {
     private TiTAUser titaUser;
     private TiTAProject titaProject;
     private TiTAUserProject tup;
+    private Role role;
 
     @Qualifier("titaProjectDAO")
     @Autowired
@@ -53,15 +56,19 @@ public class UserDAOTest {
     @Autowired
     private IGenericHibernateDao<TiTAUserProject, Long> utpDao;
 
+    @Qualifier("roleDAO")
+    @Autowired
+    private IGenericHibernateDao<Role, Long> roleDao;
+
     /**
      * Prepare a tita user and tita project with titaUserProject entity for
      * testing fetching the target hours.
      */
     @Before
     public void setUp() {
-
+        role = roleDao.findById(1L, false);
         titaUser = new TiTAUser("test-user", "test-password", "Christoph", "Zehetner",
-                "test@example.com", false, null, null, null);
+                "test@example.com", false, role, null, null);
         titaProject = new TiTAProject("test-description", "test-project", false, null, null, null);
         tup = new TiTAUserProject(titaUser, titaProject, C_150);
 
@@ -109,5 +116,20 @@ public class UserDAOTest {
                 titaProject.getId());
 
         Assert.assertNull(targetHours);
+    }
+
+    /**
+     * The test case should return null, because there is no entry for a tita
+     * user and tita project.
+     */
+    @Test
+    public void findUsersForTiTAProject() {
+        List<TiTAUser> users = titaUserDao.findUsersForTiTAProject(titaProject);
+        Assert.assertEquals("Administrator", titaUserDao
+                .findById(users.get(0).getId(), false)
+                .getRole()
+                .getDescription());
+        Assert.assertNotNull(users);
+        Assert.assertEquals(1, users.size());
     }
 }

@@ -76,7 +76,6 @@ values (10, 'e10', null, 2, '2009-05-18 17:00', 3000, false, 6);
 
 insert into USER_PROJECT (ID, USER_ID, PROJECT_ID) values (1, 5, 1);
 insert into USER_PROJECT (ID, USER_ID, PROJECT_ID) values (2, 6, 1);
-insert into USER_PROJECT (ID, USER_ID, PROJECT_ID) values (3, 5, 1);
 insert into USER_PROJECT (ID, USER_ID, PROJECT_ID) values (4, 6, 2);
 
 -- for testing mantis

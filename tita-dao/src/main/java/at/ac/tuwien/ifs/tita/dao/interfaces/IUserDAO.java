@@ -17,6 +17,7 @@ package at.ac.tuwien.ifs.tita.dao.interfaces;
 
 import java.util.List;
 
+import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 
 /**
@@ -52,4 +53,13 @@ public interface IUserDAO {
      * @return the value for the target hours or null, if it is unlimited.
      */
     Long findTargetHoursForTiTAProjectAndTiTAUser(Long userId, Long projectId);
+
+    /**
+     * Finds all users for a tita project.
+     * 
+     * @param project
+     *            - the given project
+     * @return a list of tita user, that are included in that project.
+     */
+    List<TiTAUser> findUsersForTiTAProject(TiTAProject project);
 }

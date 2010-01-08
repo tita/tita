@@ -21,6 +21,7 @@ import javax.persistence.PersistenceException;
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.dao.user.RoleDAO;
 import at.ac.tuwien.ifs.tita.dao.user.UserDAO;
+import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.entity.conv.Role;
 
@@ -106,6 +107,12 @@ public class UserService implements IUserService {
     @Override
     public List<TiTAUser> findAllTiTAUsersForProjects(List<String> projects) {
         return userDao.findUsersForProjectNames(projects);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<TiTAUser> findAllTiTAUsersForProject(TiTAProject project) {
+        return userDao.findUsersForTiTAProject(project);
     }
 
     /** {@inheritDoc} */

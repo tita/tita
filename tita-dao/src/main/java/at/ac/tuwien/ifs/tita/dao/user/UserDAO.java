@@ -25,6 +25,7 @@ import org.springframework.stereotype.Repository;
 
 import at.ac.tuwien.ifs.tita.dao.GenericHibernateDao;
 import at.ac.tuwien.ifs.tita.dao.interfaces.IUserDAO;
+import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.entity.util.StringUtil;
 
@@ -80,6 +81,49 @@ public class UserDAO extends GenericHibernateDao<TiTAUser, Long> implements IUse
         } catch (NoResultException e) {
             // nothing to do
         }
+        return users;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<TiTAUser> findUsersForTiTAProject(TiTAProject project) {
+
+        String queryString = "select u.* from tita_user u join user_project up on "
+                + "u.id = up.user_id join tita_project tp on up.project_id = tp.id "
+                + " where tp.name in (" + ")";
+
+        // String first =
+        // "select e.id, e.description, e.date, e.startTime, e.endTime, e.duration, e.deleted "
+        // + "from Effort e "
+        // + "join e.titaTask as tt "
+        // + "join tt.titaProject as tp "
+        // + "where e.user = "
+        // + userId
+        // + " and tp.id = "
+        // + projectId
+        // + " and e.deleted != true";
+
+        queryString = "select u "
+                + "from TiTAUserProject tup," + " TiTAUser as u "
+                + "where tup.user = u.id and tup.project = " + project.getId();
+
+        // u.id = r.id and - , Role as r
+
+        Query query = getSession().createQuery(queryString);
+        List<TiTAUser> users = new ArrayList<TiTAUser>();
+
+        try {
+            users = query.list();
+        } catch (NoResultException e) {
+            // nothing to do
+        }
+
+        // List<TiTAUser> newUsers = new ArrayList<TiTAUser>();
+        //
+        // for (int i = 0; i < users.size(); i++) {
+        // newUsers.add(this.findById(users.get(0).getId()));
+        // }
+
         return users;
     }
 

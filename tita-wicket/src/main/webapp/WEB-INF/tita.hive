@@ -58,4 +58,7 @@ grant principal org.apache.wicket.security.hive.authorization.SimplePrincipal "t
         
     permission ${ComponentPermission} "${multipleProjectsView}", "render";
     permission ${ComponentPermission} "${multipleProjectsView}", "enable";
+    
+   	permission ${ComponentPermission} "${targetActualView}", "render";
+    permission ${ComponentPermission} "${targetActualView}", "enable";
 };

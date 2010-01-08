@@ -20,6 +20,7 @@ import javax.persistence.PersistenceException;
 import org.springframework.transaction.annotation.Transactional;
 
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
+import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.entity.conv.Role;
 
@@ -125,9 +126,18 @@ public interface IUserService {
     List<TiTAUser> findAllTiTAUsersForProjects(List<String> projects);
 
     /**
+     * Finds all users for a tita project.
+     *
+     * @param project
+     *            - the given project
+     * @return a list of tita user, that are included in that project.
+     */
+    List<TiTAUser> findAllTiTAUsersForProject(TiTAProject project);
+
+    /**
      * Finds the targetHours for a tita project a user is added with a defined
      * value.
-     * 
+     *
      * @param userId
      *            - the id of the tita user
      * @param projectId

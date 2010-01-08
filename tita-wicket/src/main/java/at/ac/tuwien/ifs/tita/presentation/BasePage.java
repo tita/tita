@@ -3,15 +3,15 @@
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
-   
+
        http://www.apache.org/licenses/LICENSE\-2.0
-       
+
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-  
+
  */
 package at.ac.tuwien.ifs.tita.presentation;
 
@@ -27,6 +27,7 @@ import org.apache.wicket.security.hive.authentication.LoginContext;
 import at.ac.tuwien.ifs.tita.presentation.evaluation.timeconsumer.DailyViewPage;
 import at.ac.tuwien.ifs.tita.presentation.evaluation.timeconsumer.MonthlyViewPage;
 import at.ac.tuwien.ifs.tita.presentation.evaluation.timecontroller.MultipleProjectsView;
+import at.ac.tuwien.ifs.tita.presentation.evaluation.timecontroller.TargetActualView;
 import at.ac.tuwien.ifs.tita.presentation.login.TitaSession;
 import at.ac.tuwien.ifs.tita.presentation.startpages.AdminPage;
 import at.ac.tuwien.ifs.tita.presentation.startpages.EffortsPage;
@@ -34,9 +35,9 @@ import at.ac.tuwien.ifs.tita.presentation.startpages.ProjectsPage;
 
 /**
  * BaseClass for sites.
- * 
+ *
  * @author rene
- * 
+ *
  */
 public class BasePage extends SecureWebPage {
 
@@ -61,18 +62,19 @@ public class BasePage extends SecureWebPage {
 
     /**
      * Adds the secure Links for TimeController.
-     * 
+     *
      * @param timeControllergroup - container
      */
     private void addTimeControllerLinks(WebMarkupContainer timeControllergroup) {
         timeControllergroup.add(new SecurePageLink("projectsPageLink", ProjectsPage.class));
         timeControllergroup.add(new SecurePageLink("multipleProjectsViewLink", MultipleProjectsView.class));
+        timeControllergroup.add(new SecurePageLink("targetActualViewLink", TargetActualView.class));
 
     }
 
     /**
      * Adds the secure Links for TimeConsumers.
-     * 
+     *
      * @param timeConsumergroup - container
      */
     private void addTimeConsumerLinks(WebMarkupContainer timeConsumergroup) {
@@ -84,7 +86,7 @@ public class BasePage extends SecureWebPage {
 
     /**
      * Adds the secure Links for TimeController.
-     * 
+     *
      * @param administratorGroup - container
      */
     private void addAdminLinks(WebMarkupContainer administratorGroup) {
@@ -119,7 +121,7 @@ public class BasePage extends SecureWebPage {
     /**
      * Allows subclasses to specify which context should be used when logging
      * off.
-     * 
+     *
      * @return the context
      */
     protected final LoginContext getLogoffContext() {

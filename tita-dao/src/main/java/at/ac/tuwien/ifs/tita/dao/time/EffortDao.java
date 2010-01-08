@@ -333,7 +333,7 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
     @Override
     public List<Effort> findEffortsForTiTAProjectAndTiTAUser(Long projectId, Long userId) {
 
-        String first = "select e.id, e.description, e.date, e.startTime, e.endTime, e.duration, e.deleted "
+        String first = "select e "
                 + "from Effort e "
                 + "join e.titaTask as tt "
                 + "join tt.titaProject as tp "
@@ -343,7 +343,7 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
                 + projectId
                 + " and e.deleted != true";
 
-        String second = "select e.id, e.description, e.date, e.startTime, e.endTime, e.duration, e.deleted "
+        String second = "select e "
                 + "from Effort e "
                 + "join e.issueTTask as itt "
                 + "join itt.isstProject as itp "
