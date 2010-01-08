@@ -5,6 +5,8 @@ import static org.junit.Assert.assertEquals;
 import java.util.HashSet;
 import java.util.Set;
 
+import junit.framework.Assert;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -93,5 +95,19 @@ public class UserDAOTest {
                 titaProject.getId());
 
         assertEquals(C_150, targetHours, 0.0);
+    }
+
+    /**
+     * The test case should return null, because there is no entry for a tita
+     * user and tita project.
+     */
+    @Test
+    public void findTargetHoursForTiTAProjectAndTiTAUserShouldReturnNull() {
+        utpDao.delete(utpDao.findById(tup.getId()));
+
+        Long targetHours = titaUserDao.findTargetHoursForTiTAProjectAndTiTAUser(titaUser.getId(),
+                titaProject.getId());
+
+        Assert.assertNull(targetHours);
     }
 }
