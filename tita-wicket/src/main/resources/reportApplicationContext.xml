@@ -44,4 +44,17 @@
             </map>
         </property>
     </bean>
+    
+    <bean id="targetActualComparison" class="at.ac.tuwien.ifs.tita.reporting.JasperPdfResource">
+        <property name="designFilename" value="/reports/TargetActualComparison.jrxml" />
+        <property name="filename" value="TargetActualComparison.pdf" />
+        <property name="reportParameters">
+            <map>
+                <entry>
+                    <key><value>title</value></key>
+                    <value>Target-Actual Comparison</value>
+                </entry>
+            </map>
+        </property>
+    </bean>
 </beans>

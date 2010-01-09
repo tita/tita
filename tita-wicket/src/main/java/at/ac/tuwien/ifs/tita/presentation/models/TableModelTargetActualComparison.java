@@ -16,6 +16,7 @@
  */
 package at.ac.tuwien.ifs.tita.presentation.models;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -51,28 +52,30 @@ public class TableModelTargetActualComparison extends AbstractTitaTableModel {
 
         try {
             effort = (Effort) list.get(row);
+            Calendar cal = GlobalUtils.getCalendarFromDate(effort.getDate());
 
             if (col == IntegerConstants.ZERO) {
-                return effort.getDate();
+                return GlobalUtils.DATEFORMAT.format(effort.getDate());
             } else if (col == IntegerConstants.ONE) {
                 return effort.getDescription();
             } else if (col == IntegerConstants.TWO) {
-                if (effort.getStartTime() != null) {
-                    return GlobalUtils.TIMEFORMAT24HOURS.format(effort.getStartTime());
+                if (effort.getStartTime() == null) {
+                    return "";
                 } else {
-                    return 0;
+                    return GlobalUtils.TIMEFORMAT24HOURS.format(effort.getStartTime());
                 }
             } else if (col == IntegerConstants.THREE) {
-                if (effort.getEndTime() != null) {
-                    return GlobalUtils.TIMEFORMAT24HOURS.format(effort.getEndTime());
+                if (effort.getEndTime() == null) {
+                    return "";
                 } else {
-                    return 0;
+                    return GlobalUtils.TIMEFORMAT24HOURS.format(effort.getEndTime());
                 }
             } else if (col == IntegerConstants.FOUR) {
-                if (effort.getDuration() != null) {
-                    return GlobalUtils.TIMELENGTHFORMAT.format(effort.getDuration());
+                if (effort.getDuration() == null) {
+                    return "";
                 } else {
-                    return 0;
+                    return GlobalUtils.TIMEFORMAT24HOURS.format(GlobalUtils.getDateFromLong(effort
+                            .getDuration()));
                 }
             } else {
                 return effort;

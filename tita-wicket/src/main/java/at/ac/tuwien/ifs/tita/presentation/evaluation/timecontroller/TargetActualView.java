@@ -19,15 +19,24 @@ package at.ac.tuwien.ifs.tita.presentation.evaluation.timecontroller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.swing.ListSelectionModel;
 
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.data.JRTableModelDataSource;
+
+import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.request.target.resource.ResourceStreamRequestTarget;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.wicketstuff.table.Table;
 
 import at.ac.tuwien.ifs.tita.business.service.project.IProjectService;
@@ -43,6 +52,7 @@ import at.ac.tuwien.ifs.tita.presentation.models.TableModelTargetActualCompariso
 import at.ac.tuwien.ifs.tita.presentation.models.TableModelTiTAProject;
 import at.ac.tuwien.ifs.tita.presentation.models.TableModelTiTAUser;
 import at.ac.tuwien.ifs.tita.presentation.utils.IntegerConstants;
+import at.ac.tuwien.ifs.tita.reporting.JasperPdfResource;
 
 /**
  * Page for target/actual comparison.
@@ -52,6 +62,8 @@ import at.ac.tuwien.ifs.tita.presentation.utils.IntegerConstants;
  */
 public class TargetActualView extends BasePage {
 
+    private final Logger log = LoggerFactory.getLogger(TargetActualView.class);
+
     @SpringBean(name = "titaProjectService")
     private IProjectService titaProjectService;
 
@@ -60,6 +72,9 @@ public class TargetActualView extends BasePage {
 
     @SpringBean(name = "timeEffortService")
     private IEffortService effortService;
+
+    @SpringBean(name = "targetActualComparison")
+    private JasperPdfResource pdfResource;
 
     private Form<Object> form;
     private WebMarkupContainer targetActualComparison;
@@ -279,7 +294,16 @@ public class TargetActualView extends BasePage {
         form.add(new AjaxButton("btnShowTargetActualAsPDF", form) {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
-
+                try {
+                    loadReport();
+                    ResourceStreamRequestTarget rsrtarget = new ResourceStreamRequestTarget(pdfResource
+                            .getResourceStream());
+                    rsrtarget.setFileName(pdfResource.getFilename());
+                    RequestCycle.get().setRequestTarget(rsrtarget);
+                } catch (JRException e) {
+                    // TODO: GUI Exception Handling
+                    log.debug(e.getMessage());
+                }
             }
         });
     }
@@ -359,6 +383,18 @@ public class TargetActualView extends BasePage {
         targetActualComparison.add(lblDescriptionForActualHours);
         targetActualComparison.add(lblDescriptionForTargetHours);
         targetActualComparison.add(lblDescriptionTargetActualComparison);
+    }
+
+    /**
+     * loads report and sets data source.
+     *
+     * @throws JRException
+     *             JasperReports Exception
+     */
+    private void loadReport() throws JRException {
+        ServletContext context = ((WebApplication) getApplication()).getServletContext();
+        pdfResource.loadReport(context.getRealPath(pdfResource.getDesignFilename()));
+        pdfResource.setReportDataSource(new JRTableModelDataSource(tmForTargetActualComparison));
     }
 
     public void setMessageForlblDescriptionTargetActualComparison(
