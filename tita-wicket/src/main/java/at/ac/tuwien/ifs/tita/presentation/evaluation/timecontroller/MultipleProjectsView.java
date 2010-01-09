@@ -216,13 +216,12 @@ public class MultipleProjectsView extends BasePage {
             }
         }
         if(userProject != null){
-            createUserProjectEffortTable(ddTimeSpan.getModel().getObject().getKey(),
-                                         userProject);
-            if(upe != null){
-                if(upe.size() > 0){
+            createUserProjectEffortTable(ddTimeSpan.getModel().getObject().getKey(), userProject);
+            if (upe != null) {
+                if (upe.size() > 0) {
                     mpem.reload(upe);
-                }else{
-                    mpem.setColumnNames(new String [] {});
+                } else {
+                    mpem.setColumnNames(new String[] {});
                     mpem.reload(new ArrayList<UserProjectEffort>());
                 }
             }
@@ -231,7 +230,7 @@ public class MultipleProjectsView extends BasePage {
 
     /**
      * TODO - Write Javadoc.
-     * 
+     *
      * @param grouping
      *            - TODO - Write Javadoc.
      * @param userProject

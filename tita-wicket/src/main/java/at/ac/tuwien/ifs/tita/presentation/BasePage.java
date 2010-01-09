@@ -28,6 +28,7 @@ import at.ac.tuwien.ifs.tita.presentation.evaluation.timeconsumer.DailyViewPage;
 import at.ac.tuwien.ifs.tita.presentation.evaluation.timeconsumer.MonthlyViewPage;
 import at.ac.tuwien.ifs.tita.presentation.evaluation.timecontroller.MultipleProjectsView;
 import at.ac.tuwien.ifs.tita.presentation.evaluation.timecontroller.TargetActualView;
+import at.ac.tuwien.ifs.tita.presentation.importing.effort.csv.EffortImportCSVPage;
 import at.ac.tuwien.ifs.tita.presentation.login.TitaSession;
 import at.ac.tuwien.ifs.tita.presentation.startpages.AdminPage;
 import at.ac.tuwien.ifs.tita.presentation.startpages.EffortsPage;
@@ -81,6 +82,8 @@ public class BasePage extends SecureWebPage {
         timeConsumergroup.add(new SecurePageLink("effortsPageLink", EffortsPage.class));
         timeConsumergroup.add(new SecurePageLink("dailyViewPageLink", DailyViewPage.class));
         timeConsumergroup.add(new SecurePageLink("monthlyViewPageLink", MonthlyViewPage.class));
+        timeConsumergroup.add(new SecurePageLink("effortsImportCSVPageLink",
+                EffortImportCSVPage.class));
 
     }
 

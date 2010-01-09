@@ -88,6 +88,8 @@ public class TiTAApplication extends SwarmWebApplication {
             factory.setAlias("dailyView", "at.ac.tuwien.ifs.tita.presentation.evaluation.timeconsumer.DailyViewPage");
             factory.setAlias("monthlyView",
                     "at.ac.tuwien.ifs.tita.presentation.evaluation.timeconsumer.MonthlyViewPage");
+            factory.setAlias("effortImportCSV",
+                    "at.ac.tuwien.ifs.tita.presentation.importing.effort.csv.EffortImportCSVPage");
 
             // Aliases for timecontroller
             factory.setAlias("projectsPage", "at.ac.tuwien.ifs.tita.presentation.startpages" + ".ProjectsPage");
