@@ -20,11 +20,21 @@
 			<table wicket:id="taTableForTiTAUser"></table>
 			<table wicket:id="taTableForTiTAProject"></table>
 			<input wicket:id="btnRefreshTables" type="submit" value="Refresh Tables" />
-			<input wicket:id="btnShowEfforts" type="submit" value="Show Efforts" />
+			<input wicket:id="btnShowTargetActual" type="submit" value="Show Target/Actual" />
+			<input wicket:id="btnShowTargetActualAsPDF" type="submit" value="Show As PDF" />
 		</form>
 		
 		<div wicket:id="targetActualComparison"> 
+			<span wicket:id="labelDescriptionTargetActualComparison"></span>
        		<table wicket:id="taTableForTiTAResult"></table>
+       		<div>
+	       		<span wicket:id="labelDescriptionActualHours"></span>
+	       		<span wicket:id="labelActualHours"></span>
+       		</div>
+       		<div>
+	       		<span wicket:id="labelDescriptionTargetHours"></span>
+	       		<span wicket:id="labelTargetHours"></span>
+       		</div>
    		</div>
 	</wicket:extend>
 </body>

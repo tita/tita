@@ -74,9 +74,9 @@ values (8, 'e8', null, 2, '2009-10-24 16:00', 2000, false, 5);
 insert into EFFORT (ID, DESCRIPTION, TITA_TASK_ID, ISSUET_TASK_ID, DATE, DURATION, DELETED, USER_ID)
 values (10, 'e10', null, 2, '2009-05-18 17:00', 3000, false, 6);
 
-insert into USER_PROJECT (ID, USER_ID, PROJECT_ID) values (1, 5, 1);
-insert into USER_PROJECT (ID, USER_ID, PROJECT_ID) values (2, 6, 1);
-insert into USER_PROJECT (ID, USER_ID, PROJECT_ID) values (4, 6, 2);
+insert into USER_PROJECT (ID, USER_ID, PROJECT_ID, TARGET_HOURS) values (1, 5, 1, 150);
+insert into USER_PROJECT (ID, USER_ID, PROJECT_ID, TARGET_HOURS) values (2, 6, 1, 140);
+insert into USER_PROJECT (ID, USER_ID, PROJECT_ID, TARGET_HOURS) values (4, 6, 2, 130);
 
 -- for testing mantis
 insert into isst_login (id, modification_version, password, name, isst_id, user_id)

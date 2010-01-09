@@ -24,7 +24,9 @@ import javax.swing.ListSelectionModel;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.wicketstuff.table.Table;
 
@@ -60,6 +62,7 @@ public class TargetActualView extends BasePage {
     private IEffortService effortService;
 
     private Form<Object> form;
+    private WebMarkupContainer targetActualComparison;
 
     private List<TiTAUser> titaUserList = new ArrayList<TiTAUser>();
     private List<TiTAProject> titaProjectList = new ArrayList<TiTAProject>();
@@ -73,16 +76,24 @@ public class TargetActualView extends BasePage {
     private TableModelTiTAProject tmForTiTAProject;
     private AbstractTitaTableModel tmForTargetActualComparison;
 
+    private Label lblActualHours;
+    private Label lblTargetHours;
+    private Label lblDescriptionForActualHours;
+    private Label lblDescriptionForTargetHours;
+    private Label lblDescriptionTargetActualComparison;
+
+    private String messageForlblDescriptionTargetActualComparison = "";
+    private String messageForlblActualHours = "";
+    private String messageForlblTargetHours = "";
+
     public TargetActualView() {
         // add form to page
         form = new Form<Object>("targetActualComparisonForm");
         form.setOutputMarkupId(true);
 
-        final WebMarkupContainer targetActualComparison = new WebMarkupContainer(
-                "targetActualComparison");
+        targetActualComparison = new WebMarkupContainer("targetActualComparison");
         targetActualComparison.setOutputMarkupId(true);
         targetActualComparison.setOutputMarkupPlaceholderTag(true);
-
 
         loadTableValues();
 
@@ -96,38 +107,8 @@ public class TargetActualView extends BasePage {
         form.add(tableForTiTAProject);
         targetActualComparison.add(tableForResults);
 
-        form.add(new AjaxButton("btnRefreshTables", form) {
-            @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
-                loadTableValues();
-
-                tableForResults.setVisible(false);
-
-                target.addComponent(tableForTiTAProject);
-                target.addComponent(tableForTiTAUser);
-                target.addComponent(tableForResults);
-            }
-
-            @Override
-            protected void onError(AjaxRequestTarget target, Form<?> form1) {
-
-            }
-        });
-
-        form.add(new AjaxButton("btnShowEfforts", form) {
-            @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
-                if (loadEfforts()) {
-                    targetActualComparison.add(tableForResults);
-                    target.addComponent(targetActualComparison);
-                }
-            }
-
-            @Override
-            protected void onError(AjaxRequestTarget target, Form<?> form1) {
-
-            }
-        });
+        displayLabels();
+        displayButtons();
 
         add(form);
         add(targetActualComparison);
@@ -173,11 +154,12 @@ public class TargetActualView extends BasePage {
                         tmForTiTAProject.reload(listOfProjects);
                     }
 
-                    tableForResults.setVisible(false);
+                    makeVisible(false);
+                    updateResultElements();
 
                     target.addComponent(tableForTiTAProject);
                     target.addComponent(tableForTiTAUser);
-                    target.addComponent(tableForResults);
+                    target.addComponent(targetActualComparison);
                 }
             }
         };
@@ -199,11 +181,12 @@ public class TargetActualView extends BasePage {
                     List<TiTAUser> listOfUser = userService.findAllTiTAUsersForProject(project);
                     tmForTiTAUser.reload(listOfUser);
 
-                    tableForResults.setVisible(false);
+                    makeVisible(false);
+                    updateResultElements();
 
                     target.addComponent(tableForTiTAProject);
                     target.addComponent(tableForTiTAUser);
-                    target.addComponent(tableForResults);
+                    target.addComponent(targetActualComparison);
                 }
             }
         };
@@ -231,27 +214,176 @@ public class TargetActualView extends BasePage {
     }
 
     /**
-     * Method.
-     *
-     * @return asd
+     * Displays the labels for the target/actual comparison.
      */
-    private boolean loadEfforts() {
+    public void displayLabels() {
+        lblActualHours = new Label("labelActualHours", new PropertyModel<String>(this,
+                "messageForlblActualHours"));
+        lblActualHours.setVisible(false);
+        lblActualHours.setOutputMarkupId(true);
 
-        TiTAProject project = (TiTAProject) tableForTiTAProject.getTableModel().getValueAt(
-                tableForTiTAProject.getSelectedRows()[0], IntegerConstants.FIFTY);
+        lblTargetHours = new Label("labelTargetHours", new PropertyModel<String>(this,
+                "messageForlblTargetHours"));
+        lblTargetHours.setVisible(false);
+        lblTargetHours.setOutputMarkupId(true);
 
-        TiTAUser titaUser = (TiTAUser) tableForTiTAUser.getTableModel().getValueAt(
-                tableForTiTAUser.getSelectedRows()[0], IntegerConstants.FIFTY);
+        lblDescriptionForActualHours = new Label("labelDescriptionActualHours", "TargetHours:");
+        lblDescriptionForActualHours.setVisible(false);
 
-        if (project != null && titaUser != null) {
-            effortResult = effortService.findEffortsForTiTAProjectAndTiTAUser(project.getId(),
-                    titaUser.getId());
-            tmForTargetActualComparison.reload(effortResult);
-            tableForResults.setVisible(true);
-            return true;
+        lblDescriptionForTargetHours = new Label("labelDescriptionTargetHours", "ActualHours:");
+        lblDescriptionForTargetHours.setVisible(false);
+
+        lblDescriptionTargetActualComparison = new Label("labelDescriptionTargetActualComparison",
+                new PropertyModel<String>(this, "messageForlblDescriptionTargetActualComparison"));
+        lblDescriptionTargetActualComparison.setVisible(false);
+        lblDescriptionTargetActualComparison.setOutputMarkupId(true);
+
+        targetActualComparison.add(lblActualHours);
+        targetActualComparison.add(lblTargetHours);
+        targetActualComparison.add(lblDescriptionForActualHours);
+        targetActualComparison.add(lblDescriptionForTargetHours);
+        targetActualComparison.add(lblDescriptionTargetActualComparison);
+    }
+
+    /**
+     * Displays the buttons for the target/actual comparison.
+     */
+    public void displayButtons() {
+        form.add(new AjaxButton("btnRefreshTables", form) {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
+                loadTableValues();
+
+                makeVisible(false);
+                updateResultElements();
+
+                target.addComponent(tableForTiTAProject);
+                target.addComponent(tableForTiTAUser);
+                target.addComponent(targetActualComparison);
+            }
+        });
+
+        form.add(new AjaxButton("btnShowTargetActual", form) {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
+                if (loadTargetActualComparison()) {
+                    updateResultElements();
+                    target.addComponent(targetActualComparison);
+                }
+
+                updateResultElements();
+                target.addComponent(targetActualComparison);
+            }
+        });
+
+        form.add(new AjaxButton("btnShowTargetActualAsPDF", form) {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
+
+            }
+        });
+    }
+
+    /**
+     * Loads the target/actual comparison.
+     *
+     * @return true if a project and a user was found.
+     */
+    private boolean loadTargetActualComparison() {
+
+        if (tableForTiTAProject.getSelectedRows().length > 0
+                && tableForTiTAProject.getSelectedRows().length > 0) {
+            TiTAProject project = (TiTAProject) tableForTiTAProject.getTableModel().getValueAt(
+                    tableForTiTAProject.getSelectedRows()[0], IntegerConstants.FIFTY);
+
+            TiTAUser titaUser = (TiTAUser) tableForTiTAUser.getTableModel().getValueAt(
+                    tableForTiTAUser.getSelectedRows()[0], IntegerConstants.FIFTY);
+
+            if (project != null && titaUser != null) {
+                effortResult = effortService.findEffortsForTiTAProjectAndTiTAUser(project.getId(),
+                        titaUser.getId());
+
+                if (effortResult != null && effortResult.size() > 0) {
+                    tmForTargetActualComparison.reload(effortResult);
+                    makeVisible(true);
+
+                    setMessageForlblActualHours(effortService
+                            .totalizeEffortsForTiTAProjectAndTiTAUser(project.getId(),
+                                    titaUser.getId()).toString());
+
+                    Long targetHours = userService.findTargetHoursForTiTAProjectAndTiTAUser(
+                            titaUser.getId(), project.getId());
+
+                    if (targetHours == null) {
+                        setMessageForlblTargetHours("No value for the target hours saved.");
+                    } else {
+                        setMessageForlblTargetHours(targetHours.toString());
+                    }
+
+                    setMessageForlblDescriptionTargetActualComparison("Target Actual Comparison:");
+
+                    return true;
+                } else {
+                    lblDescriptionTargetActualComparison.setVisible(true);
+                    setMessageForlblDescriptionTargetActualComparison("No efforts found for the comparison.");
+
+                }
+            }
         }
 
         return false;
+    }
+
+    /**
+     * Shows the elements of the result or set them to visible false.
+     *
+     * @param visible
+     *            if true, the elements are shown otherwise not.
+     */
+    public void makeVisible(boolean visible) {
+        tableForResults.setVisible(visible);
+        lblActualHours.setVisible(visible);
+        lblTargetHours.setVisible(visible);
+        lblDescriptionForActualHours.setVisible(visible);
+        lblDescriptionForTargetHours.setVisible(visible);
+        lblDescriptionTargetActualComparison.setVisible(visible);
+    }
+
+    /**
+     * Update elements on the markup container.
+     */
+    public void updateResultElements() {
+        targetActualComparison.add(tableForResults);
+        targetActualComparison.add(lblActualHours);
+        targetActualComparison.add(lblTargetHours);
+        targetActualComparison.add(lblDescriptionForActualHours);
+        targetActualComparison.add(lblDescriptionForTargetHours);
+        targetActualComparison.add(lblDescriptionTargetActualComparison);
+    }
+
+    public void setMessageForlblDescriptionTargetActualComparison(
+            String messageForlblDescriptionTargetActualComparison) {
+        this.messageForlblDescriptionTargetActualComparison = messageForlblDescriptionTargetActualComparison;
+    }
+
+    public String getMessageForlblDescriptionTargetActualComparison() {
+        return messageForlblDescriptionTargetActualComparison;
+    }
+
+    public void setMessageForlblActualHours(String messageForlblActualHours) {
+        this.messageForlblActualHours = messageForlblActualHours;
+    }
+
+    public String getMessageForlblActualHours() {
+        return messageForlblActualHours;
+    }
+
+    public void setMessageForlblTargetHours(String messageForlblTargetHours) {
+        this.messageForlblTargetHours = messageForlblTargetHours;
+    }
+
+    public String getMessageForlblTargetHours() {
+        return messageForlblTargetHours;
     }
 
 }
