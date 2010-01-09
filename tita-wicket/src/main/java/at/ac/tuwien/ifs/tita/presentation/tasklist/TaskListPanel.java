@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -46,6 +47,7 @@ import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueStatus;
+import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueTrackingTool;
 import at.ac.tuwien.ifs.tita.issuetracker.exceptions.ProjectNotFoundException;
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
 import at.ac.tuwien.ifs.tita.presentation.login.TitaSession;
@@ -65,8 +67,9 @@ import at.ac.tuwien.ifs.tita.presentation.tasklist.stopwatch.NewTaskTimerPanel;
  */
 public class TaskListPanel extends SecurePanel implements IHeaderContributor {
     private final Logger log = LoggerFactory.getLogger(TaskListPanel.class);
+    //TODO: constants should be refactored
     private static final String C_HOST = "http://localhost";
-    private static final String C_ISSUE_TRACKER = "Mantis";
+    private static final Long C_ISSUE_TRACKER_ID = 1L;
     
     @SpringBean(name = "taskService")
     private ITaskService taskService;
@@ -86,10 +89,20 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
     private final ResourceReference style = new CompressedResourceReference(
             TaskListPanel.class, "tasklist.css");
     private DropDownChoice<String> dropDownView;
+    private Map<Long, NewTaskTimerPanel> newTasks;
+    private Map<Long, AssignedTaskTimerPanel> assignedTasks;
+    private Map<Long, ClosedTaskTimerPanel> closedTasks;
+//    private Map<ActiveTaskId, ITaskTrackable> activeTasks;
+    private Map<Long, String> tempEfforts;
     
     public TaskListPanel(String id, TiTAProject titaProject) {
         super(id);
+        newTasks = new TreeMap<Long, NewTaskTimerPanel>();
+        assignedTasks = new TreeMap<Long, AssignedTaskTimerPanel>();
+        closedTasks = new TreeMap<Long, ClosedTaskTimerPanel>();
+        tempEfforts = new TreeMap<Long, String>();
         
+//        activeTasks = new TreeMap<ActiveTaskId, ITaskTrackable>();
         groupingList = Arrays.asList(new String[] { "Groups by task state",
                 "Group by issuetracker" });
         
@@ -105,13 +118,32 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
         try{
             this.project = titaProject;
             user = userService.getUserByUsername(TitaSession.getSession().getUsername());
-//            createIssueListForTiTAProjectAndUser(project, user);
         }catch (TitaDAOException e) {
             throw new RuntimeException("Couldn't find user currently logged in.", e);
         }
     }
     
-    
+    /**
+     * Starts a timer for an active task comming from section NEW or ASSIGNED.
+     * @param task ITaskTrackable
+     */
+//    public void startTaskTimer(ITaskTrackable task){
+//        activeTasks.put(new ActiveTaskId(project.getId(), C_ISSUE_TRACKER_ID,
+//                                         task.getProject().getId(),task.getId()), task);
+//    }
+//    
+//    /**
+//     * Stops a timer for an active task comming from section ASSIGNED.
+//     * @param task ITaskTrackable
+//     */
+//    public void stopTaskTimer(ITaskTrackable task){
+//        ActiveTaskId atId = new ActiveTaskId(project.getId(), C_ISSUE_TRACKER_ID,
+//                task.getProject().getId(),task.getId());
+//                
+//        if(activeTasks.containsKey(atId)){
+//            activeTasks.remove(atId);
+//        }
+//    }
     
     /**
      * Shows the header and configuration for the tasklist.
@@ -146,7 +178,7 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
         dropDownView.add(new AjaxFormComponentUpdatingBehavior("onchange") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
-                createIssueListForTiTAProjectAndUser(project, user);
+                loadIssueTrackerTasks(project);
                 target.addComponent(containerTaskList);
             }
         });
@@ -157,13 +189,75 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
 
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
-                createIssueListForTiTAProjectAndUser(project, user);
+//                createIssueListForTiTAProjectAndUser(project, user);
                 target.addComponent(containerTaskList);
             }
         });
 
     }
 
+    public void loadIssueTrackerTasks(TiTAProject tp){
+        this.project = tp;
+        
+        //clear all accordion items
+        accordionPanel.removeAllAccordionPanelItems();
+        try{
+            saveCurrentEfforts();
+            taskService.fetchTaskFromIssueTrackerProjects(project.getId(), user.getId());
+            if(isOrderByState()){
+                generateIssueList(taskService.sortingTasksByIssueStatus(IssueStatus.NEW));
+                generateIssueList(taskService.sortingTasksByIssueStatus(IssueStatus.ASSIGNED));
+                generateIssueList(taskService.sortingTasksByIssueStatus(IssueStatus.CLOSED));
+            }else{
+                generateIssueList(taskService.sortingTasksByIssueTracker(C_HOST));
+            }
+            updateAccordion();
+            restoreCurrentEfforts();
+        } catch (ProjectNotFoundException e) {
+            log.error(e.getMessage());
+        }
+    }
+    
+    private void generateIssueList(Map<Long, ITaskTrackable> issueMap){
+        Iterator<Long> keys;
+        Long effort = 0L;
+        IssueStatus state = null;
+        
+        if(!issueMap.isEmpty()){
+            keys = issueMap.keySet().iterator();
+            while(keys.hasNext()){
+                Long key = keys.next();
+                ITaskTrackable task = issueMap.get(key);
+                effort = effortService.findEffortsForIssueTrackerTask(project, user, 
+                        task.getProject().getId(), task.getId(),
+                        C_ISSUE_TRACKER_ID);
+                state = task.getStatus();
+                if(state.equals(IssueStatus.NEW)){
+                    if(!newTasks.containsKey(key)){
+                        newTasks.put(key, new NewTaskTimerPanel(
+                                AccordionPanelItem.ITEM_ID, task, this));
+                    }
+                }else if(state.equals(IssueStatus.ASSIGNED)){
+                    if(!assignedTasks.containsKey(key)){
+                        assignedTasks.put(key, new AssignedTaskTimerPanel(
+                                                  AccordionPanelItem.ITEM_ID, task, effort, this));
+                    }
+                }else if(state.equals(IssueStatus.CLOSED)){
+                    if(!closedTasks.containsKey(key)){
+                        closedTasks.put(key, new ClosedTaskTimerPanel(
+                                            AccordionPanelItem.ITEM_ID, task, effort));
+                    }
+                }
+            }
+        }    
+    }
+    
+    public void switchAndStoreTiTAProject(){
+        newTasks.clear();
+        assignedTasks.clear();
+        closedTasks.clear();
+    }
+    
     /**
      * Returns, if order of the issues is by issue state or not.
      * @return true, if order by state
@@ -176,81 +270,103 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
         return false;
     }
     
-    /**
-     * Generates a part of an accordion panel consisting of caption and issues.
-     * @param caption String 
-     * @param issueMap Map with issues of specified issue state or issue tracker
-     *
-     */
-    private void generateAccordionDisplaySection(String caption,Map<Long, ITaskTrackable> issueMap){
+    private void updateAccordion(){
+        if(isOrderByState()){
+            addToAccordion("NEW", generateNewTaskPanel());
+            addToAccordion("ASSIGNED", generateAssignedTaskPanel());
+            addToAccordion("CLOSED", generateClosedTaskPanel());
+        }else{
+            addToAccordion("Mantis",generateIssueTrackerPanels(IssueTrackingTool.MANTIS));
+        }
+        accordionPanel.setOutputMarkupId(true);
+        tasklistForm.add(accordionPanel);
+        containerTaskList.add(tasklistForm);
+    }
+    
+    private List<WebMarkupContainer> generateNewTaskPanel(){
+        List<WebMarkupContainer> listOfTaskTimer = new ArrayList<WebMarkupContainer>();
+        Iterator<Long> keys = newTasks.keySet().iterator();
+        
+        while(keys.hasNext()){
+            Long key = keys.next();
+            listOfTaskTimer.add(newTasks.get(key));
+        }
+        return listOfTaskTimer;
+    }
+    
+    private List<WebMarkupContainer> generateAssignedTaskPanel(){
+        List<WebMarkupContainer> listOfTaskTimer = new ArrayList<WebMarkupContainer>();
+        Iterator<Long> keys = assignedTasks.keySet().iterator();
+        
+        while(keys.hasNext()){
+            Long key = keys.next();
+            listOfTaskTimer.add(assignedTasks.get(key));
+        }
+        return listOfTaskTimer;
+    }
+    
+    private List<WebMarkupContainer> generateClosedTaskPanel(){
+        List<WebMarkupContainer> listOfTaskTimer = new ArrayList<WebMarkupContainer>();
+        Iterator<Long> keys = closedTasks.keySet().iterator();
+        
+        while(keys.hasNext()){
+            Long key = keys.next();
+            listOfTaskTimer.add(closedTasks.get(key));
+        }
+        return listOfTaskTimer;
+    }
+    
+    private void addToAccordion(String caption, List <WebMarkupContainer> panels){
         List<List<WebMarkupContainer>> markupItems = new ArrayList<List<WebMarkupContainer>>();
-        markupItems.add(generateTaskPanel(issueMap));
+        markupItems.add(panels);
         AccordionPanelItem accordionPanelItem = new AccordionPanelItem(caption, markupItems, true);
         accordionPanel.addMenu(accordionPanelItem);
     }
     
-    /**
-     * Creates the proper list of issues comming from issue tracker(s) and displays it in tita.
-     * @param project TiTAProject of current selected tita project
-     * @param titauser TiTAUser of logged in user
-     */
-    public void createIssueListForTiTAProjectAndUser(TiTAProject titaProject, TiTAUser titaUser){
-        Map<Long, ITaskTrackable> issueMap = null;
-      
-        this.project = titaProject;
-        this.user = titaUser;
-        
-        try {
-            taskService.fetchTaskFromIssueTrackerProjects(project.getId(), user.getId());
-            accordionPanel.removeAllAccordionPanelItems();
-            if(isOrderByState()){
-                issueMap = taskService.sortingTasksByIssueStatus(IssueStatus.NEW);
-                generateAccordionDisplaySection("New", issueMap);
-                issueMap = taskService.sortingTasksByIssueStatus(IssueStatus.ASSIGNED);
-                generateAccordionDisplaySection("Assigned", issueMap);
-                issueMap = taskService.sortingTasksByIssueStatus(IssueStatus.CLOSED);
-                generateAccordionDisplaySection("Closed", issueMap);
-            }else{
-                issueMap = taskService.sortingTasksByIssueTracker(C_HOST);
-                generateAccordionDisplaySection(C_ISSUE_TRACKER, issueMap);
-            }
-            accordionPanel.setOutputMarkupId(true);
-            tasklistForm.add(accordionPanel);
-            containerTaskList.add(tasklistForm);
-        } catch (ProjectNotFoundException e) {
-            log.error(e.getMessage());
-        }
-    }
-
-    /**
-     * Helper Method for producing dummies.
-     * @param projectId Long of current selected tita project
-     * @param userId Long of logged in user
-     * @return listOfTaskTimer
-     */
-    private List<WebMarkupContainer> generateTaskPanel(Map<Long, ITaskTrackable> issueMap) {
+    private List<WebMarkupContainer> generateIssueTrackerPanels(IssueTrackingTool tool){
         List<WebMarkupContainer> listOfTaskTimer = new ArrayList<WebMarkupContainer>();
-        Iterator<ITaskTrackable> tasks;
-        ITaskTrackable task;
-        Long effort = null;
+
+        listOfTaskTimer.addAll(iterateThroughNewTasks(tool));
+        listOfTaskTimer.addAll(iterateThroughAssignedTasks(tool));
+        listOfTaskTimer.addAll(iterateThroughClosedTasks(tool));
         
-        if(issueMap.values() != null){
-            tasks = issueMap.values().iterator();
-            while(tasks.hasNext()){
-                task = tasks.next();
-                //TODO: issue tracker id should be fixed and read from db
-                effort = effortService.findEffortsForIssueTrackerTask(project, user, 
-                                                        task.getProject().getId(), task.getId(),1L);
-                if(task.getStatus().compareTo(IssueStatus.ASSIGNED) == 0){
-                    listOfTaskTimer.add(new AssignedTaskTimerPanel(
-                                                    AccordionPanelItem.ITEM_ID, task, effort,this));
-                }else if (task.getStatus().compareTo(IssueStatus.NEW) == 0){
-                    listOfTaskTimer.add(new NewTaskTimerPanel(
-                                                    AccordionPanelItem.ITEM_ID, task,this));
-                }else if(task.getStatus().compareTo(IssueStatus.CLOSED) == 0){
-                    listOfTaskTimer.add(new ClosedTaskTimerPanel(
-                                                    AccordionPanelItem.ITEM_ID, task, effort));
-                }
+        return listOfTaskTimer;
+    }
+    
+    private List<WebMarkupContainer> iterateThroughNewTasks(IssueTrackingTool tool){
+        List<WebMarkupContainer> listOfTaskTimer = new ArrayList<WebMarkupContainer>();
+        Iterator<Long> keys = newTasks.keySet().iterator();
+        
+        while(keys.hasNext()){
+            Long key = keys.next();
+            if(newTasks.get(key).getTask().getIssueTrackerType().equals(tool)){
+                listOfTaskTimer.add(newTasks.get(key));
+            }
+        }
+        return listOfTaskTimer;
+    }
+    
+    private List<WebMarkupContainer> iterateThroughAssignedTasks(IssueTrackingTool tool){
+        List<WebMarkupContainer> listOfTaskTimer = new ArrayList<WebMarkupContainer>();
+        Iterator<Long> keys = assignedTasks.keySet().iterator();
+        
+        while(keys.hasNext()){
+            Long key = keys.next();
+            if(assignedTasks.get(key).getTask().getIssueTrackerType().equals(tool)){
+                listOfTaskTimer.add(assignedTasks.get(key));
+            }
+        }
+        return listOfTaskTimer;
+    }
+    
+    private List<WebMarkupContainer> iterateThroughClosedTasks(IssueTrackingTool tool){
+        List<WebMarkupContainer> listOfTaskTimer = new ArrayList<WebMarkupContainer>();
+        Iterator<Long> keys = closedTasks.keySet().iterator();
+        
+        while(keys.hasNext()){
+            Long key = keys.next();
+            if(closedTasks.get(key).getTask().getIssueTrackerType().equals(tool)){
+                listOfTaskTimer.add(closedTasks.get(key));
             }
         }
         return listOfTaskTimer;
@@ -269,10 +385,38 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
      */
     public void closeTask(ITaskTrackable task, AjaxRequestTarget target){
         taskService.closeTask(task.getId());
-        createIssueListForTiTAProjectAndUser(project, user);
+//        saveCurrentEfforts();
+//        createIssueListForTiTAProjectAndUser(project, user);
         target.addComponent(containerTaskList);
     }
     
+    private void saveCurrentEfforts() {
+        tempEfforts.clear();
+        AssignedTaskTimerPanel pan;
+        Iterator<Long> keys = assignedTasks.keySet().iterator();
+        
+        while(keys.hasNext()){
+            Long key = keys.next();
+            pan = assignedTasks.get(key);
+            pan.stopTimer();
+            tempEfforts.put(pan.getTask().getId(), pan.getDate());
+        }
+    }
+    
+    private void restoreCurrentEfforts(){
+        AssignedTaskTimerPanel pan;
+        Iterator<Long> keys = assignedTasks.keySet().iterator();
+        
+        while(keys.hasNext()){
+            Long key = keys.next();
+            pan = assignedTasks.get(key);
+            if(tempEfforts.containsKey(pan.getTask().getId())){
+                pan.setDate(tempEfforts.get(pan.getTask().getId()));
+                pan.startTimer();
+            }
+        }
+    }
+
     /**
      * Methode to assign a new task of mantis.
      * @param task ITaskTrackable
@@ -280,7 +424,8 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
      */
     public void assignTask(ITaskTrackable task, AjaxRequestTarget target){
         taskService.assignTask(task.getId());
-        createIssueListForTiTAProjectAndUser(project, user);
+//        saveCurrentEfforts();
+//        createIssueListForTiTAProjectAndUser(project, user);
         target.addComponent(containerTaskList);
     }
 }

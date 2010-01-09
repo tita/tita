@@ -68,4 +68,7 @@ public class ClosedTaskTimerPanel extends Panel implements IHeaderContributor {
         response.renderCSSReference(style);
     }
 
+    public ITaskTrackable getTask(){
+        return task;
+    }
 }

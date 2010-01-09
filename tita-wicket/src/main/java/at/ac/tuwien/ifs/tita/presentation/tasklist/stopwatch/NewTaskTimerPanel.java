@@ -39,7 +39,6 @@ public class NewTaskTimerPanel extends Panel implements IHeaderContributor {
 
     private ResourceReference style = new CompressedResourceReference(
             NewTaskTimerPanel.class, "tasktimer.css");
-//    private WebMarkupContainer container = null;
     private Form<Object> taskTimerForm;
     private ITaskTrackable task;
     private TaskListPanel owner;
@@ -72,5 +71,9 @@ public class NewTaskTimerPanel extends Panel implements IHeaderContributor {
     @Override
     public void renderHead(IHeaderResponse response) {
         response.renderCSSReference(style);
+    }
+    
+    public ITaskTrackable getTask(){
+        return task;
     }
 }
