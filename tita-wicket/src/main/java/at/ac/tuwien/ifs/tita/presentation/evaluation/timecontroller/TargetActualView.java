@@ -16,6 +16,7 @@ limitations under the License.
  */
 package at.ac.tuwien.ifs.tita.presentation.evaluation.timecontroller;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +31,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.protocol.http.WebApplication;
@@ -291,13 +293,13 @@ public class TargetActualView extends BasePage {
             }
         });
 
-        form.add(new AjaxButton("btnShowTargetActualAsPDF", form) {
+        form.add(new Button("btnShowTargetActualAsPDF") {
             @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
+            public void onSubmit() {
                 try {
                     loadReport();
-                    ResourceStreamRequestTarget rsrtarget = new ResourceStreamRequestTarget(pdfResource
-                            .getResourceStream());
+                    ResourceStreamRequestTarget rsrtarget = new ResourceStreamRequestTarget(
+                            pdfResource.getResourceStream());
                     rsrtarget.setFileName(pdfResource.getFilename());
                     RequestCycle.get().setRequestTarget(rsrtarget);
                 } catch (JRException e) {
@@ -394,6 +396,15 @@ public class TargetActualView extends BasePage {
     private void loadReport() throws JRException {
         ServletContext context = ((WebApplication) getApplication()).getServletContext();
         pdfResource.loadReport(context.getRealPath(pdfResource.getDesignFilename()));
+        pdfResource.getReportParameters().put("actualHours", getMessageForlblActualHours());
+        pdfResource.getReportParameters().put("targetHours", getMessageForlblTargetHours());
+
+        try {
+            pdfResource.getReportParameters().put("imageLocation",
+                    context.getResource("/images/time-wave.jpg").toString());
+        } catch (MalformedURLException e) {
+            e.getMessage();
+        }
         pdfResource.setReportDataSource(new JRTableModelDataSource(tmForTargetActualComparison));
     }
 
