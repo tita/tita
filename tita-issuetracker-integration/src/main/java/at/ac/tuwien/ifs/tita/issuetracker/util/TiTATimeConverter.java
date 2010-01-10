@@ -15,6 +15,7 @@
 package at.ac.tuwien.ifs.tita.issuetracker.util;
 
 
+
 /**
  * Class for converting Long times to hours, minutes, seconds.
  * 
@@ -22,47 +23,6 @@ package at.ac.tuwien.ifs.tita.issuetracker.util;
  * 
  */
 public class TiTATimeConverter {
-
-    private static final Integer C_THOUSAND = 1000;
-    private static final Integer C_SIXTY = 60;
-
-    public TiTATimeConverter() {
-
-    }
-
-    /**
-     * Return hours for a given time.
-     * 
-     * @param time
-     *            Long
-     * @return Integer hours
-     */
-    public static Integer getHours(Long time) {
-        return (time.intValue() / (C_THOUSAND * C_SIXTY * C_SIXTY));
-    }
-
-    /**
-     * Return minutes for a given time.
-     * 
-     * @param time
-     *            Long
-     * @return Integer minutes
-     */
-    public static Integer getMinutes(Long time) {
-        return (time.intValue() / (C_THOUSAND * C_SIXTY));
-    }
-
-    /**
-     * Return seconds for a given time.
-     * 
-     * @param time
-     *            Long
-     * @return Integer seconds
-     */
-    public static Integer getSeconds(Long time) {
-        return (time.intValue() / C_THOUSAND);
-    }
-
     /**
      * Converts a time duration to hours and minutes.
      * 
@@ -71,20 +31,11 @@ public class TiTATimeConverter {
      * @return String value of time
      */
     public static String getDuration2String(Long time) {
-        String hours = String.valueOf(TiTATimeConverter.getHours(time));
-        String minutes = String.valueOf(TiTATimeConverter.getMinutes(time));
-        String secondes = String.valueOf(TiTATimeConverter.getSeconds(time));
-
-        if (hours.length() < 2) {
-            hours = "0" + hours;
-        }
-        if (minutes.length() < 2) {
-            minutes = "0" + minutes;
-        }
-        if (secondes.length() < 2) {
-            secondes = "0" + secondes;
-        }
-
-        return hours + ":" + minutes + ":" + secondes;
+        String format = String.format("%%0%dd", 2);  
+        Long eltime = time / 1000;
+        String seconds = String.format(format, eltime % 60);  
+        String minutes = String.format(format, (eltime % 3600) / 60);  
+        String hours = String.format(format, eltime / 3600);  
+        return  hours + ":" + minutes + ":" + seconds;  
     }
 }

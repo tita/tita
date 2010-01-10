@@ -15,12 +15,12 @@
  */
 package at.ac.tuwien.ifs.tita.entity;
 
-import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,14 +41,14 @@ import javax.persistence.Version;
 @Entity
 @Table(name = "ISSUE_TRACKER_TASK")
 @SequenceGenerator(name = "seq_issue_task", sequenceName = "ISSUE_TASK_ID_SEQ", allocationSize = 1)
-public class IssueTrackerTask extends BaseEntity<Long> implements Serializable {
+public class IssueTrackerTask extends BaseEntity<Long>{
 
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_issue_task")
     private Long id;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "ISSUE_TRACKER_PROJECT_ID") //, referencedColumnName = "ID")
     private IssueTrackerProject isstProject;
     
@@ -59,7 +59,8 @@ public class IssueTrackerTask extends BaseEntity<Long> implements Serializable {
     private String description;
 
     @OneToMany(mappedBy = "issueTTask",
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
+            fetch = FetchType.EAGER)
     private Set<Effort> issueTEfforts;
 
     @SuppressWarnings("unused")
@@ -69,6 +70,16 @@ public class IssueTrackerTask extends BaseEntity<Long> implements Serializable {
 
     public IssueTrackerTask() {
     }
+
+    public IssueTrackerTask(IssueTrackerProject isstProject, Long isstTaskId,
+            String description, Set<Effort> issueTEfforts) {
+        super();
+        this.isstProject = isstProject;
+        this.isstTaskId = isstTaskId;
+        this.description = description;
+        this.issueTEfforts = issueTEfforts;
+    }
+
 
     public IssueTrackerTask(Set<Effort> efforts) {
         this.issueTEfforts = efforts;
@@ -107,5 +118,7 @@ public class IssueTrackerTask extends BaseEntity<Long> implements Serializable {
         this.isstTaskId = isstTaskId;
     }
     
-    
+    public void addEffort(Effort eff){
+        issueTEfforts.add(eff);
+    }    
 }

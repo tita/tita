@@ -15,8 +15,6 @@
  */
 package at.ac.tuwien.ifs.tita.entity;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -39,7 +37,7 @@ import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 @Entity
 @Table(name = "ISST_LOGIN")
 @SequenceGenerator(name = "seq_isst_login", sequenceName = "ISST_LOGIN_ID_SEQ", allocationSize = 1)
-public class IssueTrackerLogin extends BaseEntity<Long> implements Serializable {
+public class IssueTrackerLogin extends BaseEntity<Long>{
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_isst_login")

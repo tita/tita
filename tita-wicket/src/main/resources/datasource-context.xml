@@ -23,6 +23,7 @@
   <bean id="userDAO" class="at.ac.tuwien.ifs.tita.dao.user.UserDAO" />
   <bean id="roleDAO" class="at.ac.tuwien.ifs.tita.dao.user.RoleDAO" />
   <bean id="issueTrackerTaskDAO" class="at.ac.tuwien.ifs.tita.dao.issuetracker.task.IssueTrackerTaskDao"/>
+  <bean id="issueTrackerProjectDAO" class="at.ac.tuwien.ifs.tita.dao.issuetracker.IssueTrackerProjectDao"/>
   <bean id="issueTrackerDAO" class="at.ac.tuwien.ifs.tita.dao.issuetracker.IssueTrackerDao"/>
   <bean id="titaProjectDAO" class="at.ac.tuwien.ifs.tita.dao.project.TiTAProjectDao"/>
   <bean id="titataskDAO" class="at.ac.tuwien.ifs.tita.dao.titatask.TiTATaskDao"/>
@@ -39,6 +40,8 @@
   
   <bean id="titaProjectService" class="at.ac.tuwien.ifs.tita.business.service.project.ProjectService">
     <property name="titaProjectDao" ref="titaProjectDAO"/>
+    <property name="issueTProjectDao" ref="issueTrackerProjectDAO"/>
+    <property name="issueTTaskDao" ref="issueTrackerTaskDAO"/>
   </bean>
   
   <bean id="taskService" class="at.ac.tuwien.ifs.tita.business.service.tasks.TaskService">

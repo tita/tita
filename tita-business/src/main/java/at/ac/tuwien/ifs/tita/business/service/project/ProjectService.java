@@ -21,7 +21,11 @@ import javax.persistence.PersistenceException;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Property;
 
+import at.ac.tuwien.ifs.tita.dao.issuetracker.IssueTrackerProjectDao;
+import at.ac.tuwien.ifs.tita.dao.issuetracker.task.IssueTrackerTaskDao;
 import at.ac.tuwien.ifs.tita.dao.project.TiTAProjectDao;
+import at.ac.tuwien.ifs.tita.entity.IssueTrackerProject;
+import at.ac.tuwien.ifs.tita.entity.IssueTrackerTask;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 
@@ -35,9 +39,19 @@ import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 public class ProjectService implements IProjectService {
 
     private TiTAProjectDao titaProjectDao;
-
+    private IssueTrackerTaskDao issueTTaskDao;
+    private IssueTrackerProjectDao issuTProjectDao;
+    
     public void setTitaProjectDao(TiTAProjectDao titaProjectDao) {
         this.titaProjectDao = titaProjectDao;
+    }
+    
+    public void setIssueTTaskDao(IssueTrackerTaskDao issueTTaskDao) {
+        this.issueTTaskDao = issueTTaskDao;
+    }
+    
+    public void setIssueTProjectDao(IssueTrackerProjectDao issuTProjectDao) {
+        this.issuTProjectDao = issuTProjectDao;
     }
 
     /** {@inheritDoc} */
@@ -55,9 +69,8 @@ public class ProjectService implements IProjectService {
 
     /** {@inheritDoc} */
     @Override
-    public TiTAProject saveProject(TiTAProject project) throws PersistenceException {
-        // TODO Auto-generated method stub
-        return null;
+    public IssueTrackerTask saveIssueTrackerTask(IssueTrackerTask itt) throws PersistenceException {
+        return issueTTaskDao.save(itt);
     }
     
     /** {@inheritDoc} */
@@ -70,5 +83,19 @@ public class ProjectService implements IProjectService {
     @Override
     public List<TiTAProject> findTiTAProjectsForUser(TiTAUser user) {
         return titaProjectDao.findTiTAProjectsForUsername(user.getUserName());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public IssueTrackerTask findIssueTrackerTaskForTiTAProject(Long tp,
+            Long it, Long itp, Long itt) {
+        return issueTTaskDao.findIssueTrackerTask(tp, it, itp, itt);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public IssueTrackerProject findIssueTrackerProjectForTiTAProject(Long tp,
+            Long issueTrackerId, Long itp) {
+        return issuTProjectDao.findIssueTrackerProjectForTiTAProject(tp, issueTrackerId, itp);
     }  
 }

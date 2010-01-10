@@ -15,7 +15,6 @@
  */
 package at.ac.tuwien.ifs.tita.entity;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -41,18 +40,18 @@ import javax.persistence.Table;
 @Table(name = "EFFORT")
 @SequenceGenerator(name = "seq_effort", sequenceName = "EEFORT_ID_SEQ", allocationSize = 1)
 @NamedQueries( { @NamedQuery(name = "Effort.getYears", query = "select distinct year(te.date) from Effort te where deleted=false order by 1 desc") })
-public class Effort extends BaseEntity<Long> implements Serializable {
+public class Effort extends BaseEntity<Long>{
 
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_effort")
     private Long id;
 
-    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @ManyToOne(cascade = {CascadeType.MERGE })
     @JoinColumn(name = "TITA_TASK_ID")
     private TiTATask titaTask;
 
-    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @ManyToOne(cascade = {CascadeType.MERGE })
     @JoinColumn(name = "ISSUET_TASK_ID")
     private IssueTrackerTask issueTTask;
 
@@ -74,7 +73,7 @@ public class Effort extends BaseEntity<Long> implements Serializable {
     @Column(name = "DELETED")
     private Boolean deleted;
 
-    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @ManyToOne(cascade = {CascadeType.MERGE })
     @JoinColumn(name = "USER_ID")
     // , referencedColumnName = "ID")
     private TiTAUser user;

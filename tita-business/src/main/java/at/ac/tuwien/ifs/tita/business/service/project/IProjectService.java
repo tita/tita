@@ -19,6 +19,8 @@ import javax.persistence.PersistenceException;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import at.ac.tuwien.ifs.tita.entity.IssueTrackerProject;
+import at.ac.tuwien.ifs.tita.entity.IssueTrackerTask;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 
@@ -30,16 +32,15 @@ import at.ac.tuwien.ifs.tita.entity.TiTAUser;
  */
 @Transactional
 public interface IProjectService {
+    
     /**
-     * Saves a new project or updates an existing one.
-     *
-     * @param project
-     *            the project to be saved
-     * @throws PersistenceException
-     *             if Parameter is null or another Exception is thrown
-     * @return the saved Project.
+     * Saves an issue tracker task.
+     * 
+     * @param itt IssueTrackerTask
+     * @return IssueTrackerTask
+     * @throws PersistenceException pe
      */
-    TiTAProject saveProject(TiTAProject project) throws PersistenceException;
+    IssueTrackerTask saveIssueTrackerTask(IssueTrackerTask itt) throws PersistenceException;
 
     /**
      * deletes an existing project.
@@ -76,4 +77,23 @@ public interface IProjectService {
      * @return List of TiTAProjects
      */
     List<TiTAProject> findTiTAProjectsForUser(TiTAUser user);
+    
+    /** Finds an issue tracker task for a given tita project.
+     * @param tp Long
+     * @param it Long
+     * @param itp Long
+     * @param itt Long
+     * @return IssueTrackerTask
+     */
+    IssueTrackerTask findIssueTrackerTaskForTiTAProject(Long tp, Long it, Long itp, Long itt);
+
+    /**
+     * Finds an issue tracker project for a given tita project.
+     * @param tp Long
+     * @param issueTrackerId Long
+     * @param itp Long
+     * @return IssueTrackerProject
+     */
+    IssueTrackerProject findIssueTrackerProjectForTiTAProject(Long tp, Long issueTrackerId, 
+                                                              Long itp);
 }

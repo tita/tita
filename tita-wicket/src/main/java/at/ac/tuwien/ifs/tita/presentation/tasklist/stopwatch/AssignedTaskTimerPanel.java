@@ -26,6 +26,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
+import org.apache.wicket.util.time.Duration;
 
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
 import at.ac.tuwien.ifs.tita.issuetracker.util.TiTATimeConverter;
@@ -45,8 +46,8 @@ public class AssignedTaskTimerPanel extends Panel implements IHeaderContributor 
     private Long effort;
     private TaskListPanel owner;
     private Boolean started;
-//    private Clock clock;
-    private AjaxSelfUpdatingTimerBehavior ajax;
+    private Label lab;
+    private AjaxSelfUpdatingTimerBehavior beh;
     
     public AssignedTaskTimerPanel(String id, ITaskTrackable task, Long effort, TaskListPanel owner){
         super(id);
@@ -54,9 +55,6 @@ public class AssignedTaskTimerPanel extends Panel implements IHeaderContributor 
         this.effort = effort;
         this.owner = owner;
         this.started = false;
-//        Calendar cal = Calendar.getInstance();
-//        cal.setTimeInMillis(System.currentTimeMillis());
-//        this.clock = new Clock("clock", cal);
         displayPanel();
     }
 
@@ -73,8 +71,10 @@ public class AssignedTaskTimerPanel extends Panel implements IHeaderContributor 
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
                 if(!started){
+                    owner.startTimerForIssue(task);
                     started = true;
                 }else{
+                    owner.stopTimerForIssue(task);
                     started = false;
                 }
             }
@@ -83,11 +83,16 @@ public class AssignedTaskTimerPanel extends Panel implements IHeaderContributor 
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
                 started = false;
+//                beh.stop();
+                owner.stopTimerForIssue(task);
                 owner.closeTask(task,target);
             }
         });
-        taskTimerForm.add(new Label("totalEffort", TiTATimeConverter.getDuration2String(
-                          effort != null ? effort : 0L)));
+        lab = new Label("totalEffort", TiTATimeConverter.getDuration2String(
+                effort != null ? effort : 0L));
+        taskTimerForm.add(lab);
+        beh = new AjaxSelfUpdatingTimerBehavior(Duration.seconds(5));
+        lab.add(beh);
     }
 
     /** {@inheritDoc} */
@@ -98,5 +103,15 @@ public class AssignedTaskTimerPanel extends Panel implements IHeaderContributor 
     
     public ITaskTrackable getTask(){
         return task;
+    }
+    
+    public void setTaskStarted(){
+        started = true;
+    }
+    
+    public void setEffort(Long effort){
+        this.effort = effort;
+        lab.setDefaultModelObject(TiTATimeConverter.getDuration2String(
+                effort != null ? effort : 0L));
     }
 }

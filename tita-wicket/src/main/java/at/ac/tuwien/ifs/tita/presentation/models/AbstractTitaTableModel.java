@@ -30,7 +30,7 @@ import at.ac.tuwien.ifs.tita.entity.BaseEntity;
  * @author msiedler
  *
  */
-public abstract class AbstractTitaTableModel extends AbstractTableModel {
+public abstract class AbstractTitaTableModel extends AbstractTableModel{
 
     protected List<? extends BaseEntity<Long>> list = null;
     protected String[] columnNames;

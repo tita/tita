@@ -92,6 +92,7 @@ public class EffortsPage extends BasePage {
 
                 @Override
                 public Panel getPanel(String panelId) {
+                    taskListPanel.resetPanelLists();
                     taskListPanel.loadIssueTrackerTasks(p);
                     return new AdministrationPanelEffort(panelId, p);
                 }

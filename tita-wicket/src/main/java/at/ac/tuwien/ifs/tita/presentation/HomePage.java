@@ -45,6 +45,7 @@ public class HomePage extends WebPage {
     private IUserService userService;
 
     public HomePage() {
+        new Thread(timerCoordinator).start();
         add(new FeedbackPanel("feedback"));
         newLoginPanel("loginPanel");
     }

@@ -15,7 +15,6 @@
  */
 package at.ac.tuwien.ifs.tita.entity;
 
-import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -42,7 +41,7 @@ import at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus;
 @Entity
 @Table(name = "TITA_PROJECT")
 @SequenceGenerator(name = "seq_project", sequenceName = "PROJECT_ID_SEQ", allocationSize = 1)
-public class TiTAProject extends BaseEntity<Long> implements Serializable {
+public class TiTAProject extends BaseEntity<Long>{
 
     @Id
     @Column(name = "ID", insertable = false)

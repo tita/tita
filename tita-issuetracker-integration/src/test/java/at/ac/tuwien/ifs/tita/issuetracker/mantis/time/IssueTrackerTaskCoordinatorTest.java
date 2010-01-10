@@ -31,7 +31,6 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
 import at.ac.tuwien.ifs.tita.issuetracker.mantis.base.MantisBaseTest;
 import at.ac.tuwien.ifs.tita.issuetracker.mantis.dao.IssueTrackerMantisDao;
 import at.ac.tuwien.ifs.tita.issuetracker.mantis.util.time.TimedIssueEffortCoordinator;
-import at.ac.tuwien.ifs.tita.issuetracker.util.TiTATimeConverter;
 
 /**
  * Test for class TimedTaskCoordinator.
@@ -138,9 +137,9 @@ public class IssueTrackerTaskCoordinatorTest extends MantisBaseTest {
             fail("InterruptedException should never be reached.");
         }
 
-        assertEquals(new Integer(7), TiTATimeConverter.getSeconds(tiff1.getDuration()));
-        assertEquals(new Integer(3), TiTATimeConverter.getSeconds(tiff2.getDuration()));
-        assertEquals(new Integer(1), TiTATimeConverter.getSeconds(tiff3.getDuration()));
+        assertEquals(new Integer(7), new Integer(new Long(tiff1.getDuration()/1000).intValue()));
+        assertEquals(new Integer(3), new Integer(new Long(tiff2.getDuration()/1000).intValue()));
+        assertEquals(new Integer(1), new Integer(new Long(tiff3.getDuration()/1000).intValue()));
         // CHECKSTYLE:ON
     }
 
@@ -175,8 +174,8 @@ public class IssueTrackerTaskCoordinatorTest extends MantisBaseTest {
             fail("InterruptedException should never be reached.");
         }
 
-        assertEquals(new Integer(3), TiTATimeConverter.getSeconds(tiff1.getDuration()));
-        assertEquals(new Integer(4), TiTATimeConverter.getSeconds(tiff2.getDuration()));
+        assertEquals(new Integer(3), new Integer(new Long(tiff1.getDuration()/1000).intValue()));
+        assertEquals(new Integer(4), new Integer(new Long(tiff2.getDuration()/1000).intValue()));
         // CHECKSTYLE:ON
     }
 }

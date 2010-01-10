@@ -15,12 +15,12 @@
  */
 package at.ac.tuwien.ifs.tita.entity;
 
-import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,7 +41,7 @@ import javax.persistence.Version;
 @Entity
 @Table(name = "TITA_TASK")
 @SequenceGenerator(name = "seq_tita_task", sequenceName = "TITA_TASK_ID_SEQ", allocationSize = 1)
-public class TiTATask extends BaseEntity<Long> implements Serializable {
+public class TiTATask extends BaseEntity<Long>{
 
     @Id
     @Column(name = "ID")
@@ -60,7 +60,8 @@ public class TiTATask extends BaseEntity<Long> implements Serializable {
     private TiTAProject titaProject;
 
     @OneToMany(mappedBy ="titaTask",
-               cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+               cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
+               fetch = FetchType.EAGER)
     private Set<Effort> titaEfforts;
 
     @SuppressWarnings("unused")

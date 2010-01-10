@@ -23,7 +23,10 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.security.components.SecureWebPage;
 import org.apache.wicket.security.components.markup.html.links.SecurePageLink;
 import org.apache.wicket.security.hive.authentication.LoginContext;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
+import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.presentation.evaluation.timeconsumer.DailyViewPage;
 import at.ac.tuwien.ifs.tita.presentation.evaluation.timeconsumer.MonthlyViewPage;
 import at.ac.tuwien.ifs.tita.presentation.evaluation.timecontroller.MultipleProjectsView;
@@ -33,6 +36,7 @@ import at.ac.tuwien.ifs.tita.presentation.login.TitaSession;
 import at.ac.tuwien.ifs.tita.presentation.startpages.AdminPage;
 import at.ac.tuwien.ifs.tita.presentation.startpages.EffortsPage;
 import at.ac.tuwien.ifs.tita.presentation.startpages.ProjectsPage;
+import at.ac.tuwien.ifs.tita.presentation.utils.TimerCoordinator;
 
 /**
  * BaseClass for sites.
@@ -41,7 +45,13 @@ import at.ac.tuwien.ifs.tita.presentation.startpages.ProjectsPage;
  *
  */
 public class BasePage extends SecureWebPage {
-
+    
+    @SpringBean(name = "userService")
+    private IUserService userSerivce;
+    
+    @SpringBean(name ="timerCoordinator")
+    private TimerCoordinator timerCoordinator;
+    
     public BasePage() {
         initLogoutLink();
 
@@ -110,6 +120,12 @@ public class BasePage extends SecureWebPage {
             public void onClick() {
                 TitaSession titaSession = TitaSession.getSession();
                 if (titaSession.logoff(getLogoffContext())) {
+                    try {
+                        timerCoordinator.unregisterUser(userSerivce.getUserByUsername(titaSession.
+                                                                            getUsername()).getId());
+                    } catch (TitaDAOException e) {
+                       error("couldn't log out - user didn't exist in database");
+                    }
                     // goto login page
                     setResponsePage(Application.get().getHomePage());
                     titaSession.invalidate();

@@ -25,7 +25,7 @@ import java.io.Serializable;
  * @param <ID>
  *            (Long, Integer,....)
  */
-public abstract class BaseEntity<ID extends Serializable> {
+public abstract class BaseEntity<ID extends Serializable> implements Serializable {
 
     /**
      * Returns the Id of an specific entity.
