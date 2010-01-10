@@ -23,6 +23,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
 import at.ac.tuwien.ifs.tita.presentation.controls.panel.LoginPanel;
 import at.ac.tuwien.ifs.tita.presentation.login.TitaLoginContext;
 import at.ac.tuwien.ifs.tita.presentation.login.TitaSession;

@@ -16,7 +16,9 @@ limitations under the License.
  */
 package at.ac.tuwien.ifs.tita.presentation.importing.effort.csv;
 
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -26,9 +28,19 @@ import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.supercsv.cellprocessor.ift.CellProcessor;
 
+import at.ac.tuwien.ifs.tita.business.csv.IImportReader;
+import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
+import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
+import at.ac.tuwien.ifs.tita.entity.Effort;
+import at.ac.tuwien.ifs.tita.entity.TiTAProject;
+import at.ac.tuwien.ifs.tita.entity.TiTATask;
+import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.presentation.BasePage;
 import at.ac.tuwien.ifs.tita.presentation.controls.dropdown.SelectOption;
+import at.ac.tuwien.ifs.tita.presentation.login.TitaSession;
 
 /**
  * Page for importing efforts via csv files.
@@ -38,6 +50,12 @@ import at.ac.tuwien.ifs.tita.presentation.controls.dropdown.SelectOption;
  */
 public class EffortImportCSVPage extends BasePage {
 
+    @SpringBean(name = "titaCSVReader")
+    private IImportReader reader;
+    
+    @SpringBean (name = "userService")
+    private IUserService userService;
+    
     private Form<Object> form;
 
     private DropDownChoice<SelectOption> ddDate;
@@ -173,5 +191,22 @@ public class EffortImportCSVPage extends BasePage {
         } else {
             return null;
         }
+    }
+    
+    public void importEffortData(String csvPath, String[] header, 
+            CellProcessor[] processors, TiTAProject titaProject) throws TitaDAOException, IOException{
+        
+        //for example header and processors see CSVReaderTest
+        
+        
+        TiTAUser user = userService.getUserByUsername(
+                TitaSession.getSession().getUsername());
+        
+        //find existing default-Task
+        
+        TiTATask task = new TiTATask("default", user, 
+                titaProject, new HashSet<Effort>());
+    
+        reader.importEffortData(csvPath, header, processors, task, user);
     }
 }

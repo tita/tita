@@ -101,9 +101,17 @@
       <artifactId>spring-jms</artifactId>
     </dependency>
     <dependency>
-				<groupId>cglib</groupId>
-				<artifactId>cglib-nodep</artifactId>
-			</dependency>
+		<groupId>cglib</groupId>
+		<artifactId>cglib-nodep</artifactId>
+	</dependency>
+	<dependency>
+        <groupId>supercsv</groupId>
+        <artifactId>supercsv</artifactId>
+      </dependency>
+      <dependency>
+        <groupId>spiffy</groupId>
+        <artifactId>spiffy</artifactId>
+      </dependency>
 
     <!-- logging support -->
     <dependency>
@@ -156,6 +164,7 @@
 			  <exclude>**/UserServiceTest.java</exclude>
 			  <exclude>**/EffortServiceTest.java</exclude>
 			  <exclude>**/TaskServiceDaoTest.java</exclude>
+			  <exclude>**/CSVReaderTest.java</exclude>
             </excludes>
           </configuration>
         </plugin>

@@ -88,6 +88,7 @@ public class Effort extends BaseEntity<Long> implements Serializable {
             Long startTime, Long endTime, Long duration, String description,
             Boolean deleted, TiTAUser user) {
         super();
+        this.id = null;
         this.titaTask = titaTask;
         this.issueTTask = issueTTask;
         this.date = date;

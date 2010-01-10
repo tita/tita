@@ -30,6 +30,14 @@
   <bean id="titaProjectDao" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
     <constructor-arg value="at.ac.tuwien.ifs.tita.entity.TiTAProject"/>
   </bean>
-  
+ 
+  <bean id="titaCSVReader" class="at.ac.tuwien.ifs.tita.business.csv.CSVReader">
+    <constructor-arg ref="titaEffortService"/>
+  </bean>
+ 
+  <bean id="titaEffortService" class="at.ac.tuwien.ifs.tita.business.service.time.EffortService">
+    <constructor-arg ref="timeEffortDAO"/>
+  </bean>
+
   <import resource="classpath:persistence-context-local.xml"/>
 </beans>

@@ -17,28 +17,27 @@ import java.util.Date;
 
 public class EffortBean {
     private Date date;
-    private Long startTime;
-    private Long endTime;
+    private Date startTime;
+    private Date endTime;
     private Long duration;
     private String description;
-    
-    
+
     public Date getDate() {
         return date;
     }
     public void setDate(Date date) {
         this.date = date;
     }
-    public Long getStartTime() {
+    public Date getStartTime() {
         return startTime;
     }
-    public void setStartTime(Long startTime) {
+    public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
-    public Long getEndTime() {
+    public Date getEndTime() {
         return endTime;
     }
-    public void setEndTime(Long endTime) {
+    public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
     public Long getDuration() {
