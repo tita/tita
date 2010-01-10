@@ -23,6 +23,8 @@ import javax.persistence.PersistenceException;
 
 import junit.framework.Assert;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,13 +52,32 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
     @Autowired
     private IUserService service;
 
+    private List<Role> roleList;
+    private List<TiTAUser> userList;
+
     /**
-     * Prepare database for test -> insert 3 users.
+     * Prepare database for test -> insert 3 roles and users.
      * 
-     * @return List of users
      */
-    private List<TiTAUser> prepareTiTAUsers() {
-        List<TiTAUser> userList = new ArrayList<TiTAUser>();
+    @Before
+    public void setUp() {
+        // insert Roles
+        roleList = new ArrayList<Role>();
+
+        roleList.add(new Role(997L, "role1"));
+        roleList.add(new Role(998L, "role1"));
+        roleList.add(new Role(999L, "role1"));
+
+        try {
+            for (Role r : roleList) {
+                service.saveRole(r);
+            }
+        } catch (PersistenceException e) {
+            fail();
+        }
+
+        // Insert Users
+        userList = new ArrayList<TiTAUser>();
 
         TiTAUser user1 = new TiTAUser();
         TiTAUser user2 = new TiTAUser();
@@ -74,6 +95,10 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
         user2.setPassword("pwd2");
         user3.setPassword("pwd3");
 
+        user1.setRole(roleList.get(0));
+        user1.setRole(roleList.get(1));
+        user1.setRole(roleList.get(2));
+
         userList.add(user1);
         userList.add(user2);
         userList.add(user3);
@@ -85,18 +110,19 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
         } catch (PersistenceException e) {
             fail();
         }
-        return userList;
     }
 
     /**
-     * Delete all inserted users.
-     * 
-     * @param users List
-     * @throws TitaDAOException e
+     * Test.
      */
-    private void deleteTiTAUsers(List<TiTAUser> users) throws TitaDAOException {
-        for (TiTAUser u : users) {
-            service.deleteUser(u);
+    @Test
+    public void testGetRoleById() {
+        try {
+            Role r = service.getRoleById(997L);
+            Assert.assertNotNull(r);
+            Assert.assertEquals("role1", r.getDescription());
+        } catch (PersistenceException e) {
+            fail();
         }
     }
 
@@ -120,17 +146,48 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
      * Test.
      */
     @Test
+    public void testSaveRole() {
+        try {
+            Role r = new Role(1000L, "role1000");
+            service.saveRole(r);
+            Assert.assertNotNull(service.getRoleById(1000L));
+            Assert.assertEquals("role1000", service.getRoleById(1000L).getDescription());
+            service.deleteRole(r);
+        } catch (PersistenceException e) {
+            fail();
+        }
+    }
+
+    /**
+     * Test.
+     */
+    @Test
+    public void testDeleteRole() {
+        try {
+            Role r = new Role(1000L, "role1000");
+            service.saveRole(r);
+            service.deleteRole(r);
+            Assert.assertNull(service.getRoleById(1000L));
+        } catch (PersistenceException e) {
+            fail();
+        }
+    }
+
+    /**
+     * Test.
+     */
+    @Test
     public void testSaveTiTAUser() {
         TiTAUser u = new TiTAUser();
         u.setDeleted(false);
-        u.setUserName("user1");
+        u.setUserName("newuser");
         u.setPassword("pwd1");
         u.setFirstName("John");
         u.setLastName("Doe");
         u.setEmail("john.doe@usa.com");
 
         try {
-            Role role = service.getRoleById(1L);
+            Role role = service.getRoleById(999L);
             u.setRole(role);
             service.saveUser(u);
             Assert.assertNotNull(u.getId());
@@ -149,14 +206,14 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
     public void testDeleteTiTAUser() {
         TiTAUser u = new TiTAUser();
         u.setDeleted(false);
-        u.setUserName("user1");
+        u.setUserName("newuser2");
         u.setPassword("pwd1");
         u.setFirstName("John");
         u.setLastName("Doe");
         u.setEmail("john.doe@usa.com");
 
         try {
-            Role role = service.getRoleById(1L);
+            Role role = service.getRoleById(999L);
             u.setRole(role);
             service.saveUser(u);
             Assert.assertNotNull(u.getId());
@@ -174,39 +231,15 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
      */
     @Test
     public void testGetTiTAUserByTiTAUsername() {
-        List<TiTAUser> users = prepareTiTAUsers();
-        List<Role> roles = null;
         try {
-            roles = service.getRoles();
-            // CHECKSTYLE:OFF
-            for (int i = 0; i < 3; i++) {
-                users.get(i).setRole(roles.get(i));
-            }
-            // CHECKSTYLE:ON
-        } catch (TitaDAOException e1) {
-            fail();
-        }
-
-        TiTAUser u = null;
-
-        try {
-            for (TiTAUser user : users) {
-                service.saveUser(user);
-            }
-            u = service.getUserByUsername("user1");
+            TiTAUser u = service.getUserByUsername("user1");
             Assert.assertNotNull(u);
             Assert.assertEquals("user1", u.getUserName());
             Assert.assertEquals("pwd1", u.getPassword());
             Assert.assertNotNull(u.getRole());
-            Assert.assertEquals("Administrator", u.getRole().getDescription());
+            Assert.assertEquals("role1", u.getRole().getDescription());
         } catch (TitaDAOException e) {
             fail();
-        } finally {
-            try {
-                deleteTiTAUsers(users);
-            } catch (TitaDAOException e) {
-                fail();
-            }
         }
     }
 
@@ -215,23 +248,28 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
      */
     @Test
     public void testGetTiTAUsers() {
-        List<TiTAUser> users = prepareTiTAUsers();
-        List<TiTAUser> ulist = new ArrayList<TiTAUser>();
-
         try {
-            ulist = service.getUndeletedUsers();
+            List<TiTAUser> ulist = service.getUndeletedUsers();
             Assert.assertNotNull(ulist);
             // CHECKSTYLE:OFF
             Assert.assertFalse(ulist.isEmpty());
             // CHECKSTYLE:ON
         } catch (TitaDAOException e) {
             fail();
-        } finally {
-            try {
-                deleteTiTAUsers(users);
-            } catch (TitaDAOException e) {
-                fail();
-            }
+        }
+    }
+
+    /**
+     * After Delete Roles and Users.
+     */
+    @After
+    public void tearDown() {
+        for (TiTAUser u : userList) {
+            service.deleteUser(u);
+        }
+
+        for (Role r : roleList) {
+            service.deleteRole(r);
         }
     }
 }

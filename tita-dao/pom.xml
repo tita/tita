@@ -141,6 +141,7 @@
         <configuration>
           <excludes>
             <exclude>**/EffortDaoTest.java</exclude>
+			<exclude>**/UserDaoTest.java</exclude>
           </excludes>
         </configuration>
       </plugin>
