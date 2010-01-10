@@ -64,6 +64,8 @@
     <commons-digester.version>2.0</commons-digester.version>
     <itext.version>2.1.7</itext.version>
     <commons-collections.version>20040616</commons-collections.version>
+    <supercsv.version>1.52</supercsv.version>
+    <spiffy.version>0.05</spiffy.version>
     
     <!-- mantis libs versions -->
     <mantis.connect.version>1.1.1.0</mantis.connect.version>
@@ -357,6 +359,7 @@
             <exclude>**/*.checkstyle</exclude>
             <exclude>**/*.js</exclude>
             <exclude>**/*.db</exclude>
+            <exclude>**/*.csv</exclude>
             <exclude>**/*.springBeans</exclude>
 
             <exclude>NOTICE</exclude>
@@ -672,6 +675,16 @@
         <groupId>maven-plugins</groupId>
         <artifactId>maven-cobertura-plugin</artifactId>
         <version>${maven.plugin.cobertura}</version>
+      </dependency>
+      <dependency>
+        <groupId>supercsv</groupId>
+        <artifactId>supercsv</artifactId>
+        <version>${supercsv.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>spiffy</groupId>
+        <artifactId>spiffy</artifactId>
+        <version>${spiffy.version}</version>
       </dependency>
 
 

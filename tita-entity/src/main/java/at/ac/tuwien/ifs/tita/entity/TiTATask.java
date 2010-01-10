@@ -72,6 +72,17 @@ public class TiTATask extends BaseEntity<Long> implements Serializable {
         this.user = user;
         this.titaEfforts = efforts;
     }
+    
+     public TiTATask(String description, TiTAUser user, TiTAProject titaProject,
+            Set<Effort> titaEfforts) {
+        super();
+        this.description = description;
+        this.user = user;
+        this.titaProject = titaProject;
+        this.titaEfforts = titaEfforts;
+    }
+
+
 
     public TiTATask() {
     }

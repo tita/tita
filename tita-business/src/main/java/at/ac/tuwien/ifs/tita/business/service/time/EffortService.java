@@ -36,7 +36,14 @@ import at.ac.tuwien.ifs.tita.entity.util.UserProjectEffort;
 public class EffortService implements IEffortService {
 
     private IEffortDao timeEffortDao;
-
+    public EffortService() {
+        
+    }
+    
+    public EffortService(IEffortDao timeEffortDao){
+        this.timeEffortDao = timeEffortDao;
+    }
+    
     public void setTimeEffortDao(IEffortDao timeEffortDao) {
         this.timeEffortDao = timeEffortDao;
     }
