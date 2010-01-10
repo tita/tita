@@ -98,6 +98,21 @@ public class Effort extends BaseEntity<Long> implements Serializable {
         this.issueTTask = issueTTask;
         this.description = description;
     }
+    
+    public Effort(TiTATask titaTask, IssueTrackerTask issueTTask, Date date,
+            Long startTime, Long endTime, Long duration, String description,
+            Boolean deleted, TiTAUser user) {
+        super();
+        this.titaTask = titaTask;
+        this.issueTTask = issueTTask;
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.duration = duration;
+        this.description = description;
+        this.deleted = deleted;
+        this.user = user;
+    }
 
     @Override
     public Long getId() {
@@ -232,5 +247,9 @@ public class Effort extends BaseEntity<Long> implements Serializable {
             return url + "/" + projectname + ":" + taskno;
         }
         return "";
+    }
+    
+    public void addDuration(Long dur){
+        this.duration += dur;
     }
 }

@@ -24,9 +24,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
+import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
+import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.presentation.controls.panel.LoginPanel;
 import at.ac.tuwien.ifs.tita.presentation.login.TitaLoginContext;
 import at.ac.tuwien.ifs.tita.presentation.login.TitaSession;
+import at.ac.tuwien.ifs.tita.presentation.utils.TimerCoordinator;
 
 /**
  * Homepage of Hello World Application.
@@ -34,7 +37,10 @@ import at.ac.tuwien.ifs.tita.presentation.login.TitaSession;
 public class HomePage extends WebPage {
     private static TitaLoginContext loggedInUser;
     private final Logger log = LoggerFactory.getLogger(HomePage.class);
-
+    
+    @SpringBean(name ="timerCoordinator")
+    private TimerCoordinator timerCoordinator;
+    
     @SpringBean(name = "userService")
     private IUserService userService;
 
@@ -64,7 +70,8 @@ public class HomePage extends WebPage {
             @Override
             public boolean signIn(String username, String password) {
                 TitaSession secureSession = TitaSession.getSession();
-
+                TiTAUser titaUser;
+                
                 if (secureSession.isUserAuthenticated() && getLoggedInUser() != null) {
                     secureSession.logoff(getLoggedInUser());
                     secureSession.invalidateNow();
@@ -76,6 +83,12 @@ public class HomePage extends WebPage {
                     secureSession.login(loggedUser);
                     setLoggedInUser(loggedUser);
                     TitaSession.getSession().setUsername(username);
+                    titaUser = userService.getUserByUsername(username);
+                    //register tita user with 0 active tasks
+                    timerCoordinator.registerUser(titaUser.getId());
+                }catch(TitaDAOException ex){
+                    log.error("Could find user in db " + username, ex);
+                    return false;
                 } catch (LoginException e) {
                     log.error("Could not login " + username, e);
                     return false;

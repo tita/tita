@@ -53,9 +53,11 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
 import at.ac.tuwien.ifs.tita.presentation.login.TitaSession;
 import at.ac.tuwien.ifs.tita.presentation.tasklist.accordion.AccordionPanel;
 import at.ac.tuwien.ifs.tita.presentation.tasklist.accordion.AccordionPanelItem;
+import at.ac.tuwien.ifs.tita.presentation.tasklist.stopwatch.ActiveTaskId;
 import at.ac.tuwien.ifs.tita.presentation.tasklist.stopwatch.AssignedTaskTimerPanel;
 import at.ac.tuwien.ifs.tita.presentation.tasklist.stopwatch.ClosedTaskTimerPanel;
 import at.ac.tuwien.ifs.tita.presentation.tasklist.stopwatch.NewTaskTimerPanel;
+import at.ac.tuwien.ifs.tita.presentation.utils.TimerCoordinator;
 
 /**
  * The TaskListPanel defines the position and the user interface design to
@@ -80,6 +82,9 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
     @SpringBean(name = "timeEffortService")
     private IEffortService effortService;
     
+    @SpringBean(name ="timerCoordinator")
+    private TimerCoordinator timerCoordinator;
+    
     private TiTAUser user;
     private TiTAProject project;
     private WebMarkupContainer containerTaskList = null;
@@ -92,17 +97,12 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
     private Map<Long, NewTaskTimerPanel> newTasks;
     private Map<Long, AssignedTaskTimerPanel> assignedTasks;
     private Map<Long, ClosedTaskTimerPanel> closedTasks;
-//    private Map<ActiveTaskId, ITaskTrackable> activeTasks;
-    private Map<Long, String> tempEfforts;
     
     public TaskListPanel(String id, TiTAProject titaProject) {
         super(id);
         newTasks = new TreeMap<Long, NewTaskTimerPanel>();
         assignedTasks = new TreeMap<Long, AssignedTaskTimerPanel>();
         closedTasks = new TreeMap<Long, ClosedTaskTimerPanel>();
-        tempEfforts = new TreeMap<Long, String>();
-        
-//        activeTasks = new TreeMap<ActiveTaskId, ITaskTrackable>();
         groupingList = Arrays.asList(new String[] { "Groups by task state",
                 "Group by issuetracker" });
         
@@ -122,29 +122,7 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
             throw new RuntimeException("Couldn't find user currently logged in.", e);
         }
     }
-    
-    /**
-     * Starts a timer for an active task comming from section NEW or ASSIGNED.
-     * @param task ITaskTrackable
-     */
-//    public void startTaskTimer(ITaskTrackable task){
-//        activeTasks.put(new ActiveTaskId(project.getId(), C_ISSUE_TRACKER_ID,
-//                                         task.getProject().getId(),task.getId()), task);
-//    }
-//    
-//    /**
-//     * Stops a timer for an active task comming from section ASSIGNED.
-//     * @param task ITaskTrackable
-//     */
-//    public void stopTaskTimer(ITaskTrackable task){
-//        ActiveTaskId atId = new ActiveTaskId(project.getId(), C_ISSUE_TRACKER_ID,
-//                task.getProject().getId(),task.getId());
-//                
-//        if(activeTasks.containsKey(atId)){
-//            activeTasks.remove(atId);
-//        }
-//    }
-    
+        
     /**
      * Shows the header and configuration for the tasklist.
      */
@@ -189,7 +167,7 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
 
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
-//                createIssueListForTiTAProjectAndUser(project, user);
+                loadIssueTrackerTasks(project);
                 target.addComponent(containerTaskList);
             }
         });
@@ -202,7 +180,6 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
         //clear all accordion items
         accordionPanel.removeAllAccordionPanelItems();
         try{
-            saveCurrentEfforts();
             taskService.fetchTaskFromIssueTrackerProjects(project.getId(), user.getId());
             if(isOrderByState()){
                 generateIssueList(taskService.sortingTasksByIssueStatus(IssueStatus.NEW));
@@ -212,7 +189,6 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
                 generateIssueList(taskService.sortingTasksByIssueTracker(C_HOST));
             }
             updateAccordion();
-            restoreCurrentEfforts();
         } catch (ProjectNotFoundException e) {
             log.error(e.getMessage());
         }
@@ -220,7 +196,7 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
     
     private void generateIssueList(Map<Long, ITaskTrackable> issueMap){
         Iterator<Long> keys;
-        Long effort = 0L;
+        Long effort = 0L, taskId = null;
         IssueStatus state = null;
         
         if(!issueMap.isEmpty()){
@@ -228,23 +204,22 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
             while(keys.hasNext()){
                 Long key = keys.next();
                 ITaskTrackable task = issueMap.get(key);
-                effort = effortService.findEffortsForIssueTrackerTask(project, user, 
-                        task.getProject().getId(), task.getId(),
-                        C_ISSUE_TRACKER_ID);
+                effort = readEffortFromDb(task.getProject().getId(), task.getId());
                 state = task.getStatus();
+                taskId = task.getId();
                 if(state.equals(IssueStatus.NEW)){
-                    if(!newTasks.containsKey(key)){
-                        newTasks.put(key, new NewTaskTimerPanel(
+                    if(!newTasks.containsKey(taskId)){
+                        newTasks.put(taskId, new NewTaskTimerPanel(
                                 AccordionPanelItem.ITEM_ID, task, this));
                     }
                 }else if(state.equals(IssueStatus.ASSIGNED)){
-                    if(!assignedTasks.containsKey(key)){
-                        assignedTasks.put(key, new AssignedTaskTimerPanel(
+                    if(!assignedTasks.containsKey(taskId)){
+                        assignedTasks.put(taskId, new AssignedTaskTimerPanel(
                                                   AccordionPanelItem.ITEM_ID, task, effort, this));
                     }
                 }else if(state.equals(IssueStatus.CLOSED)){
-                    if(!closedTasks.containsKey(key)){
-                        closedTasks.put(key, new ClosedTaskTimerPanel(
+                    if(!closedTasks.containsKey(taskId)){
+                        closedTasks.put(taskId, new ClosedTaskTimerPanel(
                                             AccordionPanelItem.ITEM_ID, task, effort));
                     }
                 }
@@ -252,10 +227,25 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
         }    
     }
     
-    public void switchAndStoreTiTAProject(){
-        newTasks.clear();
-        assignedTasks.clear();
-        closedTasks.clear();
+    private Long readEffortFromDb(Long issueTrackerProjectId, Long taskId){
+        return effortService.findEffortsForIssueTrackerTask(project, user, 
+                issueTrackerProjectId, taskId,C_ISSUE_TRACKER_ID);
+    }
+        
+    public void startTimerForTask(ITaskTrackable task){
+        timerCoordinator.startIssueTimer(user.getId(), 
+                                         new ActiveTaskId(project.getId(), C_ISSUE_TRACKER_ID,
+                                         task.getProject().getId(), task.getId()));
+    }
+    
+    public void stopTimerForTask(ITaskTrackable task){
+        Long effort = timerCoordinator.stopIssueTimer(user.getId(), 
+                                             new ActiveTaskId(project.getId(), C_ISSUE_TRACKER_ID,
+                                             task.getProject().getId(), task.getId()));
+//      persist issue tracker task and effort and read it from db to get actual effort value
+//        IssueTrackerTask itt = new IssueTrackerTask()
+//        Effort eff = new Effort()
+//        effortService.s
     }
     
     /**
@@ -279,6 +269,8 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
             addToAccordion("Mantis",generateIssueTrackerPanels(IssueTrackingTool.MANTIS));
         }
         accordionPanel.setOutputMarkupId(true);
+        tasklistForm.setOutputMarkupId(true);
+        tasklistForm.setOutputMarkupPlaceholderTag(true);
         tasklistForm.add(accordionPanel);
         containerTaskList.add(tasklistForm);
     }
@@ -385,38 +377,18 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
      */
     public void closeTask(ITaskTrackable task, AjaxRequestTarget target){
         taskService.closeTask(task.getId());
-//        saveCurrentEfforts();
-//        createIssueListForTiTAProjectAndUser(project, user);
-        target.addComponent(containerTaskList);
-    }
-    
-    private void saveCurrentEfforts() {
-        tempEfforts.clear();
-        AssignedTaskTimerPanel pan;
-        Iterator<Long> keys = assignedTasks.keySet().iterator();
-        
-        while(keys.hasNext()){
-            Long key = keys.next();
-            pan = assignedTasks.get(key);
-            pan.stopTimer();
-            tempEfforts.put(pan.getTask().getId(), pan.getDate());
+        Long effort = null;
+        if(assignedTasks.containsKey(task.getId())){
+            assignedTasks.remove(task.getId());
+            effort = readEffortFromDb(task.getProject().getId(), task.getId());
+            assignedTasks.put(task.getId(), new AssignedTaskTimerPanel(
+                                                AccordionPanelItem.ITEM_ID, task, effort, this));
+            //very important!! otherwise wicket can't update webcontainer!!!
+            accordionPanel.removeAllAccordionPanelItems();
+            updateAccordion();
         }
     }
-    
-    private void restoreCurrentEfforts(){
-        AssignedTaskTimerPanel pan;
-        Iterator<Long> keys = assignedTasks.keySet().iterator();
         
-        while(keys.hasNext()){
-            Long key = keys.next();
-            pan = assignedTasks.get(key);
-            if(tempEfforts.containsKey(pan.getTask().getId())){
-                pan.setDate(tempEfforts.get(pan.getTask().getId()));
-                pan.startTimer();
-            }
-        }
-    }
-
     /**
      * Methode to assign a new task of mantis.
      * @param task ITaskTrackable
@@ -424,8 +396,20 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
      */
     public void assignTask(ITaskTrackable task, AjaxRequestTarget target){
         taskService.assignTask(task.getId());
-//        saveCurrentEfforts();
-//        createIssueListForTiTAProjectAndUser(project, user);
+        assginNewTaskInAssignPanel(task);
         target.addComponent(containerTaskList);
+    }
+    
+    private void assginNewTaskInAssignPanel(ITaskTrackable task){
+        Long effort = null;
+        if(newTasks.containsKey(task.getId())){
+            newTasks.remove(task.getId());
+            effort = readEffortFromDb(task.getProject().getId(), task.getId());
+            assignedTasks.put(task.getId(), new AssignedTaskTimerPanel(
+                                                AccordionPanelItem.ITEM_ID, task, effort, this));
+            //very important!! otherwise wicket can't update webcontainer!!!
+            accordionPanel.removeAllAccordionPanelItems();
+            updateAccordion();
+        }
     }
 }

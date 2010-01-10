@@ -51,5 +51,7 @@
   
   <bean id="generalTimer" class="at.ac.tuwien.ifs.tita.entity.util.GeneralTimer"/>
 
+  <bean id="timerCoordinator" class="at.ac.tuwien.ifs.tita.presentation.utils.TimerCoordinator" />
+  
   <import resource="classpath:persistence-context.xml"/>
 </beans>

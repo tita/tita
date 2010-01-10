@@ -92,7 +92,6 @@ public class EffortsPage extends BasePage {
 
                 @Override
                 public Panel getPanel(String panelId) {
-                    taskListPanel.switchAndStoreTiTAProject();
                     taskListPanel.loadIssueTrackerTasks(p);
                     return new AdministrationPanelEffort(panelId, p);
                 }
