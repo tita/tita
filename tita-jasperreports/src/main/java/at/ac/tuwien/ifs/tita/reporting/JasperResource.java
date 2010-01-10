@@ -89,6 +89,16 @@ public abstract class JasperResource extends DynamicWebResource {
     }
 
     /**
+     * Adds a parameter to the parameter map.
+     * 
+     * @param key key of parameter as String
+     * @param value value of parameter as String
+     */
+    protected void addReportParameter(String key, String value) {
+        reportParameters.put(key, value);
+    }
+
+    /**
      * Returns the generated resource.
      * 
      * @see org.apache.wicket.markup.html.DynamicWebResource#getResourceState()

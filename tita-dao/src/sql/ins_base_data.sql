@@ -56,27 +56,27 @@ insert into EFFORT (ID, DESCRIPTION, TITA_TASK_ID, ISSUET_TASK_ID, DATE, DURATIO
 values (2, 'e2', 1, null, '2009-03-24 9:00', 2000, false, 6);
 
 insert into EFFORT (ID, DESCRIPTION, TITA_TASK_ID, ISSUET_TASK_ID, DATE, DURATION, DELETED, USER_ID)
-values (3, 'e3', 2, null, '2009-07-09 10:00', 2000, false, 7);
+values (3, 'e3', 2, null, '2009-07-09', 2000, false, 7);
 insert into EFFORT (ID, DESCRIPTION, TITA_TASK_ID, ISSUET_TASK_ID, DATE, DURATION, DELETED, USER_ID)
-values (4, 'e4', 2, null, '2009-05-17 11:00', 2000, false, 6);
+values (4, 'e4', 2, null, '2009-05-17', 2000, false, 6);
 insert into EFFORT (ID, DESCRIPTION, TITA_TASK_ID, ISSUET_TASK_ID, DATE, DURATION, DELETED, USER_ID)
-values (9, 'e9', 2, null, '2009-05-18 12:00', 3000, false, 6);
+values (9, 'e9', 2, null, '2009-05-18', 3000, false, 6);
 
 insert into EFFORT (ID, DESCRIPTION, TITA_TASK_ID, ISSUET_TASK_ID, DATE, DURATION, DELETED, USER_ID)
-values (5, 'e5', null, 1, '2009-01-12 13:00', 2000, false, 6);
+values (5, 'e5', null, 1, '2009-01-12', 2000, false, 6);
 insert into EFFORT (ID, DESCRIPTION, TITA_TASK_ID, ISSUET_TASK_ID, DATE, DURATION, DELETED, USER_ID)
-values (6, 'e6', null, 1, '2009-11-18 14:00', 2000, false, 7);
+values (6, 'e6', null, 1, '2009-11-18', 2000, false, 7);
 
 insert into EFFORT (ID, DESCRIPTION, TITA_TASK_ID, ISSUET_TASK_ID, DATE, DURATION, DELETED, USER_ID)
-values (7, 'e7', null, 2, '2009-06-29 15:00', 2000, false, 5);
+values (7, 'e7', null, 2, '2009-06-29', 2000, false, 5);
 insert into EFFORT (ID, DESCRIPTION, TITA_TASK_ID, ISSUET_TASK_ID, DATE, DURATION, DELETED, USER_ID)
-values (8, 'e8', null, 2, '2009-10-24 16:00', 2000, false, 5);
+values (8, 'e8', null, 2, '2009-10-24', 2000, false, 5);
 insert into EFFORT (ID, DESCRIPTION, TITA_TASK_ID, ISSUET_TASK_ID, DATE, DURATION, DELETED, USER_ID)
-values (10, 'e10', null, 2, '2009-05-18 17:00', 3000, false, 6);
+values (10, 'e10', null, 2, '2009-05-18', 3000, false, 6);
 
-insert into USER_PROJECT (ID, USER_ID, PROJECT_ID, TARGET_HOURS) values (1, 5, 1, 150);
-insert into USER_PROJECT (ID, USER_ID, PROJECT_ID, TARGET_HOURS) values (2, 6, 1, 140);
-insert into USER_PROJECT (ID, USER_ID, PROJECT_ID, TARGET_HOURS) values (4, 6, 2, 130);
+insert into USER_PROJECT (ID, USER_ID, TITA_PROJECT_ID) values (1, 7, 1);
+insert into USER_PROJECT (ID, USER_ID, TITA_PROJECT_ID) values (2, 6, 1);
+insert into USER_PROJECT (ID, USER_ID, TITA_PROJECT_ID) values (4, 6, 2);
 
 -- for testing mantis
 insert into isst_login (id, modification_version, password, name, isst_id, user_id)
