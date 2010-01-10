@@ -130,7 +130,7 @@ tr.onMouseOver {
 }
 
 .selected {
-	background-color: rgb(10, 36, 106);
+	background-color: #86CEFE;
 	color: white;
 	font-weight:bold;
 }

@@ -3,15 +3,15 @@
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
-   
+
        http://www.apache.org/licenses/LICENSE\-2.0
-       
+
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-   
+
  */
 
 package at.ac.tuwien.ifs.tita.dao.time;
@@ -24,6 +24,7 @@ import java.util.List;
 
 import javax.persistence.NoResultException;
 
+import org.hibernate.Query;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Property;
@@ -37,12 +38,14 @@ import at.ac.tuwien.ifs.tita.entity.util.UserProjectEffort;
 
 /**
  * TimeEffortDao.
- * 
+ *
  * @author markus
  * @author rene
- * 
+ *
  */
 public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEffortDao {
+    private static final int C_FETCHSIZE = 1000;
+
     public EffortDao() {
         super(Effort.class);
     }
@@ -54,29 +57,31 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
         start.set(year, month, 1);
         end.set(year, month, start.getActualMaximum(Calendar.DAY_OF_MONTH));
 
-        return findByCriteriaOrdered(new Criterion[] { Restrictions.between("date", start.getTime(), end.getTime()),
-                Restrictions.eq("deleted", false) }, new Order[] { Property.forName("date").asc() }, new String[] {});
+        return findByCriteriaOrdered(new Criterion[] {
+                Restrictions.between("date", start.getTime(), end.getTime()),
+                Restrictions.eq("deleted", false) },
+                new Order[] { Property.forName("date").asc() }, new String[] {});
     }
 
     /** {@inheritDoc} */
     public List<Effort> getTimeEffortsDailyView(Date date) {
-        return findByCriteriaOrdered(
-                new Criterion[] { Restrictions.eq("date", date), Restrictions.eq("deleted", false) },
+        return findByCriteriaOrdered(new Criterion[] { Restrictions.eq("date", date),
+                Restrictions.eq("deleted", false) },
                 new Order[] { Property.forName("date").asc() }, new String[] {});
     }
 
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
     public List<Integer> getTimeEffortsYears() {
-        javax.persistence.Query years = this.em.createNamedQuery("Effort.getYears");
+        javax.persistence.Query years = em.createNamedQuery("Effort.getYears");
         return years.getResultList();
     }
 
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
     @Override
-    public List<UserProjectEffort> findEffortsForTiTAProjectAndTimeConsumerId(List<String> projectIds,
-            List<String> tIds, String grouping) {
+    public List<UserProjectEffort> findEffortsForTiTAProjectAndTimeConsumerId(
+            List<String> projectIds, List<String> tIds, String grouping) {
         String pIds = StringUtil.generateIdStringFromStringList(projectIds);
         String tcIds = StringUtil.generateIdStringFromStringList(tIds);
 
@@ -91,21 +96,24 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
             queryString += ", null as YEAR, null as MONTH, null as DAY";
         }
 
-        queryString += " from (select sum(e1.duration) as duration, tu.username as username," + " tp.name as project ";
+        queryString += " from (select sum(e1.duration) as duration, tu.username as username,"
+                + " tp.name as project ";
 
         if (grouping.equals("month")) {
             queryString += ", date_part('year', e1.date) as YEAR, "
                     + " date_part('month', e1.date) as MONTH, null as DAY";
         } else if (grouping.equals("day")) {
-            queryString += ", date_part('year', e1.date) as YEAR, " + " date_part('month', e1.date) as MONTH, "
+            queryString += ", date_part('year', e1.date) as YEAR, "
+                    + " date_part('month', e1.date) as MONTH, "
                     + " date_part('day', e1.date) as DAY";
         } else if (grouping.equals("overall")) {
             queryString += ", null as YEAR, null as MONTH, null as DAY";
         }
 
         queryString += " from effort e1 " + "join tita_task tt on e1.tita_task_id = tt.id "
-                + "join tita_project tp on tt.tita_project_id = tp.id " + "join tita_user tu on tu.id = e1.user_id "
-                + "where tp.name in (" + pIds + ") and tu.username in (" + tcIds + ") ";
+                + "join tita_project tp on tt.tita_project_id = tp.id "
+                + "join tita_user tu on tu.id = e1.user_id " + "where tp.name in (" + pIds
+                + ") and tu.username in (" + tcIds + ") ";
 
         if (grouping.equals("month")) {
             queryString += " group by tp.name, tu.username, date_part('year', e1.date), "
@@ -117,7 +125,8 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
             queryString += " group by tp.name, tu.username ";
         }
 
-        queryString += " union all" + " select sum(e2.duration) as duration, tu1.username as username, "
+        queryString += " union all"
+                + " select sum(e2.duration) as duration, tu1.username as username, "
                 + " tp2.name as project ";
 
         if (grouping.equals("month")) {
@@ -130,7 +139,8 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
             queryString += ", null as YEAR, null as MONTH, null as DAY";
         }
 
-        queryString += " from effort e2 " + "join issue_tracker_task it on e2.issuet_task_id = it.id "
+        queryString += " from effort e2 "
+                + "join issue_tracker_task it on e2.issuet_task_id = it.id "
                 + "join issue_tracker_project itp on it.issue_tracker_project_id ="
                 + "itp.id join tita_project tp2 on tp2.id = itp.tita_project_id "
                 + "join tita_user tu1 on tu1.id = e2.user_id " + "where tp2.name in (" + pIds
@@ -151,7 +161,7 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
 
         org.hibernate.SQLQuery q = getSession().createSQLQuery(queryString);
         q.addEntity(UserProjectEffort.class);
-        q.setFetchSize(1000);
+        q.setFetchSize(C_FETCHSIZE);
 
         List<UserProjectEffort> efforts = null;
 
@@ -166,7 +176,8 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
     @Override
-    public List<UserProjectEffort> findEffortsForTiTAProjectId(List<String> projectIds, String grouping) {
+    public List<UserProjectEffort> findEffortsForTiTAProjectId(List<String> projectIds,
+            String grouping) {
         String pIds = StringUtil.generateIdStringFromStringList(projectIds);
 
         String queryString = "select nextval('USER_PROJECT_EFFORT_1_ID_SEQ') as ID, "
@@ -193,10 +204,12 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
         }
 
         queryString += " from effort e1 join tita_task tt on e1.tita_task_id = tt.id "
-                + "join tita_project tp on tt.tita_project_id = tp.id " + "where tp.name in (" + pIds + ") ";
+                + "join tita_project tp on tt.tita_project_id = tp.id " + "where tp.name in ("
+                + pIds + ") ";
 
         if (grouping.equals("month")) {
-            queryString += " group by tp.name, date_part('year', e1.date), " + " date_part('month', e1.date) ";
+            queryString += " group by tp.name, date_part('year', e1.date), "
+                    + " date_part('month', e1.date) ";
         } else if (grouping.equals("day")) {
             queryString += " group by tp.name, date_part('year', e1.date), "
                     + " date_part('month', e1.date), date_part('day', e1.date) ";
@@ -216,12 +229,15 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
             queryString += ", null as year, null as month, null as day";
         }
 
-        queryString += " from effort e2 " + "join issue_tracker_task it on e2.issuet_task_id = it.id "
+        queryString += " from effort e2 "
+                + "join issue_tracker_task it on e2.issuet_task_id = it.id "
                 + "join issue_tracker_project itp on it.issue_tracker_project_id ="
-                + "itp.id join tita_project tp2 on tp2.id = itp.tita_project_id " + "where tp2.name in (" + pIds + ") ";
+                + "itp.id join tita_project tp2 on tp2.id = itp.tita_project_id "
+                + "where tp2.name in (" + pIds + ") ";
 
         if (grouping.equals("month")) {
-            queryString += " group by tp2.name, date_part('year', e2.date), " + " date_part('month', e2.date) ";
+            queryString += " group by tp2.name, date_part('year', e2.date), "
+                    + " date_part('month', e2.date) ";
         } else if (grouping.equals("day")) {
             queryString += " group by tp2.name, date_part('year', e2.date), "
                     + " date_part('month', e2.date), date_part('day', e2.date) ";
@@ -234,7 +250,7 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
 
         org.hibernate.SQLQuery q = getSession().createSQLQuery(queryString);
         q.addEntity(UserProjectEffort.class);
-        q.setFetchSize(1000);
+        q.setFetchSize(C_FETCHSIZE);
         List<UserProjectEffort> efforts = new ArrayList<UserProjectEffort>();
 
         try {
@@ -258,35 +274,93 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
     /** {@inheritDoc} */
     @Override
     public List<Effort> getActualTimeEfforts(Integer maxresults) {
-        return findByCriteriaOrdered(new Criterion[] { Restrictions.eq("deleted", false) }, 
-                                     new Order[] { Order.asc("date") }, null);
+        return findByCriteriaOrdered(new Criterion[] { Restrictions.eq("deleted", false) },
+                new Order[] { Order.asc("date") }, null);
     }
 
-    /** {inheritDoc} */
+    /** {@inheritDoc} */
     @Override
-    public Long findEffortsForIssueTrackerTask(
-            Long tpId, String username, Long issTProjectId, Long isstTTaskId, Long isstId) {
-        String queryString = "select sum(duration) as duration from effort e "+
-                        "join issue_tracker_task itt on e.issuet_task_id = itt.id "+
-                        "join issue_tracker_project itp on itt.issue_tracker_project_id = itp.id "+
-                        "join tita_project tp on itp.tita_project_id = tp.id "+
-                        "join tita_user tu on e.user_id = tu.id "+
-                        "where tp.id = ? and itp.isst_id = ? and itp.isst_project_id = ? "+ 
-                        "and itt.isst_task_id = ? and tu.username = ?";
-        
+    public Long findEffortsForIssueTrackerTask(Long tpId, String username, Long issTProjectId,
+            Long isstTTaskId, Long isstId) {
+        String queryString = "select sum(duration) as duration from effort e "
+                + "join issue_tracker_task itt on e.issuet_task_id = itt.id "
+                + "join issue_tracker_project itp on itt.issue_tracker_project_id = itp.id "
+                + "join tita_project tp on itp.tita_project_id = tp.id "
+                + "join tita_user tu on e.user_id = tu.id "
+                + "where tp.id = ? and itp.isst_id = ? and itp.isst_project_id = ? "
+                + "and itt.isst_task_id = ? and tu.username = ?";
+
         org.hibernate.SQLQuery q = getSession().createSQLQuery(queryString);
-//        q.addEntity(Long.class);
+        // q.addEntity(Long.class);
+        // CHECKSTYLE:OFF
         q.setParameter(0, tpId);
         q.setParameter(1, isstId);
-        q.setParameter(2, issTProjectId); 
+        q.setParameter(2, issTProjectId);
         q.setParameter(3, isstTTaskId);
         q.setParameter(4, username);
-                
+        // CHECKSTYLE:ON
+
         Object obj = q.uniqueResult();
-        
-        if(obj != null){
-            return new Long(((BigDecimal)obj).longValue());
+
+        if (obj != null) {
+            return new Long(((BigDecimal) obj).longValue());
         }
         return null;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Long totalizeEffortsForTiTAProjectAndTiTAUser(Long projectId, Long userId) {
+
+        String first = "select sum(e.duration) as sum " + "from Effort e "
+                + "join e.titaTask as tt " + "join tt.titaProject as tp " + "where e.user = "
+                + userId + " and tp.id = " + projectId + " and e.deleted != true";
+
+        String second = "select sum(e.duration) as sum " + "from Effort e "
+                + "join e.issueTTask as itt " + "join itt.isstProject as itp "
+                + "join itp.titaProject as tp " + "where e.user = " + userId + " and tp.id = "
+                + projectId + " and e.deleted != true";
+
+        Query query1 = getSession().createQuery(first);
+        Query query2 = getSession().createQuery(second);
+        Long sumQuery1 = (Long) query1.uniqueResult();
+        Long sumQuery2 = (Long) query2.uniqueResult();
+
+        return sumQuery1 + sumQuery2;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<Effort> findEffortsForTiTAProjectAndTiTAUser(Long projectId, Long userId) {
+
+        String first = "select e "
+                + "from Effort e "
+                + "join e.titaTask as tt "
+                + "join tt.titaProject as tp "
+                + "where e.user = "
+                + userId
+                + " and tp.id = "
+                + projectId
+                + " and e.deleted != true";
+
+        String second = "select e "
+                + "from Effort e "
+                + "join e.issueTTask as itt "
+                + "join itt.isstProject as itp "
+                + "join itp.titaProject as tp "
+                + "where e.user = "
+                + userId
+                + " and tp.id = "
+                + projectId + " and e.deleted != true";
+
+        Query query1 = getSession().createQuery(first);
+        Query query2 = getSession().createQuery(second);
+
+        List<Effort> list1 = query1.list();
+        List<Effort> list2 = query2.list();
+        list1.addAll(list2);
+
+        List<Effort> effortList = list1;
+        return effortList;
     }
 }

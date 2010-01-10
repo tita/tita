@@ -47,8 +47,8 @@ grant principal org.apache.wicket.security.hive.authorization.SimplePrincipal "t
     permission ${ComponentPermission} "${monthlyView}:taskList", "inherit, render";
     permission ${ComponentPermission} "${monthlyView}:taskList", "enable";
     
-    
-
+    permission ${ComponentPermission} "${effortImportCSV}", "inherit, render";
+    permission ${ComponentPermission} "${effortImportCSV}", "enable";    
 };
 
 grant principal org.apache.wicket.security.hive.authorization.SimplePrincipal "timecontroller"
@@ -58,4 +58,7 @@ grant principal org.apache.wicket.security.hive.authorization.SimplePrincipal "t
         
     permission ${ComponentPermission} "${multipleProjectsView}", "render";
     permission ${ComponentPermission} "${multipleProjectsView}", "enable";
+    
+   	permission ${ComponentPermission} "${targetActualView}", "render";
+    permission ${ComponentPermission} "${targetActualView}", "enable";
 };

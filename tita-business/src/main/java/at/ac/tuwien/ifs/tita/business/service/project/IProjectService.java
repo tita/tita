@@ -9,21 +9,24 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-   
+
  */
 package at.ac.tuwien.ifs.tita.business.service.project;
 
 import java.util.List;
-import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.PersistenceException;
+
+import org.springframework.transaction.annotation.Transactional;
+
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 
 /**
  * IProjectService encapsulates all tita project based db operations.
- * 
+ *
  * @author herbert
- * 
+ *
  */
 @Transactional
 public interface IProjectService {
@@ -40,7 +43,7 @@ public interface IProjectService {
 
     /**
      * deletes an existing project.
-     * 
+     *
      * @param project
      *            the project to be deleted
      * @throws PersistenceException
@@ -58,15 +61,18 @@ public interface IProjectService {
      * @return the specified Project, if found.
      */
     TiTAProject getProjectById(Long id) throws PersistenceException;
-    
+
     /**
      * Returns a list of all existing tita projects.
      * @return List of TiTAProjects
      */
     List<TiTAProject> findAllTiTAProjects();
-    
+
     /**
      * Returns a list of all tita projects for a given user.
+     * 
+     * @param user
+     *            - the specific tita user
      * @return List of TiTAProjects
      */
     List<TiTAProject> findTiTAProjectsForUser(TiTAUser user);

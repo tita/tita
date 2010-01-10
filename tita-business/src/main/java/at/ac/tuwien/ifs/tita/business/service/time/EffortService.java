@@ -29,9 +29,9 @@ import at.ac.tuwien.ifs.tita.entity.util.UserProjectEffort;
 /**
  * Service for manipulating (insert, update, delete, search... ) efforts in
  * TiTA.
- * 
+ *
  * @author herbert
- * 
+ *
  */
 public class EffortService implements IEffortService {
 
@@ -44,19 +44,19 @@ public class EffortService implements IEffortService {
     /** {@inheritDoc} */
     @Override
     public void deleteEffort(Effort effort) throws TitaDAOException {
-        this.timeEffortDao.delete(effort);
+        timeEffortDao.delete(effort);
     }
 
     /** {@inheritDoc} */
     @Override
     public Effort getEffortById(Long id) throws TitaDAOException {
-        return this.timeEffortDao.findById(id);
+        return timeEffortDao.findById(id);
     }
 
     /** {@inheritDoc} */
     @Override
     public void saveEffort(Effort effort) throws TitaDAOException {
-        this.timeEffortDao.save(effort);
+        timeEffortDao.save(effort);
     }
 
     /**
@@ -64,7 +64,7 @@ public class EffortService implements IEffortService {
      */
     @Override
     public List<Effort> getEffortsDailyView(Date date) throws TitaDAOException {
-        return this.timeEffortDao.getTimeEffortsDailyView(date);
+        return timeEffortDao.getTimeEffortsDailyView(date);
     }
 
     /**
@@ -72,14 +72,14 @@ public class EffortService implements IEffortService {
      */
     @Override
     public List<Effort> getEffortsMonthlyView(Integer year, Integer month) throws TitaDAOException {
-        return this.timeEffortDao.getTimeEffortsMonthlyView(year, month);
+        return timeEffortDao.getTimeEffortsMonthlyView(year, month);
     }
 
     /**
      * {@inheritDoc}
      */
     public List<Integer> getEffortsYears() {
-        return this.timeEffortDao.getTimeEffortsYears();
+        return timeEffortDao.getTimeEffortsYears();
     }
 
     /**
@@ -87,7 +87,7 @@ public class EffortService implements IEffortService {
      */
     @Override
     public List<Effort> getActualEfforts(int maxresults) throws TitaDAOException {
-        return this.timeEffortDao.getActualTimeEfforts(maxresults);
+        return timeEffortDao.getActualTimeEfforts(maxresults);
     }
 
     /**
@@ -106,13 +106,30 @@ public class EffortService implements IEffortService {
     public List<UserProjectEffort> getEffortsSummaryForProjectNames(List<String> projects, String grouping) {
         return timeEffortDao.findEffortsForTiTAProjectId(projects, grouping);
     }
-    
 
-    /** {inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Long findEffortsForIssueTrackerTask(
             TiTAProject tp, TiTAUser tu, Long issTProjectId, Long isstTTaskId, Long isstId){
-        return timeEffortDao.findEffortsForIssueTrackerTask(tp.getId(), tu.getUserName(), 
+        return timeEffortDao.findEffortsForIssueTrackerTask(tp.getId(), tu.getUserName(),
                                                             issTProjectId, isstTTaskId, isstId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Effort> findEffortsForTiTAProjectAndTiTAUser(Long projectId, Long userId) {
+        return timeEffortDao.findEffortsForTiTAProjectAndTiTAUser(projectId, userId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Long totalizeEffortsForTiTAProjectAndTiTAUser(Long projectId, Long userId) {
+        return timeEffortDao.totalizeEffortsForTiTAProjectAndTiTAUser(projectId, userId);
     }
 }
