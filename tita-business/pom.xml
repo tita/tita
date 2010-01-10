@@ -154,6 +154,8 @@
               <exclude>**/IssueTrackerServiceTest.java</exclude>
               <exclude>**/TaskServiceTest.java</exclude>
 			  <exclude>**/UserServiceTest.java</exclude>
+			  <exclude>**/EffortServiceTest.java</exclude>
+			  <exclude>**/TaskServiceDaoTest.java</exclude>
             </excludes>
           </configuration>
         </plugin>
