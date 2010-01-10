@@ -9,7 +9,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-   
+
  */
 package at.ac.tuwien.ifs.tita.business.service.user;
 
@@ -20,20 +20,21 @@ import javax.persistence.PersistenceException;
 import org.springframework.transaction.annotation.Transactional;
 
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
+import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.entity.conv.Role;
 
 /**
  * IUserService encapsulates all User-concerning Database operations.
- * 
+ *
  * @author ASE Group 10 - TiTA
- * 
+ *
  */
 @Transactional
 public interface IUserService {
     /**
      * Saves a new user or updates an existing one.
-     * 
+     *
      * @param user the user to be saved
      * @throws PersistenceException if Parameter is null or another Exception is
      *         thrown
@@ -43,7 +44,7 @@ public interface IUserService {
 
     /**
      * deletes an existing user.
-     * 
+     *
      * @param user the user to be deleted
      * @throws PersistenceException if Parameter is null or another Exception is
      *         thrown
@@ -52,7 +53,7 @@ public interface IUserService {
 
     /**
      * returns a specific User found to the id given.
-     * 
+     *
      * @param id the unique identifier of an user
      * @throws PersistenceException if no user was found or another Exception is
      *         thrown
@@ -62,7 +63,7 @@ public interface IUserService {
 
     /**
      * returns a specific User found to the username given.
-     * 
+     *
      * @param username the unique identifier of an user
      * @throws TitaDAOException if no user was found or another Exception is
      *         thrown
@@ -72,7 +73,7 @@ public interface IUserService {
 
     /**
      * Saves a new Role or updates an existing one.
-     * 
+     *
      * @param role the role to be saved
      * @throws PersistenceException if Parameter is null or another Exception is
      *         thrown
@@ -82,7 +83,7 @@ public interface IUserService {
 
     /**
      * deletes an existing role.
-     * 
+     *
      * @param role the role to be deleted
      * @throws PersistenceException if Parameter is null or another Exception is
      *         thrown
@@ -91,7 +92,7 @@ public interface IUserService {
 
     /**
      * returns a specific Role found to the id given.
-     * 
+     *
      * @param id the unique identifier of an role
      * @throws PersistenceException if no role was found or another Exception is
      *         thrown
@@ -101,7 +102,7 @@ public interface IUserService {
 
     /**
      * returns all undeleted Users.
-     * 
+     *
      * @throws TitaDAOException if no user was found or another Exception is
      *         thrown
      * @return all Users if found
@@ -110,17 +111,38 @@ public interface IUserService {
 
     /**
      * returns all Roles.
-     * 
+     *
      * @throws TitaDAOException if no role was found or another Exception is
      *         thrown
      * @return all Roles if found
      */
     List<Role> getRoles() throws TitaDAOException;
-    
+
     /**
      * Returns a list of all existing tita users.
      * @param projects List of tita projects
      * @return List of TiTAUsers
      */
     List<TiTAUser> findAllTiTAUsersForProjects(List<String> projects);
+
+    /**
+     * Finds all users for a tita project.
+     *
+     * @param project
+     *            - the given project
+     * @return a list of tita user, that are included in that project.
+     */
+    List<TiTAUser> findAllTiTAUsersForProject(TiTAProject project);
+
+    /**
+     * Finds the targetHours for a tita project a user is added with a defined
+     * value.
+     *
+     * @param userId
+     *            - the id of the tita user
+     * @param projectId
+     *            - the id of the tita project
+     * @return the value for the target hours or null, if it is unlimited.
+     */
+    Long findTargetHoursForTiTAProjectAndTiTAUser(Long userId, Long projectId);
 }

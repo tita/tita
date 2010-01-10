@@ -3,9 +3,9 @@
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
-   
+
        http://www.apache.org/licenses/LICENSE\-2.0
-       
+
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -49,9 +49,9 @@ import at.ac.tuwien.ifs.tita.entity.util.UserProjectEffort;
 
 /**
  * Test for EffortDao.
- * 
+ *
  * @author herbert
- * 
+ *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:datasourceContext-test.xml" })
@@ -86,13 +86,8 @@ public class EffortDaoTest { // extends AbstractJpaTests {
      */
     @Before
     public void prepareProjects() {
-        // Long id, Date creationDate, Long startTime, Long duration, Boolean
-        // deleted,
-        // String description
         // CHECKSTYLE:OFF
-
         IssueTracker it = new IssueTracker(1L, "issue tracker 1", null);
-
         Role r11 = new Role(1L, "role 1");
 
         Effort et1 = null, et2 = null, et3 = null, et4 = null, ei1 = null, ei2 = null, ei3 = null, ei4 = null;
@@ -135,8 +130,8 @@ public class EffortDaoTest { // extends AbstractJpaTests {
         se4.add(ei3);
         se4.add(ei4);
 
-        TiTATask tit1 = new TiTATask(this.us1, se1);
-        TiTATask tit2 = new TiTATask(this.us2, se2);
+        TiTATask tit1 = new TiTATask(us1, se1);
+        TiTATask tit2 = new TiTATask(us2, se2);
 
         et1.setTitaTask(tit1);
         et2.setTitaTask(tit1);
@@ -223,14 +218,14 @@ public class EffortDaoTest { // extends AbstractJpaTests {
     @Test
     public void testfindEffortsForTimeConsumerIdShouldSucceed() {
         // CHECKSTYLE:OFF
-        List<Effort> leff = this.timeEffortDAO
-                .findEffortsForTimeConsumerId(this.us1.getId());
+        List<Effort> leff = timeEffortDAO
+                .findEffortsForTimeConsumerId(us1.getId());
 
         assertNotNull(leff);
         assertEquals(5, leff.size());
 
-        leff = this.timeEffortDAO
-                .findEffortsForTimeConsumerId(this.us2.getId());
+        leff = timeEffortDAO
+                .findEffortsForTimeConsumerId(us2.getId());
 
         assertNotNull(leff);
         assertEquals(3, leff.size());
@@ -253,6 +248,34 @@ public class EffortDaoTest { // extends AbstractJpaTests {
 
         assertNotNull(leff);
         assertEquals(1, leff.size());
+        // CHECKSTYLE:ON
+    }
+
+    /**
+     * Method.
+     */
+    @Test
+    public void findEffortsForTiTAProjectAndTiTAUser() {
+
+        List<Effort> list = timeEffortDAO.findEffortsForTiTAProjectAndTiTAUser(tip1.getId(), us2
+                .getId());
+        // CHECKSTYLE:OFF
+        assertNotNull(list);
+        assertEquals(3, list.size());
+        // CHECKSTYLE:ON
+    }
+
+    /**
+     * Method.
+     */
+    @Test
+    public void totalizeEffortsForTiTAProjectAndTiTAUser() {
+
+        Long sumOfEfforts = timeEffortDAO.totalizeEffortsForTiTAProjectAndTiTAUser(tip1.getId(),
+                us2.getId());
+        // CHECKSTYLE:OFF
+        assertNotNull(sumOfEfforts);
+        assertEquals(8000.0, sumOfEfforts, 0.0);
         // CHECKSTYLE:ON
     }
 }

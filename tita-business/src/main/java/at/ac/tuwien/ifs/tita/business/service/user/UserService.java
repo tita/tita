@@ -21,6 +21,7 @@ import javax.persistence.PersistenceException;
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.dao.user.RoleDAO;
 import at.ac.tuwien.ifs.tita.dao.user.UserDAO;
+import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.entity.conv.Role;
 
@@ -47,44 +48,44 @@ public class UserService implements IUserService {
     /** {@inheritDoc} */
     @Override
     public void deleteRole(Role role) throws PersistenceException {
-        this.roleDao.delete(role);
+        roleDao.delete(role);
     }
 
     /** {@inheritDoc} */
     @Override
     public void deleteUser(TiTAUser user) throws PersistenceException {
-        this.userDao.delete(user);
+        userDao.delete(user);
 
     }
 
     /** {@inheritDoc} */
     @Override
     public Role getRoleById(Long id) throws PersistenceException {
-        return this.roleDao.findById(id);
+        return roleDao.findById(id);
     }
 
     /** {@inheritDoc} */
     @Override
     public TiTAUser getUserById(Long id) throws PersistenceException {
-        return this.userDao.findById(id);
+        return userDao.findById(id);
     }
 
     /** {@inheritDoc} */
     @Override
     public Role saveRole(Role role) throws PersistenceException {
-        return this.roleDao.save(role);
+        return roleDao.save(role);
     }
 
     /** {@inheritDoc} */
     @Override
     public TiTAUser saveUser(TiTAUser user) throws PersistenceException {
-        return this.userDao.save(user);
+        return userDao.save(user);
     }
 
     /** {@inheritDoc} */
     @Override
     public TiTAUser getUserByUsername(String username) throws TitaDAOException {
-        return this.userDao.findByUserName(username);
+        return userDao.findByUserName(username);
     }
 
 
@@ -93,18 +94,30 @@ public class UserService implements IUserService {
     public List<TiTAUser> getUndeletedUsers() throws TitaDAOException {
         TiTAUser u = new TiTAUser();
         u.setDeleted(false);
-        return this.userDao.findByExample(u);
+        return userDao.findByExample(u);
     }
 
     /** {@inheritDoc} */
     @Override
     public List<Role> getRoles() throws TitaDAOException {
-        return this.roleDao.findAll();
+        return roleDao.findAll();
     }
 
     /** {@inheritDoc} */
     @Override
     public List<TiTAUser> findAllTiTAUsersForProjects(List<String> projects) {
         return userDao.findUsersForProjectNames(projects);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<TiTAUser> findAllTiTAUsersForProject(TiTAProject project) {
+        return userDao.findUsersForTiTAProject(project);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Long findTargetHoursForTiTAProjectAndTiTAUser(Long userId, Long projectId) {
+        return userDao.findTargetHoursForTiTAProjectAndTiTAUser(userId, projectId);
     }
 }

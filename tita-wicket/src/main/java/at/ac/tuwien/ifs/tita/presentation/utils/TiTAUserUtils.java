@@ -1,5 +1,6 @@
 /**
    Copyright 2009 TiTA Project, Vienna University of Technology
+
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
@@ -13,23 +14,17 @@
    limitations under the License.
 
  */
-package at.ac.tuwien.ifs.tita.dao.interfaces;
-
-import java.util.List;
-
-import at.ac.tuwien.ifs.tita.entity.TiTAProject;
+package at.ac.tuwien.ifs.tita.presentation.utils;
 
 /**
- * Interface for TiTAProjectDao implementation.
- * @author herbert
+ * Provides utils for tita user associated classes.
+ *
+ * @author Christoph
  *
  */
-public interface ITiTAProjectDao {
+public class TiTAUserUtils {
 
-    /**
-     * Returns a list of tita projects for a given username.
-     * @param username String
-     * @return List of TiTAProject
-     */
-    List<TiTAProject> findTiTAProjectsForUsername(String username);
+    public static final int MAXLISTSIZE = 25;
+    public static final int ROWS_PER_PAGE = 10;
+    public static final String[] WIDTHS = new String[] { "150", "150", "150", "150", "150" };
 }

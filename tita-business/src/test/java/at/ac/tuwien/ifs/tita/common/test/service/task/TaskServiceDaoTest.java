@@ -55,6 +55,8 @@ import at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus;
 @Transactional
 public class TaskServiceDaoTest {
 
+    private static final long C_100 = 100L;
+
     private IssueTrackerLogin defaultLogin = new IssueTrackerLogin("administrator", "root", new IssueTracker(1L,
             "test-mantis", "http://localhost/mantisbt-1.1.8"), null);
 
@@ -72,13 +74,13 @@ public class TaskServiceDaoTest {
     public void setUp() {
 
         // try {
-        this.logins = new ArrayList<IssueTrackerLogin>();
-        this.logins.add(this.defaultLogin);
+        logins = new ArrayList<IssueTrackerLogin>();
+        logins.add(defaultLogin);
 
-        this.titaProject = new TiTAProject();
-        this.titaProject.setName("TestProjektTita");
-        this.titaProject.setDeleted(false);
-        this.titaProject.setProjectStatus(new ProjectStatus(1L, "open"));
+        titaProject = new TiTAProject();
+        titaProject.setName("TestProjektTita");
+        titaProject.setDeleted(false);
+        titaProject.setProjectStatus(new ProjectStatus(1L, "open"));
 
         // this.taskService.setLogins(this.logins);
         // this.taskService.setProject(this.titaProject);
@@ -96,7 +98,7 @@ public class TaskServiceDaoTest {
      */
     @After
     public void tearDown() throws InterruptedException {
-        this.logins = null;
+        logins = null;
 
     }
 
@@ -117,13 +119,13 @@ public class TaskServiceDaoTest {
     public void saveTiTATask() {
         TiTATask titaTask = new TiTATask();
         try {
-            this.service.saveTiTATask(titaTask);
+            service.saveTiTATask(titaTask);
             Assert.assertNotNull(titaTask.getId());
-            Assert.assertNotNull(this.service.getTiTATaskById(titaTask.getId()));
+            Assert.assertNotNull(service.getTiTATaskById(titaTask.getId()));
         } catch (PersistenceException e) {
             fail("");
         } finally {
-            this.service.deleteTiTATask(titaTask);
+            service.deleteTiTATask(titaTask);
         }
     }
 
@@ -135,13 +137,13 @@ public class TaskServiceDaoTest {
     public void saveIssueTrackerTask() {
         IssueTrackerTask issueTrackerTask = new IssueTrackerTask();
         try {
-            this.service.saveIssueTrackerTask(issueTrackerTask);
+            service.saveIssueTrackerTask(issueTrackerTask);
             Assert.assertNotNull(issueTrackerTask.getId());
-            Assert.assertNotNull(this.service.getIssueTrackerTaskById(issueTrackerTask.getId()));
+            Assert.assertNotNull(service.getIssueTrackerTaskById(issueTrackerTask.getId()));
         } catch (PersistenceException e) {
             fail("");
         } finally {
-            this.service.deleteIssueTrackerTask(issueTrackerTask);
+            service.deleteIssueTrackerTask(issueTrackerTask);
         }
     }
 
@@ -151,15 +153,16 @@ public class TaskServiceDaoTest {
      */
     @Test
     public void saveIssueTracker() {
-        IssueTracker issueTracker = new IssueTracker(1L, "Mantis", "http://localhost/mantisbt-1.1.8");
+        IssueTracker issueTracker = new IssueTracker(C_100, "Mantis",
+                "http://localhost/mantisbt-1.1.8");
         try {
-            this.service.saveIssueTracker(issueTracker);
+            service.saveIssueTracker(issueTracker);
             Assert.assertNotNull(issueTracker.getId());
-            Assert.assertNotNull(this.service.getIssueTrackerById(issueTracker.getId()));
+            Assert.assertNotNull(service.getIssueTrackerById(issueTracker.getId()));
         } catch (PersistenceException e) {
             fail("");
         } finally {
-            this.service.deleteIssueTracker(this.service.getIssueTrackerById(issueTracker.getId()));
+            service.deleteIssueTracker(service.getIssueTrackerById(issueTracker.getId()));
         }
     }
 
