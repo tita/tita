@@ -19,6 +19,7 @@ package at.ac.tuwien.ifs.tita.presentation.models;
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +43,7 @@ public class TableModelTimeConsumerEvaluation extends AbstractTitaTableModel {
         super(list);
 
         columnNames = new String[] { "Date", "WD", "Description", "Start Time", "End Time", "Duration" };
-        // GlobalUtils.TIMEFORMAT24HOURS.setTimeZone(TimeZone.getTimeZone("GMT"));
+        GlobalUtils.TIMEFORMAT24HOURS.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
 
     /**
@@ -71,9 +72,9 @@ public class TableModelTimeConsumerEvaluation extends AbstractTitaTableModel {
             } else if (col == IntegerConstants.TWO) {
                 return te.getDescription();
             } else if (col == IntegerConstants.THREE) {
-                return GlobalUtils.TIMEFORMAT24HOURS.format(te.getDate());
+                return (te.getStartTime() != null) ? GlobalUtils.TIMEFORMAT24HOURS.format(te.getStartTime()) : 0;
             } else if (col == IntegerConstants.FOUR) {
-                return GlobalUtils.TIMEFORMAT24HOURS.format(te.getEndTime());
+                return (te.getEndTime() != null) ? GlobalUtils.TIMEFORMAT24HOURS.format(te.getEndTime()) : 0;
             } else if (col == IntegerConstants.FIVE) {
                 return GlobalUtils.TIMEFORMAT24HOURS.format(GlobalUtils.getDateFromLong(te.getDuration()));
             } else {

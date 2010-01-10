@@ -52,6 +52,14 @@
     <property name="titaProjectDao" ref="titaProjectDAO"/>
   </bean>
   
+   <bean id="titaCSVReader" class="at.ac.tuwien.ifs.tita.business.csv.CSVReader">
+    <constructor-arg ref="titaEffortService"/>
+  </bean>
+ 
+  <bean id="titaEffortService" class="at.ac.tuwien.ifs.tita.business.service.time.EffortService">
+    <constructor-arg ref="timeEffortDAO"/>
+  </bean>
+  
   <bean id="generalTimer" class="at.ac.tuwien.ifs.tita.entity.util.GeneralTimer"/>
 
   <bean id="timerCoordinator" class="at.ac.tuwien.ifs.tita.presentation.utils.TimerCoordinator" />

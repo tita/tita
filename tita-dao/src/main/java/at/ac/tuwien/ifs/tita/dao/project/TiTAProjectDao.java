@@ -1,6 +1,5 @@
 /**
    Copyright 2009 TiTA Project, Vienna University of Technology
-
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
@@ -24,12 +23,11 @@ import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 
 /**
  * Data acces object for TiTAProject.
- *
+ * 
  * @author herbert
- *
+ * 
  */
-public class TiTAProjectDao extends GenericHibernateDao<TiTAProject, Long>
-                            implements ITiTAProjectDao{
+public class TiTAProjectDao extends GenericHibernateDao<TiTAProject, Long> implements ITiTAProjectDao {
 
     public TiTAProjectDao() {
         super(TiTAProject.class);
@@ -39,9 +37,8 @@ public class TiTAProjectDao extends GenericHibernateDao<TiTAProject, Long>
     @SuppressWarnings("unchecked")
     @Override
     public List<TiTAProject> findTiTAProjectsForUsername(String username) {
-        String queryString = "select * from TITA_PROJECT tp, USER_PROJECT up, TITA_USER tu "+
-                             " where tp.id = up.project_id and up.user_id = tu.id and "+
-                             " tu.username = ? ";
+        String queryString = "select * from TITA_PROJECT tp, USER_PROJECT up, TITA_USER tu "
+                + " where tp.id = up.tita_project_id and up.user_id = tu.id and tu.username = ? ";
 
         org.hibernate.SQLQuery query = getSession().createSQLQuery(queryString);
         query.setParameter(0, username);
