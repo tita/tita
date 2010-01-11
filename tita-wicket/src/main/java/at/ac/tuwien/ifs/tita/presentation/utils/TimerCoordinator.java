@@ -25,6 +25,7 @@ import java.util.TreeMap;
 
 import at.ac.tuwien.ifs.tita.entity.Effort;
 import at.ac.tuwien.ifs.tita.entity.util.ActiveTask;
+import at.ac.tuwien.ifs.tita.entity.util.ActiveTaskEffort;
 import at.ac.tuwien.ifs.tita.entity.util.ActiveTaskId;
 
 /**
@@ -37,25 +38,24 @@ import at.ac.tuwien.ifs.tita.entity.util.ActiveTaskId;
 public class TimerCoordinator implements Runnable {
     private static final Integer C_DURATION_IN_MILLIS = 10000;
     private List<ActiveTask> activeTasks;
-    private Map<Long, Effort> titaTasks;
+    private List<ActiveTaskEffort> titaTasks;
     private Map<Long, Long> registeredUsers;
     private Boolean doRun;
 
     public TimerCoordinator() {
         activeTasks = new ArrayList<ActiveTask>();
         doRun = true;
-        titaTasks = new TreeMap<Long, Effort>();
+        titaTasks = new ArrayList<ActiveTaskEffort>();
         registeredUsers = new TreeMap<Long, Long>();
     }
 
     @Override
     public void run() {
-        try {
-            Long user = null, taskCount = null;
-            Effort eff = null;
-            Iterator<Long> users = null;
+        Long user = null, taskCount = null;
+        Iterator<Long> users = null;
 
-            while (doRun) {
+        while (doRun) {
+            try {
                 synchronized (activeTasks) {
                     for (ActiveTask act : activeTasks) {
                         synchronized (registeredUsers) {
@@ -65,16 +65,25 @@ public class TimerCoordinator implements Runnable {
                                 taskCount = registeredUsers.get(user);
                                 if (taskCount != null) {
                                     if (taskCount > 0) {
-                                        act.addTaskEffort(user, C_DURATION_IN_MILLIS / taskCount);
-                                        // then fetch a tita task, if user
-                                        // registered one and
-                                        // split its time too
-                                        synchronized (titaTasks) {
-                                            if (titaTasks.containsKey(user)) {
-                                                eff = titaTasks.get(user);
-                                                eff.addDuration(C_DURATION_IN_MILLIS / taskCount);
-                                                titaTasks.put(user, eff);
-                                            }
+                                        act.addTaskEffort(user, C_DURATION_IN_MILLIS/taskCount);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    // then fetch a tita task, if user
+                    // registered one and
+                    // split its time too
+                    synchronized (titaTasks) {
+                        users = registeredUsers.keySet().iterator();
+                        while (users.hasNext()) {
+                            user = users.next();
+                            taskCount = registeredUsers.get(user);
+                            if (taskCount != null) {
+                                if (taskCount > 0) {
+                                    for(ActiveTaskEffort ate : titaTasks){
+                                        if(user.equals(ate.getUserId())){
+                                            ate.addEffort(C_DURATION_IN_MILLIS/taskCount);
                                         }
                                     }
                                 }
@@ -83,15 +92,16 @@ public class TimerCoordinator implements Runnable {
                     }
                 }
                 Thread.sleep(C_DURATION_IN_MILLIS);
+            } catch (InterruptedException e) {
+                // TODO: refactoring
             }
-        } catch (InterruptedException e) {
-            // TODO: refactoring
         }
     }
 
-    public void shutdown() {
-        doRun = false;
-    }
+//    when tita will be shut down?!?!
+//    public void shutdown() {
+//        doRun = false;
+//    }
 
     private ActiveTask containsTask(ActiveTaskId id) {
         for (ActiveTask a : activeTasks) {
@@ -144,18 +154,47 @@ public class TimerCoordinator implements Runnable {
     }
 
     public synchronized void startTiTATimer(Long userId) {
-        if (!titaTasks.containsKey(userId)) {
-            titaTasks.put(userId, new Effort(null, null, new Date(), 0L, null, null, null, false, null));
+        Long count;
+        
+        if (registeredUsers.containsKey(userId)) {
+            if (findTiTATaskForUser(userId) == null) {
+                titaTasks.add(new ActiveTaskEffort(userId, new Effort(null, null, new Date(), 
+                                                    System.currentTimeMillis(), null,
+                                                    0L, null, false, null)));
+                if (registeredUsers.containsKey(userId)) {
+                    count = registeredUsers.get(userId);
+                    count++;
+                    registeredUsers.put(userId, count);
+                }
+            }
         }
+    }
+    
+    private ActiveTaskEffort findTiTATaskForUser(Long userId){
+        for(ActiveTaskEffort ate : titaTasks){
+            if(ate.getUserId().equals(userId)){
+                return ate;
+            }
+        }
+        return null;
     }
 
     public synchronized Effort stopTiTATimer(Long userId) {
         Effort effort = null;
-
-        if (titaTasks.containsKey(userId)) {
-            effort = titaTasks.get(userId);
-            effort.setEndTime(System.currentTimeMillis());
-            titaTasks.remove(userId);
+        ActiveTaskEffort ate = null;
+        Long count;
+        
+        if (registeredUsers.containsKey(userId)) {
+            if ((ate = findTiTATaskForUser(userId)) != null) {
+                effort = ate.getEffort();
+                effort.setEndTime(System.currentTimeMillis());
+                titaTasks.remove(userId);
+                if (registeredUsers.containsKey(userId)) {
+                    count = registeredUsers.get(userId);
+                    count--;
+                    registeredUsers.put(userId, count);
+                }
+            }
         }
         return effort;
     }
@@ -174,11 +213,13 @@ public class TimerCoordinator implements Runnable {
     }
 
     private void removeAllUnsavedTasksOfUser(Long userId) {
+        ActiveTaskEffort ate = null;
+        
         for (ActiveTask at : activeTasks) {
             at.removeEffortForUser(userId);
         }
-        if (titaTasks.containsKey(userId)) {
-            titaTasks.remove(userId);
+        if ((ate = findTiTATaskForUser(userId)) != null) {
+            titaTasks.remove(ate);
         }
     }
 

@@ -27,7 +27,7 @@ import at.ac.tuwien.ifs.tita.entity.TiTATask;
  *
  */
 @Repository
-public class TiTATaskDao extends GenericHibernateDao<TiTATask, Long> {
+public class TiTATaskDao extends GenericHibernateDao<TiTATask, Long>{
 
     public TiTATaskDao() {
         super(TiTATask.class);

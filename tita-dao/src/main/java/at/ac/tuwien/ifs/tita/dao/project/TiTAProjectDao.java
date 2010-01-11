@@ -38,7 +38,7 @@ public class TiTAProjectDao extends GenericHibernateDao<TiTAProject, Long> imple
     @Override
     public List<TiTAProject> findTiTAProjectsForUsername(String username) {
         String queryString = "select * from TITA_PROJECT tp, USER_PROJECT up, TITA_USER tu "
-                + " where tp.id = up.tita_project_id and up.user_id = tu.id and tu.username = ? ";
+                + " where tp.id = up.project_id and up.user_id = tu.id and tu.username = ? ";
 
         org.hibernate.SQLQuery query = getSession().createSQLQuery(queryString);
         query.setParameter(0, username);

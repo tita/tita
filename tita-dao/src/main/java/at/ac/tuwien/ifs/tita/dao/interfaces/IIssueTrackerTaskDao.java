@@ -28,11 +28,11 @@ public interface IIssueTrackerTaskDao {
     /**
      * Find IssueTrackerTasks for given tita project.
      * 
-     * @param tp
-     * @param it
-     * @param itp
-     * @param itt
-     * @return
+     * @param tp Long tita project
+     * @param it Long issue tracker
+     * @param itp Long issue tracker project
+     * @param itt Long issue tracker task
+     * @return IssueTrackerTask
      */
     IssueTrackerTask findIssueTrackerTask(Long tp, Long it, Long itp, Long itt);
 }

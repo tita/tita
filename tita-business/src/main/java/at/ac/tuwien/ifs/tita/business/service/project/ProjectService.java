@@ -24,9 +24,11 @@ import org.hibernate.criterion.Property;
 import at.ac.tuwien.ifs.tita.dao.issuetracker.IssueTrackerProjectDao;
 import at.ac.tuwien.ifs.tita.dao.issuetracker.task.IssueTrackerTaskDao;
 import at.ac.tuwien.ifs.tita.dao.project.TiTAProjectDao;
+import at.ac.tuwien.ifs.tita.dao.titatask.TiTATaskDao;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerProject;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerTask;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
+import at.ac.tuwien.ifs.tita.entity.TiTATask;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 
 /**
@@ -41,6 +43,7 @@ public class ProjectService implements IProjectService {
     private TiTAProjectDao titaProjectDao;
     private IssueTrackerTaskDao issueTTaskDao;
     private IssueTrackerProjectDao issuTProjectDao;
+    private TiTATaskDao titaTaskDao;
     
     public void setTitaProjectDao(TiTAProjectDao titaProjectDao) {
         this.titaProjectDao = titaProjectDao;
@@ -48,6 +51,10 @@ public class ProjectService implements IProjectService {
     
     public void setIssueTTaskDao(IssueTrackerTaskDao issueTTaskDao) {
         this.issueTTaskDao = issueTTaskDao;
+    }
+    
+    public void setTiTATaskDao(TiTATaskDao titaTaskDao) {
+        this.titaTaskDao = titaTaskDao;
     }
     
     public void setIssueTProjectDao(IssueTrackerProjectDao issuTProjectDao) {
@@ -97,5 +104,11 @@ public class ProjectService implements IProjectService {
     public IssueTrackerProject findIssueTrackerProjectForTiTAProject(Long tp,
             Long issueTrackerId, Long itp) {
         return issuTProjectDao.findIssueTrackerProjectForTiTAProject(tp, issueTrackerId, itp);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public TiTATask saveTiTATask(TiTATask task) {
+        return titaTaskDao.save(task);
     }  
 }

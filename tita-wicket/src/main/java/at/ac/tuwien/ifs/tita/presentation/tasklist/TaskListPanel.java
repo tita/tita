@@ -51,6 +51,7 @@ import at.ac.tuwien.ifs.tita.entity.Effort;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerProject;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerTask;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
+import at.ac.tuwien.ifs.tita.entity.TiTATask;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.entity.util.ActiveTaskId;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueStatus;
@@ -62,6 +63,7 @@ import at.ac.tuwien.ifs.tita.presentation.tasklist.accordion.AccordionPanel;
 import at.ac.tuwien.ifs.tita.presentation.tasklist.accordion.AccordionPanelItem;
 import at.ac.tuwien.ifs.tita.presentation.tasklist.stopwatch.AssignedTaskTimerPanel;
 import at.ac.tuwien.ifs.tita.presentation.tasklist.stopwatch.ClosedTaskTimerPanel;
+import at.ac.tuwien.ifs.tita.presentation.tasklist.stopwatch.GeneralTimerPanel;
 import at.ac.tuwien.ifs.tita.presentation.tasklist.stopwatch.NewTaskTimerPanel;
 import at.ac.tuwien.ifs.tita.presentation.utils.TimerCoordinator;
 
@@ -105,6 +107,7 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
     private Map<Long, NewTaskTimerPanel> newTasks;
     private Map<Long, AssignedTaskTimerPanel> assignedTasks;
     private Map<Long, ClosedTaskTimerPanel> closedTasks;
+    private GeneralTimerPanel generalTimer;
     
     public TaskListPanel(String id, TiTAProject titaProject) {
         super(id);
@@ -179,7 +182,9 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
                 target.addComponent(containerTaskList);
             }
         });
-
+//        general timer panel
+        generalTimer = new GeneralTimerPanel("generalTimer", this);
+        tasklistForm.add(generalTimer);
     }
 
     public void resetPanelLists(){
@@ -281,6 +286,32 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
         }
     }
     
+    public void startGeneralTimerForTask(){
+        timerCoordinator.startTiTATimer(user.getId());
+    }
+    
+    public void stopGeneralTimerForTask(){
+        Effort eff = timerCoordinator.stopTiTATimer(user.getId());
+        generalTimer.setEffort(eff);
+    }
+    
+    public void saveEffortForTiTATask(Effort effort){
+        if(effort != null){
+            effort.setDescription(null);
+            effort.setUser(user);
+            try{
+                Set<Effort> effs = new HashSet<Effort>();
+                effs.add(effort);
+                TiTATask tt = new TiTATask(generalTimer.getDescription(), user, project, effs);
+                projectService.saveTiTATask(tt);
+                effort.setTitaTask(tt);
+                effortService.saveEffort(effort);
+            }catch(TitaDAOException ex){
+                log.error("couldn't save tita effort with description: " + effort.getDescription());
+            }
+        }
+    }
+    
     private void saveIssueTrackerTaskEfforts(Effort effort, ITaskTrackable task){
 //      persist issue tracker task anOd effort and read it from db to get actual effort value
         IssueTrackerTask itt = projectService.findIssueTrackerTaskForTiTAProject(project.getId(), 
@@ -290,7 +321,6 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
         effort.setUser(user); 
         
         if(itt != null){
-//            itt.addEffort(effort);
             effort.setIssueTTask(itt);
         }else{
             IssueTrackerProject tempProject = projectService.findIssueTrackerProjectForTiTAProject(

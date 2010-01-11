@@ -51,11 +51,11 @@ public class TiTATask extends BaseEntity<Long>{
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "USER_ID")
     private TiTAUser user;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "TITA_PROJECT_ID")
     private TiTAProject titaProject;
 

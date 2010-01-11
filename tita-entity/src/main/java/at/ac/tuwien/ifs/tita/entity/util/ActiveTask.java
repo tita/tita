@@ -43,8 +43,9 @@ public class ActiveTask {
         if ((a = findUser(userId)) != null) {
             a.addEffort(effort);
         } else {
-            tList.add(new ActiveTaskEffort(userId, new Effort(null, null, new Date(), System.currentTimeMillis(), null,
-                    0L, null, false, null)));
+            tList.add(new ActiveTaskEffort(userId, new Effort(null, null, new Date(), 
+                                            System.currentTimeMillis(), null,
+                                            0L, null, false, null)));
         }
     }
 

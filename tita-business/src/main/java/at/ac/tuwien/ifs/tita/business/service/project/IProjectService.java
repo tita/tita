@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerProject;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerTask;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
+import at.ac.tuwien.ifs.tita.entity.TiTATask;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 
 /**
@@ -96,4 +97,11 @@ public interface IProjectService {
      */
     IssueTrackerProject findIssueTrackerProjectForTiTAProject(Long tp, Long issueTrackerId, 
                                                               Long itp);
+    
+    /**
+     * Saves a tita task in db.
+     * @param task TiTATask
+     * @return TiTATask
+     */
+    TiTATask saveTiTATask(TiTATask task);
 }

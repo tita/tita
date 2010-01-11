@@ -24,11 +24,13 @@ import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.util.time.Duration;
 
-import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
+import at.ac.tuwien.ifs.tita.entity.Effort;
 import at.ac.tuwien.ifs.tita.issuetracker.util.TiTATimeConverter;
 import at.ac.tuwien.ifs.tita.presentation.tasklist.TaskListPanel;
 
@@ -38,21 +40,17 @@ import at.ac.tuwien.ifs.tita.presentation.tasklist.TaskListPanel;
  * @author Christoph
  * 
  */
-public class AssignedTaskTimerPanel extends Panel implements IHeaderContributor {
+public class GeneralTimerPanel extends Panel implements IHeaderContributor {
     private ResourceReference style = new CompressedResourceReference(
-            AssignedTaskTimerPanel.class, "tasktimer.css");
+            GeneralTimerPanel.class, "tasktimer.css");
     private Form<Object> taskTimerForm;
-    private ITaskTrackable task;
-    private Long effort;
     private TaskListPanel owner;
+    private Effort effort = null;
     private Boolean started;
-    private Label lab;
-    private AjaxSelfUpdatingTimerBehavior beh;
+    private TextField<String> description, duration;
     
-    public AssignedTaskTimerPanel(String id, ITaskTrackable task, Long effort, TaskListPanel owner){
+    public GeneralTimerPanel(String id, TaskListPanel owner){
         super(id);
-        this.task = task;
-        this.effort = effort;
         this.owner = owner;
         this.started = false;
         displayPanel();
@@ -63,36 +61,45 @@ public class AssignedTaskTimerPanel extends Panel implements IHeaderContributor 
      */
     private void displayPanel() {
         taskTimerForm = new Form<Object>("timerTaskForm");
-        add(taskTimerForm);
+        add(taskTimerForm);        
+        taskTimerForm.add(new Label("taskLabel", "Description"));
+        description = new TextField<String>("taskDescription", new Model<String>(""));
+        description.setType(String.class);
         
-        taskTimerForm.add(new Label("taskId", task.getId().toString()));
-        taskTimerForm.add(new Label("taskDescription", task.getDescription()));
+        duration = new TextField<String>("taskDuration", new Model<String>("00:00:00"));
+        duration.setType(String.class);
+        duration.add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(1)));
+        duration.setOutputMarkupId(true);
+        description.setOutputMarkupId(true);
+        
+        taskTimerForm.add(duration);
+        taskTimerForm.add(description);
+        
         taskTimerForm.add(new AjaxButton("startStopTimer", taskTimerForm) {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
                 if(!started){
-                    owner.startTimerForIssue(task);
+                    owner.startGeneralTimerForTask();
+                    description.getModel().setObject("");
                     started = true;
                 }else{
-                    owner.stopTimerForIssue(task);
+                    owner.stopGeneralTimerForTask();
                     started = false;
                 }
             }
         });
-        taskTimerForm.add(new AjaxButton("closeTask", taskTimerForm) {
+        taskTimerForm.add(new AjaxButton("saveEffort", taskTimerForm) {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
-                started = false;
-//                beh.stop();
-                owner.stopTimerForIssue(task);
-                owner.closeTask(task,target);
+                if(effort != null && !started){
+                    owner.saveEffortForTiTATask(effort);
+                    description.setModelObject("");
+                    duration.setModelObject("");
+                }
+                target.addComponent(description);
+                target.addComponent(duration);
             }
         });
-        lab = new Label("totalEffort", TiTATimeConverter.getDuration2String(
-                effort != null ? effort : 0L));
-        taskTimerForm.add(lab);
-        beh = new AjaxSelfUpdatingTimerBehavior(Duration.seconds(1));
-        lab.add(beh);
     }
 
     /** {@inheritDoc} */
@@ -100,18 +107,23 @@ public class AssignedTaskTimerPanel extends Panel implements IHeaderContributor 
     public void renderHead(IHeaderResponse response) {
         response.renderCSSReference(style);
     }
-    
-    public ITaskTrackable getTask(){
-        return task;
-    }
-    
+
     public void setTaskStarted(){
         started = true;
     }
     
-    public void setEffort(Long effort){
+    public void setEffort(Effort effort){
         this.effort = effort;
-        lab.setDefaultModelObject(TiTATimeConverter.getDuration2String(
-                effort != null ? effort : 0L));
+        duration.getModel().setObject(TiTATimeConverter.getDuration2String(
+                                         effort != null ? effort.getDuration() : 0L));
+    }
+    
+    public String getDescription(){
+        String desc = description.getModelObject();
+    
+        if(desc != null){
+            return desc;
+        }
+        return "";
     }
 }

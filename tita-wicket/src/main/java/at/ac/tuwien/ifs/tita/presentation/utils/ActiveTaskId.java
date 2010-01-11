@@ -14,7 +14,7 @@
    limitations under the License.
    
  */
-package at.ac.tuwien.ifs.tita.presentation.tasklist.stopwatch;
+package at.ac.tuwien.ifs.tita.presentation.utils;
 
 /**
  * Container class for active tasks that consists of tita project id and issue
