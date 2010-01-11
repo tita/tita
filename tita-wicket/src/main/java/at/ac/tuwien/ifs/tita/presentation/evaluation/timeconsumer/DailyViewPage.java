@@ -41,9 +41,12 @@ import org.slf4j.LoggerFactory;
 import org.wicketstuff.table.Table;
 
 import at.ac.tuwien.ifs.tita.business.service.time.IEffortService;
+import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.Effort;
+import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.presentation.BasePage;
+import at.ac.tuwien.ifs.tita.presentation.login.TitaSession;
 import at.ac.tuwien.ifs.tita.presentation.models.TableModelTimeConsumerEvaluation;
 import at.ac.tuwien.ifs.tita.reporting.JasperPdfResource;
 
@@ -54,7 +57,10 @@ public class DailyViewPage extends BasePage {
     private final Logger log = LoggerFactory.getLogger(MonthlyViewPage.class);
 
     @SpringBean(name = "timeEffortService")
-    private IEffortService service;
+    private IEffortService effortService;
+
+    @SpringBean(name = "userService")
+    private IUserService userService;
 
     @SpringBean(name = "dailyViewReport")
     private JasperPdfResource pdfResource;
@@ -90,20 +96,7 @@ public class DailyViewPage extends BasePage {
         Table table = new Table("tetable", tableModel);
         timeeffortContainer.add(table);
 
-        form.add(new AjaxButton("btnShowEvaluation", form) {
-            @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
-                tableModel.reload(getTimeEffortsDailyView(dateTextField.getModelObject()));
-                target.addComponent(timeeffortContainer);
-            }
-
-            @Override
-            protected void onError(AjaxRequestTarget target, Form<?> form1) {
-                // TODO Set border red on textfields which are'nt filled
-            }
-        });
-
-        form.add(new Button("btnShowPDF") {
+        final Button btnShowAsPDF = new Button("btnShowPDF") {
             @Override
             public void onSubmit() {
                 try {
@@ -115,20 +108,53 @@ public class DailyViewPage extends BasePage {
                 } catch (JRException e) {
                     // TODO: GUI Exception Handling
                     log.error(e.getMessage());
+                } catch (TitaDAOException e) {
+                    // TODO: GUI Exception Handling
+                    log.error(e.getMessage());
                 }
             }
+
+            @Override
+            public boolean isEnabled() {
+                return (tableModel.getRowCount() == 0) ? false : true;
+            }
+        };
+
+        form.add(btnShowAsPDF);
+
+        form.add(new AjaxButton("btnShowEvaluation", form) {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
+                tableModel.reload(getTimeEffortsDailyView(dateTextField.getModelObject()));
+                target.addComponent(timeeffortContainer);
+                target.addComponent(btnShowAsPDF);
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form1) {
+                // TODO Set border red on textfields which are'nt filled
+            }
         });
+
     }
 
     /**
      * loads report and sets data source.
      * 
      * @throws JRException JasperReports Exception
+     * @throws TitaDAOException if user cannot be found
      */
-    private void loadReport() throws JRException {
+    private void loadReport() throws JRException, TitaDAOException {
         ServletContext context = ((WebApplication) getApplication()).getServletContext();
         pdfResource.loadReport(context.getRealPath(pdfResource.getDesignFilename()));
         pdfResource.setReportDataSource(new JRTableModelDataSource(tableModel));
+
+        TiTAUser currentUser = userService.getUserByUsername(TitaSession.getSession().getUsername());
+        String name = currentUser.getFirstName() + " " + currentUser.getLastName();
+        pdfResource.addReportParameter("name", name.replaceAll("\n", ""));
+
+        pdfResource.addReportParameter("month", "");
+        pdfResource.addReportParameter("year", "");
     }
 
     /**
@@ -142,7 +168,7 @@ public class DailyViewPage extends BasePage {
 
         Date de = getMidnightDateTime(d);
         try {
-            list = service.getEffortsDailyView(de);
+            list = effortService.getEffortsDailyView(de);
         } catch (TitaDAOException e) {
             // TODO: GUI Exception Handling
             log.error(e.getMessage());

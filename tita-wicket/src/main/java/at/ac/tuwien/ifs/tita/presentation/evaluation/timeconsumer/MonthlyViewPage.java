@@ -44,10 +44,13 @@ import org.slf4j.LoggerFactory;
 import org.wicketstuff.table.Table;
 
 import at.ac.tuwien.ifs.tita.business.service.time.IEffortService;
+import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
 import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.Effort;
+import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.presentation.BasePage;
 import at.ac.tuwien.ifs.tita.presentation.controls.dropdown.SelectOption;
+import at.ac.tuwien.ifs.tita.presentation.login.TitaSession;
 import at.ac.tuwien.ifs.tita.presentation.models.TableModelTimeConsumerEvaluation;
 import at.ac.tuwien.ifs.tita.reporting.JasperPdfResource;
 
@@ -58,7 +61,10 @@ public class MonthlyViewPage extends BasePage {
     private final Logger log = LoggerFactory.getLogger(MonthlyViewPage.class);
 
     @SpringBean(name = "timeEffortService")
-    private IEffortService service;
+    private IEffortService effortService;
+
+    @SpringBean(name = "userService")
+    private IUserService userService;
 
     @SpringBean(name = "monthlyViewReport")
     private JasperPdfResource pdfResource;
@@ -70,8 +76,6 @@ public class MonthlyViewPage extends BasePage {
     private List<SelectOption> months;
 
     private TableModelTimeConsumerEvaluation tableModel;
-
-    private Button btnShowAsPDF;
 
     public MonthlyViewPage() {
         String year = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
@@ -126,23 +130,8 @@ public class MonthlyViewPage extends BasePage {
      * @param form form of page.
      * @param container container of page.
      */
-    private void initButtons(Form<Effort> form, final WebMarkupContainer container) {
-        form.add(new AjaxButton("btnShowEvaluation", form) {
-            @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
-                Integer year = Integer.valueOf(selectedYear.toString());
-                Integer month = Integer.valueOf(selectedMonth.toString());
-                tableModel.reload(getTimeEffortsMonthlyView(year, month));
-                target.addComponent(container);
-            }
-
-            @Override
-            protected void onError(AjaxRequestTarget target, Form<?> form1) {
-                // TODO Set border red on textfields which are'nt filled
-            }
-        });
-
-        this.btnShowAsPDF = new Button("btnShowPDF") {
+    private void initButtons(final Form<Effort> form, final WebMarkupContainer container) {
+        final Button btnShowAsPDF = new Button("btnShowPDF") {
             @Override
             public void onSubmit() {
                 try {
@@ -154,22 +143,55 @@ public class MonthlyViewPage extends BasePage {
                 } catch (JRException e) {
                     // TODO: GUI Exception Handling
                     log.error(e.getMessage());
+
+                } catch (TitaDAOException e) {
+                    // TODO: GUI Exception Handling
+                    log.error(e.getMessage());
                 }
+            }
+
+            @Override
+            public boolean isEnabled() {
+                return (tableModel.getRowCount() == 0) ? false : true;
             }
         };
 
-        form.add(this.btnShowAsPDF);
+        form.add(btnShowAsPDF);
+
+        form.add(new AjaxButton("btnShowEvaluation", form) {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
+                Integer year = Integer.valueOf(selectedYear.toString());
+                Integer month = Integer.valueOf(selectedMonth.toString());
+                tableModel.reload(getTimeEffortsMonthlyView(year, month));
+                target.addComponent(container);
+                target.addComponent(btnShowAsPDF);
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form1) {
+                // TODO Set border red on textfields which are'nt filled
+            }
+        });
     }
 
     /**
      * loads report and sets data source.
      * 
      * @throws JRException JasperReports Exception
+     * @throws TitaDAOException if user cannot be found
      */
-    private void loadReport() throws JRException {
+    private void loadReport() throws JRException, TitaDAOException {
         ServletContext context = ((WebApplication) getApplication()).getServletContext();
         pdfResource.loadReport(context.getRealPath(pdfResource.getDesignFilename()));
         pdfResource.setReportDataSource(new JRTableModelDataSource(tableModel));
+
+        TiTAUser currentUser = userService.getUserByUsername(TitaSession.getSession().getUsername());
+        String name = currentUser.getFirstName() + " " + currentUser.getLastName();
+        pdfResource.addReportParameter("name", name.replaceAll("\n", ""));
+
+        pdfResource.addReportParameter("month", selectedMonth.getValue().toString());
+        pdfResource.addReportParameter("year", selectedYear.getValue().toString());
     }
 
     /**
@@ -182,7 +204,7 @@ public class MonthlyViewPage extends BasePage {
     private List<Effort> getTimeEffortsMonthlyView(Integer year, Integer month) {
         List<Effort> list = null;
         try {
-            list = service.getEffortsMonthlyView(year, month);
+            list = effortService.getEffortsMonthlyView(year, month);
         } catch (TitaDAOException e) {
             // TODO: GUI Exception Handling
             log.error(e.getMessage());
@@ -196,7 +218,7 @@ public class MonthlyViewPage extends BasePage {
      */
     private void initYears() {
         years = new ArrayList<SelectOption>();
-        List<Integer> effortYears = service.getEffortsYears();
+        List<Integer> effortYears = effortService.getEffortsYears();
         for (Integer e : effortYears) {
             years.add(new SelectOption(e.toString(), e.toString()));
         }

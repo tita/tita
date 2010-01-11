@@ -42,6 +42,12 @@ import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTATask;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 
+/**
+ * CSV Reader Testcases.
+ * 
+ * @author karin
+ * 
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:datasourceContext-test.xml" })
 @TransactionConfiguration
@@ -50,32 +56,31 @@ public class CSVReaderTest extends AbstractTransactionalJUnit4SpringContextTests
 
     @Autowired
     private IEffortService service;
-    
+
+    /**
+     * Test.
+     * 
+     * @throws IOException ioe
+     * @throws TitaDaoException tde
+     */
     @Test
-    public void testImportCSV() throws IOException, TitaDAOException{
-        CellProcessor[] processors = new CellProcessor[] {
-                new ParseDate("dd.MM.yyyy"),
-                null,
-                new ParseLong(),
-                new ParseDate("HH:mm:ss"),
-                new ParseDate("HH:mm:ss")
-            };
-        
+    public void testImportCSV() throws IOException, TitaDAOException {
+        CellProcessor[] processors = new CellProcessor[] { new ParseDate("dd.MM.yyyy"), null, new ParseLong(),
+                new ParseDate("HH:mm:ss"), new ParseDate("HH:mm:ss") };
+
         IImportReader reader = new CSVReader(service);
         TiTAUser u1 = new TiTAUser();
         TiTATask t1 = new TiTATask("testtask", u1, new TiTAProject(), new HashSet<Effort>());
-        
-        String path = 
-            new ClassPathResource(".", CSVReaderTest.class).getFile().getAbsolutePath() +
-            "/CSVReaderTest.csv";
-        
-        String[] header = new String[]{"date", "description", "duration", 
-                "startTime", "endTime"};
-        
+
+        String path = new ClassPathResource(".", CSVReaderTest.class).getFile().getAbsolutePath()
+                + "/CSVReaderTest.csv";
+
+        String[] header = new String[] { "date", "description", "duration", "startTime", "endTime" };
+
         reader.importEffortData(path, header, processors, t1, u1);
-        
+
         assertEquals("Three Efforts were imported", 3, t1.getTitaEfforts().size());
-        
+
         assertEquals("Three Efforts were imported", 3, service.getActualEfforts(10).size());
     }
 }

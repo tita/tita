@@ -23,11 +23,11 @@ insert into CONV_ROLE (ID, DESCRIPTION) values (3, 'Time controller');
 insert into CONV_PROJECT_STATUS (ID, DESCRIPTION) values (1, 'stat 1');
 
 INSERT INTO tita_user (id, deleted, email, firstname, lastname, modification_version, password, username, role_id)
- VALUES (5, false, NULL, NULL, NULL, 0, '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', 'admin', 1);
+ VALUES (5, false, NULL, "admin", "admin", 0, '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', 'admin', 1);
 INSERT INTO tita_user (id, deleted, email, firstname, lastname, modification_version, password, username, role_id)
- VALUES (6, false, NULL, NULL, NULL, 0, 'fc5b095e1b3a07e8193d132940a262190b6ed653c235f5a5921667b42a1e89ca', 'timeconsumer', 2);
+ VALUES (6, false, NULL, "timeconsumer", "timeconsumer", 0, 'fc5b095e1b3a07e8193d132940a262190b6ed653c235f5a5921667b42a1e89ca', 'timeconsumer', 2);
 INSERT INTO tita_user (id, deleted, email, firstname, lastname, modification_version, password, username, role_id)
- VALUES (7, false, NULL, NULL, NULL, 0, 'a95244f53b7030fc5144c5c57c835791effc20a023872e4d115ba995b47a3035', 'timecontroller', 3);
+ VALUES (7, false, NULL, "timecontroller", "timecontroller", 0, 'a95244f53b7030fc5144c5c57c835791effc20a023872e4d115ba995b47a3035', 'timecontroller', 3);
 
 insert into TITA_PROJECT (ID, DESCRIPTION, NAME, DELETED, STATUS_ID, MODIFICATION_VERSION)
 values (1, 'nix', 'name1', false, 1, 0);

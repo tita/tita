@@ -94,7 +94,7 @@ public abstract class JasperResource extends DynamicWebResource {
      * @param key key of parameter as String
      * @param value value of parameter as String
      */
-    protected void addReportParameter(String key, String value) {
+    public void addReportParameter(String key, String value) {
         reportParameters.put(key, value);
     }
 

@@ -40,18 +40,18 @@ import javax.persistence.Table;
 @Table(name = "EFFORT")
 @SequenceGenerator(name = "seq_effort", sequenceName = "EEFORT_ID_SEQ", allocationSize = 1)
 @NamedQueries( { @NamedQuery(name = "Effort.getYears", query = "select distinct year(te.date) from Effort te where deleted=false order by 1 desc") })
-public class Effort extends BaseEntity<Long>{
+public class Effort extends BaseEntity<Long> {
 
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_effort")
     private Long id;
 
-    @ManyToOne(cascade = {CascadeType.MERGE })
+    @ManyToOne(cascade = { CascadeType.MERGE })
     @JoinColumn(name = "TITA_TASK_ID")
     private TiTATask titaTask;
 
-    @ManyToOne(cascade = {CascadeType.MERGE })
+    @ManyToOne(cascade = { CascadeType.MERGE })
     @JoinColumn(name = "ISSUET_TASK_ID")
     private IssueTrackerTask issueTTask;
 
@@ -60,10 +60,10 @@ public class Effort extends BaseEntity<Long>{
 
     @Column(name = "START_TIME")
     private Long startTime;
-    
+
     @Column(name = "END_TIME")
     private Long endTime;
-    
+
     @Column(name = "DURATION")
     private Long duration;
 
@@ -73,30 +73,12 @@ public class Effort extends BaseEntity<Long>{
     @Column(name = "DELETED")
     private Boolean deleted;
 
-    @ManyToOne(cascade = {CascadeType.MERGE })
+    @ManyToOne(cascade = { CascadeType.MERGE })
     @JoinColumn(name = "USER_ID")
     // , referencedColumnName = "ID")
     private TiTAUser user;
 
     public Effort() {
-    }
-    
-    
-
-    public Effort(TiTATask titaTask, IssueTrackerTask issueTTask, Date date,
-            Long startTime, Long endTime, Long duration, String description,
-            Boolean deleted, TiTAUser user) {
-        super();
-        this.id = null;
-        this.titaTask = titaTask;
-        this.issueTTask = issueTTask;
-        this.date = date;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.duration = duration;
-        this.description = description;
-        this.deleted = deleted;
-        this.user = user;
     }
 
     public Effort(Date date, Long duration, Boolean deleted, String description, TiTAUser user) {
@@ -115,10 +97,9 @@ public class Effort extends BaseEntity<Long>{
         this.issueTTask = issueTTask;
         this.description = description;
     }
-    
-    public Effort(TiTATask titaTask, IssueTrackerTask issueTTask, Date date,
-            Long startTime, Long endTime, Long duration, String description,
-            Boolean deleted, TiTAUser user) {
+
+    public Effort(TiTATask titaTask, IssueTrackerTask issueTTask, Date date, Long startTime, Long endTime,
+            Long duration, String description, Boolean deleted, TiTAUser user) {
         super();
         this.titaTask = titaTask;
         this.issueTTask = issueTTask;
@@ -237,7 +218,7 @@ public class Effort extends BaseEntity<Long>{
     public IssueTrackerTask getIssueTTask() {
         return this.issueTTask;
     }
-    
+
     public void setEndTime(Long endTime) {
         this.endTime = endTime;
     }
@@ -265,8 +246,13 @@ public class Effort extends BaseEntity<Long>{
         }
         return "";
     }
-    
-    public void addDuration(Long dur){
+
+    /**
+     * Adds time to current duration.
+     * 
+     * @param dur duration to add as long.
+     */
+    public void addDuration(Long dur) {
         this.duration += dur;
     }
 }

@@ -361,7 +361,8 @@
             <exclude>**/*.db</exclude>
             <exclude>**/*.csv</exclude>
             <exclude>**/*.springBeans</exclude>
-
+            <exclude>**/*.jrxml</exclude>
+            
             <exclude>NOTICE</exclude>
             <exclude>LICENSE</exclude>
           </excludes>

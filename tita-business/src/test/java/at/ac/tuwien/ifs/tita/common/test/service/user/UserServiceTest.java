@@ -64,9 +64,11 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
         // insert Roles
         roleList = new ArrayList<Role>();
 
+        // CHECKSTYLE:OFF
         roleList.add(new Role(997L, "role1"));
         roleList.add(new Role(998L, "role1"));
         roleList.add(new Role(999L, "role1"));
+        // CHECKSTYLE:ON
 
         try {
             for (Role r : roleList) {
@@ -118,7 +120,9 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
     @Test
     public void testGetRoleById() {
         try {
+            // CHECKSTYLE:OFF
             Role r = service.getRoleById(997L);
+            // CHECKSTYLE:ON
             Assert.assertNotNull(r);
             Assert.assertEquals("role1", r.getDescription());
         } catch (PersistenceException e) {
@@ -148,11 +152,13 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
     @Test
     public void testSaveRole() {
         try {
+            // CHECKSTYLE:OFF
             Role r = new Role(1000L, "role1000");
             service.saveRole(r);
             Assert.assertNotNull(service.getRoleById(1000L));
             Assert.assertEquals("role1000", service.getRoleById(1000L).getDescription());
             service.deleteRole(r);
+            // CHECKSTYLE:ON
         } catch (PersistenceException e) {
             fail();
         }
@@ -164,10 +170,12 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
     @Test
     public void testDeleteRole() {
         try {
+            // CHECKSTYLE:OFF
             Role r = new Role(1000L, "role1000");
             service.saveRole(r);
             service.deleteRole(r);
             Assert.assertNull(service.getRoleById(1000L));
+            // CHECKSTYLE:ON
         } catch (PersistenceException e) {
             fail();
         }
@@ -187,7 +195,9 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
         u.setEmail("john.doe@usa.com");
 
         try {
+            // CHECKSTYLE:OFF
             Role role = service.getRoleById(999L);
+            // CHECKSTYLE:ON
             u.setRole(role);
             service.saveUser(u);
             Assert.assertNotNull(u.getId());
@@ -213,7 +223,9 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
         u.setEmail("john.doe@usa.com");
 
         try {
+            // CHECKSTYLE:OFF
             Role role = service.getRoleById(999L);
+            // CHECKSTYLE:ON
             u.setRole(role);
             service.saveUser(u);
             Assert.assertNotNull(u.getId());
