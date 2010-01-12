@@ -87,6 +87,7 @@ create table USER_PROJECT(
 	ID bigint,
 	USER_ID bigint references TITA_USER (ID),
 	TITA_PROJECT_ID bigint references TITA_PROJECT (ID),
+	TARGET_HOURS bigint,
     primary key (ID)
 );
 

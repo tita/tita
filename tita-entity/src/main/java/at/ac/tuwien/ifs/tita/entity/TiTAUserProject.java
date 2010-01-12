@@ -30,7 +30,7 @@ import javax.persistence.Version;
  * TiTAUserProject represents the join column of TiTAUser and TiTAProject. Extra
  * Class is necessary for storing information about the target hours that should
  * be consumed by a Time-Consumer.
- * 
+ *
  * @author ASE Group 10
  */
 @Entity
@@ -51,7 +51,7 @@ public class TiTAUserProject extends BaseEntity<Long> {
     private TiTAUser user;
 
     @ManyToOne
-    @JoinColumn(name = "PROJECT_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "TITA_PROJECT_ID", referencedColumnName = "ID")
     private TiTAProject project;
 
     @SuppressWarnings("unused")
@@ -71,16 +71,16 @@ public class TiTAUserProject extends BaseEntity<Long> {
 
     /**
      * Method for getting the targetHours.
-     * 
+     *
      * @return the targetHours
      */
     public Long getTargetHours() {
-        return this.targetHours;
+        return targetHours;
     }
 
     /**
      * Method for setting the targetHours.
-     * 
+     *
      * @param targetHours the targetHours to set
      */
     public void setTargetHours(Long targetHours) {
@@ -89,16 +89,16 @@ public class TiTAUserProject extends BaseEntity<Long> {
 
     /**
      * Method for getting the user.
-     * 
+     *
      * @return the user
      */
     public TiTAUser getUser() {
-        return this.user;
+        return user;
     }
 
     /**
      * Method for setting the user.
-     * 
+     *
      * @param user the user to set
      */
     public void setUser(TiTAUser user) {
@@ -107,16 +107,16 @@ public class TiTAUserProject extends BaseEntity<Long> {
 
     /**
      * Method for getting the project.
-     * 
+     *
      * @return the project
      */
     public TiTAProject getProject() {
-        return this.project;
+        return project;
     }
 
     /**
      * Method for setting the project.
-     * 
+     *
      * @param project the project to set
      */
     public void setProject(TiTAProject project) {
@@ -125,6 +125,6 @@ public class TiTAUserProject extends BaseEntity<Long> {
 
     @Override
     public Long getId() {
-        return this.id;
+        return id;
     }
 }
