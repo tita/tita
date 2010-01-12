@@ -15,7 +15,7 @@
 	</background>
 	<title>
 		<band height="79" splitType="Stretch">
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="17" width="553" height="42"/>
 				<textElement textAlignment="Center">
 					<font size="30"/>
@@ -26,21 +26,21 @@
 	</title>
 	<pageHeader>
 		<band height="35" splitType="Stretch">
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="331" height="35"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="20"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{name}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="453" y="0" width="100" height="35"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="20"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{year}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="331" y="0" width="122" height="35"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="20"/>
@@ -91,33 +91,33 @@
 	</columnHeader>
 	<detail>
 		<band height="23" splitType="Stretch">
-			<textField>
-				<reportElement x="6" y="2" width="52" height="20"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="6" y="2" width="52" height="20" isPrintWhenDetailOverflows="true"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{COLUMN_0}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="68" y="2" width="26" height="20"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="68" y="2" width="26" height="20" isPrintWhenDetailOverflows="true"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{COLUMN_1}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="279" y="2" width="52" height="20"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="279" y="2" width="52" height="20" isPrintWhenDetailOverflows="true"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{COLUMN_3}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="344" y="2" width="52" height="20"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="344" y="2" width="52" height="20" isPrintWhenDetailOverflows="true"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{COLUMN_4}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="409" y="2" width="104" height="20"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="409" y="2" width="104" height="20" isPrintWhenDetailOverflows="true"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{COLUMN_5}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="102" y="1" width="164" height="20"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="102" y="1" width="164" height="20" isPrintWhenDetailOverflows="true"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{COLUMN_2}]]></textFieldExpression>
 			</textField>
