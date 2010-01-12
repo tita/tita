@@ -41,7 +41,7 @@ import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 @Entity
 @Table(name = "ISSUE_TRACKER_PROJECT")
 @SequenceGenerator(name = "seq_issue_project", sequenceName = "ISSUE_PROJECT_ID_SEQ", allocationSize = 1)
-public class IssueTrackerProject extends BaseEntity<Long>{
+public class IssueTrackerProject extends BaseEntity<Long> {
 
     @Id
     @Column(name = "ID")
@@ -62,8 +62,9 @@ public class IssueTrackerProject extends BaseEntity<Long>{
     @Column(name = "ISST_PROJECT_ID")
     private Long isstProjectId;
 
-    @Column(name = "DELETED")
-    private Boolean deleted;
+    /*
+     * @Column(name = "DELETED") private Boolean deleted;
+     */
 
     @OneToMany(mappedBy = "isstProject", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE })
     private Set<IssueTrackerTask> issueTrackerTasks;
@@ -112,13 +113,11 @@ public class IssueTrackerProject extends BaseEntity<Long>{
         return this.issueTracker;
     }
 
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
-    public Boolean isDeleted() {
-        return this.deleted;
-    }
+    /*
+     * public void setDeleted(Boolean deleted) { this.deleted = deleted; }
+     * 
+     * public Boolean isDeleted() { return this.deleted; }
+     */
 
     public void setProjectName(String projectName) {
         this.projectName = projectName;
