@@ -54,7 +54,7 @@ import at.ac.tuwien.ifs.tita.reporting.JasperPdfResource;
  * Daily evaluation.
  */
 public class DailyViewPage extends BasePage {
-    private final Logger log = LoggerFactory.getLogger(MonthlyViewPage.class);
+    private final Logger log = LoggerFactory.getLogger(DailyViewPage.class);
 
     @SpringBean(name = "timeEffortService")
     private IEffortService effortService;

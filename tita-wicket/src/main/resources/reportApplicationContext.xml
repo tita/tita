@@ -56,4 +56,16 @@
             </map>
         </property>
     </bean>
+    <bean id="multipleProjectsReport" class="at.ac.tuwien.ifs.tita.reporting.JasperPdfResource">
+        <property name="designFilename" value="/reports/MultipleProjectsView.jrxml" />
+        <property name="filename" value="MultipleProjectsView.pdf" />
+        <property name="reportParameters">
+            <map>
+                <entry>
+                    <key><value>title</value></key>
+                    <value>Multiple Projects Evaluation</value>
+                </entry>
+            </map>
+        </property>
+    </bean>
 </beans>
