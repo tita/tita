@@ -37,6 +37,11 @@ public class ActiveTask {
         this.tList = new ArrayList<ActiveTaskEffort>();
     }
 
+    /**
+     * Adds an effort for a given tita user
+     * @param userId Long
+     * @param effort Long
+     */
     public void addTaskEffort(Long userId, Long effort) {
         ActiveTaskEffort a;
 
@@ -49,6 +54,12 @@ public class ActiveTask {
         }
     }
 
+    
+    /**
+     * Calculates if any task has been started by a user.
+     * @param userId Long
+     * @return ActiveTaskEffort
+     */
     private ActiveTaskEffort findUser(Long userId) {
         for (ActiveTaskEffort ate : tList) {
             if (ate.getUserId().equals(userId)) {
@@ -58,10 +69,20 @@ public class ActiveTask {
         return null;
     }
 
+    /**
+     * Equals implementation for 2 different tasks
+     * @param taskId ActiveTaskId
+     * @return ActiveTaskId
+     */
     public Boolean equalsTask(ActiveTaskId taskId) {
         return (tId.compareTo(taskId) == 0 ? true : false);
     }
 
+    /**
+     * Returns an task effort for given user id.
+     * @param userId Long
+     * @return Effort
+     */
     public Effort getEffortForUser(Long userId) {
         ActiveTaskEffort eff;
         Effort effort = null;
@@ -72,11 +93,20 @@ public class ActiveTask {
         return effort;
     }
 
+    /**
+     * Removes user of task list.
+     * @param userId Long
+     */
     public void removeEffortForUser(Long userId) {
         ActiveTaskEffort ate = findUser(userId);
         tList.remove(ate);
     }
 
+    /**
+     * Returns the id of a task that a user maybe have started.
+     * @param userId Long
+     * @return ActiveTaskId or null
+     */
     public ActiveTaskId getTaskIdForUser(Long userId) {
         if (findUser(userId) != null) {
             return tId;

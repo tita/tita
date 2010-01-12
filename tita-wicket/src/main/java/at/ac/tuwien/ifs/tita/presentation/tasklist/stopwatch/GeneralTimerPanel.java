@@ -108,16 +108,27 @@ public class GeneralTimerPanel extends Panel implements IHeaderContributor {
         response.renderCSSReference(style);
     }
 
+    /**
+     * Set timer of task started.
+     */
     public void setTaskStarted(){
         started = true;
     }
     
+    /**
+     * Set the effort of the assigned task.
+     * @param effort Long
+     */    
     public void setEffort(Effort effort){
         this.effort = effort;
         duration.getModel().setObject(TiTATimeConverter.getDuration2String(
                                          effort != null ? effort.getDuration() : 0L));
     }
     
+    /**
+     * Get description of task.
+     * @return String
+     */
     public String getDescription(){
         String desc = description.getModelObject();
     

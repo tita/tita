@@ -73,6 +73,10 @@ public class NewTaskTimerPanel extends Panel implements IHeaderContributor {
         response.renderCSSReference(style);
     }
     
+    /**
+     * Returns current issue tracker task of panel.
+     * @return ITaskTrackable
+     */
     public ITaskTrackable getTask(){
         return task;
     }

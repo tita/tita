@@ -101,14 +101,25 @@ public class AssignedTaskTimerPanel extends Panel implements IHeaderContributor 
         response.renderCSSReference(style);
     }
     
+    /**
+     * Returns current issue tracker task of panel.
+     * @return ITaskTrackable
+     */
     public ITaskTrackable getTask(){
         return task;
     }
     
+    /**
+     * Set timer of task started.
+     */
     public void setTaskStarted(){
         started = true;
     }
     
+    /**
+     * Set the effort of the assigned task.
+     * @param effort Long
+     */
     public void setEffort(Long effort){
         this.effort = effort;
         lab.setDefaultModelObject(TiTATimeConverter.getDuration2String(

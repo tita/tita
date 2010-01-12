@@ -20,21 +20,23 @@
 <wicket:panel>
   <div wicket:id="tasklistContainer">
   <form wicket:id="taskListForm">
-    <table>
+    <!-- table>
     	<tr>
-	    	<td>
+	    	<td-->
+	    		<div id="timer">
+					<span wicket:id="generalTimer"/>
+					<p></p><p></p>
+				</div>
+				
 			    <div id="tasklistheader">
 			       <select wicket:id="dropdownGrouping"></select>
 			  	   <span wicket:id="dummy" />
 			       <input wicket:id="updateTaskList" type="submit" value="Update" />
 			    </div>
-			</td>
-			<td rowspan="2">
+			<!-- /td>
+			<td-->
 				<!--  table>
 					<tr><td-->
-						<div id="timer">
-							<span wicket:id="generalTimer"/>
-						</div>
 					<!-- /td></tr>
 					<tr><td-->
 					    <div id="accordion">
@@ -42,9 +44,9 @@
 					    </div>
 					<!-- /td></tr>
 				</table-->
-			</td>
+			<!-- /td>
 		</tr>
-	</table>
+	</table-->
   </form>
   </div>
 </wicket:panel>

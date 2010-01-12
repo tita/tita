@@ -183,8 +183,9 @@ public class MultipleProjectsView extends BasePage {
         form.add(table);
     }
 
+    
     /**
-     * TODO - Write Javadoc.
+     * Loads all tita users from db and displays them in a list.
      */
     private void loadTiTAProjects(){
         List<TiTAProject> titaProjects = titaProjectService.findAllTiTAProjects();
@@ -198,7 +199,7 @@ public class MultipleProjectsView extends BasePage {
     }
 
     /**
-     * TODO - Write Javadoc.
+     * Loads an effort summary from db for every user and project and displays it in a list.
      */
     private void loadMultipleProjectEvaluation() {
         Boolean userProject = null;
@@ -228,13 +229,11 @@ public class MultipleProjectsView extends BasePage {
         }
     }
 
+   
     /**
-     * TODO - Write Javadoc.
-     *
-     * @param grouping
-     *            - TODO - Write Javadoc.
-     * @param userProject
-     *            - TODO - Write Javadoc.
+     * Creats the list view for viewing all effort per user and tita project.
+     * @param grouping String
+     * @param userProject Boolean
      */
     private void createUserProjectEffortTable(String grouping, Boolean userProject) {
         if(!userProject){
@@ -259,7 +258,7 @@ public class MultipleProjectsView extends BasePage {
     }
 
     /**
-     * TODO - Write Javadoc.
+     * Load all tita users for a choosen tita project.
      */
     private void loadTiTAUsers(){
         List<TiTAUser> titaUsers = userService.findAllTiTAUsersForProjects(selectedProjects);

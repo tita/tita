@@ -66,7 +66,11 @@ public class EffortsPage extends BasePage {
         initTabbedPanels();
         add(new TabbedPanel("effortsTabbedPanel", tabs).add(new AttributeModifier("class", true, 
                                                             this.getDefaultModel())));
-        taskListPanel =  new TaskListPanel("taskList",projects.get(0));
+        if(projects.size() > 0){
+            taskListPanel =  new TaskListPanel("taskList",projects.get(0));
+        }else{
+            taskListPanel =  new TaskListPanel("taskList",null);
+        }
         add(taskListPanel);
     }
 

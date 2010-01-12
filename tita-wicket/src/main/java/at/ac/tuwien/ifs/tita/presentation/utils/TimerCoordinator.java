@@ -49,6 +49,7 @@ public class TimerCoordinator implements Runnable {
         registeredUsers = new TreeMap<Long, Long>();
     }
 
+    /** {@inheritDoc} */
     @Override
     public void run() {
         Long user = null, taskCount = null;
@@ -103,6 +104,11 @@ public class TimerCoordinator implements Runnable {
 //        doRun = false;
 //    }
 
+    /**
+     * Checks if time coordinator contains a given task.
+     * @param id ActiveTaskId
+     * @return ActiveTask or null
+     */
     private ActiveTask containsTask(ActiveTaskId id) {
         for (ActiveTask a : activeTasks) {
             if (a.equalsTask(id)) {
@@ -112,6 +118,11 @@ public class TimerCoordinator implements Runnable {
         return null;
     }
 
+    /**
+     * Start time measuring of an issue tracker task.
+     * @param userId Long
+     * @param tId ActiveTaskId
+     */
     public synchronized void startIssueTimer(Long userId, ActiveTaskId tId) {
         ActiveTask active;
         Long count;
@@ -130,6 +141,12 @@ public class TimerCoordinator implements Runnable {
         }
     }
 
+    /**
+     * Stop time measuring of an issue tracker task.
+     * @param userId Long
+     * @param tId ActiveTaskId
+     * @return Effort
+     */
     public synchronized Effort stopIssueTimer(Long userId, ActiveTaskId tId) {
         Long count;
         ActiveTask active;
@@ -153,6 +170,10 @@ public class TimerCoordinator implements Runnable {
         return effort;
     }
 
+    /**
+     * Start time measuring of an tita task.
+     * @param userId Long
+     */
     public synchronized void startTiTATimer(Long userId) {
         Long count;
         
@@ -170,6 +191,11 @@ public class TimerCoordinator implements Runnable {
         }
     }
     
+    /**
+     * Find a task effort for a tita task for a given user id.
+     * @param userId Long
+     * @return ActiveTaskEffort
+     */
     private ActiveTaskEffort findTiTATaskForUser(Long userId){
         for(ActiveTaskEffort ate : titaTasks){
             if(ate.getUserId().equals(userId)){
@@ -179,6 +205,10 @@ public class TimerCoordinator implements Runnable {
         return null;
     }
 
+    /**
+     * Stop time measuring of an tita task.
+     * @param userId Long
+     */
     public synchronized Effort stopTiTATimer(Long userId) {
         Effort effort = null;
         ActiveTaskEffort ate = null;
@@ -199,12 +229,21 @@ public class TimerCoordinator implements Runnable {
         return effort;
     }
 
+    /**
+     * Register user at time coordinator.
+     * Only registered users can measure efforts of tasks.
+     * @param userId Long
+     */
     public synchronized void registerUser(Long userId) {
         if (!registeredUsers.containsKey(userId)) {
             registeredUsers.put(userId, 0L);
         }
     }
-
+    
+    /**
+     * Unregister user from time coordinator.
+     * @param userId Long
+     */
     public synchronized void unregisterUser(Long userId) {
         if (registeredUsers.containsKey(userId)) {
             removeAllUnsavedTasksOfUser(userId);
@@ -212,6 +251,10 @@ public class TimerCoordinator implements Runnable {
         }
     }
 
+    /**
+     * Removes all unstopped tasks of a user.
+     * @param userId Long
+     */
     private void removeAllUnsavedTasksOfUser(Long userId) {
         ActiveTaskEffort ate = null;
         
@@ -223,6 +266,11 @@ public class TimerCoordinator implements Runnable {
         }
     }
 
+    /**
+     * Get all active tasks for a given user id.
+     * @param userId Long
+     * @return List of ActiveTaskId
+     */
     public List<ActiveTaskId> getActiveTasks(Long userId) {
         List<ActiveTaskId> ids = new ArrayList<ActiveTaskId>();
         ActiveTaskId id = null;

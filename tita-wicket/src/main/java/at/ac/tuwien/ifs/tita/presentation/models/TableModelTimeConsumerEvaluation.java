@@ -88,21 +88,4 @@ public class TableModelTimeConsumerEvaluation extends AbstractTitaTableModel {
         }
         return null;
     }
-
-    /**
-     * Checks if date is am or pm.
-     * 
-     * @param time time to check
-     * @return am or pm as string
-     */
-    /*
-     * private String isAMorPM(Long time) { String amorpm = "";
-     * 
-     * Calendar cal = Calendar.getInstance(); cal.setTimeInMillis(time);
-     * 
-     * if (cal.get(Calendar.AM_PM) == Calendar.AM) { amorpm = "am"; } else if
-     * (cal.get(Calendar.AM_PM) == Calendar.PM) { amorpm = "pm"; }
-     * 
-     * return amorpm; }
-     */
 }

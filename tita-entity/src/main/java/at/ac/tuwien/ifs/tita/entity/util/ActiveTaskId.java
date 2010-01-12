@@ -29,22 +29,20 @@ public class ActiveTaskId implements Comparable<ActiveTaskId> {
     private Long issueTrackerId;
     private Long issueTProjetId;
 
-    // private Long userId;
-
-    public ActiveTaskId(Long titaProjectId, /* Long userId, */Long issueTrackerId, Long issueTProjetId, Long issueId) {
+    public ActiveTaskId(Long titaProjectId, Long issueTrackerId, Long issueTProjetId, Long issueId){
         this.titaProjectId = titaProjectId;
         this.issueTrackerId = issueTrackerId;
         this.issueId = issueId;
-        // this.userId = userId;
         this.issueTProjetId = issueTProjetId;
     }
 
+    /** {@inheritDoc} */
     @Override
     public int compareTo(ActiveTaskId o) {
-        return (((titaProjectId.equals(o.getTitaProjectId())) && (issueTrackerId.equals(o.getIssueTrackerId()))
+        return (((titaProjectId.equals(o.getTitaProjectId())) && 
+                (issueTrackerId.equals(o.getIssueTrackerId()))
                 && (issueTProjetId.equals(o.getIssueTProjetId())) &&
-        // (userId.equals(o.getUserId())) &&
-        (issueId.equals(o.getIssueId()))) ? 0 : -1);
+                (issueId.equals(o.getIssueId()))) ? 0 : -1);
     }
 
     public Long getTitaProjectId() {
@@ -62,8 +60,4 @@ public class ActiveTaskId implements Comparable<ActiveTaskId> {
     public Long getIssueTProjetId() {
         return issueTProjetId;
     }
-
-    // public Long getUserId() {
-    // return userId;
-    // }
 }
