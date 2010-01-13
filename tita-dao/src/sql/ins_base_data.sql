@@ -30,7 +30,7 @@ INSERT INTO tita_user (id, deleted, email, firstname, lastname, modification_ver
  VALUES (7, false, NULL, 'timecontroller', 'timecontroller', 0, 'a95244f53b7030fc5144c5c57c835791effc20a023872e4d115ba995b47a3035', 'timecontroller', 3);
 
 insert into TITA_PROJECT (ID, DESCRIPTION, NAME, DELETED, STATUS_ID, MODIFICATION_VERSION)
-values (1, 'nix', 'name1', false, 1, 0);
+values (1, 'nix', 'tita_test', false, 1, 0);
 
 insert into TITA_PROJECT (ID, DESCRIPTION, NAME, DELETED, STATUS_ID, MODIFICATION_VERSION)
 values (2, 'nix', 'name2', false, 1, 0);

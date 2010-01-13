@@ -32,9 +32,9 @@ import javax.persistence.Table;
 
 /**
  * Entity for storing time producer's effort of his/her assigned tasks.
- * 
+ *
  * @author herbert
- * 
+ *
  */
 @Entity
 @Table(name = "EFFORT")
@@ -73,7 +73,7 @@ public class Effort extends BaseEntity<Long> {
     @Column(name = "DELETED")
     private Boolean deleted;
 
-    @ManyToOne(cascade = { CascadeType.MERGE })
+    @ManyToOne(cascade = { CascadeType.ALL })
     @JoinColumn(name = "USER_ID")
     // , referencedColumnName = "ID")
     private TiTAUser user;
@@ -114,19 +114,19 @@ public class Effort extends BaseEntity<Long> {
 
     @Override
     public Long getId() {
-        return this.id;
+        return id;
     }
 
     public String getDescription() {
-        return this.description;
+        return description;
     }
 
     public TiTATask getTitaTaskId() {
-        return this.titaTask;
+        return titaTask;
     }
 
     public IssueTrackerTask getIssueTTaskId() {
-        return this.issueTTask;
+        return issueTTask;
     }
 
     public void setDate(Date date) {
@@ -138,7 +138,7 @@ public class Effort extends BaseEntity<Long> {
     }
 
     public Boolean getDeleted() {
-        return this.deleted;
+        return deleted;
     }
 
     public void setDeleted(Boolean deleted) {
@@ -146,7 +146,7 @@ public class Effort extends BaseEntity<Long> {
     }
 
     public TiTAUser getUser() {
-        return this.user;
+        return user;
     }
 
     public void setUser(TiTAUser user) {
@@ -166,7 +166,7 @@ public class Effort extends BaseEntity<Long> {
     }
 
     public Date getDate() {
-        return this.date;
+        return date;
     }
 
     public Long getEndTime() {
@@ -174,49 +174,49 @@ public class Effort extends BaseEntity<Long> {
     }
 
     public Long getDuration() {
-        return this.duration;
+        return duration;
     }
 
     public Boolean isTiTAEffort() {
-        return this.titaTask.getId() != null;
+        return titaTask.getId() != null;
     }
 
     /**
      * filter function.
-     * 
+     *
      * @param filterString - Filter string
      * @return true if it contains the string pattern.
      */
     public Boolean matchDescription(String filterString) {
-        return this.description.toLowerCase().contains(filterString.toLowerCase());
+        return description.toLowerCase().contains(filterString.toLowerCase());
     }
 
     /**
      * TODO write javadoc.
-     * 
+     *
      * @param date1 TODO write javadoc.
      * @return TODO write javadoc.
      */
     public Boolean matchDateFrom(Date date1) {
-        return this.date.after(date1) || this.date.compareTo(date1) == 0;
+        return date.after(date1) || date.compareTo(date1) == 0;
     }
 
     /**
      * TODO write javadoc.
-     * 
+     *
      * @param date1 TODO write javadoc.
      * @return TODO write javadoc.
      */
     public Boolean matchDateUntil(Date date1) {
-        return this.date.before(date1) || this.date.compareTo(date1) == 0;
+        return date.before(date1) || date.compareTo(date1) == 0;
     }
 
     public TiTATask getTitaTask() {
-        return this.titaTask;
+        return titaTask;
     }
 
     public IssueTrackerTask getIssueTTask() {
-        return this.issueTTask;
+        return issueTTask;
     }
 
     public void setEndTime(Long endTime) {
@@ -234,14 +234,14 @@ public class Effort extends BaseEntity<Long> {
     /**
      * Generates the Url to get to the Task of the Issuetracker. For example:
      * projectname: Tita issue nr: 43 �> www.mantis.com/tita-issue:43
-     * 
+     *
      * @return generated URL-String
      */
     public String getUrlToIssueTrackerTask() {
-        if (this.issueTTask != null) {
-            String url = this.issueTTask.getIsstProject().getIssueTracker().getUrl();
-            String projectname = this.issueTTask.getIsstProject().getProjectName();
-            Long taskno = this.issueTTask.getIsstTaskId();
+        if (issueTTask != null) {
+            String url = issueTTask.getIsstProject().getIssueTracker().getUrl();
+            String projectname = issueTTask.getIsstProject().getProjectName();
+            Long taskno = issueTTask.getIsstTaskId();
             return url + "/" + projectname + ":" + taskno;
         }
         return "";
@@ -249,10 +249,10 @@ public class Effort extends BaseEntity<Long> {
 
     /**
      * Adds time to current duration.
-     * 
+     *
      * @param dur duration to add as long.
      */
     public void addDuration(Long dur) {
-        this.duration += dur;
+        duration += dur;
     }
 }

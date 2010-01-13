@@ -44,27 +44,28 @@ public class ProjectService implements IProjectService {
     private IssueTrackerTaskDao issueTTaskDao;
     private IssueTrackerProjectDao issuTProjectDao;
     private TiTATaskDao titaTaskDao;
-    
+
     public void setTitaProjectDao(TiTAProjectDao titaProjectDao) {
         this.titaProjectDao = titaProjectDao;
     }
-    
+
     public void setIssueTTaskDao(IssueTrackerTaskDao issueTTaskDao) {
         this.issueTTaskDao = issueTTaskDao;
     }
-    
-    public void setTiTATaskDao(TiTATaskDao titaTaskDao) {
-        this.titaTaskDao = titaTaskDao;
-    }
-    
-    public void setIssueTProjectDao(IssueTrackerProjectDao issuTProjectDao) {
+
+
+    public void setIssuTProjectDao(IssueTrackerProjectDao issuTProjectDao) {
         this.issuTProjectDao = issuTProjectDao;
+    }
+
+    public void setTitaTaskDao(TiTATaskDao titaTaskDao) {
+        this.titaTaskDao = titaTaskDao;
     }
 
     /** {@inheritDoc} */
     @Override
     public void deleteProject(TiTAProject project) throws PersistenceException {
-        this.titaProjectDao.delete(project);
+        titaProjectDao.delete(project);
     }
 
     /** {@inheritDoc} */
@@ -79,13 +80,13 @@ public class ProjectService implements IProjectService {
     public IssueTrackerTask saveIssueTrackerTask(IssueTrackerTask itt) throws PersistenceException {
         return issueTTaskDao.save(itt);
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public List<TiTAProject> findAllTiTAProjects() {
         return titaProjectDao.findAllOrdered(new Order[] { Property.forName("name").asc() });
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public List<TiTAProject> findTiTAProjectsForUser(TiTAUser user) {
@@ -110,5 +111,5 @@ public class ProjectService implements IProjectService {
     @Override
     public TiTATask saveTiTATask(TiTATask task) {
         return titaTaskDao.save(task);
-    }  
+    }
 }

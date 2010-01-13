@@ -9,7 +9,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-   
+
  */
 
 package at.ac.tuwien.ifs.tita.issuetracker.util;
@@ -18,24 +18,28 @@ package at.ac.tuwien.ifs.tita.issuetracker.util;
 
 /**
  * Class for converting Long times to hours, minutes, seconds.
- * 
+ *
  * @author herbert
- * 
+ *
  */
 public class TiTATimeConverter {
+    private static final int C_THOUSAND = 1000;
+    private static final int C_SIXTY = 60;
+    private static final int C_THREETHOUSANDSIXHUNDRET = 3600;
+
     /**
      * Converts a time duration to hours and minutes.
-     * 
+     *
      * @param time
      *            Long
      * @return String value of time
      */
     public static String getDuration2String(Long time) {
-        String format = String.format("%%0%dd", 2);  
-        Long eltime = time / 1000;
-        String seconds = String.format(format, eltime % 60);  
-        String minutes = String.format(format, (eltime % 3600) / 60);  
-        String hours = String.format(format, eltime / 3600);  
-        return  hours + ":" + minutes + ":" + seconds;  
+        String format = String.format("%%0%dd", 2);
+        Long eltime = time / C_THOUSAND;
+        String seconds = String.format(format, eltime % C_SIXTY);
+        String minutes = String.format(format, eltime % C_THREETHOUSANDSIXHUNDRET / C_SIXTY);
+        String hours = String.format(format, eltime / C_THREETHOUSANDSIXHUNDRET);
+        return  hours + ":" + minutes + ":" + seconds;
     }
 }

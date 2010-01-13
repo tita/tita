@@ -82,7 +82,8 @@ public class UserDAOTest {
      */
     @Before
     public void setUp() {
-        role = roleDao.findById(1L, false);
+
+        role = new Role(1L, "Administrator");
         titaUser = new TiTAUser("test-user", "test-password", "Christoph", "Zehetner",
                 "test@example.com", false, role, null, null);
         titaProject = new TiTAProject("test-description", "test-project", false, null, null, null);
@@ -92,6 +93,7 @@ public class UserDAOTest {
         stup.add(tup);
         titaUser.setTitaUserProjects(stup);
 
+        roleDao.save(role);
         titaProjectDAO.save(titaProject);
         titaProjectDAO.flushnClear();
         titaUserDao.save(titaUser);

@@ -19,7 +19,7 @@
 <beans>
 	
 	<!-- setup wicket application -->
-	<bean id="titaApp" class="at.ac.tuwien.ifs.tita.presentation.TiTAApplication"/>
+	<bean id="titaApp" class="at.ac.tuwien.ifs.tita.ui.TiTAApplication"/>
 
 	<import resource="classpath:reportApplicationContext.xml"/>
 	<import resource="classpath:datasource-context.xml"/>

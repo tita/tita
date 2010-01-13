@@ -51,7 +51,7 @@ public class IssueTrackerTask extends BaseEntity<Long>{
     @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "ISSUE_TRACKER_PROJECT_ID") //, referencedColumnName = "ID")
     private IssueTrackerProject isstProject;
-    
+
     @Column(name = "ISST_TASK_ID")
     private Long isstTaskId;
 
@@ -82,20 +82,20 @@ public class IssueTrackerTask extends BaseEntity<Long>{
 
 
     public IssueTrackerTask(Set<Effort> efforts) {
-        this.issueTEfforts = efforts;
+        issueTEfforts = efforts;
     }
 
     @Override
     public Long getId() {
-        return this.id;
+        return id;
     }
 
     public Set<Effort> getIssueTEfforts() {
-        return this.issueTEfforts;
+        return issueTEfforts;
     }
 
     public IssueTrackerProject getIsstProject(){
-        return this.isstProject;
+        return isstProject;
     }
 
     public void setDescription(String description) {
@@ -103,7 +103,7 @@ public class IssueTrackerTask extends BaseEntity<Long>{
     }
 
     public String getDescription() {
-        return this.description;
+        return description;
     }
 
     public void setIsstProject(IssueTrackerProject isstProject) {
@@ -117,8 +117,14 @@ public class IssueTrackerTask extends BaseEntity<Long>{
     public void setIsstTaskId(Long isstTaskId) {
         this.isstTaskId = isstTaskId;
     }
-    
-    public void addEffort(Effort eff){
-        issueTEfforts.add(eff);
-    }    
+
+    /**
+     * Add effort to issueTrackerTask.
+     * 
+     * @param effort
+     *            the chosen effort
+     */
+    public void addEffort(Effort effort) {
+        issueTEfforts.add(effort);
+    }
 }

@@ -9,12 +9,18 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-   
+
  */
 package at.ac.tuwien.ifs.tita.business.csv;
 
 import java.util.Date;
 
+/**
+ * EffortBean for importing value, in this case the same as in Effort.
+ * 
+ * @author Christoph
+ * 
+ */
 public class EffortBean {
     private Date date;
     private Date startTime;
@@ -52,7 +58,7 @@ public class EffortBean {
     public void setDescription(String description) {
         this.description = description;
     }
-    
-    
-    
+
+
+
 }

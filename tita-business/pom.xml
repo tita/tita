@@ -161,8 +161,6 @@
               <exclude>**/MantisBaseTest.java</exclude>
               <exclude>**/IssueTrackerServiceTest.java</exclude>
               <exclude>**/TaskServiceTest.java</exclude>
-			  <exclude>**/EffortServiceTest.java</exclude>
-			  <exclude>**/TaskServiceDaoTest.java</exclude>
 			  <exclude>**/CSVReaderTest.java</exclude>
             </excludes>
           </configuration>

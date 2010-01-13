@@ -77,6 +77,10 @@ public class EffortDaoTest { // extends AbstractJpaTests {
     @Autowired
     private IGenericHibernateDao<Role, Long> roleDao;
 
+    @Qualifier("issueTrackerDAO")
+    @Autowired
+    private IGenericHibernateDao<IssueTracker, Long> issueTrackerDAO;
+
     public EffortDaoTest() {
 
     }
@@ -87,15 +91,17 @@ public class EffortDaoTest { // extends AbstractJpaTests {
     @Before
     public void prepareProjects() {
         // CHECKSTYLE:OFF
-        IssueTracker it = new IssueTracker(1L, "issue tracker 1", null);
-        Role r11 = new Role(1L, "role 1");
+        IssueTracker it = new IssueTracker(100L, "issue tracker 1", null);
+        Role r11 = new Role(100L, "role 1");
+
+        // save conv data
+        issueTrackerDAO.save(it);
+        roleDao.save(r11);
 
         Effort et1 = null, et2 = null, et3 = null, et4 = null, ei1 = null, ei2 = null, ei3 = null, ei4 = null;
 
-        us1 = new TiTAUser("user1", null, null, null, null, null, r11, null,
-                null);
-        us2 = new TiTAUser("user2", null, null, null, null, null, r11, null,
-                null);
+        us1 = new TiTAUser("user1", null, null, null, null, null, r11, null, null);
+        us2 = new TiTAUser("user2", null, null, null, null, null, r11, null, null);
 
         et1 = new Effort(new Date(System.currentTimeMillis()), 1000L, false,
                 "tita task 1 - effort 1", us1);
@@ -204,8 +210,7 @@ public class EffortDaoTest { // extends AbstractJpaTests {
         li.add("bla");
 
         // CHECKSTYLE:OFF
-        List<UserProjectEffort> leff = timeEffortDAO.findEffortsForTiTAProjectId(
-                li, "month");
+        List<UserProjectEffort> leff = timeEffortDAO.findEffortsForTiTAProjectId(li, "month");
 
         assertNotNull(leff);
         assertEquals(1, leff.size());
@@ -218,14 +223,12 @@ public class EffortDaoTest { // extends AbstractJpaTests {
     @Test
     public void testfindEffortsForTimeConsumerIdShouldSucceed() {
         // CHECKSTYLE:OFF
-        List<Effort> leff = timeEffortDAO
-                .findEffortsForTimeConsumerId(us1.getId());
+        List<Effort> leff = timeEffortDAO.findEffortsForTimeConsumerId(us1.getId());
 
         assertNotNull(leff);
         assertEquals(5, leff.size());
 
-        leff = timeEffortDAO
-                .findEffortsForTimeConsumerId(us2.getId());
+        leff = timeEffortDAO.findEffortsForTimeConsumerId(us2.getId());
 
         assertNotNull(leff);
         assertEquals(3, leff.size());
@@ -243,8 +246,8 @@ public class EffortDaoTest { // extends AbstractJpaTests {
         List<String> ti = new ArrayList<String>();
         ti.add(us2.getUserName());
         // CHECKSTYLE:OFF
-        List<UserProjectEffort> leff = timeEffortDAO
-                .findEffortsForTiTAProjectAndTimeConsumerId(li, ti, "overall");
+        List<UserProjectEffort> leff = timeEffortDAO.findEffortsForTiTAProjectAndTimeConsumerId(li,
+                ti, "overall");
 
         assertNotNull(leff);
         assertEquals(1, leff.size());

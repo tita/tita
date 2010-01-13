@@ -9,7 +9,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-   
+
  */
 package at.ac.tuwien.ifs.tita.business.csv;
 
@@ -21,16 +21,32 @@ import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.TiTATask;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 
+/**
+ * The interface for the importing entities.
+ * 
+ * @author Christoph
+ * 
+ */
 public interface IImportReader {
 
     /**
      * Imports Efforts from a File.
-     * @param path - file path
-     * @param header - values to read in the right order
-     * @param task - Task to add the efforts
-     * @param user - the user, the efforts are for
+     *
+     * @param path
+     *            - file path
+     * @param header
+     *            - values to read in the right order
+     * @param task
+     *            - Task to add the efforts
+     * @param user
+     *            - the user, the efforts are for
+     * @param processors
+     *            - processors
+     * @throws TitaDAOException
+     *             titaDao
+     * @throws IOException
+     *             io
      */
-    void importEffortData(String path, String[] header,CellProcessor[] processors, 
-            TiTATask task, TiTAUser user) 
-        throws IOException, TitaDAOException  ;
+    void importEffortData(String path, String[] header, CellProcessor[] processors, TiTATask task,
+            TiTAUser user) throws IOException, TitaDAOException;
 }
