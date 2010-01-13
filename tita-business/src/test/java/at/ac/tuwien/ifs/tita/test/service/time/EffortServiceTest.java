@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.PersistenceException;
+
 import junit.framework.Assert;
 
 import org.junit.Test;
@@ -39,7 +41,6 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import at.ac.tuwien.ifs.tita.business.service.time.IEffortService;
-import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.Effort;
 
 /**
@@ -88,7 +89,7 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
 
         try {
             service.saveEffort(timeEffort);
-        } catch (TitaDAOException e) {
+        } catch (PersistenceException e) {
             fail();
         }
         Assert.assertNotNull(timeEffort.getId());
@@ -106,7 +107,7 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
 
             service.deleteEffort(timeEffort);
             Assert.assertNull(service.getEffortById(timeEffort.getId()));
-        } catch (TitaDAOException e) {
+        } catch (PersistenceException e) {
             fail();
         }
     }
@@ -125,7 +126,7 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
             timeEffort.setDate(date);
             service.saveEffort(timeEffort);
             Assert.assertEquals(service.getEffortById(timeEffort.getId()).getDate(), date);
-        } catch (TitaDAOException e) {
+        } catch (PersistenceException e) {
             fail();
         }
     }
@@ -142,7 +143,7 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
             Effort te2 = service.getEffortById(timeEffort.getId());
             Assert.assertNotNull(te2);
             Assert.assertEquals(timeEffort.getId(), te2.getId());
-        } catch (TitaDAOException e) {
+        } catch (PersistenceException e) {
             fail();
         }
     }
@@ -179,7 +180,7 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
             for (Effort eff : effortList) {
                 service.saveEffort(eff);
             }
-        } catch (TitaDAOException e) {
+        } catch (PersistenceException e) {
             fail();
         }
         return effortList;
@@ -190,10 +191,8 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
      *
      * @param efforts
      *            List
-     * @throws TitaDAOException
-     *             e
      */
-    private void deleteEfforts(List<Effort> efforts) throws TitaDAOException {
+    private void deleteEfforts(List<Effort> efforts) throws PersistenceException {
         for (Effort eff : efforts) {
             service.deleteEffort(eff);
         }
@@ -222,7 +221,7 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
             Assert.assertNotNull(list);
             Assert.assertEquals(2, list.size());
             deleteEfforts(efforts);
-        } catch (TitaDAOException e) {
+        } catch (PersistenceException e) {
             fail();
         }
     }
@@ -245,7 +244,7 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
             Assert.assertNotNull(list);
             Assert.assertFalse(list.isEmpty());
             deleteEfforts(efforts);
-        } catch (TitaDAOException e) {
+        } catch (PersistenceException e) {
             fail();
         }
     }
@@ -264,7 +263,7 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
             Assert.assertNotNull(list);
             // Assert.assertEquals(2, list.size());
             deleteEfforts(efforts);
-        } catch (TitaDAOException e) {
+        } catch (PersistenceException e) {
             fail();
         }
     }

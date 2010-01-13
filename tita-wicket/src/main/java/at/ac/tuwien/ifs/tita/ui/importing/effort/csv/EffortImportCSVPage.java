@@ -21,6 +21,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
+import javax.persistence.PersistenceException;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.markup.html.basic.Label;
@@ -33,7 +35,6 @@ import org.supercsv.cellprocessor.ift.CellProcessor;
 
 import at.ac.tuwien.ifs.tita.business.csv.IImportReader;
 import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
-import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.Effort;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTATask;
@@ -187,7 +188,7 @@ public class EffortImportCSVPage extends BasePage {
 
     /**
      * Imports the efforts to the database.
-     *
+     * 
      * @param csvPath
      *            - path to the csv file as String
      * @param header
@@ -196,13 +197,13 @@ public class EffortImportCSVPage extends BasePage {
      *            - the columns
      * @param titaProject
      *            - the tita project to set the efforts
-     * @throws TitaDAOException
+     * @throws PersistenceException
      *             titaDao
      * @throws IOException
      *             io
      */
     public void importEffortData(String csvPath, String[] header, CellProcessor[] processors,
-            TiTAProject titaProject) throws TitaDAOException, IOException {
+            TiTAProject titaProject) throws PersistenceException, IOException {
 
         // for example header and processors see CSVReaderTest
 

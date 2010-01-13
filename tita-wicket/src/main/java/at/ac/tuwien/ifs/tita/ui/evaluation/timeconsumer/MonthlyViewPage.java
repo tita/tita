@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.persistence.PersistenceException;
 import javax.servlet.ServletContext;
 
 import net.sf.jasperreports.engine.JRException;
@@ -45,7 +46,6 @@ import org.wicketstuff.table.Table;
 
 import at.ac.tuwien.ifs.tita.business.service.time.IEffortService;
 import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
-import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.Effort;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.reporting.JasperPdfResource;
@@ -144,7 +144,7 @@ public class MonthlyViewPage extends BasePage {
                     // TODO: GUI Exception Handling
                     log.error(e.getMessage());
 
-                } catch (TitaDAOException e) {
+                } catch (PersistenceException e) {
                     // TODO: GUI Exception Handling
                     log.error(e.getMessage());
                 }
@@ -177,11 +177,13 @@ public class MonthlyViewPage extends BasePage {
 
     /**
      * loads report and sets data source.
-     *
-     * @throws JRException JasperReports Exception
-     * @throws TitaDAOException if user cannot be found
+     * 
+     * @throws JRException
+     *             JasperReports Exception
+     * @throws PersistenceException
+     *             if user cannot be found
      */
-    private void loadReport() throws JRException, TitaDAOException {
+    private void loadReport() throws JRException, PersistenceException {
         ServletContext context = ((WebApplication) getApplication()).getServletContext();
         pdfResource.loadReport(context.getRealPath(pdfResource.getDesignFilename()));
         pdfResource.setReportDataSource(new JRTableModelDataSource(tableModel));
@@ -205,7 +207,7 @@ public class MonthlyViewPage extends BasePage {
         List<Effort> list = null;
         try {
             list = effortService.getEffortsMonthlyView(year, month);
-        } catch (TitaDAOException e) {
+        } catch (PersistenceException e) {
             // TODO: GUI Exception Handling
             log.error(e.getMessage());
         }

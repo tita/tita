@@ -24,6 +24,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.PersistenceException;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,7 +44,6 @@ import org.supercsv.cellprocessor.ift.CellProcessor;
 import at.ac.tuwien.ifs.tita.business.csv.CSVReader;
 import at.ac.tuwien.ifs.tita.business.csv.IImportReader;
 import at.ac.tuwien.ifs.tita.business.service.time.IEffortService;
-import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.dao.interfaces.IGenericHibernateDao;
 import at.ac.tuwien.ifs.tita.dao.issuetracker.IssueTrackerDao;
 import at.ac.tuwien.ifs.tita.dao.project.TiTAProjectDao;
@@ -226,13 +227,13 @@ public class CSVReaderTest extends AbstractTransactionalJUnit4SpringContextTests
         assertEquals("Before importing", C_TWO, tit1.getTitaEfforts().size());
         try {
             assertEquals("Before importing", C_TWENTY_ONE, service.getActualEfforts(C_TEN).size());
-        } catch (TitaDAOException e2) {
+        } catch (PersistenceException e2) {
             fail("");
         }
 
         try {
             reader.importEffortData(path, header, processors, tit1, us1);
-        } catch (TitaDAOException e1) {
+        } catch (PersistenceException e1) {
             fail("");
         }
 
@@ -241,7 +242,7 @@ public class CSVReaderTest extends AbstractTransactionalJUnit4SpringContextTests
         try {
             assertEquals("Three Efforts were imported", C_TWENTY_ONE + C_THREE, service
                     .getActualEfforts(C_TEN).size());
-        } catch (TitaDAOException e) {
+        } catch (PersistenceException e) {
             fail("");
         }
     }

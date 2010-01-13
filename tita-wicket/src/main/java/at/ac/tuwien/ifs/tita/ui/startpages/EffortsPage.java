@@ -18,6 +18,8 @@ package at.ac.tuwien.ifs.tita.ui.startpages;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.PersistenceException;
+
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
@@ -28,7 +30,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import at.ac.tuwien.ifs.tita.business.service.project.IProjectService;
 import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
-import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.ui.BasePage;
@@ -59,7 +60,7 @@ public class EffortsPage extends BasePage {
         projects = new ArrayList<TiTAProject>();
         try{
             user = userService.getUserByUsername(TitaSession.getSession().getUsername());
-        }catch (TitaDAOException e) {
+        } catch (PersistenceException e) {
             throw new RuntimeException("Couldn't find user currently logged in.", e);
         }
         initTempProjects();

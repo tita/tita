@@ -23,7 +23,6 @@ import javax.persistence.PersistenceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.dao.issuetracker.IssueTrackerDao;
 import at.ac.tuwien.ifs.tita.dao.issuetracker.task.IssueTrackerTaskDao;
 import at.ac.tuwien.ifs.tita.dao.project.TiTAProjectDao;
@@ -65,7 +64,7 @@ public class TaskService implements ITaskService {
     private TiTATaskDao titaTaskDao;
     private IssueTrackerDao issueTrackerDao;
 
-    private Map<Long, ITaskTrackable> mapOfTasksFromAllProjectsIncludedInTiTAProject = 
+    private Map<Long, ITaskTrackable> mapOfTasksFromAllProjectsIncludedInTiTAProject =
                                                                 new TreeMap<Long, ITaskTrackable>();
 
     private IIssueTrackerService issueTrackerService;
@@ -80,103 +79,103 @@ public class TaskService implements ITaskService {
 
     /** {@inheritDoc} */
     @Override
-    public Map<Long, TiTATask> getTiTATasks(TiTAProject pojectTita) throws TitaDAOException {
-        return this.issueTrackerTaskDao.getTiTATasksForTitaProject(pojectTita);
+    public Map<Long, TiTATask> getTiTATasks(TiTAProject pojectTita) throws PersistenceException {
+        return issueTrackerTaskDao.getTiTATasksForTitaProject(pojectTita);
     }
 
     /** {@inheritDoc} */
     @Override
     public IssueTrackerTask saveIssueTrackerTask(IssueTrackerTask issueTrackerTask) throws PersistenceException {
-        return this.issueTrackerTaskDao.save(issueTrackerTask);
+        return issueTrackerTaskDao.save(issueTrackerTask);
     }
 
     /** {@inheritDoc} */
     @Override
     public void deleteIssueTrackerTask(IssueTrackerTask issueTrackerTask) throws PersistenceException {
-        this.issueTrackerTaskDao.delete(issueTrackerTask);
+        issueTrackerTaskDao.delete(issueTrackerTask);
     }
 
     /** {@inheritDoc} */
     @Override
     public IssueTrackerTask getIssueTrackerTaskById(Long id) throws PersistenceException {
-        return this.issueTrackerTaskDao.findById(id);
+        return issueTrackerTaskDao.findById(id);
     }
 
     /** {@inheritDoc} */
     @Override
     public TiTATask saveTiTATask(TiTATask titaTask) throws PersistenceException {
-        return this.titaTaskDao.save(titaTask);
+        return titaTaskDao.save(titaTask);
     }
 
     /** {@inheritDoc} */
     @Override
     public void deleteTiTATask(TiTATask titaTask) throws PersistenceException {
-        this.titaTaskDao.delete(titaTask);
+        titaTaskDao.delete(titaTask);
     }
 
     /** {@inheritDoc} */
     @Override
     public TiTATask getTiTATaskById(Long id) throws PersistenceException {
-        return this.titaTaskDao.findById(id);
+        return titaTaskDao.findById(id);
     }
 
     /** {@inheritDoc} */
     @Override
     public IssueTracker saveIssueTracker(IssueTracker issueTracker) throws PersistenceException {
-        return this.issueTrackerDao.save(issueTracker);
+        return issueTrackerDao.save(issueTracker);
     }
 
     /** {@inheritDoc} */
     @Override
     public void deleteIssueTracker(IssueTracker issueTracker) throws PersistenceException {
-        this.issueTrackerDao.delete(issueTracker);
+        issueTrackerDao.delete(issueTracker);
     }
 
     /** {@inheritDoc} */
     @Override
     public IssueTracker getIssueTrackerById(Long id) throws PersistenceException {
-        return this.issueTrackerDao.findById(id);
+        return issueTrackerDao.findById(id);
     }
 
     /** {@inheritDoc} */
     @Override
     public void fetchTaskFromIssueTrackerProjects(Long projectTitaId, Long userTitaId) throws ProjectNotFoundException {
 
-        this.titaProject = this.titaProjectDao.findById(projectTitaId);
+        titaProject = titaProjectDao.findById(projectTitaId);
 
-        if (this.titaProject == null) {
-            this.log.debug("TaskService - fetchTaskFromIssueTrackerProjects: Project not found.");
+        if (titaProject == null) {
+            log.debug("TaskService - fetchTaskFromIssueTrackerProjects: Project not found.");
             throw new ProjectNotFoundException("Project not found.");
         }
-        this.mapOfTasksFromAllProjectsIncludedInTiTAProject.clear();
-        
-        this.titaUser = this.titaUserDao.findById(userTitaId);
+        mapOfTasksFromAllProjectsIncludedInTiTAProject.clear();
+
+        titaUser = titaUserDao.findById(userTitaId);
 
         Long key = 0L;
 
-        for (IssueTrackerLogin login : this.titaUser.getIssueTrackerLogins()) {
-            this.log.debug("Take issue tracker login: " + login.getId()
+        for (IssueTrackerLogin login : titaUser.getIssueTrackerLogins()) {
+            log.debug("Take issue tracker login: " + login.getId()
                     + " to use the issue tracker service.");
-            this.issueTrackerService = new IssueTrackerService(login);
+            issueTrackerService = new IssueTrackerService(login);
 
 
-            Map<Long, IProjectTrackable> mapOfProjects = this.issueTrackerService.getProjects();
+            Map<Long, IProjectTrackable> mapOfProjects = issueTrackerService.getProjects();
 
-            this.log.info("Check all accessible projects from the Issue Tracker: "
+            log.info("Check all accessible projects from the Issue Tracker: "
                     + login.getIssueTracker().getUrl());
-            for (IssueTrackerProject issueTrackerProject : this.titaProject.getIssueTrackerProjects()) {
+            for (IssueTrackerProject issueTrackerProject : titaProject.getIssueTrackerProjects()) {
 
                 for (IProjectTrackable projectTrackable : mapOfProjects.values()) {
 
                     if (projectTrackable.getId().equals(issueTrackerProject.getIsstProjectId())) {
 
-                        this.log.info("Updating the project before fetching: "
+                        log.info("Updating the project before fetching: "
                                 + projectTrackable.getName());
-                        this.issueTrackerService.updateProject(projectTrackable);
+                        issueTrackerService.updateProject(projectTrackable);
 
-                        this.log.info("Fetching tasks for the project: "
+                        log.info("Fetching tasks for the project: "
                                 + projectTrackable.getName());
-                        Map<Long, ITaskTrackable> mapOfTasks = this.issueTrackerService
+                        Map<Long, ITaskTrackable> mapOfTasks = issueTrackerService
                                 .getIssueTrackerTasksByProjectName(issueTrackerProject
                                         .getProjectName());
 
@@ -184,7 +183,7 @@ public class TaskService implements ITaskService {
 
                             for (ITaskTrackable taskTrackable : mapOfTasks.values()) {
                                 key++;
-                                this.mapOfTasksFromAllProjectsIncludedInTiTAProject.put(key, taskTrackable);
+                                mapOfTasksFromAllProjectsIncludedInTiTAProject.put(key, taskTrackable);
                             }
                         }
                     }
@@ -194,7 +193,7 @@ public class TaskService implements ITaskService {
     }
 
     public Map<Long, ITaskTrackable> getMapOfTasksFromAllProjectsIncludedInTiTAProject() {
-        return this.mapOfTasksFromAllProjectsIncludedInTiTAProject;
+        return mapOfTasksFromAllProjectsIncludedInTiTAProject;
     }
 
     /** {@inheritDoc} */
@@ -204,14 +203,14 @@ public class TaskService implements ITaskService {
         Map<Long, ITaskTrackable> taskGroupByStatus = new TreeMap<Long, ITaskTrackable>();
         Long key = 0L;
 
-        for (ITaskTrackable task : this.mapOfTasksFromAllProjectsIncludedInTiTAProject.values()) {
+        for (ITaskTrackable task : mapOfTasksFromAllProjectsIncludedInTiTAProject.values()) {
             if (task.getStatus().equals(status)) {
                 key++;
                 taskGroupByStatus.put(key, task);
             }
         }
 
-        this.log.debug("Return all task with the specified issue status: " + status);
+        log.debug("Return all task with the specified issue status: " + status);
         return taskGroupByStatus;
     }
 
@@ -221,7 +220,7 @@ public class TaskService implements ITaskService {
         Map<Long, ITaskTrackable> taskGroupByIssueTrackerUrl = new TreeMap<Long, ITaskTrackable>();
         Long key = 0L;
 
-        for (ITaskTrackable task : this.mapOfTasksFromAllProjectsIncludedInTiTAProject.values()) {
+        for (ITaskTrackable task : mapOfTasksFromAllProjectsIncludedInTiTAProject.values()) {
 //            String url2 = task.getProject().getUrl().toString();
 
             if (task.getProject().getUrl().toString().startsWith(url)) {
@@ -230,21 +229,21 @@ public class TaskService implements ITaskService {
             }
         }
 
-        this.log.debug("Return all task with the specified issue tracker url: " + url);
+        log.debug("Return all task with the specified issue tracker url: " + url);
         return taskGroupByIssueTrackerUrl;
     }
-    
-    
+
+
     /** {@inheritDoc} */
     @Override
     public void assignTask(Long taskId) {
-        this.issueTrackerService.assignTask(taskId);
+        issueTrackerService.assignTask(taskId);
     }
 
     /** {@inheritDoc} */
     @Override
     public void closeTask(Long taskId) {
-        this.issueTrackerService.closeTask(taskId);
+        issueTrackerService.closeTask(taskId);
     }
 
     public void setIssueTrackerDao(IssueTrackerDao issueTrackerDao) {

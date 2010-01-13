@@ -16,6 +16,8 @@
  */
 package at.ac.tuwien.ifs.tita.ui;
 
+import javax.persistence.PersistenceException;
+
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.security.authentication.LoginException;
@@ -24,7 +26,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
-import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.ui.controls.panel.LoginPanel;
 import at.ac.tuwien.ifs.tita.ui.login.TitaLoginContext;
@@ -89,7 +90,7 @@ public class HomePage extends WebPage {
                     titaUser = userService.getUserByUsername(username);
                     // register tita user with 0 active tasks
                     timerCoordinator.registerUser(titaUser.getId());
-                } catch (TitaDAOException ex) {
+                } catch (PersistenceException ex) {
                     log.error("Could find user in db " + username, ex);
                     return false;
                 } catch (LoginException e) {

@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.PersistenceException;
 import javax.swing.ListSelectionModel;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -45,7 +46,6 @@ import org.wicketstuff.table.Table;
 import org.wicketstuff.table.cell.renders.LenientTextField;
 
 import at.ac.tuwien.ifs.tita.business.service.time.IEffortService;
-import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.Effort;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
@@ -374,7 +374,7 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
 
             timeeffortList = fullTimeEffortList.size() <= EffortUtils.MAXLISTSIZE ? fullTimeEffortList
                     : fullTimeEffortList.subList(0, EffortUtils.MAXLISTSIZE);
-        } catch (TitaDAOException e) {
+        } catch (PersistenceException e) {
             log.error(e.getMessage());
         }
     }
@@ -405,7 +405,7 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
 
                 service.saveEffort(timeEffort);
             }
-        } catch (TitaDAOException e) {
+        } catch (PersistenceException e) {
             log.error(e.getMessage());
         } catch (ParseException e) {
             log.error(e.getMessage());
@@ -424,7 +424,7 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
             service.saveEffort(timeEffort);
 
             loadListEntities();
-        } catch (TitaDAOException e) {
+        } catch (PersistenceException e) {
             log.error(e.getMessage());
         }
     }
@@ -454,7 +454,7 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
                 timeEffort.setStartTime(startTime);
                 service.saveEffort(timeEffort);
             }
-        } catch (TitaDAOException e) {
+        } catch (PersistenceException e) {
             log.error(e.getMessage());
         } catch (ParseException e) {
             log.error(e.getMessage());

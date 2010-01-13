@@ -25,6 +25,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import javax.persistence.PersistenceException;
+
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -46,7 +48,6 @@ import at.ac.tuwien.ifs.tita.business.service.project.IProjectService;
 import at.ac.tuwien.ifs.tita.business.service.tasks.ITaskService;
 import at.ac.tuwien.ifs.tita.business.service.time.IEffortService;
 import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
-import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.Effort;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerProject;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerTask;
@@ -132,7 +133,7 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
         try{
             project = titaProject;
             user = userService.getUserByUsername(TitaSession.getSession().getUsername());
-        }catch (TitaDAOException e) {
+        } catch (PersistenceException e) {
 //            throw new RuntimeException("Couldn't find user currently logged in.", e);
         }
     }
@@ -354,7 +355,7 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
                 projectService.saveTiTATask(tt);
                 effort.setTitaTask(tt);
                 effortService.saveEffort(effort);
-            }catch(TitaDAOException ex){
+            } catch (PersistenceException ex) {
                 log.error("couldn't save tita effort with description: " + effort.getDescription());
             }
         }
@@ -390,7 +391,7 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
         }
         try{
             effortService.saveEffort(effort);
-        }catch(TitaDAOException ex){
+        } catch (PersistenceException ex) {
             log.error("Couldn't save effort tita project id: " + project.getId() +
                       " issuetracker id: " + C_ISSUE_TRACKER_ID + " issue tracker project id: " +
                       task.getProject().getId() + " issue tracker task id : " + task.getId());

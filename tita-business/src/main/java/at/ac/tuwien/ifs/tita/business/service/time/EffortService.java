@@ -19,7 +19,8 @@ package at.ac.tuwien.ifs.tita.business.service.time;
 import java.util.Date;
 import java.util.List;
 
-import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
+import javax.persistence.PersistenceException;
+
 import at.ac.tuwien.ifs.tita.dao.interfaces.IEffortDao;
 import at.ac.tuwien.ifs.tita.entity.Effort;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
@@ -36,33 +37,34 @@ import at.ac.tuwien.ifs.tita.entity.util.UserProjectEffort;
 public class EffortService implements IEffortService {
 
     private IEffortDao timeEffortDao;
+
     public EffortService() {
-        
+
     }
-    
-    public EffortService(IEffortDao timeEffortDao){
+
+    public EffortService(IEffortDao timeEffortDao) {
         this.timeEffortDao = timeEffortDao;
     }
-    
+
     public void setTimeEffortDao(IEffortDao timeEffortDao) {
         this.timeEffortDao = timeEffortDao;
     }
 
     /** {@inheritDoc} */
     @Override
-    public void deleteEffort(Effort effort) throws TitaDAOException {
+    public void deleteEffort(Effort effort) throws PersistenceException {
         timeEffortDao.delete(effort);
     }
 
     /** {@inheritDoc} */
     @Override
-    public Effort getEffortById(Long id) throws TitaDAOException {
+    public Effort getEffortById(Long id) throws PersistenceException {
         return timeEffortDao.findById(id);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void saveEffort(Effort effort) throws TitaDAOException {
+    public void saveEffort(Effort effort) throws PersistenceException {
         timeEffortDao.save(effort);
     }
 
@@ -70,7 +72,7 @@ public class EffortService implements IEffortService {
      * {@inheritDoc}
      */
     @Override
-    public List<Effort> getEffortsDailyView(Date date) throws TitaDAOException {
+    public List<Effort> getEffortsDailyView(Date date) throws PersistenceException {
         return timeEffortDao.getTimeEffortsDailyView(date);
     }
 
@@ -78,7 +80,8 @@ public class EffortService implements IEffortService {
      * {@inheritDoc}
      */
     @Override
-    public List<Effort> getEffortsMonthlyView(Integer year, Integer month) throws TitaDAOException {
+    public List<Effort> getEffortsMonthlyView(Integer year, Integer month)
+            throws PersistenceException {
         return timeEffortDao.getTimeEffortsMonthlyView(year, month);
     }
 
@@ -93,7 +96,7 @@ public class EffortService implements IEffortService {
      * {@inheritDoc}
      */
     @Override
-    public List<Effort> getActualEfforts(int maxresults) throws TitaDAOException {
+    public List<Effort> getActualEfforts(int maxresults) throws PersistenceException {
         return timeEffortDao.getActualTimeEfforts(maxresults);
     }
 
@@ -103,14 +106,16 @@ public class EffortService implements IEffortService {
     @Override
     public List<UserProjectEffort> getEffortsSummaryForProjectAndUserNames(List<String> projects,
             List<String> usernames, String grouping) {
-        return timeEffortDao.findEffortsForTiTAProjectAndTimeConsumerId(projects, usernames, grouping);
+        return timeEffortDao.findEffortsForTiTAProjectAndTimeConsumerId(projects, usernames,
+                grouping);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<UserProjectEffort> getEffortsSummaryForProjectNames(List<String> projects, String grouping) {
+    public List<UserProjectEffort> getEffortsSummaryForProjectNames(List<String> projects,
+            String grouping) {
         return timeEffortDao.findEffortsForTiTAProjectId(projects, grouping);
     }
 
@@ -118,10 +123,10 @@ public class EffortService implements IEffortService {
      * {@inheritDoc}
      */
     @Override
-    public Long findEffortsForIssueTrackerTask(
-            TiTAProject tp, TiTAUser tu, Long issTProjectId, Long isstTTaskId, Long isstId){
+    public Long findEffortsForIssueTrackerTask(TiTAProject tp, TiTAUser tu, Long issTProjectId,
+            Long isstTTaskId, Long isstId) {
         return timeEffortDao.findEffortsForIssueTrackerTask(tp.getId(), tu.getUserName(),
-                                                            issTProjectId, isstTTaskId, isstId);
+                issTProjectId, isstTTaskId, isstId);
     }
 
     /**

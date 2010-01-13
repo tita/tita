@@ -20,6 +20,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.PersistenceException;
 import javax.servlet.ServletContext;
 import javax.swing.ListSelectionModel;
 
@@ -44,7 +45,6 @@ import org.wicketstuff.table.Table;
 import at.ac.tuwien.ifs.tita.business.service.project.IProjectService;
 import at.ac.tuwien.ifs.tita.business.service.time.IEffortService;
 import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
-import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.Effort;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
@@ -144,7 +144,7 @@ public class TargetActualView extends BasePage {
                 tmForTiTAProject.reload(titaProjectList);
             }
 
-        } catch (TitaDAOException e) {
+        } catch (PersistenceException e) {
             e.getMessage();
         }
 

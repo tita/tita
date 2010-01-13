@@ -19,7 +19,6 @@ import javax.persistence.PersistenceException;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.entity.conv.Role;
@@ -63,13 +62,14 @@ public interface IUserService {
 
     /**
      * returns a specific User found to the username given.
-     *
-     * @param username the unique identifier of an user
-     * @throws TitaDAOException if no user was found or another Exception is
-     *         thrown
+     * 
+     * @param username
+     *            the unique identifier of an user
+     * @throws PersistenceException
+     *             if no user was found or another Exception is thrown
      * @return the specified User, if found.
      */
-    TiTAUser getUserByUsername(String username) throws TitaDAOException;
+    TiTAUser getUserByUsername(String username) throws PersistenceException;
 
     /**
      * Saves a new Role or updates an existing one.
@@ -102,21 +102,21 @@ public interface IUserService {
 
     /**
      * returns all undeleted Users.
-     *
-     * @throws TitaDAOException if no user was found or another Exception is
-     *         thrown
+     * 
+     * @throws PersistenceException
+     *             if no user was found or another Exception is thrown
      * @return all Users if found
      */
-    List<TiTAUser> getUndeletedUsers() throws TitaDAOException;
+    List<TiTAUser> getUndeletedUsers() throws PersistenceException;
 
     /**
      * returns all Roles.
-     *
-     * @throws TitaDAOException if no role was found or another Exception is
-     *         thrown
+     * 
+     * @throws PersistenceException
+     *             if no role was found or another Exception is thrown
      * @return all Roles if found
      */
-    List<Role> getRoles() throws TitaDAOException;
+    List<Role> getRoles() throws PersistenceException;
 
     /**
      * Returns a list of all existing tita users.

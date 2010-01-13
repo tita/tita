@@ -16,13 +16,14 @@ package at.ac.tuwien.ifs.tita.business.csv;
 import java.io.FileReader;
 import java.io.IOException;
 
+import javax.persistence.PersistenceException;
+
 import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.io.CsvBeanReader;
 import org.supercsv.io.ICsvBeanReader;
 import org.supercsv.prefs.CsvPreference;
 
 import at.ac.tuwien.ifs.tita.business.service.time.IEffortService;
-import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.Effort;
 import at.ac.tuwien.ifs.tita.entity.TiTATask;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
@@ -46,7 +47,7 @@ public class CSVReader implements IImportReader {
      */
     @Override
     public void importEffortData(String path, String[] header, CellProcessor[] processors,
-            TiTATask task, TiTAUser user) throws IOException, TitaDAOException {
+            TiTATask task, TiTAUser user) throws IOException, PersistenceException {
         ICsvBeanReader inFile = new CsvBeanReader(new FileReader(path),
                 CsvPreference.EXCEL_NORTH_EUROPE_PREFERENCE);
 

@@ -34,7 +34,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 
 import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
-import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.entity.conv.Role;
 
@@ -141,7 +140,7 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
 
             Assert.assertNotNull(rolesList);
             Assert.assertFalse(rolesList.isEmpty());
-        } catch (TitaDAOException e) {
+        } catch (PersistenceException e) {
             fail();
         }
     }
@@ -250,7 +249,7 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
             Assert.assertEquals("pwd1", u.getPassword());
             Assert.assertNotNull(u.getRole());
             Assert.assertEquals("role1", u.getRole().getDescription());
-        } catch (TitaDAOException e) {
+        } catch (PersistenceException e) {
             fail();
         }
     }
@@ -266,7 +265,7 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
             // CHECKSTYLE:OFF
             Assert.assertFalse(ulist.isEmpty());
             // CHECKSTYLE:ON
-        } catch (TitaDAOException e) {
+        } catch (PersistenceException e) {
             fail();
         }
     }

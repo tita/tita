@@ -15,6 +15,8 @@
  */
 package at.ac.tuwien.ifs.tita.ui;
 
+import javax.persistence.PersistenceException;
+
 import org.apache.wicket.Application;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -26,7 +28,6 @@ import org.apache.wicket.security.hive.authentication.LoginContext;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
-import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.ui.evaluation.timeconsumer.DailyViewPage;
 import at.ac.tuwien.ifs.tita.ui.evaluation.timeconsumer.MonthlyViewPage;
 import at.ac.tuwien.ifs.tita.ui.evaluation.timecontroller.MultipleProjectsView;
@@ -123,7 +124,7 @@ public class BasePage extends SecureWebPage {
                     try {
                         timerCoordinator.unregisterUser(userSerivce.getUserByUsername(titaSession.
                                                                             getUsername()).getId());
-                    } catch (TitaDAOException e) {
+                    } catch (PersistenceException e) {
                        error("couldn't log out - user didn't exist in database");
                     }
                     // goto login page

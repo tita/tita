@@ -21,7 +21,6 @@ import javax.persistence.PersistenceException;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerTask;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTATask;
@@ -143,14 +142,14 @@ public interface ITaskService {
     /**
      * Method to get all Tasks that were produced for self defined time efforts
      * for a specific project.
-     *
+     * 
      * @param titaProject
      *            - a tita project
      * @return a map of tita tasks
-     * @throws TitaDAOException
+     * @throws PersistenceException
      *             - if Parameter is null or another Exception is thrown
      */
-    Map<Long, TiTATask> getTiTATasks(TiTAProject titaProject) throws TitaDAOException;
+    Map<Long, TiTATask> getTiTATasks(TiTAProject titaProject) throws PersistenceException;
 
     /**
      * Method to fetch all tasks for the tita project and the added issue

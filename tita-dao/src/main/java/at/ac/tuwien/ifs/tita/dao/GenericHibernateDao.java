@@ -39,7 +39,6 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.dao.interfaces.IGenericHibernateDao;
 import at.ac.tuwien.ifs.tita.entity.BaseEntity;
 
@@ -336,13 +335,16 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
     /**
      * Find several entities via criterion.
      *
-     * @param exceptionKeyString for clear exception handling
-     * @param criterion random criterias
+     * @param exceptionKeyString
+     *            for clear exception handling
+     * @param criterion
+     *            random criterias
      * @return entitiy or null
-     * @exception TitaDAOException e
+     * @exception PersistenceException
+     *                e
      */
     protected T findRecordByUniqueKeyCriteria(String exceptionKeyString, Criterion... criterion)
-            throws TitaDAOException {
+            throws PersistenceException {
 
         List<T> resultList = findByCriteria(criterion);
 
@@ -353,10 +355,9 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
         if (resultList.size() == 0) {
             return null;
         }
-        /*
-         * No unique ResultList leads to a TitaDAOException.
-         */
-        throw new TitaDAOException("Dao found more than one Record for UniqueKey (" + exceptionKeyString + ").");
+
+        throw new PersistenceException("Dao found more than one Record for UniqueKey ("
+                + exceptionKeyString + ").");
     }
 
     /**

@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.PersistenceException;
 import javax.servlet.ServletContext;
 import javax.swing.ListSelectionModel;
 
@@ -47,7 +48,6 @@ import org.wicketstuff.table.Table;
 import at.ac.tuwien.ifs.tita.business.service.project.IProjectService;
 import at.ac.tuwien.ifs.tita.business.service.time.IEffortService;
 import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
-import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.entity.util.UserProjectEffort;
@@ -143,7 +143,7 @@ public class MultipleProjectsView extends BasePage {
                 } catch (JRException e) {
                     // TODO: GUI Exception Handling
                     log.error(e.getMessage());
-                } catch (TitaDAOException e) {
+                } catch (PersistenceException e) {
                     // TODO: GUI Exception Handling
                     log.error(e.getMessage());
                 }
@@ -316,11 +316,13 @@ public class MultipleProjectsView extends BasePage {
 
     /**
      * loads report and sets data source.
-     *
-     * @throws JRException JasperReports Exception
-     * @throws TitaDAOException if user cannot be found
+     * 
+     * @throws JRException
+     *             JasperReports Exception
+     * @throws PersistenceException
+     *             if user cannot be found
      */
-    private void loadReport() throws JRException, TitaDAOException {
+    private void loadReport() throws JRException, PersistenceException {
         ServletContext context = ((WebApplication) getApplication()).getServletContext();
         pdfResource.loadReport(context.getRealPath(pdfResource.getDesignFilename()));
     }

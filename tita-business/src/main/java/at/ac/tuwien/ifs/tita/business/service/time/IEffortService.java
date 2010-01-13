@@ -17,9 +17,10 @@ package at.ac.tuwien.ifs.tita.business.service.time;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.PersistenceException;
+
 import org.springframework.transaction.annotation.Transactional;
 
-import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.Effort;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
@@ -37,50 +38,58 @@ public interface IEffortService {
 
     /**
      * Saves a new timeEffort or updates an existing one.
-     *
-     * @param timeEffort the timeEffort to be saved
-     * @throws TitaDAOException if Parameter is null or another Exception is
-     *         thrown
+     * 
+     * @param timeEffort
+     *            the timeEffort to be saved
+     * @throws PersistenceException
+     *             if Parameter is null or another Exception is thrown
      */
-    void saveEffort(Effort timeEffort) throws TitaDAOException;
+    void saveEffort(Effort timeEffort) throws PersistenceException;
 
     /**
      * deletes an existing timeEffort.
-     *
-     * @param timeEffort the timeEffort to be deleted
-     * @throws TitaDAOException if Parameter is null or another Exception is
-     *         thrown
+     * 
+     * @param timeEffort
+     *            the timeEffort to be deleted
+     * @throws PersistenceException
+     *             if Parameter is null or another Exception is thrown
      */
-    void deleteEffort(Effort timeEffort) throws TitaDAOException;
+    void deleteEffort(Effort timeEffort) throws PersistenceException;
 
     /**
      * returns a specific TimeEffort found to the id given.
-     *
-     * @param id the unique identifier of an timeEffort
-     * @throws TitaDAOException if no timeEffort was found or another Exception
-     *         is thrown
+     * 
+     * @param id
+     *            the unique identifier of an timeEffort
+     * @throws PersistenceException
+     *             if no timeEffort was found or another Exception is thrown
      * @return Effort found
      */
-    Effort getEffortById(Long id) throws TitaDAOException;
+    Effort getEffortById(Long id) throws PersistenceException;
 
     /**
      * Gets a view for a day.
-     *
-     * @param date dates which are selected
+     * 
+     * @param date
+     *            dates which are selected
      * @return list of efforts that match dates
-     * @throws TitaDAOException if anything goes wrong with db access.
+     * @throws PersistenceException
+     *             if anything goes wrong with db access.
      */
-    List<Effort> getEffortsDailyView(Date date) throws TitaDAOException;
+    List<Effort> getEffortsDailyView(Date date) throws PersistenceException;
 
     /**
      * Gets a view for a month.
-     *
-     * @param year year which is selected
-     * @param month month which is selected
+     * 
+     * @param year
+     *            year which is selected
+     * @param month
+     *            month which is selected
      * @return list of efforts that match dates
-     * @throws TitaDAOException if anything goes wrong with db access.
+     * @throws PersistenceException
+     *             if anything goes wrong with db access.
      */
-    List<Effort> getEffortsMonthlyView(Integer year, Integer month) throws TitaDAOException;
+    List<Effort> getEffortsMonthlyView(Integer year, Integer month) throws PersistenceException;
 
     /**
      * Gets all years in which efforts were saved.
@@ -91,12 +100,14 @@ public interface IEffortService {
 
     /**
      * Gets a view for the last time efforts.
-     *
-     * @param maxresults sets max results
+     * 
+     * @param maxresults
+     *            sets max results
      * @return list of efforts that match dates
-     * @throws TitaDAOException if anything goes wrong with db access.
+     * @throws PersistenceException
+     *             if anything goes wrong with db access.
      */
-    List<Effort> getActualEfforts(int maxresults) throws TitaDAOException;
+    List<Effort> getActualEfforts(int maxresults) throws PersistenceException;
 
     /**
      * Gets a summary of Effort for List of user and projects - overall,
@@ -135,7 +146,7 @@ public interface IEffortService {
 
     /**
      * Totalize the efforts for a tita project and a tita user.
-     * 
+     *
      * @param projectId
      *            - the id of the tita project
      * @param userId
@@ -146,7 +157,7 @@ public interface IEffortService {
 
     /**
      * Lists all effort objects for a tita project and a tita user.
-     * 
+     *
      * @param projectId
      *            - the id of the tita project
      * @param userId

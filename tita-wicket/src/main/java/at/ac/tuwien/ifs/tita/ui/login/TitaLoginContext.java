@@ -19,6 +19,8 @@ package at.ac.tuwien.ifs.tita.ui.login;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import javax.persistence.PersistenceException;
+
 import org.apache.wicket.security.authentication.LoginException;
 import org.apache.wicket.security.hive.authentication.DefaultSubject;
 import org.apache.wicket.security.hive.authentication.Subject;
@@ -28,7 +30,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
-import at.ac.tuwien.ifs.tita.dao.exception.TitaDAOException;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 
 /**
@@ -87,7 +88,7 @@ public class TitaLoginContext extends UsernamePasswordContext {
                 } else {
                     throw new LoginException("Login of user " + username + " failed.");
                 }
-            } catch (TitaDAOException e) {
+            } catch (PersistenceException e) {
                 throw new LoginException("Login of user " + username + " failed.");
             }
 
