@@ -41,21 +41,20 @@ import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 public class ProjectService implements IProjectService {
 
     private TiTAProjectDao titaProjectDao;
-    private IssueTrackerTaskDao issueTTaskDao;
-    private IssueTrackerProjectDao issuTProjectDao;
+    private IssueTrackerTaskDao issueTrackerTaskDao;
+    private IssueTrackerProjectDao issueTrackerProjectDao;
     private TiTATaskDao titaTaskDao;
 
     public void setTitaProjectDao(TiTAProjectDao titaProjectDao) {
         this.titaProjectDao = titaProjectDao;
     }
 
-    public void setIssueTTaskDao(IssueTrackerTaskDao issueTTaskDao) {
-        this.issueTTaskDao = issueTTaskDao;
+    public void setIssueTrackerTaskDao(IssueTrackerTaskDao issueTrackerTaskDao) {
+        this.issueTrackerTaskDao = issueTrackerTaskDao;
     }
 
-
-    public void setIssuTProjectDao(IssueTrackerProjectDao issuTProjectDao) {
-        this.issuTProjectDao = issuTProjectDao;
+    public void setIssueTrackerProjectDao(IssueTrackerProjectDao issueTrackerProjectDao) {
+        this.issueTrackerProjectDao = issueTrackerProjectDao;
     }
 
     public void setTitaTaskDao(TiTATaskDao titaTaskDao) {
@@ -78,7 +77,7 @@ public class ProjectService implements IProjectService {
     /** {@inheritDoc} */
     @Override
     public IssueTrackerTask saveIssueTrackerTask(IssueTrackerTask itt) throws PersistenceException {
-        return issueTTaskDao.save(itt);
+        return issueTrackerTaskDao.save(itt);
     }
 
     /** {@inheritDoc} */
@@ -97,14 +96,15 @@ public class ProjectService implements IProjectService {
     @Override
     public IssueTrackerTask findIssueTrackerTaskForTiTAProject(Long tp,
             Long it, Long itp, Long itt) {
-        return issueTTaskDao.findIssueTrackerTask(tp, it, itp, itt);
+        return issueTrackerTaskDao.findIssueTrackerTask(tp, it, itp, itt);
     }
 
     /** {@inheritDoc} */
     @Override
     public IssueTrackerProject findIssueTrackerProjectForTiTAProject(Long tp,
             Long issueTrackerId, Long itp) {
-        return issuTProjectDao.findIssueTrackerProjectForTiTAProject(tp, issueTrackerId, itp);
+        return issueTrackerProjectDao
+                .findIssueTrackerProjectForTiTAProject(tp, issueTrackerId, itp);
     }
 
     /** {@inheritDoc} */

@@ -40,9 +40,9 @@
   
   <bean id="titaProjectService" class="at.ac.tuwien.ifs.tita.business.service.project.ProjectService">
     <property name="titaProjectDao" ref="titaProjectDAO"/>
-    <property name="issueTProjectDao" ref="issueTrackerProjectDAO"/>
-    <property name="issueTTaskDao" ref="issueTrackerTaskDAO"/>
-    <property name="tiTATaskDao" ref="titataskDAO"/>
+    <property name="issueTrackerProjectDao" ref="issueTrackerProjectDAO"/>
+    <property name="issueTrackerTaskDao" ref="issueTrackerTaskDAO"/>
+    <property name="titaTaskDao" ref="titataskDAO"/>
   </bean>
   
   <bean id="taskService" class="at.ac.tuwien.ifs.tita.business.service.tasks.TaskService">
