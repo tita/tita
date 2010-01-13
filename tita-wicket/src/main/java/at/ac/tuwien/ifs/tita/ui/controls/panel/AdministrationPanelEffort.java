@@ -209,7 +209,8 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
         teDescription.add(StringValidator.maximumLength(IntegerConstants.FIFTY));
         form.add(teDescription);
 
-        teDate = new DateTextField("tedate", new PropertyModel<Date>(this, "date"), new StyleDateConverter("S-", true));
+        teDate = new DateTextField("tedate", new PropertyModel<Date>(this, "date"),
+                new StyleDateConverter("S-", true));
         teDate.add(new DatePicker());
         form.add(teDate);
 
@@ -258,8 +259,8 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
         });
         form.add(teFilterDescription);
 
-        teFilterDateFrom = new DateTextField("filterdatefrom", new PropertyModel<Date>(this, "dateFrom"),
-                new StyleDateConverter("S-", true));
+        teFilterDateFrom = new DateTextField("filterdatefrom", new PropertyModel<Date>(this,
+                "dateFrom"), new StyleDateConverter("S-", true));
         teFilterDateFrom.add(new DatePicker());
         teFilterDateFrom.add(new AjaxFormComponentUpdatingBehavior("onchange") {
             @Override
@@ -287,8 +288,8 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
             }
         });
 
-        teFilterDateUntil = new DateTextField("filterdateuntil", new PropertyModel<Date>(this, "dateUntil"),
-                new StyleDateConverter("S-", true));
+        teFilterDateUntil = new DateTextField("filterdateuntil", new PropertyModel<Date>(this,
+                "dateUntil"), new StyleDateConverter("S-", true));
         teFilterDateUntil.add(new DatePicker());
         teFilterDateUntil.add(new AjaxFormComponentUpdatingBehavior("onchange") {
             @Override
@@ -302,18 +303,21 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
     /**
      * Filter effort list.
      *
-     * @param target AjaxRequestTarget
+     * @param target
+     *            AjaxRequestTarget
      */
     private void filterList(AjaxRequestTarget target) {
         timeeffortList = new ArrayList<Effort>();
-        if (teFilterDescription.getModelObject().trim().compareTo("") == -1 && dateFrom == null && dateUntil == null) {
+        if (teFilterDescription.getModelObject().trim().compareTo("") == -1 && dateFrom == null
+                && dateUntil == null) {
             timeeffortList = fullTimeEffortList.size() <= EffortUtils.MAXLISTSIZE ? fullTimeEffortList
                     : fullTimeEffortList.subList(0, EffortUtils.MAXLISTSIZE);
         } else {
             for (int i = 0; i < fullTimeEffortList.size(); i++) {
                 int match = -1;
                 if (teFilterDescription.getModelObject().trim().compareTo("") != -1) {
-                    if (fullTimeEffortList.get(i).matchDescription(teFilterDescription.getModelObject())) {
+                    if (fullTimeEffortList.get(i).matchDescription(
+                            teFilterDescription.getModelObject())) {
                         match = 1;
                     } else {
                         match = 0;
@@ -398,13 +402,19 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
                 if (duration == null && endTime != null) {
                     duration = endTime - startTime;
                 }
-
-                timeEffort.setDuration(duration);
-                timeEffort.setDeleted(false);
-                timeEffort.setStartTime(startTime);
-
-                service.saveEffort(timeEffort);
             }
+
+            if (endTime == null && startTime != null && duration != null) {
+                endTime = startTime - duration;
+            }
+
+            timeEffort.setDuration(duration);
+            timeEffort.setDeleted(false);
+            timeEffort.setStartTime(startTime);
+            timeEffort.setEndTime(endTime);
+
+            service.saveEffort(timeEffort);
+
         } catch (PersistenceException e) {
             log.error(e.getMessage());
         } catch (ParseException e) {
@@ -438,10 +448,10 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
         try {
             timeEffort = (Effort) tm.getValueAt(table.getSelectedRows()[0], -1);
 
-            timeEffort.setDate(((LenientDateTextField) table.getSelectedComponent(IntegerConstants.ZERO))
-                    .getModelObject());
-            timeEffort.setDescription(((LenientTextField) table.getSelectedComponent(IntegerConstants.ONE))
-                    .getModelObject().toString());
+            timeEffort.setDate(((LenientDateTextField) table
+                    .getSelectedComponent(IntegerConstants.ZERO)).getModelObject());
+            timeEffort.setDescription(((LenientTextField) table
+                    .getSelectedComponent(IntegerConstants.ONE)).getModelObject().toString());
 
             Long startTime = GlobalUtils.getTimeFromTextField((LenientTextField) table
                     .getSelectedComponent(IntegerConstants.TWO));

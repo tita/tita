@@ -15,6 +15,7 @@
  */
 package at.ac.tuwien.ifs.tita.test.service.time;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -76,23 +77,32 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
         DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
         Date date = null;
 
-        List<Effort> effortList = new ArrayList<Effort>();
-
         try {
             date = formatter.parse(strdate);
         } catch (ParseException e1) {
             assertTrue(false);
         }
 
-        Effort timeEffort = new Effort(date, "Test-Description", C_HUNDRED, C_TWO_HUNDRED, C_THREE_HUNDRED,
-                false, null);
+        Effort timeEffort = new Effort(date, "Test-Description", C_HUNDRED, C_TWO_HUNDRED,
+                C_THREE_HUNDRED, false, null);
 
         try {
             service.saveEffort(timeEffort);
+            Effort savedEffort = service.getEffortById(timeEffort.getId());
+            assertEquals(timeEffort.getDate(), savedEffort.getDate());
+            assertEquals(timeEffort.getDescription(), savedEffort.getDescription());
+            assertEquals(timeEffort.getStartTime(), savedEffort.getStartTime());
+            assertEquals(timeEffort.getEndTime(), savedEffort.getEndTime());
+            assertEquals(timeEffort.getDuration(), savedEffort.getDuration());
+
+            Assert.assertNotNull(timeEffort.getId());
+
         } catch (PersistenceException e) {
             fail();
+        } finally {
+            service.deleteEffort(timeEffort);
         }
-        Assert.assertNotNull(timeEffort.getId());
+
     }
 
     /**
@@ -188,9 +198,11 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
 
     /**
      * Delete all inserted efforts.
-     *
+     * 
      * @param efforts
      *            List
+     * @throws PersistenceException
+     *             titaDao
      */
     private void deleteEfforts(List<Effort> efforts) throws PersistenceException {
         for (Effort eff : efforts) {
@@ -225,8 +237,6 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
             fail();
         }
     }
-
-
 
     /**
      * Test: Get TimeEffort by month.

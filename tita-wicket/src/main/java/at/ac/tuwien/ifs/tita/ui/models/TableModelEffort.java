@@ -143,7 +143,7 @@ public class TableModelEffort extends AbstractTitaTableModel {
             } else if (col == IntegerConstants.THREE) {
                 Long endTime = GlobalUtils.getTimeFromObject(aValue);
                 if (endTime != null) {
-                    te.setDuration(endTime - te.getStartTime());
+                    te.setEndTime(endTime);
                 }
             } else if (col == IntegerConstants.FOUR) {
                 Long duration = GlobalUtils.getDurationFromObject(aValue);

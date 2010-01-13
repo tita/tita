@@ -261,8 +261,9 @@ public class Effort extends BaseEntity<Long> {
 
     /**
      * Adds time to current duration.
-     *
-     * @param dur duration to add as long.
+     * 
+     * @param dur
+     *            duration to add as long.
      */
     public void addDuration(Long dur) {
         duration += dur;
