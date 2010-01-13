@@ -55,7 +55,7 @@ import at.ac.tuwien.ifs.tita.issuetracker.util.TiTATimeConverter;
 import at.ac.tuwien.ifs.tita.reporting.JasperPdfResource;
 import at.ac.tuwien.ifs.tita.ui.BasePage;
 import at.ac.tuwien.ifs.tita.ui.controls.dropdown.SelectOption;
-import at.ac.tuwien.ifs.tita.ui.models.MultipleProjectsEvaluationModel;
+import at.ac.tuwien.ifs.tita.ui.models.TableModelMultipleProjectsEvaluation;
 import at.ac.tuwien.ifs.tita.ui.utils.EffortUtils;
 
 /**
@@ -84,7 +84,7 @@ public class MultipleProjectsView extends BasePage {
     private Form<Object> form;
     private List<String> selectedProjects, selectedUsers;
     private Table table;
-    private MultipleProjectsEvaluationModel mpem;
+    private TableModelMultipleProjectsEvaluation mpem;
     private SelectOption selectedTimespan;
 
     @SuppressWarnings("unchecked")
@@ -215,7 +215,7 @@ public class MultipleProjectsView extends BasePage {
             }
         });
 
-        mpem = new MultipleProjectsEvaluationModel(new ArrayList<UserProjectEffort>(), new String[] {});
+        mpem = new TableModelMultipleProjectsEvaluation(new ArrayList<UserProjectEffort>(), new String[] {});
 
         table = new Table("evaluationTable", mpem);
         table.setRowsPerPage(EffortUtils.ROWS_PER_PAGE);

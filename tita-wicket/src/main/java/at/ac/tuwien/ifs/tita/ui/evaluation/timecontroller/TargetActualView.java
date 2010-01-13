@@ -303,7 +303,6 @@ public class TargetActualView extends BasePage {
                     rsrtarget.setFileName(pdfResource.getFilename());
                     RequestCycle.get().setRequestTarget(rsrtarget);
                 } catch (JRException e) {
-                    // TODO: GUI Exception Handling
                     log.debug(e.getMessage());
                 }
             }

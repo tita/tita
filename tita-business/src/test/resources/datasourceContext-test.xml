@@ -29,6 +29,12 @@
   
   <bean id="titaProjectDao" class="at.ac.tuwien.ifs.tita.dao.project.TiTAProjectDao"/>
   
+  
+  <bean id="userTitaDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
+    <constructor-arg value="at.ac.tuwien.ifs.tita.entity.TiTAUserProject"/>
+  </bean>
+
+  
   <!-- The Services -->
   <bean id="projectService" class="at.ac.tuwien.ifs.tita.business.service.project.ProjectService">
     <property name="titaProjectDao" ref="titaProjectDao"/>
@@ -51,4 +57,6 @@
   </bean>
   
   <import resource="classpath:persistence-context-local.xml"/>
+  
+  
 </beans>

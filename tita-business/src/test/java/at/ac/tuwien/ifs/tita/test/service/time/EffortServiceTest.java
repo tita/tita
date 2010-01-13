@@ -29,6 +29,8 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
@@ -52,8 +54,13 @@ import at.ac.tuwien.ifs.tita.entity.Effort;
 @Transactional
 public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextTests {
 
-    // private final Logger log =
-    // LoggerFactory.getLogger(EffortServiceTest.class);
+    private static final long C_THREE_HUNDRED = 300L;
+
+    private static final long C_TWO_HUNDRED = 200L;
+
+    private static final long C_HUNDRED = 100L;
+
+    private final Logger log = LoggerFactory.getLogger(EffortServiceTest.class);
 
     @Autowired
     private IEffortService service;
@@ -63,7 +70,21 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
      */
     @Test
     public void testSaveTimeEffort() {
-        Effort timeEffort = new Effort(null, null, null, "Das ist die Test TimeEffort 1");
+
+        String strdate = "18.10.2009";
+        DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+        Date date = null;
+
+        List<Effort> effortList = new ArrayList<Effort>();
+
+        try {
+            date = formatter.parse(strdate);
+        } catch (ParseException e1) {
+            assertTrue(false);
+        }
+
+        Effort timeEffort = new Effort(date, "Test-Description", C_HUNDRED, C_TWO_HUNDRED, C_THREE_HUNDRED,
+                false, null);
 
         try {
             service.saveEffort(timeEffort);
@@ -165,9 +186,22 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
     }
 
     /**
+     * Delete all inserted efforts.
+     *
+     * @param efforts
+     *            List
+     * @throws TitaDAOException
+     *             e
+     */
+    private void deleteEfforts(List<Effort> efforts) throws TitaDAOException {
+        for (Effort eff : efforts) {
+            service.deleteEffort(eff);
+        }
+    }
+
+    /**
      * Test: Get TimeEffort by day.
      */
-
     @Test
     public void testGetTimeEffortByDay() {
         List<Effort> efforts = prepareEfforts();
@@ -193,17 +227,7 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
         }
     }
 
-    /**
-     * Delete all inserted efforts.
-     *
-     * @param efforts List
-     * @throws TitaDAOException e
-     */
-    private void deleteEfforts(List<Effort> efforts) throws TitaDAOException {
-        for (Effort eff : efforts) {
-            service.deleteEffort(eff);
-        }
-    }
+
 
     /**
      * Test: Get TimeEffort by month.

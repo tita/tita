@@ -90,6 +90,18 @@ public class Effort extends BaseEntity<Long> {
         this.user = user;
     }
 
+    public Effort(Date date, String description, Long startTime, Long endTime, Long duration,
+            Boolean deleted, TiTAUser user) {
+        super();
+        this.date = date;
+        this.description = description;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.duration = duration;
+        this.deleted = deleted;
+        this.user = user;
+    }
+
     public Effort(Long id, TiTATask titaTask, IssueTrackerTask issueTTask, String description) {
         super();
         this.id = id;
