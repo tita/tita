@@ -30,7 +30,7 @@ import javax.persistence.Table;
  * @author herbert
  *
  */
-@Table(name="DUMMY1")
+@Table(name = "MULTIPLE_PROJECTS_EVALUATION_HELPER")
 @Entity
 @SequenceGenerator(name = "seq_user_project_effort", sequenceName = "USER_PROJECT_EFFORT_1_ID_SEQ", allocationSize = 1)
 public class UserProjectEffort implements Serializable {
