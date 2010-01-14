@@ -46,15 +46,16 @@ import at.ac.tuwien.ifs.tita.entity.Effort;
 
 /**
  * Effort Service Test.
- *
+ * 
  * @author herbert
- *
+ * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:datasourceContext-test.xml" })
 @TransactionConfiguration
 @Transactional
-public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextTests {
+public class EffortServiceTest extends
+        AbstractTransactionalJUnit4SpringContextTests {
 
     private static final long C_THREE_HUNDRED = 300L;
 
@@ -83,14 +84,15 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
             assertTrue(false);
         }
 
-        Effort timeEffort = new Effort(date, "Test-Description", C_HUNDRED, C_TWO_HUNDRED,
-                C_THREE_HUNDRED, false, null);
+        Effort timeEffort = new Effort(date, "Test-Description", C_HUNDRED,
+                C_TWO_HUNDRED, C_THREE_HUNDRED, false, null);
 
         try {
             service.saveEffort(timeEffort);
             Effort savedEffort = service.getEffortById(timeEffort.getId());
             assertEquals(timeEffort.getDate(), savedEffort.getDate());
-            assertEquals(timeEffort.getDescription(), savedEffort.getDescription());
+            assertEquals(timeEffort.getDescription(), savedEffort
+                    .getDescription());
             assertEquals(timeEffort.getStartTime(), savedEffort.getStartTime());
             assertEquals(timeEffort.getEndTime(), savedEffort.getEndTime());
             assertEquals(timeEffort.getDuration(), savedEffort.getDuration());
@@ -110,7 +112,8 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
      */
     @Test
     public void testDeleteTimeEffort() {
-        Effort timeEffort = new Effort(null, null, null, "Das ist die Test TimeEffort 2");
+        Effort timeEffort = new Effort(null, null, null,
+                "Das ist die Test TimeEffort 2");
         try {
             service.saveEffort(timeEffort);
             Assert.assertNotNull(timeEffort.getId());
@@ -127,7 +130,8 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
      */
     @Test
     public void testUpdateTimeEffort() {
-        Effort timeEffort = new Effort(null, null, null, "Das ist die Test TimeEffort 3");
+        Effort timeEffort = new Effort(null, null, null,
+                "Das ist die Test TimeEffort 3");
         try {
             service.saveEffort(timeEffort);
             Assert.assertNotNull(timeEffort.getId());
@@ -135,7 +139,8 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
             Date date = new Date();
             timeEffort.setDate(date);
             service.saveEffort(timeEffort);
-            Assert.assertEquals(service.getEffortById(timeEffort.getId()).getDate(), date);
+            Assert.assertEquals(service.getEffortById(timeEffort.getId())
+                    .getDate(), date);
         } catch (PersistenceException e) {
             fail();
         }
@@ -146,7 +151,8 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
      */
     @Test
     public void testSearchTimeEffort() {
-        Effort timeEffort = new Effort(null, null, null, "Das ist die Test TimeEffort 4");
+        Effort timeEffort = new Effort(null, null, null,
+                "Das ist die Test TimeEffort 4");
         try {
             service.saveEffort(timeEffort);
             Assert.assertNotNull(timeEffort.getId());
@@ -160,7 +166,7 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
 
     /**
      * Prepare database for test -> insert 3 efforts.
-     *
+     * 
      * @return List of efforts
      */
     private List<Effort> prepareEfforts() {
@@ -179,9 +185,12 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
             assertTrue(false);
         }
 
-        Effort timeEffort1 = new Effort(date1, 0L, false, "Das ist die Test TimeEffort 5", null);
-        Effort timeEffort2 = new Effort(date2, 0L, false, "Das ist die Test TimeEffort 6", null);
-        Effort timeEffort3 = new Effort(date1, 0L, false, "Das ist die Test TimeEffort 7", null);
+        Effort timeEffort1 = new Effort(date1, 0L, false,
+                "Das ist die Test TimeEffort 5", null);
+        Effort timeEffort2 = new Effort(date2, 0L, false,
+                "Das ist die Test TimeEffort 6", null);
+        Effort timeEffort3 = new Effort(date1, 0L, false,
+                "Das ist die Test TimeEffort 7", null);
 
         effortList.add(timeEffort1);
         effortList.add(timeEffort2);
@@ -204,7 +213,8 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
      * @throws PersistenceException
      *             titaDao
      */
-    private void deleteEfforts(List<Effort> efforts) throws PersistenceException {
+    private void deleteEfforts(List<Effort> efforts)
+            throws PersistenceException {
         for (Effort eff : efforts) {
             service.deleteEffort(eff);
         }

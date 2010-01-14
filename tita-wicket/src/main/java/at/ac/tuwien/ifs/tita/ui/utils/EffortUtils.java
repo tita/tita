@@ -18,14 +18,14 @@ package at.ac.tuwien.ifs.tita.ui.utils;
 
 /**
  * Provides utils for effort associated classes.
- *
+ * 
  * @author msiedler
- *
+ * 
  */
 public class EffortUtils {
 
     public static final int MAXLISTSIZE = 25;
     public static final int ROWS_PER_PAGE = 10;
-    public static final String[] WIDTHS = new String[] { "95", "300", "80",
+    public static final String[] WIDTHS = new String[] { "140", "300", "80",
             "80", "78", "30", "30", "50" };
 }

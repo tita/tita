@@ -49,9 +49,9 @@ import at.ac.tuwien.ifs.tita.entity.util.UserProjectEffort;
 
 /**
  * Test for EffortDao.
- *
+ * 
  * @author herbert
- *
+ * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:datasourceContext-test.xml" })
@@ -72,6 +72,10 @@ public class EffortDaoTest { // extends AbstractJpaTests {
     @Qualifier("userTitaDAO")
     @Autowired
     private IGenericHibernateDao<TiTAUserProject, Long> utpDao;
+
+    @Qualifier("userDAO")
+    @Autowired
+    private IGenericHibernateDao<TiTAUser, Long> usDao;
 
     @Qualifier("roleDAO")
     @Autowired
@@ -100,8 +104,13 @@ public class EffortDaoTest { // extends AbstractJpaTests {
 
         Effort et1 = null, et2 = null, et3 = null, et4 = null, ei1 = null, ei2 = null, ei3 = null, ei4 = null;
 
-        us1 = new TiTAUser("user1", null, null, null, null, null, r11, null, null);
-        us2 = new TiTAUser("user2", null, null, null, null, null, r11, null, null);
+        us1 = new TiTAUser("user1", null, null, null, null, null, r11, null,
+                null);
+        us2 = new TiTAUser("user2", null, null, null, null, null, r11, null,
+                null);
+
+        usDao.save(us1);
+        usDao.save(us2);
 
         et1 = new Effort(new Date(System.currentTimeMillis()), 1000L, false,
                 "tita task 1 - effort 1", us1);
@@ -210,7 +219,8 @@ public class EffortDaoTest { // extends AbstractJpaTests {
         li.add("bla");
 
         // CHECKSTYLE:OFF
-        List<UserProjectEffort> leff = timeEffortDAO.findEffortsForTiTAProjectId(li, "month");
+        List<UserProjectEffort> leff = timeEffortDAO
+                .findEffortsForTiTAProjectId(li, "month");
 
         assertNotNull(leff);
         assertEquals(1, leff.size());
@@ -223,7 +233,8 @@ public class EffortDaoTest { // extends AbstractJpaTests {
     @Test
     public void testfindEffortsForTimeConsumerIdShouldSucceed() {
         // CHECKSTYLE:OFF
-        List<Effort> leff = timeEffortDAO.findEffortsForTimeConsumerId(us1.getId());
+        List<Effort> leff = timeEffortDAO.findEffortsForTimeConsumerId(us1
+                .getId());
 
         assertNotNull(leff);
         assertEquals(5, leff.size());
@@ -246,8 +257,8 @@ public class EffortDaoTest { // extends AbstractJpaTests {
         List<String> ti = new ArrayList<String>();
         ti.add(us2.getUserName());
         // CHECKSTYLE:OFF
-        List<UserProjectEffort> leff = timeEffortDAO.findEffortsForTiTAProjectAndTimeConsumerId(li,
-                ti, "overall");
+        List<UserProjectEffort> leff = timeEffortDAO
+                .findEffortsForTiTAProjectAndTimeConsumerId(li, ti, "overall");
 
         assertNotNull(leff);
         assertEquals(1, leff.size());
@@ -260,8 +271,23 @@ public class EffortDaoTest { // extends AbstractJpaTests {
     @Test
     public void findEffortsForTiTAProjectAndTiTAUser() {
 
-        List<Effort> list = timeEffortDAO.findEffortsForTiTAProjectAndTiTAUser(tip1.getId(), us2
-                .getId());
+        List<Effort> list = timeEffortDAO.findEffortsForTiTAProjectAndTiTAUser(
+                tip1.getId(), us2.getId());
+        // CHECKSTYLE:OFF
+        assertNotNull(list);
+        assertEquals(3, list.size());
+        // CHECKSTYLE:ON
+    }
+
+    /**
+     * Method.
+     */
+    @Test
+    public void findEffortsForTiTAProjectAndTiTAUserOrdered() {
+
+        List<Effort> list = timeEffortDAO
+                .findEffortsForTiTAProjectAndTiTAUserOrdered(tip1.getId(), us2
+                        .getId());
         // CHECKSTYLE:OFF
         assertNotNull(list);
         assertEquals(3, list.size());
@@ -274,8 +300,9 @@ public class EffortDaoTest { // extends AbstractJpaTests {
     @Test
     public void totalizeEffortsForTiTAProjectAndTiTAUser() {
 
-        Long sumOfEfforts = timeEffortDAO.totalizeEffortsForTiTAProjectAndTiTAUser(tip1.getId(),
-                us2.getId());
+        Long sumOfEfforts = timeEffortDAO
+                .totalizeEffortsForTiTAProjectAndTiTAUser(tip1.getId(), us2
+                        .getId());
         // CHECKSTYLE:OFF
         assertNotNull(sumOfEfforts);
         assertEquals(8000.0, sumOfEfforts, 0.0);

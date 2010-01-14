@@ -19,7 +19,9 @@ package at.ac.tuwien.ifs.tita.ui.controls.panel;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.PersistenceException;
 import javax.swing.ListSelectionModel;
@@ -45,10 +47,14 @@ import org.slf4j.LoggerFactory;
 import org.wicketstuff.table.Table;
 import org.wicketstuff.table.cell.renders.LenientTextField;
 
+import at.ac.tuwien.ifs.tita.business.service.tasks.ITaskService;
 import at.ac.tuwien.ifs.tita.business.service.time.IEffortService;
+import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
 import at.ac.tuwien.ifs.tita.entity.Effort;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
+import at.ac.tuwien.ifs.tita.entity.TiTATask;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
+import at.ac.tuwien.ifs.tita.ui.login.TitaSession;
 import at.ac.tuwien.ifs.tita.ui.models.TableModelEffort;
 import at.ac.tuwien.ifs.tita.ui.uihelper.ButtonDelete;
 import at.ac.tuwien.ifs.tita.ui.uihelper.ButtonDeleteRenderer;
@@ -62,16 +68,21 @@ import at.ac.tuwien.ifs.tita.ui.utils.GlobalUtils;
 import at.ac.tuwien.ifs.tita.ui.utils.IntegerConstants;
 
 /**
- *
+ * 
  * Wicket Panel for time effort administration.
- *
+ * 
  * @author msiedler
- *
+ * 
  */
-public class AdministrationPanelEffort extends Panel implements IAdministrationPanel {
+public class AdministrationPanelEffort extends Panel implements
+        IAdministrationPanel {
 
-    @SpringBean(name = "timeEffortService")
+    @SpringBean(name = "titaEffortService")
     private IEffortService service;
+    @SpringBean(name = "userService")
+    private IUserService userService;
+    @SpringBean(name = "taskService")
+    private ITaskService taskService;
 
     // Actual Date
     private Date date = new Date();
@@ -82,7 +93,8 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
     private TiTAUser user = null;
 
     // Logger
-    private final Logger log = LoggerFactory.getLogger(AdministrationPanelEffort.class);
+    private final Logger log = LoggerFactory
+            .getLogger(AdministrationPanelEffort.class);
 
     // Actual time effort list
     private List<Effort> timeeffortList = new ArrayList<Effort>();
@@ -113,6 +125,8 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
         super(id);
 
         this.project = project;
+        user = userService.getUserByUsername(TitaSession.getSession()
+                .getUsername());
 
         displayPanel();
     }
@@ -205,16 +219,19 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
      * Displays all effort textfields.
      */
     private void displayTextFields() {
-        teDescription = new TextField<String>("tedescription", new Model<String>(""));
-        teDescription.add(StringValidator.maximumLength(IntegerConstants.FIFTY));
+        teDescription = new TextField<String>("tedescription",
+                new Model<String>(""));
+        teDescription
+                .add(StringValidator.maximumLength(IntegerConstants.FIFTY));
         form.add(teDescription);
 
-        teDate = new DateTextField("tedate", new PropertyModel<Date>(this, "date"),
-                new StyleDateConverter("S-", true));
+        teDate = new DateTextField("tedate", new PropertyModel<Date>(this,
+                "date"), new StyleDateConverter("S-", true));
         teDate.add(new DatePicker());
         form.add(teDate);
 
-        teTimeLength = new TextField<String>("tetimelength", new Model<String>(""));
+        teTimeLength = new TextField<String>("tetimelength", new Model<String>(
+                ""));
         teTimeLength.setType(String.class);
         teTimeLength.add(new AjaxFormComponentUpdatingBehavior("onchange") {
             @Override
@@ -223,7 +240,8 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
         });
         form.add(teTimeLength);
 
-        teStartTime = new TextField<String>("testarttime", new Model<String>(""));
+        teStartTime = new TextField<String>("testarttime",
+                new Model<String>(""));
         teStartTime.setType(String.class);
         teStartTime.add(new AjaxFormComponentUpdatingBehavior("onchange") {
             @Override
@@ -246,10 +264,12 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
      * Display all FilterFields.
      */
     private void displayFilterFields() {
-        teFilterDescription = new TextField<String>("filterdescription", new Model<String>("")) {
+        teFilterDescription = new TextField<String>("filterdescription",
+                new Model<String>("")) {
 
         };
-        teFilterDescription.add(StringValidator.maximumLength(IntegerConstants.FIFTY));
+        teFilterDescription.add(StringValidator
+                .maximumLength(IntegerConstants.FIFTY));
         teFilterDescription.setType(String.class);
         teFilterDescription.add(new OnChangeAjaxBehavior() {
             @Override
@@ -259,8 +279,9 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
         });
         form.add(teFilterDescription);
 
-        teFilterDateFrom = new DateTextField("filterdatefrom", new PropertyModel<Date>(this,
-                "dateFrom"), new StyleDateConverter("S-", true));
+        teFilterDateFrom = new DateTextField("filterdatefrom",
+                new PropertyModel<Date>(this, "dateFrom"),
+                new StyleDateConverter("S-", true));
         teFilterDateFrom.add(new DatePicker());
         teFilterDateFrom.add(new AjaxFormComponentUpdatingBehavior("onchange") {
             @Override
@@ -288,28 +309,30 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
             }
         });
 
-        teFilterDateUntil = new DateTextField("filterdateuntil", new PropertyModel<Date>(this,
-                "dateUntil"), new StyleDateConverter("S-", true));
+        teFilterDateUntil = new DateTextField("filterdateuntil",
+                new PropertyModel<Date>(this, "dateUntil"),
+                new StyleDateConverter("S-", true));
         teFilterDateUntil.add(new DatePicker());
-        teFilterDateUntil.add(new AjaxFormComponentUpdatingBehavior("onchange") {
-            @Override
-            protected void onUpdate(AjaxRequestTarget target) {
-                filterList(target);
-            }
-        });
+        teFilterDateUntil
+                .add(new AjaxFormComponentUpdatingBehavior("onchange") {
+                    @Override
+                    protected void onUpdate(AjaxRequestTarget target) {
+                        filterList(target);
+                    }
+                });
         form.add(teFilterDateUntil);
     }
 
     /**
      * Filter effort list.
-     *
+     * 
      * @param target
      *            AjaxRequestTarget
      */
     private void filterList(AjaxRequestTarget target) {
         timeeffortList = new ArrayList<Effort>();
-        if (teFilterDescription.getModelObject().trim().compareTo("") == -1 && dateFrom == null
-                && dateUntil == null) {
+        if (teFilterDescription.getModelObject().trim().compareTo("") == -1
+                && dateFrom == null && dateUntil == null) {
             timeeffortList = fullTimeEffortList.size() <= EffortUtils.MAXLISTSIZE ? fullTimeEffortList
                     : fullTimeEffortList.subList(0, EffortUtils.MAXLISTSIZE);
         } else {
@@ -374,7 +397,9 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
      */
     public void loadListEntities() {
         try {
-            fullTimeEffortList = service.getActualEfforts(EffortUtils.MAXLISTSIZE);
+            fullTimeEffortList = service
+                    .findEffortsForTiTAProjectAndTiTAUserOrdered(project
+                            .getId(), user.getId());
 
             timeeffortList = fullTimeEffortList.size() <= EffortUtils.MAXLISTSIZE ? fullTimeEffortList
                     : fullTimeEffortList.subList(0, EffortUtils.MAXLISTSIZE);
@@ -401,11 +426,9 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
             if (startTime != null && (endTime != null || duration != null)) {
                 if (duration == null && endTime != null) {
                     duration = endTime - startTime;
+                } else if (endTime == null && duration != null) {
+                    endTime = startTime + duration;
                 }
-            }
-
-            if (endTime == null && startTime != null && duration != null) {
-                endTime = startTime - duration;
             }
 
             timeEffort.setDuration(duration);
@@ -413,6 +436,15 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
             timeEffort.setStartTime(startTime);
             timeEffort.setEndTime(endTime);
 
+            timeEffort.setUser(user);
+
+            Set<Effort> set = new HashSet<Effort>();
+            set.add(timeEffort);
+            TiTATask task = new TiTATask(user, set);
+            task.setTitaProject(project);
+            timeEffort.setTitaTask(task);
+
+            taskService.saveTiTATask(task);
             service.saveEffort(timeEffort);
 
         } catch (PersistenceException e) {
@@ -449,14 +481,18 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
             timeEffort = (Effort) tm.getValueAt(table.getSelectedRows()[0], -1);
 
             timeEffort.setDate(((LenientDateTextField) table
-                    .getSelectedComponent(IntegerConstants.ZERO)).getModelObject());
+                    .getSelectedComponent(IntegerConstants.ZERO))
+                    .getModelObject());
             timeEffort.setDescription(((LenientTextField) table
-                    .getSelectedComponent(IntegerConstants.ONE)).getModelObject().toString());
+                    .getSelectedComponent(IntegerConstants.ONE))
+                    .getModelObject().toString());
 
-            Long startTime = GlobalUtils.getTimeFromTextField((LenientTextField) table
-                    .getSelectedComponent(IntegerConstants.TWO));
-            Long endTime = GlobalUtils.getTimeFromTextField((LenientTextField) table
-                    .getSelectedComponent(IntegerConstants.THREE));
+            Long startTime = GlobalUtils
+                    .getTimeFromTextField((LenientTextField) table
+                            .getSelectedComponent(IntegerConstants.TWO));
+            Long endTime = GlobalUtils
+                    .getTimeFromTextField((LenientTextField) table
+                            .getSelectedComponent(IntegerConstants.THREE));
 
             if (startTime != null && endTime != null) {
                 timeEffort.setDuration(endTime - startTime);
@@ -483,7 +519,7 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
 
     /**
      * Returns current project.
-     *
+     * 
      * @return the project
      */
     public TiTAProject getProject() {
@@ -492,7 +528,7 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
 
     /**
      * Returns current date.
-     *
+     * 
      * @return the date
      */
     public Date getDate() {

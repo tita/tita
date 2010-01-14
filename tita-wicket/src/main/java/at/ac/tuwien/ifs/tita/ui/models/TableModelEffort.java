@@ -31,9 +31,9 @@ import at.ac.tuwien.ifs.tita.ui.utils.IntegerConstants;
 
 /**
  * Provides all necessary table model methods for entity Effort.
- *
+ * 
  * @author msiedler
- *
+ * 
  */
 public class TableModelEffort extends AbstractTitaTableModel {
 
@@ -78,21 +78,24 @@ public class TableModelEffort extends AbstractTitaTableModel {
             } else if (col == IntegerConstants.ONE) {
                 return te.getDescription();
             } else if (col == IntegerConstants.TWO) {
-                if(te.getStartTime() != null){
-                    return GlobalUtils.TIMEFORMAT24HOURS.format(te.getStartTime());
-                }else{
+                if (te.getStartTime() != null) {
+                    return GlobalUtils.TIMEFORMAT24HOURS.format(te
+                            .getStartTime());
+                } else {
                     return 0;
                 }
             } else if (col == IntegerConstants.THREE) {
-                if(te.getEndTime() != null){
-                    return GlobalUtils.TIMEFORMAT24HOURS.format(te.getEndTime());
-                }else{
+                if (te.getEndTime() != null) {
+                    return GlobalUtils.TIMEFORMAT24HOURS
+                            .format(te.getEndTime());
+                } else {
                     return 0;
                 }
             } else if (col == IntegerConstants.FOUR) {
-                if(te.getDuration() != null){
-                    return GlobalUtils.TIMELENGTHFORMAT.format(te.getDuration());
-                }else{
+                if (te.getDuration() != null) {
+                    return GlobalUtils.TIMELENGTHFORMAT.format(te.getDuration()
+                            - GlobalUtils.HOUR);
+                } else {
                     return 0;
                 }
             } else if (col == IntegerConstants.FIVE) {

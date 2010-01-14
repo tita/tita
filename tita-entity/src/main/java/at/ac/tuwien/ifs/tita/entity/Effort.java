@@ -32,9 +32,9 @@ import javax.persistence.Table;
 
 /**
  * Entity for storing time producer's effort of his/her assigned tasks.
- *
+ * 
  * @author herbert
- *
+ * 
  */
 @Entity
 @Table(name = "EFFORT")
@@ -73,7 +73,7 @@ public class Effort extends BaseEntity<Long> {
     @Column(name = "DELETED")
     private Boolean deleted;
 
-    @ManyToOne(cascade = { CascadeType.ALL })
+    @ManyToOne(cascade = { CascadeType.MERGE })
     @JoinColumn(name = "USER_ID")
     // , referencedColumnName = "ID")
     private TiTAUser user;
@@ -81,7 +81,8 @@ public class Effort extends BaseEntity<Long> {
     public Effort() {
     }
 
-    public Effort(Date date, Long duration, Boolean deleted, String description, TiTAUser user) {
+    public Effort(Date date, Long duration, Boolean deleted,
+            String description, TiTAUser user) {
         super();
         this.date = date;
         this.duration = duration;
@@ -90,8 +91,8 @@ public class Effort extends BaseEntity<Long> {
         this.user = user;
     }
 
-    public Effort(Date date, String description, Long startTime, Long endTime, Long duration,
-            Boolean deleted, TiTAUser user) {
+    public Effort(Date date, String description, Long startTime, Long endTime,
+            Long duration, Boolean deleted, TiTAUser user) {
         super();
         this.date = date;
         this.description = description;
@@ -102,7 +103,8 @@ public class Effort extends BaseEntity<Long> {
         this.user = user;
     }
 
-    public Effort(Long id, TiTATask titaTask, IssueTrackerTask issueTTask, String description) {
+    public Effort(Long id, TiTATask titaTask, IssueTrackerTask issueTTask,
+            String description) {
         super();
         this.id = id;
         this.titaTask = titaTask;
@@ -110,8 +112,9 @@ public class Effort extends BaseEntity<Long> {
         this.description = description;
     }
 
-    public Effort(TiTATask titaTask, IssueTrackerTask issueTTask, Date date, Long startTime, Long endTime,
-            Long duration, String description, Boolean deleted, TiTAUser user) {
+    public Effort(TiTATask titaTask, IssueTrackerTask issueTTask, Date date,
+            Long startTime, Long endTime, Long duration, String description,
+            Boolean deleted, TiTAUser user) {
         super();
         this.titaTask = titaTask;
         this.issueTTask = issueTTask;
@@ -195,8 +198,9 @@ public class Effort extends BaseEntity<Long> {
 
     /**
      * filter function.
-     *
-     * @param filterString - Filter string
+     * 
+     * @param filterString
+     *            - Filter string
      * @return true if it contains the string pattern.
      */
     public Boolean matchDescription(String filterString) {
@@ -204,10 +208,10 @@ public class Effort extends BaseEntity<Long> {
     }
 
     /**
-     * TODO write javadoc.
-     *
-     * @param date1 TODO write javadoc.
-     * @return TODO write javadoc.
+     * Filter out all matching Efforts with a specific date
+     * 
+     * @param date1
+     * @return
      */
     public Boolean matchDateFrom(Date date1) {
         return date.after(date1) || date.compareTo(date1) == 0;
@@ -215,8 +219,9 @@ public class Effort extends BaseEntity<Long> {
 
     /**
      * TODO write javadoc.
-     *
-     * @param date1 TODO write javadoc.
+     * 
+     * @param date1
+     *            TODO write javadoc.
      * @return TODO write javadoc.
      */
     public Boolean matchDateUntil(Date date1) {
@@ -246,7 +251,7 @@ public class Effort extends BaseEntity<Long> {
     /**
      * Generates the Url to get to the Task of the Issuetracker. For example:
      * projectname: Tita issue nr: 43 �> www.mantis.com/tita-issue:43
-     *
+     * 
      * @return generated URL-String
      */
     public String getUrlToIssueTrackerTask() {
