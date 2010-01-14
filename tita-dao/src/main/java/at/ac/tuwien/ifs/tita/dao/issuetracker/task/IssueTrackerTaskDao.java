@@ -62,7 +62,7 @@ public class IssueTrackerTaskDao extends GenericHibernateDao<IssueTrackerTask, L
             + "and itt.isst_task_id = ? ";
     
         org.hibernate.SQLQuery q = getSession().createSQLQuery(queryString);
-         q.addEntity(IssueTrackerTask.class);
+        q.addEntity(IssueTrackerTask.class);
         // CHECKSTYLE:OFF
         q.setParameter(0, tp);
         q.setParameter(1, it);

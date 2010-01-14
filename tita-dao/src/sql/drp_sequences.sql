@@ -21,4 +21,3 @@ drop sequence TITA_TASK_ID_SEQ;
 drop sequence USER_ID_SEQ;
 drop sequence USER_TITA_ID_SEQ;
 drop sequence USER_PROJECT_EFFORT_1_ID_SEQ;
-drop sequence USER_PROJECT_EFFORT_2_ID_SEQ;

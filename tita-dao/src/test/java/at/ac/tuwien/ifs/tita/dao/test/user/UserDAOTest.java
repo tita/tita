@@ -16,8 +16,10 @@
  */
 package at.ac.tuwien.ifs.tita.dao.test.user;
 
-import static org.junit.Assert.assertEquals;
 
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -41,6 +43,8 @@ import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.entity.TiTAUserProject;
 import at.ac.tuwien.ifs.tita.entity.conv.Role;
+
+
 
 /**
  * Test for UserDao.
@@ -149,5 +153,20 @@ public class UserDAOTest {
                 .getDescription());
         Assert.assertNotNull(users);
         Assert.assertEquals(1, users.size());
+    }
+    
+    /**
+     * Method.
+     */
+    @Test
+    public void findUsersForProjectNamesShouldSucceed(){
+        List<String> projects = new ArrayList<String>();
+        projects.add("tita_test");
+        projects.add("test-project");
+        
+        List<TiTAUser> titaUs = titaUserDao.findUsersForProjectNames(projects);
+        assertNotNull(titaUs);
+        assertEquals(1, titaUs.size());
+        
     }
 }

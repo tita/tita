@@ -27,7 +27,8 @@ import at.ac.tuwien.ifs.tita.entity.TiTAProject;
  * @author herbert
  * 
  */
-public class TiTAProjectDao extends GenericHibernateDao<TiTAProject, Long> implements ITiTAProjectDao {
+public class TiTAProjectDao extends GenericHibernateDao<TiTAProject, Long> 
+    implements ITiTAProjectDao {
 
     public TiTAProjectDao() {
         super(TiTAProject.class);

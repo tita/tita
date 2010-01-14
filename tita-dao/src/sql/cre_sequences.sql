@@ -21,4 +21,3 @@ create sequence TITA_TASK_ID_SEQ start with 1 increment by 1;
 create sequence USER_ID_SEQ start with 1 increment by 1;
 create sequence USER_TITA_ID_SEQ start with 1 increment by 1;
 create sequence USER_PROJECT_EFFORT_1_ID_SEQ start with 1 increment by 1;
-create sequence USER_PROJECT_EFFORT_2_ID_SEQ start with 1 increment by 1;

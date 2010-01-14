@@ -208,10 +208,10 @@ public class Effort extends BaseEntity<Long> {
     }
 
     /**
-     * Filter out all matching Efforts with a specific date
+     * Filter out all matching Efforts with a specific date.
      * 
-     * @param date1
-     * @return
+     * @param date1 Date
+     * @return Boolean
      */
     public Boolean matchDateFrom(Date date1) {
         return date.after(date1) || date.compareTo(date1) == 0;
