@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="MultipleProjectView" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<parameter name="title" class="java.lang.String"/>
+	<parameter name="timespan" class="java.lang.String"/>
 	<field name="PROJECT" class="java.lang.String"/>
 	<field name="DURATION" class="java.lang.String"/>
 	<field name="YEAR" class="java.lang.String"/>
@@ -24,12 +25,26 @@
 	<pageHeader>
 		<band height="35" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="553" height="35"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<reportElement x="61" y="0" width="185" height="35"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="20"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="400" y="0" width="153" height="35"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{timespan}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="246" y="0" width="154" height="35"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="20"/>
+				</textElement>
+				<text><![CDATA[Timespan:]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
 	<columnHeader>

@@ -60,9 +60,9 @@ import at.ac.tuwien.ifs.tita.ui.utils.EffortUtils;
 
 /**
  * Page for Multiple project evaluation.
- *
+ * 
  * @author rene
- *
+ * 
  */
 public class MultipleProjectsView extends BasePage {
     private final Logger log = LoggerFactory.getLogger(MultipleProjectsView.class);
@@ -226,7 +226,6 @@ public class MultipleProjectsView extends BasePage {
         form.add(table);
     }
 
-
     /**
      * Loads all tita users from db and displays them in a list.
      */
@@ -242,7 +241,8 @@ public class MultipleProjectsView extends BasePage {
     }
 
     /**
-     * Loads an effort summary from db for every user and project and displays it in a list.
+     * Loads an effort summary from db for every user and project and displays
+     * it in a list.
      */
     private void loadMultipleProjectEvaluation() {
         Boolean userProject = null;
@@ -274,9 +274,9 @@ public class MultipleProjectsView extends BasePage {
         }
     }
 
-
     /**
      * Creats the list view for viewing all effort per user and tita project.
+     * 
      * @param grouping String
      * @param userProject Boolean
      */
@@ -317,19 +317,18 @@ public class MultipleProjectsView extends BasePage {
     /**
      * loads report and sets data source.
      * 
-     * @throws JRException
-     *             JasperReports Exception
-     * @throws PersistenceException
-     *             if user cannot be found
+     * @throws JRException JasperReports Exception
+     * @throws PersistenceException if user cannot be found
      */
     private void loadReport() throws JRException, PersistenceException {
         ServletContext context = ((WebApplication) getApplication()).getServletContext();
         pdfResource.loadReport(context.getRealPath(pdfResource.getDesignFilename()));
+        pdfResource.addReportParameter("timespan", selectedTimespan.getValue().toString());
     }
 
     /**
      * Sets report data source for pdf.
-     *
+     * 
      * @param upelist list of user pojects displayed in table.
      */
     private void setReportDataSource(List<UserProjectEffort> upelist) {
