@@ -162,6 +162,7 @@
               <exclude>**/IssueTrackerServiceTest.java</exclude>
               <exclude>**/TaskServiceTest.java</exclude>
 			  <exclude>**/CSVReaderTest.java</exclude>
+			  <!-- <exclude>**/TaskServiceDaoTest.java</exclude> -->
             </excludes>
           </configuration>
         </plugin>

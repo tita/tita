@@ -18,8 +18,8 @@ import java.util.List;
 
 import javax.persistence.PersistenceException;
 
+import at.ac.tuwien.ifs.tita.dao.interfaces.IUserDAO;
 import at.ac.tuwien.ifs.tita.dao.user.RoleDAO;
-import at.ac.tuwien.ifs.tita.dao.user.UserDAO;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.entity.conv.Role;
@@ -27,16 +27,16 @@ import at.ac.tuwien.ifs.tita.entity.conv.Role;
 /**
  * Service for manipulating (insert, update, delete, search... ) users and roles
  * in TiTA.
- *
+ * 
  * @author ASE Group 10 - TiTA
- *
+ * 
  */
 public class UserService implements IUserService {
 
-    private UserDAO userDao;
+    private IUserDAO userDao;
     private RoleDAO roleDao;
 
-    public void setUserDao(UserDAO userDao) {
+    public void setUserDao(IUserDAO userDao) {
         this.userDao = userDao;
     }
 
@@ -86,7 +86,6 @@ public class UserService implements IUserService {
     public TiTAUser getUserByUsername(String username) throws PersistenceException {
         return userDao.findByUserName(username);
     }
-
 
     /** {@inheritDoc} */
     @Override

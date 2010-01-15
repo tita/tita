@@ -22,14 +22,15 @@ import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 
 /**
  * Interface for UserDao.
+ * 
  * @author herbert
- *
+ * 
  */
-public interface IUserDAO {
+public interface IUserDAO extends IGenericHibernateDao<TiTAUser, Long> {
 
     /**
      * Gets a user by username.
-     *
+     * 
      * @param username username of user
      * @return a user
      */
@@ -37,6 +38,7 @@ public interface IUserDAO {
 
     /**
      * Finds all tita users which belong to given tita projects.
+     * 
      * @param projects List of String
      * @return List of TiTAUser
      */
@@ -45,11 +47,9 @@ public interface IUserDAO {
     /**
      * Finds the targetHours for a tita project a user is added with a defined
      * value.
-     *
-     * @param userId
-     *            - the id of the tita user
-     * @param projectId
-     *            - the id of the tita project
+     * 
+     * @param userId - the id of the tita user
+     * @param projectId - the id of the tita project
      * @return the value for the target hours or null, if it is unlimited.
      */
     Long findTargetHoursForTiTAProjectAndTiTAUser(Long userId, Long projectId);
@@ -57,8 +57,7 @@ public interface IUserDAO {
     /**
      * Finds all users for a tita project.
      * 
-     * @param project
-     *            - the given project
+     * @param project - the given project
      * @return a list of tita user, that are included in that project.
      */
     List<TiTAUser> findUsersForTiTAProject(TiTAProject project);

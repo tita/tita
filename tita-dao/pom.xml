@@ -140,6 +140,9 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <excludes>
+			<!--<exclude>**/EffortDaoTest.java</exclude>
+			<exclude>**/TiTAProjectDaoTest.java</exclude>
+			<exclude>**/UserDAOTest.java</exclude>-->
           </excludes>
         </configuration>
       </plugin>
