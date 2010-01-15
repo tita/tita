@@ -25,14 +25,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.ac.tuwien.ifs.tita.entity.Effort;
+import at.ac.tuwien.ifs.tita.issuetracker.util.TiTATimeConverter;
 import at.ac.tuwien.ifs.tita.ui.utils.GlobalUtils;
 import at.ac.tuwien.ifs.tita.ui.utils.IntegerConstants;
 
 /**
  * TableModel for Time consumer evaluations.
- *
+ * 
  * @author rene
- *
+ * 
  */
 public class TableModelTimeConsumerEvaluation extends AbstractTitaTableModel {
 
@@ -76,7 +77,7 @@ public class TableModelTimeConsumerEvaluation extends AbstractTitaTableModel {
             } else if (col == IntegerConstants.FOUR) {
                 return te.getEndTime() != null ? GlobalUtils.TIMEFORMAT24HOURS.format(te.getEndTime()) : "0";
             } else if (col == IntegerConstants.FIVE) {
-                return GlobalUtils.TIMEFORMAT24HOURS.format(GlobalUtils.getDateFromLong(te.getDuration()));
+                return TiTATimeConverter.getDuration2String(te.getDuration());// GlobalUtils.TIMEFORMAT24HOURS.format(GlobalUtils.getDateFromLong(te.getDuration()));
             } else {
                 return te;
             }

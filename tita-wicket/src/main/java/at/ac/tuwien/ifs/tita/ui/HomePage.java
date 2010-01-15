@@ -20,6 +20,7 @@ import javax.persistence.PersistenceException;
 
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.security.WaspSession;
 import org.apache.wicket.security.authentication.LoginException;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
@@ -47,45 +48,28 @@ public class HomePage extends WebPage {
 
     public HomePage() {
         new Thread(timerCoordinator).start();
+        setStatelessHint(true);
         add(new FeedbackPanel("feedback"));
         newLoginPanel("loginPanel");
     }
 
-    private static void setLoggedInUser(TitaLoginContext user) {
-        loggedInUser = user;
-
-    }
-
-    private static TitaLoginContext getLoggedInUser() {
-        return loggedInUser;
-    }
-
     /**
      * Creates a sign in panel with a username and a password field.
-     *
+     * 
      * @param panelId - id
      */
     protected void newLoginPanel(String panelId) {
-        setStatelessHint(true);
-
         add(new LoginPanel(panelId) {
             private static final long serialVersionUID = 1L;
 
             @Override
             public boolean signIn(String username, String password) {
-                TitaSession secureSession = TitaSession.getSession();
                 TiTAUser titaUser;
 
-                if (secureSession.isUserAuthenticated() && getLoggedInUser() != null) {
-                    secureSession.logoff(getLoggedInUser());
-                    secureSession.invalidateNow();
-                }
-
-                TitaLoginContext loggedUser = new TitaLoginContext(username, password, userService);
+                TitaLoginContext ctx = new TitaLoginContext(username, password, userService);
 
                 try {
-                    secureSession.login(loggedUser);
-                    setLoggedInUser(loggedUser);
+                    ((WaspSession) getSession()).login(ctx);
                     TitaSession.getSession().setUsername(username);
                     titaUser = userService.getUserByUsername(username);
                     // register tita user with 0 active tasks
