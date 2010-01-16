@@ -42,6 +42,10 @@ public final class GlobalUtils {
             "HH:mm:ss");
     public static final DateFormat TIMEFORMAT24HOURS = new SimpleDateFormat(
             "HH:mm");
+    
+    private static final int C_SIXTY = 60;
+    private static final int C_THREE_THOUSAND_SIX_HUNDRED = 3600;
+    private static final int C_MILLI_SECONDS = 1000;
 
     /**
      * Converts date into Calendar.
@@ -174,5 +178,22 @@ public final class GlobalUtils {
             }
         }
         return null;
+    }
+    
+    /**
+     * Returns the duration as a sum in date format.
+     *
+     * @param duration
+     *            the measured sum
+     * @return the sum as String
+     */
+    public static String getDurationAsString(Long duration) {
+        if (duration != null) {
+            Long seconds = duration / C_MILLI_SECONDS;
+            Long hours = seconds / C_THREE_THOUSAND_SIX_HUNDRED;
+            Long minuts = seconds / C_SIXTY - hours * C_SIXTY;
+            return hours.toString() + ":" + minuts.toString();
+        }
+        return "";
     }
 }

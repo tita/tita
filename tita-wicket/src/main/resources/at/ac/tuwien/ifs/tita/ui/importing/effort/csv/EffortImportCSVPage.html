@@ -13,32 +13,89 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<html
-	xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<head>
+  <style>
+    legend { border: 1px solid #e9601a; background-color: #bbb; color: #fff; padding: 4px;}
+    fieldset { border: 1px solid #e9601a; padding: 10px; margin-top: 10px;}
+  </style>
+</head>
 <body>
 <wicket:extend>
-	<form wicket:id="choiceForImportEffortOptions">
-		<div>
-			<span wicket:id="labelDate" />
-			<select wicket:id="dropdownDate"></select> 
-		</div>
-		<div>
-			<span wicket:id="labelStarttime" />
-			<select wicket:id="dropdownStarttime"></select> 
-		</div>
-		<div>
-			<span wicket:id="labelEndtime" />
-			<select wicket:id="dropdownEndtime"></select> 
-		</div>
-		<div>
-			<span wicket:id="labelDuration" />
-			<select wicket:id="dropdownDuration"></select> 
-		</div>
-		<div>
-			<span wicket:id="labelDescription" />
-			<select wicket:id="dropdownDescription"></select> 
-		</div>
-	</form>
+<div id="effortImportCSVChooser">
+  <form wicket:id="ajax-csv-chooser">
+  <fieldset>
+    <legend>Choose csv file for importing efforts</legend>
+      <p>
+        <label for="upload">File</label> 
+        <input wicket:id="fileInput" id="upload" type="file" />
+      </p>
+      <input type="submit" value="Check File"/>
+      <span wicket:id="progressBarForCSVChooser">[[ajax upload progressbar]]</span>
+      
+      <h4>File name: <span wicket:id="lblFeedbackForLoadedFile"></span></h4>
+    </fieldset>
+  </form>
+</div>
+   
+<div id="effortImportColumnChoice">
+  <form wicket:id="choiceForImportEffortOptions">
+  
+  <div id="effortImportDate" class="paddingForElements">
+    <div id="effortImportDateLabel" class="floatingLabelAndDropdwon">
+      <span wicket:id="labelDate"></span>
+    </div>
+    <div id="effortImportDateDropdown">
+      <select wicket:id="dropdownDate"></select>
+    </div>
+  </div>
+  <div class="paddingForElements">
+    <div id="effortImportStarttime" class="floatingLabelAndDropdwon">
+      <span wicket:id="labelStarttime"></span> 
+    </div>
+    <div>
+      <select wicket:id="dropdownStarttime"></select>
+    </div>
+  </div>
+  <div class="paddingForElements">
+    <div id="effortImportEndtime" class="floatingLabelAndDropdwon">
+      <span wicket:id="labelEndtime"></span>
+    </div>
+    <div>
+      <select wicket:id="dropdownEndtime"></select>
+    </div>
+  </div>
+  <div class="paddingForElements">
+    <div id="effortImportDuration" class="floatingLabelAndDropdwon">
+      <span wicket:id="labelDuration"></span>
+    </div>
+    <div>
+      <select wicket:id="dropdownDuration"></select>
+    </div>
+  </div>
+  <div class="paddingForElements">
+    <div id="effortImportDescription" class="floatingLabelAndDropdwon">
+      <span wicket:id="labelDescription"></span>
+    </div>
+    <div>
+      <select wicket:id="dropdownDescription"></select>
+    </div>
+  </div>
+  </form>
+</div>
+
+<div id="effortImportProjectChooser">
+  <table wicket:id="effortImportTableForTiTAProject"></table>
+</div>  
+
+<div id="effortImportButton">
+  <input wicket:id="btnEffortImport" type="submit" value="Import Data"/>
+</div>
+
+<div id="effortImportResult">
+  <table wicket:id="effortImportTableForResults"></table>
+</div>
+
 </wicket:extend>
 </body>
 </html>

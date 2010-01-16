@@ -14,11 +14,13 @@
 package at.ac.tuwien.ifs.tita.business.csv;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.persistence.PersistenceException;
 
 import org.supercsv.cellprocessor.ift.CellProcessor;
 
+import at.ac.tuwien.ifs.tita.entity.Effort;
 import at.ac.tuwien.ifs.tita.entity.TiTATask;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 
@@ -43,11 +45,14 @@ public interface IImportReader {
      *            - the user, the efforts are for
      * @param processors
      *            - processors
+     * @return list of imported efforts
+     * 
      * @throws PersistenceException
      *             titaDao
      * @throws IOException
      *             io
      */
-    void importEffortData(String path, String[] header, CellProcessor[] processors, TiTATask task,
+    List<Effort> importEffortData(String path, String[] header, CellProcessor[] processors,
+            TiTATask task,
             TiTAUser user) throws IOException, PersistenceException;
 }
