@@ -209,7 +209,7 @@ tr {
 }
 
 /* Efforts Table Column Width*/
-.tecol1 { width: 95px; }
+.tecol1 { width: 140px; }
 .tecol2 { width: 300px; }
 .tecol3 { width: 80px; }
 .tecol4 { width: 80px; }
@@ -324,6 +324,15 @@ dl.accordion-menu dd.a-m-d .bd{
     padding:0.5em;
     border:Solid 1px #aaaaaa;
     background-color: #6495ED;
+}
+
+.invalid {
+    border: 2px solid red;
+    color: red;
+}
+
+.valid {
+    color: green;
 }
 
 /* TaskList Accoridion */

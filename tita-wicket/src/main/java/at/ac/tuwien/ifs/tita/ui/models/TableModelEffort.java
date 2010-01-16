@@ -93,8 +93,8 @@ public class TableModelEffort extends AbstractTitaTableModel {
                 }
             } else if (col == IntegerConstants.FOUR) {
                 if (te.getDuration() != null) {
-                    return GlobalUtils.TIMELENGTHFORMAT.format(te.getDuration()
-                            - GlobalUtils.HOUR);
+                    return GlobalUtils.TIMELENGTHFORMAT
+                            .format(te.getDuration());
                 } else {
                     return 0;
                 }
@@ -122,41 +122,58 @@ public class TableModelEffort extends AbstractTitaTableModel {
     @Override
     public void setValueAt(Object aValue, int row, int col) {
         Effort te = null;
-
         try {
             te = (Effort) list.get(row);
 
             if (col == IntegerConstants.ZERO) {
-                Date date = null;
-                if (aValue.getClass() == Date.class) {
-                    date = (Date) aValue;
-                } else {
-                    date = GlobalUtils.getDateFromObject(aValue);
-                }
-                if (date != null) {
-                    te.setDate(date);
+                if (aValue != null) {
+                    Date date = null;
+                    if (aValue.getClass() == Date.class) {
+                        date = (Date) aValue;
+                    } else {
+                        try {
+                            date = GlobalUtils.getDateFromObject(aValue);
+                        } catch (ParseException e) {
+                            // Do nothing
+                        }
+                    }
+                    if (date != null) {
+                        te.setDate(date);
+                    }
                 }
             } else if (col == IntegerConstants.ONE) {
-                te.setDescription(aValue.toString());
+                if (aValue != null) {
+                    te.setDescription(aValue.toString());
+                }
             } else if (col == IntegerConstants.TWO) {
-                Long startTime = GlobalUtils.getTimeFromObject(aValue);
-                if (startTime != null) {
-                    te.setStartTime(startTime);
+                try {
+                    Long startTime = GlobalUtils.getTimeFromObject(aValue);
+                    if (startTime != null) {
+                        te.setStartTime(startTime);
+                    }
+                } catch (ParseException e) {
+                    // Do nothing
                 }
             } else if (col == IntegerConstants.THREE) {
-                Long endTime = GlobalUtils.getTimeFromObject(aValue);
-                if (endTime != null) {
-                    te.setEndTime(endTime);
+                Long endTime = null;
+                try {
+                    endTime = GlobalUtils.getTimeFromObject(aValue);
+                } catch (ParseException e) {
+                    // Do nothing
                 }
+                te.setEndTime(endTime != null ? endTime : te.getStartTime()
+                        + te.getDuration() + GlobalUtils.HOUR);
             } else if (col == IntegerConstants.FOUR) {
-                Long duration = GlobalUtils.getDurationFromObject(aValue);
-                if (duration != null) {
-                    te.setDuration(duration);
+                Long duration = null;
+                try {
+                    duration = GlobalUtils.getDurationFromObject(aValue);
+                } catch (ParseException e) {
+                    // Do nothing
                 }
+                te.setDuration(duration != null ? duration : te.getEndTime()
+                        - te.getStartTime() - GlobalUtils.HOUR);
             }
         } catch (IndexOutOfBoundsException e) {
-            log.error(e.getMessage());
-        } catch (ParseException e) {
             log.error(e.getMessage());
         } catch (ClassCastException e) {
             log.error(e.getMessage());
@@ -168,11 +185,9 @@ public class TableModelEffort extends AbstractTitaTableModel {
      */
     @Override
     public boolean isCellEditable(int row, int column) {
-        if (column != IntegerConstants.FOUR) {
-            if (selectedRow != -1) {
-                if (selectedRow == row) {
-                    return true;
-                }
+        if (selectedRow != -1) {
+            if (selectedRow == row) {
+                return true;
             }
         }
         return false;

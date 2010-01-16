@@ -20,18 +20,6 @@
 	<wicket:panel>
 		<!-- <div wicket:id="feedback">[[ feedback ]]</div>-->
 		<h3>Time Efforts</h3>
-		<!-- <form wicket:id="timerForm">
-	       <table>
-				<tr>
-					<th>General Timer</th>
-				</tr>
-				<tr>
-					<td><input wicket:id="startTimer" type="submit" value="Start"/></td>
-					<td><input wicket:id="stopTimer" type="submit" value="Stop"/></td>
-				</tr>
-			</table>
-			<p></p>
-		</form>	 -->
     	<div wicket:id="timeeffortContainer"> 
 		    <form wicket:id="timeeffortForm">
 			  <table>
@@ -62,22 +50,25 @@
 			  </table>
 		      <table>
 			  		<colgroup>
-		      			<col class="tecol1"></col>
-						<col class="tecol2"></col>
-						<col class="tecol3"></col>
-						<col class="tecol4"></col>
-						<col class="tecol5"></col>
-						<col class="tecol6"></col>
-						<col class="tecol7"></col>			
+		      			<col width="140px"></col>
+						<col width="300px"></col>
+						<col width="80px"></col>
+						<col width="80px"></col>
+						<col width="78px"></col>
+						<col width="30px"></col>		
 					</colgroup>
 		        	<tr>
 			          	<th><input wicket:id="tedate" size="7"/></th>
-			            <th><input wicket:id="tedescription" size="40"/></th>
+			            <th><input wicket:id="tedescription" size="35"/></th>
 			            <th><input wicket:id="testarttime" size="5"/></th>
 			            <th><input wicket:id="teendtime" size="5"/></th>
 			            <th><input wicket:id="tetimelength" size="8"/></th>
 						<th><button wicket:id="buttonSave" class="buttonSave" type="button"></button></th>
-		          </tr>	   
+		          </tr>
+		          <tr>
+		          		<th></th>
+		          		<th></th>
+		          </tr>
 		        </table>
 		    </form>
 	    </div>

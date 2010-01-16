@@ -279,13 +279,6 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements
 
     /** {@inheritDoc} */
     @Override
-    public List<Effort> getActualTimeEfforts(Integer maxresults) {
-        return findByCriteriaOrdered(new Criterion[] { Restrictions.eq(
-                "deleted", false) }, new Order[] { Order.asc("date") }, null);
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public Long findEffortsForIssueTrackerTask(Long tpId, String username,
             Long issTProjectId, Long isstTTaskId, Long isstId) {
         String queryString = "select sum(duration) as duration from effort e "

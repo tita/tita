@@ -26,6 +26,7 @@ import java.util.Set;
 import javax.persistence.PersistenceException;
 import javax.swing.ListSelectionModel;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
@@ -204,6 +205,7 @@ public class AdministrationPanelEffort extends Panel implements
                 saveListEntity();
                 reloadTable(target);
                 clearFields();
+                target.addComponent(teDescription);
             }
 
             @Override
@@ -219,10 +221,14 @@ public class AdministrationPanelEffort extends Panel implements
      * Displays all effort textfields.
      */
     private void displayTextFields() {
+
         teDescription = new TextField<String>("tedescription",
                 new Model<String>(""));
         teDescription
                 .add(StringValidator.maximumLength(IntegerConstants.FIFTY));
+        teDescription.add(new AttributeModifier("class", new Model<String>(
+                "invalid")));
+        teDescription.setOutputMarkupId(true);
         form.add(teDescription);
 
         teDate = new DateTextField("tedate", new PropertyModel<Date>(this,
@@ -258,6 +264,17 @@ public class AdministrationPanelEffort extends Panel implements
             }
         });
         form.add(teEndTime);
+    }
+
+    private void setTextFieldValid(TextField<?> textfield) {
+        textfield
+                .add(new AttributeModifier("class", new Model<String>("valid")));
+    }
+
+    private void setTextFieldInvalid(TextField<?> textfield) {
+        log.info("TEST");
+        textfield.add(new AttributeModifier("class", new Model<String>(
+                "invalid")));
     }
 
     /**
@@ -419,37 +436,47 @@ public class AdministrationPanelEffort extends Panel implements
             timeEffort.setDate(teDate.getModelObject());
             timeEffort.setDescription(teDescription.getModelObject());
 
-            Long startTime = GlobalUtils.getTimeFromTextField(teStartTime);
-            Long endTime = GlobalUtils.getTimeFromTextField(teEndTime);
-            Long duration = GlobalUtils.getDurationFromTextField(teTimeLength);
+            Long startTime = null;
+            try {
+                startTime = GlobalUtils.getTimeFromTextField(teStartTime);
 
-            if (startTime != null && (endTime != null || duration != null)) {
-                if (duration == null && endTime != null) {
-                    duration = endTime - startTime;
-                } else if (endTime == null && duration != null) {
-                    endTime = startTime + duration;
+                if (startTime == null) {
+                    setTextFieldInvalid(teDescription);
                 }
+            } catch (ParseException e) {
+                setTextFieldInvalid(teDescription);
+            }
+            Long endTime = null;
+            try {
+                endTime = GlobalUtils.getTimeFromTextField(teEndTime);
+            } catch (ParseException e) {
+                // TODO Error Handling
+            }
+            Long duration = null;
+            try {
+                duration = GlobalUtils.getDurationFromTextField(teTimeLength);
+            } catch (ParseException e) {
+                // TODO Error Handling
             }
 
-            timeEffort.setDuration(duration);
-            timeEffort.setDeleted(false);
-            timeEffort.setStartTime(startTime);
-            timeEffort.setEndTime(endTime);
+            if (startTime != null && endTime != null && duration != null) {
+                timeEffort.setDuration(duration);
+                timeEffort.setDeleted(false);
+                timeEffort.setStartTime(startTime);
+                timeEffort.setEndTime(endTime);
 
-            timeEffort.setUser(user);
+                timeEffort.setUser(user);
 
-            Set<Effort> set = new HashSet<Effort>();
-            set.add(timeEffort);
-            TiTATask task = new TiTATask(user, set);
-            task.setTitaProject(project);
-            timeEffort.setTitaTask(task);
+                Set<Effort> set = new HashSet<Effort>();
+                set.add(timeEffort);
+                TiTATask task = new TiTATask(user, set);
+                task.setTitaProject(project);
+                timeEffort.setTitaTask(task);
 
-            taskService.saveTiTATask(task);
-            service.saveEffort(timeEffort);
-
+                taskService.saveTiTATask(task);
+                service.saveEffort(timeEffort);
+            }
         } catch (PersistenceException e) {
-            log.error(e.getMessage());
-        } catch (ParseException e) {
             log.error(e.getMessage());
         }
     }
@@ -487,22 +514,52 @@ public class AdministrationPanelEffort extends Panel implements
                     .getSelectedComponent(IntegerConstants.ONE))
                     .getModelObject().toString());
 
-            Long startTime = GlobalUtils
-                    .getTimeFromTextField((LenientTextField) table
-                            .getSelectedComponent(IntegerConstants.TWO));
-            Long endTime = GlobalUtils
-                    .getTimeFromTextField((LenientTextField) table
-                            .getSelectedComponent(IntegerConstants.THREE));
+            Long startTime = null;
+            try {
+                startTime = GlobalUtils
+                        .getTimeFromTextField((LenientTextField) table
+                                .getSelectedComponent(IntegerConstants.TWO));
+            } catch (ParseException e) {
+                // TODO Error Handling
+            }
+            Long endTime = null;
+            try {
+                endTime = GlobalUtils
+                        .getTimeFromTextField((LenientTextField) table
+                                .getSelectedComponent(IntegerConstants.THREE));
+            } catch (ParseException e) {
+                // TODO Error Handling
+            }
+            Long duration = null;
+            try {
+                duration = GlobalUtils
+                        .getDurationFromTextField((LenientTextField) table
+                                .getSelectedComponent(IntegerConstants.FOUR));
+            } catch (ParseException e) {
+                // TODO Error Handling
+            }
 
-            if (startTime != null && endTime != null) {
-                timeEffort.setDuration(endTime - startTime);
+            log.info("STARTTIME = "
+                    + GlobalUtils.TIMEFORMAT24HOURS.format(startTime));
+            log.info("ENDTIME = "
+                    + GlobalUtils.TIMEFORMAT24HOURS.format(endTime));
+            log.info("DURATION = "
+                    + GlobalUtils.TIMELENGTHFORMAT.format(duration));
+
+            if (startTime != null && (endTime != null || duration != null)) {
+                if (duration == null && endTime != null) {
+                    duration = endTime - startTime - GlobalUtils.HOUR;
+                } else if (endTime == null && duration != null) {
+                    endTime = startTime + duration + GlobalUtils.HOUR;
+                }
+
+                timeEffort.setDuration(duration);
+                timeEffort.setEndTime(endTime);
                 timeEffort.setDeleted(false);
                 timeEffort.setStartTime(startTime);
                 service.saveEffort(timeEffort);
             }
         } catch (PersistenceException e) {
-            log.error(e.getMessage());
-        } catch (ParseException e) {
             log.error(e.getMessage());
         }
     }
