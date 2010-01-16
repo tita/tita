@@ -44,10 +44,10 @@ import org.supercsv.cellprocessor.ift.CellProcessor;
 import at.ac.tuwien.ifs.tita.business.csv.CSVReader;
 import at.ac.tuwien.ifs.tita.business.csv.IImportReader;
 import at.ac.tuwien.ifs.tita.business.service.time.IEffortService;
+import at.ac.tuwien.ifs.tita.dao.GenericHibernateDao;
 import at.ac.tuwien.ifs.tita.dao.interfaces.IGenericHibernateDao;
-import at.ac.tuwien.ifs.tita.dao.issuetracker.IssueTrackerDao;
 import at.ac.tuwien.ifs.tita.dao.project.TiTAProjectDao;
-import at.ac.tuwien.ifs.tita.dao.user.RoleDAO;
+import at.ac.tuwien.ifs.tita.dao.user.UserDAO;
 import at.ac.tuwien.ifs.tita.entity.Effort;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerProject;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerTask;
@@ -70,7 +70,7 @@ import at.ac.tuwien.ifs.tita.entity.conv.Role;
 @Transactional
 public class CSVReaderTest extends AbstractTransactionalJUnit4SpringContextTests {
 
-    private static final int C_TWENTY_ONE = 21;
+    private static final int C_EIGHT = 8;
     private static final int C_THREE = 3;
     private static final int C_TWO = 2;
     private static final int C_TEN = 10;
@@ -90,11 +90,16 @@ public class CSVReaderTest extends AbstractTransactionalJUnit4SpringContextTests
     @Autowired
     private IGenericHibernateDao<TiTAUserProject, Long> utpDao;
 
+    @Qualifier("roleDAO")
     @Autowired
-    private RoleDAO roleDao;
+    private IGenericHibernateDao<Role, Long> roleDAO;
 
+    @Qualifier("issueTrackerDAO")
     @Autowired
-    private IssueTrackerDao issueTrackerDAO;
+    private IGenericHibernateDao<IssueTracker, Long>  issueTrackerDAO;
+    
+    @Autowired
+    private UserDAO userDAO;
 
     /**
      * Prepare on TiTA Project for testing effort dao.
@@ -107,13 +112,17 @@ public class CSVReaderTest extends AbstractTransactionalJUnit4SpringContextTests
 
         // save conv data
         issueTrackerDAO.save(it);
-        roleDao.save(r11);
+        roleDAO.save(r11);
 
         Effort et1 = null, et2 = null, et3 = null, et4 = null, ei1 = null, ei2 = null, ei3 = null, ei4 = null;
 
         us1 = new TiTAUser("user1", null, null, null, null, null, r11, null, null);
         us2 = new TiTAUser("user2", null, null, null, null, null, r11, null, null);
 
+        userDAO.save(us1);
+        userDAO.save(us2);
+        userDAO.flushnClear();
+        
         et1 = new Effort(new Date(System.currentTimeMillis()), 1000L, false,
                 "tita task 1 - effort 1", us1);
         et2 = new Effort(new Date(System.currentTimeMillis()), 2000L, false,
@@ -226,7 +235,7 @@ public class CSVReaderTest extends AbstractTransactionalJUnit4SpringContextTests
 
         assertEquals("Before importing", C_TWO, tit1.getTitaEfforts().size());
         try {
-            assertEquals("Before importing", C_TWENTY_ONE, service.getActualEfforts(C_TEN).size());
+            assertEquals("Before importing", C_EIGHT, service.getActualEfforts(C_TEN).size());
         } catch (PersistenceException e2) {
             fail("");
         }
@@ -240,7 +249,7 @@ public class CSVReaderTest extends AbstractTransactionalJUnit4SpringContextTests
         assertEquals("Three Efforts were imported", C_TWO + C_THREE, tit1.getTitaEfforts().size());
 
         try {
-            assertEquals("Three Efforts were imported", C_TWENTY_ONE + C_THREE, service
+            assertEquals("Three Efforts were imported", C_EIGHT + C_THREE, service
                     .getActualEfforts(C_TEN).size());
         } catch (PersistenceException e) {
             fail("");

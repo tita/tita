@@ -19,6 +19,7 @@ import static org.junit.Assert.assertTrue;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.mantisbt.connect.AccessLevel;
 import org.mantisbt.connect.MCException;
@@ -52,7 +53,7 @@ import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 @ContextConfiguration(locations = { "classpath:datasourceContext-test.xml" })
 @TransactionConfiguration
 @Transactional
-public class MantisBaseTest {
+public abstract class MantisBaseTest {
 
     protected MCSession session;
     //TODO: delete

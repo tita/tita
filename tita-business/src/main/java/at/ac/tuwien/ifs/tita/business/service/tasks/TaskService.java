@@ -23,10 +23,9 @@ import javax.persistence.PersistenceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import at.ac.tuwien.ifs.tita.dao.issuetracker.IssueTrackerDao;
+import at.ac.tuwien.ifs.tita.dao.GenericHibernateDao;
 import at.ac.tuwien.ifs.tita.dao.issuetracker.task.IssueTrackerTaskDao;
 import at.ac.tuwien.ifs.tita.dao.project.TiTAProjectDao;
-import at.ac.tuwien.ifs.tita.dao.titatask.TiTATaskDao;
 import at.ac.tuwien.ifs.tita.dao.user.UserDAO;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerProject;
@@ -61,8 +60,8 @@ public class TaskService implements ITaskService {
     private TiTAUser titaUser;
 
     private IssueTrackerTaskDao issueTrackerTaskDao;
-    private TiTATaskDao titaTaskDao;
-    private IssueTrackerDao issueTrackerDao;
+    private GenericHibernateDao<TiTATask, Long> titaTaskDao;
+    private GenericHibernateDao<IssueTracker, Long>  issueTrackerDao;
 
     private Map<Long, ITaskTrackable> mapOfTasksFromAllProjectsIncludedInTiTAProject = new TreeMap<Long, ITaskTrackable>();
 
@@ -265,7 +264,7 @@ public class TaskService implements ITaskService {
         issueTrackerService.closeTask(taskId);
     }
 
-    public void setIssueTrackerDao(IssueTrackerDao issueTrackerDao) {
+    public void setIssueTrackerDao(GenericHibernateDao<IssueTracker, Long>  issueTrackerDao) {
         this.issueTrackerDao = issueTrackerDao;
     }
 
@@ -281,7 +280,7 @@ public class TaskService implements ITaskService {
         this.issueTrackerTaskDao = issueTrackerTaskDao;
     }
 
-    public void setTitaTaskDao(TiTATaskDao titaTaskDao) {
+    public void setTitaTaskDao(GenericHibernateDao<TiTATask, Long> titaTaskDao) {
         this.titaTaskDao = titaTaskDao;
     }
 

@@ -22,6 +22,7 @@ import static org.junit.Assert.fail;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.mantisbt.connect.MCException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +39,7 @@ import at.ac.tuwien.ifs.tita.issuetracker.issue.service.IssueTrackerService;
  * @author herbert
  *
  */
-public class IssueTrackerServiceTest extends MantisBaseTest {
+public abstract class IssueTrackerServiceTest extends MantisBaseTest {
 
     protected IssueTrackerService issueTrackerService = new IssueTrackerService(defaultLogin);
 

@@ -21,12 +21,17 @@
 
   <!-- The DAOs -->
   <bean id="timeEffortDAO" class="at.ac.tuwien.ifs.tita.dao.time.EffortDao"/>
-  <bean id="titataskDAO" class="at.ac.tuwien.ifs.tita.dao.titatask.TiTATaskDao"/>
+  <bean id="titataskDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
+    <constructor-arg value="at.ac.tuwien.ifs.tita.entity.TiTATask"/>
+  </bean>
   <bean id="issueTrackerTaskDAO" class="at.ac.tuwien.ifs.tita.dao.issuetracker.task.IssueTrackerTaskDao"/>
-  <bean id="issueTrackerDAO" class="at.ac.tuwien.ifs.tita.dao.issuetracker.IssueTrackerDao"/>
+  <bean id="issueTrackerDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
+    <constructor-arg value="at.ac.tuwien.ifs.tita.entity.conv.IssueTracker"/>
+  </bean>
   <bean id="userDAO" class="at.ac.tuwien.ifs.tita.dao.user.UserDAO" />
-  <bean id="roleDAO" class="at.ac.tuwien.ifs.tita.dao.user.RoleDAO" />
-  
+  <bean id="roleDAO"class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
+    <constructor-arg value="at.ac.tuwien.ifs.tita.entity.conv.Role"/>
+  </bean>
   <bean id="titaProjectDao" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
     <constructor-arg value="at.ac.tuwien.ifs.tita.entity.TiTAProject"/>
   </bean>

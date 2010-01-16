@@ -18,8 +18,8 @@ import java.util.List;
 
 import javax.persistence.PersistenceException;
 
+import at.ac.tuwien.ifs.tita.dao.GenericHibernateDao;
 import at.ac.tuwien.ifs.tita.dao.interfaces.IUserDAO;
-import at.ac.tuwien.ifs.tita.dao.user.RoleDAO;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.entity.conv.Role;
@@ -34,13 +34,13 @@ import at.ac.tuwien.ifs.tita.entity.conv.Role;
 public class UserService implements IUserService {
 
     private IUserDAO userDao;
-    private RoleDAO roleDao;
+    private GenericHibernateDao<Role, Long> roleDao;
 
     public void setUserDao(IUserDAO userDao) {
         this.userDao = userDao;
     }
 
-    public void setRoleDao(RoleDAO roleDao) {
+    public void setRoleDao(GenericHibernateDao<Role, Long> roleDao) {
         this.roleDao = roleDao;
     }
 

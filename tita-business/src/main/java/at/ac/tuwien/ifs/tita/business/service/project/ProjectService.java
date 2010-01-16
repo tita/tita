@@ -21,10 +21,10 @@ import javax.persistence.PersistenceException;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Property;
 
+import at.ac.tuwien.ifs.tita.dao.GenericHibernateDao;
 import at.ac.tuwien.ifs.tita.dao.issuetracker.IssueTrackerProjectDao;
 import at.ac.tuwien.ifs.tita.dao.issuetracker.task.IssueTrackerTaskDao;
 import at.ac.tuwien.ifs.tita.dao.project.TiTAProjectDao;
-import at.ac.tuwien.ifs.tita.dao.titatask.TiTATaskDao;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerProject;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerTask;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
@@ -43,7 +43,7 @@ public class ProjectService implements IProjectService {
     private TiTAProjectDao titaProjectDao;
     private IssueTrackerTaskDao issueTrackerTaskDao;
     private IssueTrackerProjectDao issueTrackerProjectDao;
-    private TiTATaskDao titaTaskDao;
+    private GenericHibernateDao<TiTATask, Long> titaTaskDao;
 
     public void setTitaProjectDao(TiTAProjectDao titaProjectDao) {
         this.titaProjectDao = titaProjectDao;
@@ -57,7 +57,7 @@ public class ProjectService implements IProjectService {
         this.issueTrackerProjectDao = issueTrackerProjectDao;
     }
 
-    public void setTitaTaskDao(TiTATaskDao titaTaskDao) {
+    public void setTitaTaskDao(GenericHibernateDao<TiTATask, Long> titaTaskDao) {
         this.titaTaskDao = titaTaskDao;
     }
 
