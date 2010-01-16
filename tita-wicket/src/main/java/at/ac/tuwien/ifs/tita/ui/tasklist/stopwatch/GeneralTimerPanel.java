@@ -36,20 +36,19 @@ import at.ac.tuwien.ifs.tita.ui.tasklist.TaskListPanel;
 
 /**
  * The TaskTimerPanel is a ui element to measure the time for a specific task.
- *
+ * 
  * @author Christoph
- *
+ * 
  */
 public class GeneralTimerPanel extends Panel implements IHeaderContributor {
-    private ResourceReference style = new CompressedResourceReference(
-            GeneralTimerPanel.class, "tasktimer.css");
+    private ResourceReference style = new CompressedResourceReference(GeneralTimerPanel.class, "tasktimer.css");
     private Form<Object> taskTimerForm;
     private TaskListPanel owner;
     private Effort effort = null;
     private Boolean started;
     private TextField<String> description, duration;
 
-    public GeneralTimerPanel(String id, TaskListPanel owner){
+    public GeneralTimerPanel(String id, TaskListPanel owner) {
         super(id);
         this.owner = owner;
         started = false;
@@ -75,23 +74,28 @@ public class GeneralTimerPanel extends Panel implements IHeaderContributor {
         taskTimerForm.add(duration);
         taskTimerForm.add(description);
 
-        taskTimerForm.add(new AjaxButton("startStopTimer", taskTimerForm) {
+        taskTimerForm.add(new AjaxButton("startStopTimer", new Model<String>(), taskTimerForm) {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
-                if(!started){
+                if (!started) {
                     owner.startGeneralTimerForTask();
                     description.getModel().setObject("");
                     started = true;
-                }else{
+                    this.getModel().setObject("Stop");
+                } else {
                     owner.stopGeneralTimerForTask();
                     started = false;
+                    this.getModel().setObject("Start");
                 }
+
+                this.setLabel(this.getModel());
+                target.addComponent(this);
             }
         });
         taskTimerForm.add(new AjaxButton("saveEffort", taskTimerForm) {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
-                if(effort != null && !started){
+                if (effort != null && !started) {
                     owner.saveEffortForTiTATask(effort);
                     description.setModelObject("");
                     duration.setModelObject("");
@@ -111,28 +115,29 @@ public class GeneralTimerPanel extends Panel implements IHeaderContributor {
     /**
      * Set timer of task started.
      */
-    public void setTaskStarted(){
+    public void setTaskStarted() {
         started = true;
     }
 
     /**
      * Set the effort of the assigned task.
+     * 
      * @param effort Long
      */
-    public void setEffort(Effort effort){
+    public void setEffort(Effort effort) {
         this.effort = effort;
-        duration.getModel().setObject(TiTATimeConverter.getDuration2String(
-                                         effort != null ? effort.getDuration() : 0L));
+        duration.getModel().setObject(TiTATimeConverter.getDuration2String(effort != null ? effort.getDuration() : 0L));
     }
 
     /**
      * Get description of task.
+     * 
      * @return String
      */
-    public String getDescription(){
+    public String getDescription() {
         String desc = description.getModelObject();
 
-        if(desc != null){
+        if (desc != null) {
             return desc;
         }
         return "";

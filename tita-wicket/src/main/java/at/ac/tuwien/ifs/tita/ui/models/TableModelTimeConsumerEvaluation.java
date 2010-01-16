@@ -77,7 +77,7 @@ public class TableModelTimeConsumerEvaluation extends AbstractTitaTableModel {
             } else if (col == IntegerConstants.FOUR) {
                 return te.getEndTime() != null ? GlobalUtils.TIMEFORMAT24HOURS.format(te.getEndTime()) : "0";
             } else if (col == IntegerConstants.FIVE) {
-                return TiTATimeConverter.getDuration2String(te.getDuration());// GlobalUtils.TIMEFORMAT24HOURS.format(GlobalUtils.getDateFromLong(te.getDuration()));
+                return TiTATimeConverter.getDuration2String(te.getDuration());
             } else {
                 return te;
             }

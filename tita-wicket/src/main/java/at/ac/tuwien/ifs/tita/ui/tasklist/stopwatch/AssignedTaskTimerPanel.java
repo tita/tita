@@ -34,13 +34,12 @@ import at.ac.tuwien.ifs.tita.ui.tasklist.TaskListPanel;
 
 /**
  * The TaskTimerPanel is a ui element to measure the time for a specific task.
- *
+ * 
  * @author Christoph
- *
+ * 
  */
 public class AssignedTaskTimerPanel extends Panel implements IHeaderContributor {
-    private ResourceReference style = new CompressedResourceReference(
-            AssignedTaskTimerPanel.class, "tasktimer.css");
+    private ResourceReference style = new CompressedResourceReference(AssignedTaskTimerPanel.class, "tasktimer.css");
     private Form<Object> taskTimerForm;
     private ITaskTrackable task;
     private Long effort;
@@ -49,7 +48,7 @@ public class AssignedTaskTimerPanel extends Panel implements IHeaderContributor 
     private Label lab;
     private AjaxSelfUpdatingTimerBehavior beh;
 
-    public AssignedTaskTimerPanel(String id, ITaskTrackable task, Long effort, TaskListPanel owner){
+    public AssignedTaskTimerPanel(String id, ITaskTrackable task, Long effort, TaskListPanel owner) {
         super(id);
         this.task = task;
         this.effort = effort;
@@ -70,10 +69,10 @@ public class AssignedTaskTimerPanel extends Panel implements IHeaderContributor 
         taskTimerForm.add(new AjaxButton("startStopTimer", taskTimerForm) {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
-                if(!started){
+                if (!started) {
                     owner.startTimerForIssue(task);
                     started = true;
-                }else{
+                } else {
                     owner.stopTimerForIssue(task);
                     started = false;
                 }
@@ -83,13 +82,12 @@ public class AssignedTaskTimerPanel extends Panel implements IHeaderContributor 
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
                 started = false;
-//                beh.stop();
+                // beh.stop();
                 owner.stopTimerForIssue(task);
-                owner.closeTask(task,target);
+                owner.closeTask(task, target);
             }
         });
-        lab = new Label("totalEffort", TiTATimeConverter.getDuration2String(
-                effort != null ? effort : 0L));
+        lab = new Label("totalEffort", TiTATimeConverter.getDuration2String(effort != null ? effort : 0L));
         taskTimerForm.add(lab);
         beh = new AjaxSelfUpdatingTimerBehavior(Duration.seconds(1));
         lab.add(beh);
@@ -103,26 +101,27 @@ public class AssignedTaskTimerPanel extends Panel implements IHeaderContributor 
 
     /**
      * Returns current issue tracker task of panel.
+     * 
      * @return ITaskTrackable
      */
-    public ITaskTrackable getTask(){
+    public ITaskTrackable getTask() {
         return task;
     }
 
     /**
      * Set timer of task started.
      */
-    public void setTaskStarted(){
+    public void setTaskStarted() {
         started = true;
     }
 
     /**
      * Set the effort of the assigned task.
+     * 
      * @param effort Long
      */
-    public void setEffort(Long effort){
+    public void setEffort(Long effort) {
         this.effort = effort;
-        lab.setDefaultModelObject(TiTATimeConverter.getDuration2String(
-                effort != null ? effort : 0L));
+        lab.setDefaultModelObject(TiTATimeConverter.getDuration2String(effort != null ? effort : 0L));
     }
 }

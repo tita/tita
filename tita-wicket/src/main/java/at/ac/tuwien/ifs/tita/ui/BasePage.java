@@ -31,6 +31,7 @@ import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
 import at.ac.tuwien.ifs.tita.ui.evaluation.timeconsumer.DailyViewPage;
 import at.ac.tuwien.ifs.tita.ui.evaluation.timeconsumer.MonthlyViewPage;
 import at.ac.tuwien.ifs.tita.ui.evaluation.timecontroller.MultipleProjectsView;
+import at.ac.tuwien.ifs.tita.ui.evaluation.timecontroller.PerformanceOfPersonView;
 import at.ac.tuwien.ifs.tita.ui.evaluation.timecontroller.TargetActualView;
 import at.ac.tuwien.ifs.tita.ui.importing.effort.csv.EffortImportCSVPage;
 import at.ac.tuwien.ifs.tita.ui.login.TitaSession;
@@ -41,16 +42,16 @@ import at.ac.tuwien.ifs.tita.ui.utils.TimerCoordinator;
 
 /**
  * BaseClass for sites.
- *
+ * 
  * @author rene
- *
+ * 
  */
 public class BasePage extends SecureWebPage {
 
     @SpringBean(name = "userService")
     private IUserService userSerivce;
 
-    @SpringBean(name ="timerCoordinator")
+    @SpringBean(name = "timerCoordinator")
     private TimerCoordinator timerCoordinator;
 
     public BasePage() {
@@ -74,33 +75,32 @@ public class BasePage extends SecureWebPage {
 
     /**
      * Adds the secure Links for TimeController.
-     *
+     * 
      * @param timeControllergroup - container
      */
     private void addTimeControllerLinks(WebMarkupContainer timeControllergroup) {
         timeControllergroup.add(new SecurePageLink("projectsPageLink", ProjectsPage.class));
         timeControllergroup.add(new SecurePageLink("multipleProjectsViewLink", MultipleProjectsView.class));
         timeControllergroup.add(new SecurePageLink("targetActualViewLink", TargetActualView.class));
-
+        timeControllergroup.add(new SecurePageLink("performanceOfPersonViewLink", PerformanceOfPersonView.class));
     }
 
     /**
      * Adds the secure Links for TimeConsumers.
-     *
+     * 
      * @param timeConsumergroup - container
      */
     private void addTimeConsumerLinks(WebMarkupContainer timeConsumergroup) {
         timeConsumergroup.add(new SecurePageLink("effortsPageLink", EffortsPage.class));
         timeConsumergroup.add(new SecurePageLink("dailyViewPageLink", DailyViewPage.class));
         timeConsumergroup.add(new SecurePageLink("monthlyViewPageLink", MonthlyViewPage.class));
-        timeConsumergroup.add(new SecurePageLink("effortsImportCSVPageLink",
-                EffortImportCSVPage.class));
+        timeConsumergroup.add(new SecurePageLink("effortsImportCSVPageLink", EffortImportCSVPage.class));
 
     }
 
     /**
      * Adds the secure Links for TimeController.
-     *
+     * 
      * @param administratorGroup - container
      */
     private void addAdminLinks(WebMarkupContainer administratorGroup) {
@@ -122,10 +122,10 @@ public class BasePage extends SecureWebPage {
                 TitaSession titaSession = TitaSession.getSession();
                 if (titaSession.logoff(getLogoffContext())) {
                     try {
-                        timerCoordinator.unregisterUser(userSerivce.getUserByUsername(titaSession.
-                                                                            getUsername()).getId());
+                        timerCoordinator.unregisterUser(userSerivce.getUserByUsername(titaSession.getUsername())
+                                .getId());
                     } catch (PersistenceException e) {
-                       error("couldn't log out - user didn't exist in database");
+                        error("couldn't log out - user didn't exist in database");
                     }
                     // goto login page
                     setResponsePage(Application.get().getHomePage());
@@ -141,7 +141,7 @@ public class BasePage extends SecureWebPage {
     /**
      * Allows subclasses to specify which context should be used when logging
      * off.
-     *
+     * 
      * @return the context
      */
     protected final LoginContext getLogoffContext() {

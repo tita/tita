@@ -54,7 +54,7 @@ public class TiTAApplication extends SwarmWebApplication {
 
     /**
      * Gets current homepage of application.
-     *
+     * 
      * @return homepage of app
      */
     @Override
@@ -85,20 +85,19 @@ public class TiTAApplication extends SwarmWebApplication {
 
             // Aliases for timeconsumer
             factory.setAlias("effortsPage", "at.ac.tuwien.ifs.tita.ui.startpages.EffortsPage");
-            factory.setAlias("dailyView",
-                    "at.ac.tuwien.ifs.tita.ui.evaluation.timeconsumer.DailyViewPage");
-            factory.setAlias("monthlyView",
-                    "at.ac.tuwien.ifs.tita.ui.evaluation.timeconsumer.MonthlyViewPage");
-            factory.setAlias("effortImportCSV",
-                    "at.ac.tuwien.ifs.tita.ui.importing.effort.csv.EffortImportCSVPage");
+            factory.setAlias("dailyView", "at.ac.tuwien.ifs.tita.ui.evaluation.timeconsumer.DailyViewPage");
+            factory.setAlias("monthlyView", "at.ac.tuwien.ifs.tita.ui.evaluation.timeconsumer.MonthlyViewPage");
+            factory.setAlias("effortImportCSV", "at.ac.tuwien.ifs.tita.ui.importing.effort.csv.EffortImportCSVPage");
 
             // Aliases for timecontroller
-            factory.setAlias("projectsPage", "at.ac.tuwien.ifs.tita.ui.startpages"
-                    + ".ProjectsPage");
+            factory.setAlias("projectsPage", "at.ac.tuwien.ifs.tita.ui.startpages" + ".ProjectsPage");
             factory.setAlias("multipleProjectsView", "at.ac.tuwien.ifs.tita.ui.evaluation"
                     + ".timecontroller.MultipleProjectsView");
             factory.setAlias("targetActualView", "at.ac.tuwien.ifs.tita.ui.evaluation"
                     + ".timecontroller.TargetActualView");
+
+            factory.setAlias("performanceOfPersonView", "at.ac.tuwien.ifs.tita.ui.evaluation"
+                    + ".timecontroller.PerformanceOfPersonView");
 
             // Aliases for admin
             factory.setAlias("adminPage", "at.ac.tuwien.ifs.tita.ui.startpages" + ".AdminPage");

@@ -61,4 +61,7 @@ grant principal org.apache.wicket.security.hive.authorization.SimplePrincipal "t
     
    	permission ${ComponentPermission} "${targetActualView}", "render";
     permission ${ComponentPermission} "${targetActualView}", "enable";
+    
+    permission ${ComponentPermission} "${performanceOfPersonView}", "render";
+    permission ${ComponentPermission} "${performanceOfPersonView}", "enable";
 };
