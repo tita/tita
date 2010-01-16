@@ -100,15 +100,6 @@ public interface IEffortService {
     List<Integer> getEffortsYears();
 
     /**
-     * Gets a view for the last time efforts.
-     * 
-     * @return list of efforts that match dates
-     * @throws PersistenceException
-     *             if anything goes wrong with db access.
-     */
-    List<Effort> getActualEfforts() throws PersistenceException;
-
-    /**
      * Gets a summary of Effort for List of user and projects - overall,
      * monthly, daily.
      * 
