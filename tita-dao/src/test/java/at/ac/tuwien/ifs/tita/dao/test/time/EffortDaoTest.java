@@ -17,9 +17,18 @@ package at.ac.tuwien.ifs.tita.dao.test.time;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import javax.persistence.PersistenceException;
+
+import junit.framework.Assert;
 
 import org.junit.After;
 import org.junit.Before;
@@ -52,13 +61,14 @@ public class EffortDaoTest { // extends AbstractJpaTests {
 
     @Autowired
     private INativeSqlExecutorDao<Object, Long> executor;
-    
-    public EffortDaoTest(){
-        
+
+    public EffortDaoTest() {
+
     }
 
     /**
      * Prepare on TiTA Project for testing effort dao.
+     * 
      * @throws Exception ex
      */
     @Before
@@ -70,20 +80,13 @@ public class EffortDaoTest { // extends AbstractJpaTests {
      * Clean db after each test.
      */
     @After
-    public void cleanDB(){
-        executor.executeSql("delete from EFFORT;"+
-                            "delete from TITA_TASK;"+
-                            "delete from ISSUE_TRACKER_TASK;" +
-                            "delete from ISSUE_TRACKER_PROJECT;"+
-                            "delete from USER_PROJECT;"+
-                            "delete from TITA_PROJECT;"+
-                            "delete from CONV_PROJECT_STATUS;"+
-                            "delete from CONV_ISSUE_TRACKER;"+
-                            "delete from ISST_LOGIN;"+
-                            "delete from TITA_USER;"+
-                            "delete from CONV_ROLE;commit;");
+    public void cleanDB() {
+        executor.executeSql("delete from EFFORT;" + "delete from TITA_TASK;" + "delete from ISSUE_TRACKER_TASK;"
+                + "delete from ISSUE_TRACKER_PROJECT;" + "delete from USER_PROJECT;" + "delete from TITA_PROJECT;"
+                + "delete from CONV_PROJECT_STATUS;" + "delete from CONV_ISSUE_TRACKER;" + "delete from ISST_LOGIN;"
+                + "delete from TITA_USER;" + "delete from CONV_ROLE;commit;");
     }
-    
+
     /**
      * Test - returns 8 efforts for one tita project.
      */
@@ -93,8 +96,7 @@ public class EffortDaoTest { // extends AbstractJpaTests {
         li.add("tita_test");
 
         // CHECKSTYLE:OFF
-        List<UserProjectEffort> leff = timeEffortDAO
-                .findEffortsForTiTAProjectId(li, "month");
+        List<UserProjectEffort> leff = timeEffortDAO.findEffortsForTiTAProjectId(li, "month");
 
         assertNotNull(leff);
         assertEquals(10, leff.size());
@@ -130,8 +132,7 @@ public class EffortDaoTest { // extends AbstractJpaTests {
         List<String> ti = new ArrayList<String>();
         ti.add("hans");
         // CHECKSTYLE:OFF
-        List<UserProjectEffort> leff = timeEffortDAO
-                .findEffortsForTiTAProjectAndTimeConsumerId(li, ti, "overall");
+        List<UserProjectEffort> leff = timeEffortDAO.findEffortsForTiTAProjectAndTimeConsumerId(li, ti, "overall");
 
         assertNotNull(leff);
         assertEquals(1, leff.size());
@@ -157,8 +158,7 @@ public class EffortDaoTest { // extends AbstractJpaTests {
     @Test
     public void findEffortsForTiTAProjectAndTiTAUserOrdered() {
 
-        List<Effort> list = timeEffortDAO
-                .findEffortsForTiTAProjectAndTiTAUserOrdered(1L, 2L);
+        List<Effort> list = timeEffortDAO.findEffortsForTiTAProjectAndTiTAUserOrdered(1L, 2L);
         // CHECKSTYLE:OFF
         assertNotNull(list);
         assertEquals(4, list.size());
@@ -171,26 +171,84 @@ public class EffortDaoTest { // extends AbstractJpaTests {
     @Test
     public void totalizeEffortsForTiTAProjectAndTiTAUser() {
 
-        Long sumOfEfforts = timeEffortDAO
-                .totalizeEffortsForTiTAProjectAndTiTAUser(1L, 1L);
+        Long sumOfEfforts = timeEffortDAO.totalizeEffortsForTiTAProjectAndTiTAUser(1L, 1L);
         // CHECKSTYLE:OFF
         assertNotNull(sumOfEfforts);
         assertEquals(311500.0, sumOfEfforts, 0.0);
         // CHECKSTYLE:ON
     }
-    
+
     /**
      * Method.
      */
     @Test
-    public void testEffortsForIssueTrackerTaskShouldSucceed(){
-        //CHECKSTYLE:OFF
+    public void testEffortsForIssueTrackerTaskShouldSucceed() {
+        // CHECKSTYLE:OFF
         Long effort = timeEffortDAO.findEffortsForIssueTrackerTask(1L, "hans", 96L, 24L, 1L);
         assertNotNull(effort);
         assertEquals(new Long(2000), effort);
-        //CHECKSTYLE:ON
+        // CHECKSTYLE:ON
     }
-    
-    
-    
+
+    /**
+     * Test: Get TimeEffort by day.
+     */
+    @Test
+    public void testGetTimeEffortByDay() {
+        List<Effort> list = null;
+
+        String strdate1 = "01.01.2010";
+        DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+        Date date1 = null;
+
+        try {
+            date1 = formatter.parse(strdate1);
+        } catch (ParseException e1) {
+            fail();
+        }
+
+        try {
+            list = timeEffortDAO.getTimeEffortsDailyView(date1);
+            Assert.assertNotNull(list);
+            Assert.assertFalse(list.isEmpty());
+        } catch (PersistenceException e) {
+            fail();
+        }
+    }
+
+    /**
+     * Test: Get TimeEffort by month.
+     */
+
+    @Test
+    public void testGetTimeEffortByMonth() {
+        List<Effort> list = null;
+
+        try {
+            // CHECKSTYLE:OFF
+            list = timeEffortDAO.getTimeEffortsMonthlyView(2010, 0);
+            // CHECKSTYLE:ON
+            Assert.assertNotNull(list);
+            Assert.assertFalse(list.isEmpty());
+        } catch (PersistenceException e) {
+            fail();
+        }
+    }
+
+    /**
+     * Test: Get all years of TimeEfforts.
+     */
+
+    @Test
+    public void testGetTimeEffortYears() {
+        List<Integer> list = null;
+
+        try {
+            list = timeEffortDAO.getTimeEffortsYears();
+            Assert.assertNotNull(list);
+        } catch (PersistenceException e) {
+            fail();
+        }
+    }
+
 }

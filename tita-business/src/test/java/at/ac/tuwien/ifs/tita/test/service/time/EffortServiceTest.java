@@ -54,8 +54,7 @@ import at.ac.tuwien.ifs.tita.entity.Effort;
 @ContextConfiguration(locations = { "classpath:datasourceContext-test.xml" })
 @TransactionConfiguration
 @Transactional
-public class EffortServiceTest extends
-        AbstractTransactionalJUnit4SpringContextTests {
+public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     private static final long C_THREE_HUNDRED = 300L;
 
@@ -84,15 +83,13 @@ public class EffortServiceTest extends
             assertTrue(false);
         }
 
-        Effort timeEffort = new Effort(date, "Test-Description", C_HUNDRED,
-                C_TWO_HUNDRED, C_THREE_HUNDRED, false, null);
+        Effort timeEffort = new Effort(date, "Test-Description", C_HUNDRED, C_TWO_HUNDRED, C_THREE_HUNDRED, false, null);
 
         try {
             service.saveEffort(timeEffort);
             Effort savedEffort = service.getEffortById(timeEffort.getId());
             assertEquals(timeEffort.getDate(), savedEffort.getDate());
-            assertEquals(timeEffort.getDescription(), savedEffort
-                    .getDescription());
+            assertEquals(timeEffort.getDescription(), savedEffort.getDescription());
             assertEquals(timeEffort.getStartTime(), savedEffort.getStartTime());
             assertEquals(timeEffort.getEndTime(), savedEffort.getEndTime());
             assertEquals(timeEffort.getDuration(), savedEffort.getDuration());
@@ -112,8 +109,7 @@ public class EffortServiceTest extends
      */
     @Test
     public void testDeleteTimeEffort() {
-        Effort timeEffort = new Effort(null, null, null,
-                "Das ist die Test TimeEffort 2");
+        Effort timeEffort = new Effort(null, null, null, "Das ist die Test TimeEffort 2");
         try {
             service.saveEffort(timeEffort);
             Assert.assertNotNull(timeEffort.getId());
@@ -130,8 +126,7 @@ public class EffortServiceTest extends
      */
     @Test
     public void testUpdateTimeEffort() {
-        Effort timeEffort = new Effort(null, null, null,
-                "Das ist die Test TimeEffort 3");
+        Effort timeEffort = new Effort(null, null, null, "Das ist die Test TimeEffort 3");
         try {
             service.saveEffort(timeEffort);
             Assert.assertNotNull(timeEffort.getId());
@@ -139,8 +134,7 @@ public class EffortServiceTest extends
             Date date = new Date();
             timeEffort.setDate(date);
             service.saveEffort(timeEffort);
-            Assert.assertEquals(service.getEffortById(timeEffort.getId())
-                    .getDate(), date);
+            Assert.assertEquals(service.getEffortById(timeEffort.getId()).getDate(), date);
         } catch (PersistenceException e) {
             fail();
         }
@@ -151,8 +145,7 @@ public class EffortServiceTest extends
      */
     @Test
     public void testSearchTimeEffort() {
-        Effort timeEffort = new Effort(null, null, null,
-                "Das ist die Test TimeEffort 4");
+        Effort timeEffort = new Effort(null, null, null, "Das ist die Test TimeEffort 4");
         try {
             service.saveEffort(timeEffort);
             Assert.assertNotNull(timeEffort.getId());
@@ -185,12 +178,9 @@ public class EffortServiceTest extends
             assertTrue(false);
         }
 
-        Effort timeEffort1 = new Effort(date1, 0L, false,
-                "Das ist die Test TimeEffort 5", null);
-        Effort timeEffort2 = new Effort(date2, 0L, false,
-                "Das ist die Test TimeEffort 6", null);
-        Effort timeEffort3 = new Effort(date1, 0L, false,
-                "Das ist die Test TimeEffort 7", null);
+        Effort timeEffort1 = new Effort(date1, 0L, false, "Das ist die Test TimeEffort 5", null);
+        Effort timeEffort2 = new Effort(date2, 0L, false, "Das ist die Test TimeEffort 6", null);
+        Effort timeEffort3 = new Effort(date1, 0L, false, "Das ist die Test TimeEffort 7", null);
 
         effortList.add(timeEffort1);
         effortList.add(timeEffort2);
@@ -208,83 +198,12 @@ public class EffortServiceTest extends
     /**
      * Delete all inserted efforts.
      * 
-     * @param efforts
-     *            List
-     * @throws PersistenceException
-     *             titaDao
+     * @param efforts List
+     * @throws PersistenceException titaDao
      */
-    private void deleteEfforts(List<Effort> efforts)
-            throws PersistenceException {
+    private void deleteEfforts(List<Effort> efforts) throws PersistenceException {
         for (Effort eff : efforts) {
             service.deleteEffort(eff);
-        }
-    }
-
-    /**
-     * Test: Get TimeEffort by day.
-     */
-    @Test
-    public void testGetTimeEffortByDay() {
-        List<Effort> efforts = prepareEfforts();
-        List<Effort> list = null;
-
-        String strdate1 = "18.10.2009";
-        DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
-        Date date1 = null;
-
-        try {
-            date1 = formatter.parse(strdate1);
-        } catch (ParseException e1) {
-            assertTrue(false);
-        }
-
-        try {
-            list = service.getEffortsDailyView(date1);
-            Assert.assertNotNull(list);
-            Assert.assertEquals(2, list.size());
-            deleteEfforts(efforts);
-        } catch (PersistenceException e) {
-            fail();
-        }
-    }
-
-    /**
-     * Test: Get TimeEffort by month.
-     */
-
-    @Test
-    public void testGetTimeEffortByMonth() {
-        List<Effort> efforts = prepareEfforts();
-        List<Effort> list = null;
-
-        try {
-            // CHECKSTYLE:OFF
-            list = service.getEffortsMonthlyView(2009, 9);
-            // CHECKSTYLE:ON
-            Assert.assertNotNull(list);
-            Assert.assertFalse(list.isEmpty());
-            deleteEfforts(efforts);
-        } catch (PersistenceException e) {
-            fail();
-        }
-    }
-
-    /**
-     * Test: Get all years of TimeEfforts.
-     */
-
-    @Test
-    public void testGetTimeEffortYears() {
-        List<Effort> efforts = prepareEfforts();
-        List<Integer> list = null;
-
-        try {
-            list = service.getEffortsYears();
-            Assert.assertNotNull(list);
-            // Assert.assertEquals(2, list.size());
-            deleteEfforts(efforts);
-        } catch (PersistenceException e) {
-            fail();
         }
     }
 }

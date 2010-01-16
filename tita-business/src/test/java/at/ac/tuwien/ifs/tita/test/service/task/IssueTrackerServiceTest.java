@@ -22,7 +22,6 @@ import static org.junit.Assert.fail;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Ignore;
 import org.mantisbt.connect.MCException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,9 +34,9 @@ import at.ac.tuwien.ifs.tita.issuetracker.issue.service.IssueTrackerService;
 /**
  * Test for testing task service that imports all tasks comming from an issue
  * tracker.
- *
+ * 
  * @author herbert
- *
+ * 
  */
 public abstract class IssueTrackerServiceTest extends MantisBaseTest {
 
@@ -71,9 +70,8 @@ public abstract class IssueTrackerServiceTest extends MantisBaseTest {
 
     /**
      * Delete mantis projects for all tests.
-     *
-     * @throws InterruptedException
-     *             e
+     * 
+     * @throws InterruptedException e
      */
     public void deleteSetup() throws InterruptedException {
         deleteSetupAndChanges();
@@ -82,21 +80,16 @@ public abstract class IssueTrackerServiceTest extends MantisBaseTest {
     /**
      * The method creates a setup in mantis to evaluate the performance and the
      * update mechanism from TiTA.
-     *
-     * @param amountOfProjects
-     *            p
-     * @param amountOfTasksForEachProject
-     *            p
-     * @throws MCException
-     *             e
-     * @throws ProjectNotFoundException
-     *             ef
-     * @throws InterruptedException
-     *             ie
+     * 
+     * @param amountOfProjects p
+     * @param amountOfTasksForEachProject p
+     * @throws MCException e
+     * @throws ProjectNotFoundException ef
+     * @throws InterruptedException ie
      */
     @NotTransactional
-    protected void createSetup(int amountOfProjects, int amountOfTasksForEachProject)
-            throws MCException, ProjectNotFoundException, InterruptedException {
+    protected void createSetup(int amountOfProjects, int amountOfTasksForEachProject) throws MCException,
+            ProjectNotFoundException, InterruptedException {
         List<Long> taskids = new ArrayList<Long>();
         List<Long> projectids = new ArrayList<Long>();
 
@@ -110,8 +103,7 @@ public abstract class IssueTrackerServiceTest extends MantisBaseTest {
             projectids.add(id);
 
             for (int j = 0; j < amountOfTasksForEachProject; j++) {
-                taskid = createTestTask("tita_test_issue" + i + j, "issue_summary" + i + j,
-                        "projectName" + i);
+                taskid = createTestTask("tita_test_issue" + i + j, "issue_summary" + i + j, "projectName" + i);
                 taskids.add(taskid);
             }
         }
@@ -139,9 +131,8 @@ public abstract class IssueTrackerServiceTest extends MantisBaseTest {
 
     /**
      * The method undo the setup for mantis.
-     *
-     * @throws InterruptedException
-     *             ie
+     * 
+     * @throws InterruptedException ie
      */
     @NotTransactional
     protected void deleteSetupAndChanges() throws InterruptedException {

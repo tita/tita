@@ -39,7 +39,7 @@ import at.ac.tuwien.ifs.tita.entity.conv.Role;
 
 /**
  * Test.
- *
+ * 
  * @author herbert
  * @author rene
  */
@@ -56,7 +56,7 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
 
     /**
      * Prepare database for test -> insert 3 roles and users.
-     *
+     * 
      */
     @Before
     public void setUp() {
@@ -232,23 +232,6 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
 
             service.deleteUser(u);
             Assert.assertNull(service.getUserById(u.getId()));
-        } catch (PersistenceException e) {
-            fail();
-        }
-    }
-
-    /**
-     * Test: Get TiTAUser by username.
-     */
-    @Test
-    public void testGetTiTAUserByTiTAUsername() {
-        try {
-            TiTAUser u = service.getUserByUsername("user1");
-            Assert.assertNotNull(u);
-            Assert.assertEquals("user1", u.getUserName());
-            Assert.assertEquals("pwd1", u.getPassword());
-            Assert.assertNotNull(u.getRole());
-            Assert.assertEquals("role1", u.getRole().getDescription());
         } catch (PersistenceException e) {
             fail();
         }

@@ -16,13 +16,16 @@
  */
 package at.ac.tuwien.ifs.tita.dao.test.user;
 
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import javax.persistence.PersistenceException;
 
 import junit.framework.Assert;
 
@@ -44,13 +47,11 @@ import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.entity.TiTAUserProject;
 import at.ac.tuwien.ifs.tita.entity.conv.Role;
 
-
-
 /**
  * Test for UserDao.
- *
+ * 
  * @author Christoph
- *
+ * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:datasourceContext-test.xml" })
@@ -88,8 +89,8 @@ public class UserDAOTest {
     public void setUp() {
 
         role = new Role(1L, "Administrator");
-        titaUser = new TiTAUser("test-user", "test-password", "Christoph", "Zehetner",
-                "test@example.com", false, role, null, null);
+        titaUser = new TiTAUser("test-user", "test-password", "Christoph", "Zehetner", "test@example.com", false, role,
+                null, null);
         titaProject = new TiTAProject("test-description", "test-project", false, null, null, null);
         tup = new TiTAUserProject(titaUser, titaProject, C_150);
 
@@ -120,8 +121,7 @@ public class UserDAOTest {
      */
     @Test
     public void findTargetHoursForTiTAProjectAndTiTAUser() {
-        Long targetHours = titaUserDao.findTargetHoursForTiTAProjectAndTiTAUser(titaUser.getId(),
-                titaProject.getId());
+        Long targetHours = titaUserDao.findTargetHoursForTiTAProjectAndTiTAUser(titaUser.getId(), titaProject.getId());
 
         assertEquals(C_150, targetHours, 0.0);
     }
@@ -134,8 +134,7 @@ public class UserDAOTest {
     public void findTargetHoursForTiTAProjectAndTiTAUserShouldReturnNull() {
         utpDao.delete(utpDao.findById(tup.getId()));
 
-        Long targetHours = titaUserDao.findTargetHoursForTiTAProjectAndTiTAUser(titaUser.getId(),
-                titaProject.getId());
+        Long targetHours = titaUserDao.findTargetHoursForTiTAProjectAndTiTAUser(titaUser.getId(), titaProject.getId());
 
         Assert.assertNull(targetHours);
     }
@@ -147,26 +146,41 @@ public class UserDAOTest {
     @Test
     public void findUsersForTiTAProject() {
         List<TiTAUser> users = titaUserDao.findUsersForTiTAProject(titaProject);
-        Assert.assertEquals("Administrator", titaUserDao
-                .findById(users.get(0).getId(), false)
-                .getRole()
+        Assert.assertEquals("Administrator", titaUserDao.findById(users.get(0).getId(), false).getRole()
                 .getDescription());
         Assert.assertNotNull(users);
         Assert.assertEquals(1, users.size());
     }
-    
+
     /**
      * Method.
      */
     @Test
-    public void findUsersForProjectNamesShouldSucceed(){
+    public void findUsersForProjectNamesShouldSucceed() {
         List<String> projects = new ArrayList<String>();
         projects.add("tita_test");
         projects.add("test-project");
-        
+
         List<TiTAUser> titaUs = titaUserDao.findUsersForProjectNames(projects);
         assertNotNull(titaUs);
         assertEquals(1, titaUs.size());
-        
+
+    }
+
+    /**
+     * Test: Get TiTAUser by username.
+     */
+    @Test
+    public void testGetTiTAUserByTiTAUsername() {
+        try {
+            TiTAUser u = titaUserDao.findByUserName("test-user");
+            Assert.assertNotNull(u);
+            Assert.assertEquals("test-user", u.getUserName());
+            Assert.assertEquals("test-password", u.getPassword());
+            Assert.assertNotNull(u.getRole());
+            Assert.assertEquals("Administrator", u.getRole().getDescription());
+        } catch (PersistenceException e) {
+            fail();
+        }
     }
 }

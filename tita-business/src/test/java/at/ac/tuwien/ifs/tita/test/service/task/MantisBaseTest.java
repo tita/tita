@@ -19,7 +19,6 @@ import static org.junit.Assert.assertTrue;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.mantisbt.connect.AccessLevel;
 import org.mantisbt.connect.MCException;
@@ -44,9 +43,9 @@ import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 
 /**
  * Base class for all local mantis tests (connecting, etc.).
- *
+ * 
  * @author herbert
- *
+ * 
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -56,9 +55,9 @@ import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 public abstract class MantisBaseTest {
 
     protected MCSession session;
-    //TODO: delete
-    protected final IssueTrackerLogin defaultLogin = new IssueTrackerLogin("administrator",
-            "root", new IssueTracker(1L, "test-mantis", "http://localhost/mantisbt-1.1.8"),null);
+    // TODO: delete
+    protected final IssueTrackerLogin defaultLogin = new IssueTrackerLogin("administrator", "root", new IssueTracker(
+            1L, "test-mantis", "http://localhost/mantisbt-1.1.8"), null);
 
     private final String url = defaultLogin.getIssueTracker().getUrl() + "/api/soap/mantisconnect.php";
     private final String user = defaultLogin.getUserName();
@@ -86,22 +85,17 @@ public abstract class MantisBaseTest {
 
     /**
      * Creates a Project on the Mantis-Server.
-     *
-     * @param projectName
-     *            - name of the project
-     * @param description
-     *            - description of the project
-     * @param enabled
-     *            - status of the project
-     * @param viewStatePrivate
-     *            - private or public
+     * 
+     * @param projectName - name of the project
+     * @param description - description of the project
+     * @param enabled - status of the project
+     * @param viewStatePrivate - private or public
      * @return id of the created project
-     * @throws MCException
-     *             - if error occurs, when project is added
+     * @throws MCException - if error occurs, when project is added
      */
     @NotTransactional
-    protected Long createTestProject(String projectName, String description,
-            Boolean enabled, Boolean viewStatePrivate) throws MCException {
+    protected Long createTestProject(String projectName, String description, Boolean enabled, Boolean viewStatePrivate)
+            throws MCException {
 
         IProject newProject = new Project();
         newProject.setName(projectName);
@@ -116,20 +110,15 @@ public abstract class MantisBaseTest {
 
     /**
      * Creates a task on the Mantis-Server.
-     *
-     * @param description
-     *            - description of the project
-     * @param summary
-     *            - summary of the project
-     * @param projectName
-     *            - name of the project of the task
+     * 
+     * @param description - description of the project
+     * @param summary - summary of the project
+     * @param projectName - name of the project of the task
      * @return id of the created task
-     * @throws MCException
-     *             - if error occurs, when task is added
+     * @throws MCException - if error occurs, when task is added
      */
     @NotTransactional
-    protected Long createTestTask(String description, String summary,
-            String projectName) throws MCException {
+    protected Long createTestTask(String description, String summary, String projectName) throws MCException {
 
         IIssue newIssue = new Issue();
         newIssue.setDescription(description);
@@ -147,20 +136,16 @@ public abstract class MantisBaseTest {
 
     /**
      * Creates a comment on the Mantis-Server.
-     *
-     * @param text
-     *            - text of the comment
-     * @param isPrivate
-     *            - if true, comment is private, else public
-     * @param issueId
-     *            - id of the issue, the comment is linked to
+     * 
+     * @param text - text of the comment
+     * @param isPrivate - if true, comment is private, else public
+     * @param issueId - id of the issue, the comment is linked to
      * @return id of the created comment
-     * @throws MCException
-     *             - MCException - if error occurs, when comment is added
+     * @throws MCException - MCException - if error occurs, when comment is
+     *         added
      */
     @NotTransactional
-    protected Long createTestComment(String text, boolean isPrivate,
-            long issueId) throws MCException {
+    protected Long createTestComment(String text, boolean isPrivate, long issueId) throws MCException {
         INote newNote = new Note();
         newNote.setText(text);
         newNote.setPrivate(isPrivate);
@@ -171,9 +156,8 @@ public abstract class MantisBaseTest {
 
     /**
      * Deletes project on the Mantis-Server.
-     *
-     * @param projectName
-     *            - name of the project to delete
+     * 
+     * @param projectName - name of the project to delete
      */
     @NotTransactional
     protected void deleteTestProject(String projectName) {
@@ -191,9 +175,8 @@ public abstract class MantisBaseTest {
 
     /**
      * Deletes task on the Mantis-Server.
-     *
-     * @param taskId
-     *            - id of the task to delete
+     * 
+     * @param taskId - id of the task to delete
      */
     @NotTransactional
     protected void deleteTestTask(long taskId) {
@@ -207,9 +190,8 @@ public abstract class MantisBaseTest {
 
     /**
      * Deletes comment on the Mantis-Server.
-     *
-     * @param commentId
-     *            - id of the comment to delete
+     * 
+     * @param commentId - id of the comment to delete
      */
     @NotTransactional
     protected void deleteTestComment(long commentId) {
@@ -223,9 +205,8 @@ public abstract class MantisBaseTest {
 
     /**
      * Starts the timer.
-     *
-     * @param description
-     *            - It describes the measured situation.
+     * 
+     * @param description - It describes the measured situation.
      */
     @NotTransactional
     protected void startTimer(String description) {
@@ -237,9 +218,8 @@ public abstract class MantisBaseTest {
 
     /**
      * Stops the timer.
-     *
-     * @param description
-     *            - It describes the measured situation.
+     * 
+     * @param description - It describes the measured situation.
      */
     @NotTransactional
     protected void stopTimer(String description) {
@@ -262,7 +242,7 @@ public abstract class MantisBaseTest {
 
     /**
      * Returns the startTime.
-     *
+     * 
      * @return startTime of the measured activity.
      */
     @NotTransactional
@@ -272,7 +252,7 @@ public abstract class MantisBaseTest {
 
     /**
      * Returns the endTime.
-     *
+     * 
      * @return endTime of the measured activity.
      */
     @NotTransactional

@@ -44,7 +44,6 @@ import org.supercsv.cellprocessor.ift.CellProcessor;
 import at.ac.tuwien.ifs.tita.business.csv.CSVReader;
 import at.ac.tuwien.ifs.tita.business.csv.IImportReader;
 import at.ac.tuwien.ifs.tita.business.service.time.IEffortService;
-import at.ac.tuwien.ifs.tita.dao.GenericHibernateDao;
 import at.ac.tuwien.ifs.tita.dao.interfaces.IGenericHibernateDao;
 import at.ac.tuwien.ifs.tita.dao.project.TiTAProjectDao;
 import at.ac.tuwien.ifs.tita.dao.user.UserDAO;
@@ -60,9 +59,9 @@ import at.ac.tuwien.ifs.tita.entity.conv.Role;
 
 /**
  * CSV Reader Testcases.
- *
+ * 
  * @author karin
- *
+ * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:datasourceContext-test.xml" })
@@ -96,8 +95,8 @@ public class CSVReaderTest extends AbstractTransactionalJUnit4SpringContextTests
 
     @Qualifier("issueTrackerDAO")
     @Autowired
-    private IGenericHibernateDao<IssueTracker, Long>  issueTrackerDAO;
-    
+    private IGenericHibernateDao<IssueTracker, Long> issueTrackerDAO;
+
     @Autowired
     private UserDAO userDAO;
 
@@ -122,23 +121,15 @@ public class CSVReaderTest extends AbstractTransactionalJUnit4SpringContextTests
         userDAO.save(us1);
         userDAO.save(us2);
         userDAO.flushnClear();
-        
-        et1 = new Effort(new Date(System.currentTimeMillis()), 1000L, false,
-                "tita task 1 - effort 1", us1);
-        et2 = new Effort(new Date(System.currentTimeMillis()), 2000L, false,
-                "tita task 1 - effort 2", us1);
-        et3 = new Effort(new Date(System.currentTimeMillis()), 5000L, false,
-                "tita task 2 - effort 1", us2);
-        et4 = new Effort(new Date(System.currentTimeMillis()), 3000L, false,
-                "tita task 2 - effort 2", us1);
-        ei1 = new Effort(new Date(System.currentTimeMillis()), 2000L, false,
-                "issuetracker task 1 - effort 1", us2);
-        ei2 = new Effort(new Date(System.currentTimeMillis()), 8000L, false,
-                "issuetracker task 1 - effort 2", us1);
-        ei3 = new Effort(new Date(System.currentTimeMillis()), 1000L, false,
-                "issuetracker task 2 - effort 1", us2);
-        ei4 = new Effort(new Date(System.currentTimeMillis()), 7000L, false,
-                "issuetracker task 2 - effort 2", us1);
+
+        et1 = new Effort(new Date(System.currentTimeMillis()), 1000L, false, "tita task 1 - effort 1", us1);
+        et2 = new Effort(new Date(System.currentTimeMillis()), 2000L, false, "tita task 1 - effort 2", us1);
+        et3 = new Effort(new Date(System.currentTimeMillis()), 5000L, false, "tita task 2 - effort 1", us2);
+        et4 = new Effort(new Date(System.currentTimeMillis()), 3000L, false, "tita task 2 - effort 2", us1);
+        ei1 = new Effort(new Date(System.currentTimeMillis()), 2000L, false, "issuetracker task 1 - effort 1", us2);
+        ei2 = new Effort(new Date(System.currentTimeMillis()), 8000L, false, "issuetracker task 1 - effort 2", us1);
+        ei3 = new Effort(new Date(System.currentTimeMillis()), 1000L, false, "issuetracker task 2 - effort 1", us2);
+        ei4 = new Effort(new Date(System.currentTimeMillis()), 7000L, false, "issuetracker task 2 - effort 2", us1);
 
         Set<Effort> se1 = new HashSet<Effort>();
         se1.add(et1);
@@ -215,19 +206,17 @@ public class CSVReaderTest extends AbstractTransactionalJUnit4SpringContextTests
 
     /**
      * Test.
-     *
-     * @throws IOException
-     *             ioe
+     * 
+     * @throws IOException ioe
      */
     @Test
     public void testImportCSV() throws IOException {
-        CellProcessor[] processors = new CellProcessor[] { new ParseDate("dd.MM.yyyy"), null,
-                new ParseLong(), new ParseDate("HH:mm:ss"), new ParseDate("HH:mm:ss") };
+        CellProcessor[] processors = new CellProcessor[] { new ParseDate("dd.MM.yyyy"), null, new ParseLong(),
+                new ParseDate("HH:mm:ss"), new ParseDate("HH:mm:ss") };
 
         IImportReader reader = new CSVReader(service);
 
-        ClassPathResource res = new ClassPathResource(
-                "../test-classes/at/ac/tuwien/ifs/tita/test/csv");
+        ClassPathResource res = new ClassPathResource("../test-classes/at/ac/tuwien/ifs/tita/test/csv");
         File file = res.getFile();
         String path = file.getAbsolutePath() + "/CSVReaderTest.csv";
 
@@ -249,8 +238,7 @@ public class CSVReaderTest extends AbstractTransactionalJUnit4SpringContextTests
         assertEquals("Three Efforts were imported", C_TWO + C_THREE, tit1.getTitaEfforts().size());
 
         try {
-            assertEquals("Three Efforts were imported", C_EIGHT + C_THREE, service
-                    .getActualEfforts(C_TEN).size());
+            assertEquals("Three Efforts were imported", C_EIGHT + C_THREE, service.getActualEfforts(C_TEN).size());
         } catch (PersistenceException e) {
             fail("");
         }
