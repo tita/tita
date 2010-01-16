@@ -226,8 +226,7 @@ public class AdministrationPanelEffort extends Panel implements
                 new Model<String>(""));
         teDescription
                 .add(StringValidator.maximumLength(IntegerConstants.FIFTY));
-        teDescription.add(new AttributeModifier("class", new Model<String>(
-                "invalid")));
+        setTextFieldValid(teDescription);
         teDescription.setOutputMarkupId(true);
         form.add(teDescription);
 
@@ -266,11 +265,23 @@ public class AdministrationPanelEffort extends Panel implements
         form.add(teEndTime);
     }
 
+    /**
+     * Set Textfield class attribute to valid.
+     * 
+     * @param textfield
+     *            - textfield to set the class attribute
+     */
     private void setTextFieldValid(TextField<?> textfield) {
         textfield
                 .add(new AttributeModifier("class", new Model<String>("valid")));
     }
 
+    /**
+     * Set Textfield class attribute to invalid.
+     * 
+     * @param textfield
+     *            - textfield to set the class attribute
+     */
     private void setTextFieldInvalid(TextField<?> textfield) {
         log.info("TEST");
         textfield.add(new AttributeModifier("class", new Model<String>(
@@ -538,13 +549,6 @@ public class AdministrationPanelEffort extends Panel implements
             } catch (ParseException e) {
                 // TODO Error Handling
             }
-
-            log.info("STARTTIME = "
-                    + GlobalUtils.TIMEFORMAT24HOURS.format(startTime));
-            log.info("ENDTIME = "
-                    + GlobalUtils.TIMEFORMAT24HOURS.format(endTime));
-            log.info("DURATION = "
-                    + GlobalUtils.TIMELENGTHFORMAT.format(duration));
 
             if (startTime != null && (endTime != null || duration != null)) {
                 if (duration == null && endTime != null) {

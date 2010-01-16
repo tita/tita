@@ -30,6 +30,15 @@ import at.ac.tuwien.ifs.tita.entity.util.UserProjectEffort;
 public interface IEffortDao extends IGenericHibernateDao<Effort, Long> {
 
     /**
+     * Gets a view for the last time efforts.
+     * 
+     * @param maxresults
+     *            sets the max results value for the query
+     * @return list of timefforts that match dates
+     */
+    List<Effort> getActualTimeEfforts(Integer maxresults);
+
+    /**
      * Gets a view for a month.
      * 
      * @param year
