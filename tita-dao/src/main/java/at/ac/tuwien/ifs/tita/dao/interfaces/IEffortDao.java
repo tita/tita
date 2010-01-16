@@ -32,11 +32,9 @@ public interface IEffortDao extends IGenericHibernateDao<Effort, Long> {
     /**
      * Gets a view for the last time efforts.
      * 
-     * @param maxresults
-     *            sets the max results value for the query
      * @return list of timefforts that match dates
      */
-    List<Effort> getActualTimeEfforts(Integer maxresults);
+    List<Effort> getActualTimeEfforts();
 
     /**
      * Gets a view for a month.

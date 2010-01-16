@@ -102,13 +102,11 @@ public interface IEffortService {
     /**
      * Gets a view for the last time efforts.
      * 
-     * @param maxresults
-     *            sets max results
      * @return list of efforts that match dates
      * @throws PersistenceException
      *             if anything goes wrong with db access.
      */
-    List<Effort> getActualEfforts(int maxresults) throws PersistenceException;
+    List<Effort> getActualEfforts() throws PersistenceException;
 
     /**
      * Gets a summary of Effort for List of user and projects - overall,

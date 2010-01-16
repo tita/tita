@@ -279,7 +279,7 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements
 
     /** {@inheritDoc} */
     @Override
-    public List<Effort> getActualTimeEfforts(Integer maxresults) {
+    public List<Effort> getActualTimeEfforts() {
         return findByCriteriaOrdered(new Criterion[] { Restrictions.eq(
                 "deleted", false) }, new Order[] { Order.asc("date") }, null);
     }
