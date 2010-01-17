@@ -37,16 +37,19 @@ import at.ac.tuwien.ifs.tita.issuetracker.exceptions.ProjectNotFoundException;
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IProjectTrackable;
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
 import at.ac.tuwien.ifs.tita.issuetracker.issue.service.IssueTrackerService;
+import at.ac.tuwien.ifs.tita.issuetracker.issue.service.UpdateThread;
 import at.ac.tuwien.ifs.tita.issuetracker.mantis.base.MantisBaseTest;
 
 /**
- * Test for testing task service that imports all tasks comming from an issue tracker.
- * @author herbert
+ * Test for testing task service that imports all tasks coming from an issue
+ * tracker.
+ *
+ * @author Christoph
  *
  */
 public class IssueTrackerServiceTest extends MantisBaseTest {
 
-    protected IssueTrackerService issueTrackerService = new IssueTrackerService(this.defaultLogin);
+    protected IssueTrackerService issueTrackerService = new IssueTrackerService(defaultLogin);
 
     protected final Integer numberOfProjects = 3;
     protected final int numberOfTasksForEachProject = 2;
@@ -68,7 +71,7 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
         super.setUp();
 
         try {
-            createSetup(this.numberOfProjects, this.numberOfTasksForEachProject);
+            createSetup(numberOfProjects, numberOfTasksForEachProject);
         } catch (MCException e) {
             fail("Mantis connection error.");
         } catch (ProjectNotFoundException e) {
@@ -81,7 +84,8 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
     /**
      * Delete mantis projects for all tests.
      *
-     * @throws InterruptedException e
+     * @throws InterruptedException
+     *             e
      */
     @After
     public void tearDown() throws InterruptedException {
@@ -106,18 +110,15 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
             Long taskid = 0L;
 
             // Adding one task to each project to issue tracker
-            taskid = createTestTask("tita_test_issue_new0",
-                    "issue_summary_new", "projectName0");
-            this.taskIds.add(taskid);
-            taskid = createTestTask("tita_test_issue_new1",
-                    "issue_summary_new", "projectName1");
-            this.taskIds.add(taskid);
-            taskid = createTestTask("tita_test_issue_new2",
-                    "issue_summary_new", "projectName2");
-            this.taskIds.add(taskid);
+            taskid = createTestTask("tita_test_issue_new0", "issue_summary_new", "projectName0");
+            taskIds.add(taskid);
+            taskid = createTestTask("tita_test_issue_new1", "issue_summary_new", "projectName1");
+            taskIds.add(taskid);
+            taskid = createTestTask("tita_test_issue_new2", "issue_summary_new", "projectName2");
+            taskIds.add(taskid);
 
             startTimer("Start of update for all projects:");
-            this.issueTrackerService.updateAll();
+            issueTrackerService.updateAll();
             stopTimer("Stopping the upate for all projects.");
 
             // CHECKSTYLE:OFF
@@ -128,13 +129,12 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
 
             System.out.print(getPerformanceOutput());
 
-            assertEquals(this.numberOfProjects.intValue(), this.issueTrackerService.getProjects().size());
-            assertEquals(this.numberOfTasksForEachProject + 1, this.issueTrackerService.getIssueTrackerTasks(
-                            this.issueTrackerService.getProjects().get(this.projectIds.get(0)),
-                            IssueStatus.NEW).size());
+            assertEquals(numberOfProjects.intValue(), issueTrackerService.getProjects().size());
+            assertEquals(numberOfTasksForEachProject + 1, issueTrackerService.getIssueTrackerTasks(
+                    issueTrackerService.getProjects().get(projectIds.get(0)), IssueStatus.NEW)
+                    .size());
 
-            assertNotNull(this.issueTrackerService.getIssueTrackerDao().findProject(
-                    "projectName0"));
+            assertNotNull(issueTrackerService.getIssueTrackerDao().findProject("projectName0"));
 
         } catch (MCException e) {
             fail("Creating or deleting projects and issues failed.");
@@ -159,28 +159,26 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
             Long taskid = 0L;
 
             // Adding a task to the project in the issue tracker
-            taskid = createTestTask("tita_test_issue_new0",
-                    "issue_summary_new", "projectName0");
-            this.taskIds.add(taskid);
+            taskid = createTestTask("tita_test_issue_new0", "issue_summary_new", "projectName0");
+            taskIds.add(taskid);
 
             startTimer("Start of update for one projects:");
-            this.issueTrackerService.updateProject(this.issueTrackerService.getProjects().get(
-                    this.projectIds.get(0)));
+            issueTrackerService.updateProject(issueTrackerService.getProjects().get(
+                    projectIds.get(0)));
             stopTimer("Stopping the upate for one projects.");
 
             System.out.print(getPerformanceOutput());
             IProjectTrackable foundProject = null;
 
-            for (IProjectTrackable pro : this.issueTrackerService.getProjects().values()) {
+            for (IProjectTrackable pro : issueTrackerService.getProjects().values()) {
                 if (pro.getName().equals("projectName0")) {
                     foundProject = pro;
                 }
             }
 
-            assertEquals(this.numberOfProjects.intValue(), this.issueTrackerService.getProjects()
-                    .size());
-            assertEquals(this.numberOfTasksForEachProject + 1, this.issueTrackerService
-                    .getIssueTrackerTasks(foundProject, IssueStatus.NEW).size());
+            assertEquals(numberOfProjects.intValue(), issueTrackerService.getProjects().size());
+            assertEquals(numberOfTasksForEachProject + 1, issueTrackerService.getIssueTrackerTasks(
+                    foundProject, IssueStatus.NEW).size());
 
         } catch (MCException e) {
             fail("Creating or deleting projects and issues failed.");
@@ -207,26 +205,78 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
 
             // Adding a task to the project in the issue tracker
             taskid = createTestTask("tita_test_issue_new0", "issue_summary_new", "projectName0");
-            this.taskIds.add(taskid);
+            taskIds.add(taskid);
 
             IProjectTrackable foundProject = null;
 
-            for (IProjectTrackable pro : this.issueTrackerService.getProjects().values()) {
+            for (IProjectTrackable pro : issueTrackerService.getProjects().values()) {
                 if (pro.getName().equals("projectName0")) {
                     foundProject = pro;
                 }
             }
 
             startTimer("Start of update for one projects:");
-            this.issueTrackerService.updateProject(foundProject);
+            issueTrackerService.updateProject(foundProject);
             stopTimer("Stopping the upate for one projects.");
+
+            System.out.println(getPerformanceOutput());
+
+            assertEquals(numberOfProjects.intValue(), issueTrackerService.getProjects().size());
+            assertEquals(numberOfTasksForEachProject + 1, issueTrackerService.getIssueTrackerTasks(
+                    foundProject, IssueStatus.NEW).size());
+
+        } catch (MCException e) {
+            fail("Creating or deleting projects and issues failed.");
+            e.getStackTrace();
+        }
+    }
+
+    /**
+     * The test case shows how the update behavior running in the background.
+     *
+     * @throws InterruptedException
+     *             ie
+     * @throws ProjectNotFoundException
+     *             pnfe
+     */
+    @Test
+    public void automaticUpdateBehavior() throws InterruptedException, ProjectNotFoundException {
+        try {
+
+            Long taskid = 0L;
+
+            // Adding one task to each project to issue tracker
+            taskid = createTestTask("tita_test_issue_new0", "issue_summary_new", "projectName0");
+            taskIds.add(taskid);
+            taskid = createTestTask("tita_test_issue_new1", "issue_summary_new", "projectName1");
+            taskIds.add(taskid);
+            taskid = createTestTask("tita_test_issue_new2", "issue_summary_new", "projectName2");
+            taskIds.add(taskid);
+
+            startTimer("Start of update for all projects:");
+            UpdateThread updateThread = new UpdateThread(issueTrackerService.getProjects(),
+                    issueTrackerService.getLoggedUser());
+            updateThread.setTimeout(1);
+            updateThread.start();
+
+            stopTimer("Stopping the upate for all projects.");
+
+            // CHECKSTYLE:OFF
+            // Sleeping because the updating is made on a other thread. This
+            // thread will be quicker.
+            Thread.sleep(60 * 1000 + 5 * 1000);
+            // CHECKSTYLE:ON
 
             System.out.print(getPerformanceOutput());
 
-            assertEquals(this.numberOfProjects.intValue(), this.issueTrackerService.getProjects()
+            assertEquals(numberOfProjects.intValue(), issueTrackerService.getProjects().size());
+            assertEquals(numberOfTasksForEachProject + 1, issueTrackerService.getIssueTrackerTasks(
+                    issueTrackerService.getProjects().get(projectIds.get(0)), IssueStatus.NEW)
                     .size());
-            assertEquals(this.numberOfTasksForEachProject + 1, this.issueTrackerService
-                    .getIssueTrackerTasks(foundProject, IssueStatus.NEW).size());
+
+            assertNotNull(issueTrackerService.getIssueTrackerDao().findProject("projectName0"));
+
+            updateThread.shutdown();
 
         } catch (MCException e) {
             fail("Creating or deleting projects and issues failed.");
@@ -245,8 +295,8 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
     public void getIssueTrackerTasksShouldThrowProjectNotFoundException()
             throws ProjectNotFoundException {
 
-        this.issueTrackerService = new IssueTrackerService(this.defaultLogin);
-        this.issueTrackerService.getIssueTrackerTasks(null, IssueStatus.NEW);
+        issueTrackerService = new IssueTrackerService(defaultLogin);
+        issueTrackerService.getIssueTrackerTasks(null, IssueStatus.NEW);
 
     }
 
@@ -259,20 +309,21 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
      *
      * @throws ProjectNotFoundException
      *             pnfe
-     * @throws InterruptedException - ie
+     * @throws InterruptedException
+     *             - ie
      */
     @Test
     public void getIssueTrackerTasks() throws ProjectNotFoundException, InterruptedException {
 
-        this.issueTrackerService = new IssueTrackerService(this.defaultLogin);
-        IProjectTrackable project = this.issueTrackerService.getIssueTrackerDao()
-                .findProject(this.projectIds.get(0));
+        issueTrackerService = new IssueTrackerService(defaultLogin);
+        IProjectTrackable project = issueTrackerService.getIssueTrackerDao().findProject(
+                projectIds.get(0));
 
         startTimer("Start of update for one projects:");
-        this.issueTrackerService.updateProject(project);
+        issueTrackerService.updateProject(project);
         stopTimer("Stopping the upate for one projects.");
 
-        assertNotNull(this.issueTrackerService.getIssueTrackerTasks(project));
+        assertNotNull(issueTrackerService.getIssueTrackerTasks(project));
 
     }
 
@@ -286,8 +337,8 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
     public void getIssueTrackerTasksWithoutIssueStatusShouldThrowProjectNotFoundException()
             throws ProjectNotFoundException {
 
-        this.issueTrackerService = new IssueTrackerService(this.defaultLogin);
-        this.issueTrackerService.getIssueTrackerTasks(null);
+        issueTrackerService = new IssueTrackerService(defaultLogin);
+        issueTrackerService.getIssueTrackerTasks(null);
 
     }
 
@@ -301,17 +352,18 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
      *             - ie
      */
     @Test
-    public void getIssueTrackerTasksByProjectId() throws ProjectNotFoundException, InterruptedException {
+    public void getIssueTrackerTasksByProjectId() throws ProjectNotFoundException,
+            InterruptedException {
 
-        this.issueTrackerService = new IssueTrackerService(this.defaultLogin);
-        IProjectTrackable project = this.issueTrackerService.getIssueTrackerDao().findProject(
-                this.projectIds.get(0));
+        issueTrackerService = new IssueTrackerService(defaultLogin);
+        IProjectTrackable project = issueTrackerService.getIssueTrackerDao().findProject(
+                projectIds.get(0));
 
         startTimer("Start of update for one projects:");
-        this.issueTrackerService.updateProject(project);
+        issueTrackerService.updateProject(project);
         stopTimer("Stopping the upate for one projects.");
 
-        assertNotNull(this.issueTrackerService.getIssueTrackerTasksByProjectId(project.getId()));
+        assertNotNull(issueTrackerService.getIssueTrackerTasksByProjectId(project.getId()));
     }
 
     /**
@@ -327,17 +379,17 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
     public void getIssueTrackerTasksByProjectName() throws ProjectNotFoundException,
             InterruptedException {
 
-        this.issueTrackerService = new IssueTrackerService(this.defaultLogin);
-        IProjectTrackable project = this.issueTrackerService.getIssueTrackerDao().findProject(
+        issueTrackerService = new IssueTrackerService(defaultLogin);
+        IProjectTrackable project = issueTrackerService.getIssueTrackerDao().findProject(
                 "projectName1");
 
         assertNotNull(project);
 
         startTimer("Start of update for one projects:");
-        this.issueTrackerService.updateProject(project);
+        issueTrackerService.updateProject(project);
         stopTimer("Stopping the upate for one projects.");
 
-        assertNotNull(this.issueTrackerService.getIssueTrackerTasksByProjectName(project.getName()));
+        assertNotNull(issueTrackerService.getIssueTrackerTasksByProjectName(project.getName()));
     }
 
     /**
@@ -347,22 +399,22 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
      * A null should be returned, that says, that a information message for the
      * user is necessary as feedback.
      *
-     * @throws ProjectNotFoundException pnfe
+     * @throws ProjectNotFoundException
+     *             pnfe
      */
     @Test
     public void getIssueTrackerTasksOnlyAssignedTasks() throws ProjectNotFoundException {
 
-        this.issueTrackerService = new IssueTrackerService(this.defaultLogin);
+        issueTrackerService = new IssueTrackerService(defaultLogin);
         IProjectTrackable foundProject = null;
 
-        for (IProjectTrackable pro : this.issueTrackerService.getProjects().values()) {
+        for (IProjectTrackable pro : issueTrackerService.getProjects().values()) {
             if (pro.getName().equals("projectName0")) {
                 foundProject = pro;
             }
         }
 
-        assertNull(this.issueTrackerService
-                .getIssueTrackerTasks(foundProject, IssueStatus.ASSIGNED));
+        assertNull(issueTrackerService.getIssueTrackerTasks(foundProject, IssueStatus.ASSIGNED));
 
     }
 
@@ -373,11 +425,11 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
     @Test
     public void closeTaskShouldSetTheResolutionToFixedInTheIssueTracker() {
 
-        this.log.info("Close the first task from the project with the name: projectName0");
-        this.issueTrackerService.closeTask(this.taskIds.get(0));
+        log.info("Close the first task from the project with the name: projectName0");
+        issueTrackerService.closeTask(taskIds.get(0));
 
-        ITaskTrackable taskFound = this.issueTrackerService.getIssueTrackerDao().findTask(
-                this.taskIds.get(0), this.projectIds.get(0));
+        ITaskTrackable taskFound = issueTrackerService.getIssueTrackerDao().findTask(
+                taskIds.get(0), projectIds.get(0));
 
         assertEquals(IssueResolution.FIXED, taskFound.getResolution());
     }
@@ -389,11 +441,11 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
     @Test
     public void closeTaskShouldSetTheStatusToCloseInTheIssueTracker() {
 
-        this.log.info("Close the first task from the project with the name: projectName0");
-        this.issueTrackerService.closeTask(this.taskIds.get(0));
+        log.info("Close the first task from the project with the name: projectName0");
+        issueTrackerService.closeTask(taskIds.get(0));
 
-        ITaskTrackable taskFound = this.issueTrackerService.getIssueTrackerDao().findTask(
-                this.taskIds.get(0), this.projectIds.get(0));
+        ITaskTrackable taskFound = issueTrackerService.getIssueTrackerDao().findTask(
+                taskIds.get(0), projectIds.get(0));
 
         assertEquals(IssueStatus.CLOSED, taskFound.getStatus());
     }
@@ -404,11 +456,11 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
     @Test
     public void assignTaskShouldSetTheStatusToCloseInTheIssueTracker() {
 
-        this.log.info("Assign the first task from the project with the name: projectName0");
-        this.issueTrackerService.assignTask(this.taskIds.get(0));
+        log.info("Assign the first task from the project with the name: projectName0");
+        issueTrackerService.assignTask(taskIds.get(0));
 
-        ITaskTrackable taskFound = this.issueTrackerService.getIssueTrackerDao().findTask(
-                this.taskIds.get(0), this.projectIds.get(0));
+        ITaskTrackable taskFound = issueTrackerService.getIssueTrackerDao().findTask(
+                taskIds.get(0), projectIds.get(0));
 
         assertEquals(IssueStatus.ASSIGNED, taskFound.getStatus());
     }
@@ -428,9 +480,8 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
      * @throws InterruptedException
      *             ie
      */
-    protected void createSetup(int amountOfProjects,
-            int amountOfTasksForEachProject) throws MCException,
- ProjectNotFoundException, InterruptedException {
+    protected void createSetup(int amountOfProjects, int amountOfTasksForEachProject)
+            throws MCException, ProjectNotFoundException, InterruptedException {
         List<Long> taskids = new ArrayList<Long>();
         List<Long> projectids = new ArrayList<Long>();
 
@@ -440,23 +491,22 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
         Long taskid = 1L;
 
         for (int i = 0; i < amountOfProjects; i++) {
-            id = createTestProject("projectName" + i, "description" + i, true,
-                    false);
+            id = createTestProject("projectName" + i, "description" + i, true, false);
             projectids.add(id);
 
             for (int j = 0; j < amountOfTasksForEachProject; j++) {
-                taskid = createTestTask("tita_test_issue" + i + j,
-                        "issue_summary" + i + j, "projectName" + i);
+                taskid = createTestTask("tita_test_issue" + i + j, "issue_summary" + i + j,
+                        "projectName" + i);
                 taskids.add(taskid);
             }
         }
-        this.taskIds = taskids;
-        this.projectIds = projectids;
+        taskIds = taskids;
+        projectIds = projectids;
 
-        assertEquals(0, this.issueTrackerService.getProjects().size());
+        assertEquals(0, issueTrackerService.getProjects().size());
 
-        this.issueTrackerService = new IssueTrackerService(this.defaultLogin);
-        this.issueTrackerService.updateAll();
+        issueTrackerService = new IssueTrackerService(defaultLogin);
+        issueTrackerService.updateAll();
 
         // CHECKSTYLE:OFF
         // Sleeping because the updating is made on a other thread. This
@@ -464,9 +514,9 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
         Thread.sleep(15000);
         // CHECKSTYLE:ON
 
-        assertEquals(amountOfProjects, this.issueTrackerService.getProjects().size());
-        assertEquals(amountOfTasksForEachProject, this.issueTrackerService.getIssueTrackerTasks(
-                this.issueTrackerService.getProjects().get(id), IssueStatus.NEW).size());
+        assertEquals(amountOfProjects, issueTrackerService.getProjects().size());
+        assertEquals(amountOfTasksForEachProject, issueTrackerService.getIssueTrackerTasks(
+                issueTrackerService.getProjects().get(id), IssueStatus.NEW).size());
 
         stopTimer("End of the setup.");
         System.out.print(getPerformanceOutput());
@@ -475,20 +525,21 @@ public class IssueTrackerServiceTest extends MantisBaseTest {
     /**
      * The method undo the setup for mantis.
      *
-     * @throws InterruptedException ie
+     * @throws InterruptedException
+     *             ie
      */
     protected void deleteSetupAndChanges() throws InterruptedException {
-        //CHECKSTYLE:OFF
+        // CHECKSTYLE:OFF
         Thread.sleep(2000);
 
         startTimer("Starting deleting:");
 
         // delete tasks
-        for (int i = 0; i < this.taskIds.size(); i++) {
-            deleteTestTask(this.taskIds.get(i));
+        for (int i = 0; i < taskIds.size(); i++) {
+            deleteTestTask(taskIds.get(i));
         }
         // delete projects
-        for (int i = 0; i < this.numberOfProjects; i++) {
+        for (int i = 0; i < numberOfProjects; i++) {
             deleteTestProject("projectName" + i);
         }
 

@@ -238,12 +238,6 @@ public class CSVReaderTest extends
                 "startTime", "endTime" };
 
         assertEquals("Before importing", C_TWO, tit1.getTitaEfforts().size());
-        // try {
-        // assertEquals("Before importing", C_EIGHT, service
-        // .getActualEfforts().size());
-        // } catch (PersistenceException e2) {
-        // fail("");
-        // }
 
         try {
             reader.importEffortData(path, header, processors, tit1, us1);
@@ -254,11 +248,5 @@ public class CSVReaderTest extends
         assertEquals("Three Efforts were imported", C_TWO + C_THREE, tit1
                 .getTitaEfforts().size());
 
-        // try {
-        // assertEquals("Three Efforts were imported", C_EIGHT + C_THREE,
-        // service.getActualEfforts().size());
-        // } catch (PersistenceException e) {
-        // fail("");
-        // }
     }
 }
