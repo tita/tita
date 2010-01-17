@@ -70,4 +70,12 @@ public class ConvBaseEntity extends BaseEntity<Long> implements Serializable{
     public void setDescription(String description) {
         this.description = description;
     }
+    
+    /**
+     * String method for GUI-Output overridden.
+     */
+    @Override
+    public String toString() {
+    	return this.description;
+    }
 }

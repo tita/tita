@@ -200,13 +200,10 @@ public class TableModelProject extends AbstractTitaTableModel {
             return project;
         } catch (IndexOutOfBoundsException e) {
             log.error(e.getMessage());
-            e.printStackTrace();
         } catch (ClassCastException e) {
             log.error(e.getMessage());
-            e.printStackTrace();
         } catch (NullPointerException e) {
             log.error(e.getMessage());
-            e.printStackTrace();
         }
         return null;
     }

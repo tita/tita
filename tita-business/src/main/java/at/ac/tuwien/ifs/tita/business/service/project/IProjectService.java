@@ -35,10 +35,8 @@ import at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus;
  */
 @Transactional
 public interface IProjectService {
-    
     /**
      * Saves an issue tracker task.
-     * 
      * @param itt IssueTrackerTask
      * @return IssueTrackerTask
      * @throws PersistenceException pe
@@ -74,13 +72,11 @@ public interface IProjectService {
 
     /**
      * Returns a list of all tita projects for a given user.
-     * 
      * @param user
      *            - the specific tita user
      * @return List of TiTAProjects
      */
     List<TiTAProject> findTiTAProjectsForUser(TiTAUser user);
-    
     /** Finds an issue tracker task for a given tita project.
      * @param tp Long
      * @param it Long

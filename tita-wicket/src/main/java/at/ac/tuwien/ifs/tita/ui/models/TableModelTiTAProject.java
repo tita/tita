@@ -56,7 +56,11 @@ public class TableModelTiTAProject extends AbstractTitaTableModel {
             } else if (col == IntegerConstants.ONE) {
                 return titaProject.getDescription();
             } else if (col == IntegerConstants.TWO) {
+            	if(titaProject.getProjectStatus()!= null) {
                 return titaProject.getProjectStatus().getDescription();
+            	} else {
+            		return null;
+            	}
             } else {
                 return titaProject;
             }
