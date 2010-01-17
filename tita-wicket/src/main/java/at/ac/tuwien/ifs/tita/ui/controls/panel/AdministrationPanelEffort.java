@@ -223,21 +223,18 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
      */
     private void displayTextFields() {
 
-        teDescription = new ValidationTextField<String>("tedescription",
-                new Model<String>(""));
-        teDescription
-                .add(StringValidator.maximumLength(IntegerConstants.FIFTY));
+        teDescription = new ValidationTextField<String>("tedescription", new Model<String>(""));
+        teDescription.add(StringValidator.maximumLength(IntegerConstants.FIFTY));
         teDescription.setOutputMarkupId(true);
         form.add(teDescription);
 
-        teDate = new ValidationDateTextField("tedate", new PropertyModel<Date>(
-                this, "date"), new StyleDateConverter("S-", true));
+        teDate = new ValidationDateTextField("tedate", new PropertyModel<Date>(this, "date"), new StyleDateConverter(
+                "S-", true));
         teDate.add(new DatePicker());
         teDate.setOutputMarkupId(true);
         form.add(teDate);
 
-        teTimeLength = new ValidationTextField<String>("tetimelength",
-                new Model<String>(""));
+        teTimeLength = new ValidationTextField<String>("tetimelength", new Model<String>(""));
         teTimeLength.setType(String.class);
         teTimeLength.add(new AjaxFormComponentUpdatingBehavior("onchange") {
             @Override
@@ -247,9 +244,8 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
         teTimeLength.setOutputMarkupId(true);
         form.add(teTimeLength);
 
-        teStartTime = new ValidationTextField<String>("testarttime",
-                new Model<String>(""));
-       teStartTime.setType(String.class);
+        teStartTime = new ValidationTextField<String>("testarttime", new Model<String>(""));
+        teStartTime.setType(String.class);
         teStartTime.add(new AjaxFormComponentUpdatingBehavior("onchange") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
@@ -258,8 +254,7 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
         teStartTime.setOutputMarkupId(true);
         form.add(teStartTime);
 
-        teEndTime = new ValidationTextField<String>("teendtime",
-                new Model<String>(""));
+        teEndTime = new ValidationTextField<String>("teendtime", new Model<String>(""));
         teEndTime.setType(String.class);
         teEndTime.add(new AjaxFormComponentUpdatingBehavior("onchange") {
             @Override
@@ -496,8 +491,7 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
                 target.addComponent(teTimeLength);
             }
 
-            if (newDate != null && description != null && startTime != null
-                    && endTime != null && duration != null) {
+            if (newDate != null && description != null && startTime != null && endTime != null && duration != null) {
 
                 timeEffort.setDeleted(false);
                 timeEffort.setUser(user);
@@ -640,8 +634,8 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
     public Date getDateUntil() {
         return dateUntil;
     }
-    
-    public List<Effort> getEntityList(){
+
+    public List<Effort> getEntityList() {
         return this.timeeffortList;
     }
 }

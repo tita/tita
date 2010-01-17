@@ -34,8 +34,7 @@ public interface IAdministrationPanel {
     /**
      * Deletes a table list entry.
      * 
-     * @param target
-     *            - AjaxRequestTarget
+     * @param target - AjaxRequestTarget
      */
     void deleteListEntity(AjaxRequestTarget target);
 
@@ -47,30 +46,27 @@ public interface IAdministrationPanel {
     /**
      * Saves list entity to database and table.
      * 
-     * @param target
-     *            - AjaxRequestTarget
+     * @param target - AjaxRequestTarget
      */
     void saveListEntity(AjaxRequestTarget target);
 
     /**
      * Updates list entity in database and table.
      * 
-     * @param target
-     *            - AjaxRequestTarget
+     * @param target - AjaxRequestTarget
      */
     void updateListEntity(AjaxRequestTarget target);
 
     /**
      * Reloads table with ajax request.
      * 
-     * @param target
-     *            - AjaxRequestTarget
+     * @param target - AjaxRequestTarget
      */
     void reloadTable(AjaxRequestTarget target);
-    
-    
+
     /**
      * Returns a list of efforts.
+     * 
      * @return - effort list
      */
     List<Effort> getEntityList();
