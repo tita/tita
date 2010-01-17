@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 import org.wicketstuff.table.Table;
 
 import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
+import at.ac.tuwien.ifs.tita.entity.Effort;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 import at.ac.tuwien.ifs.tita.entity.conv.Role;
@@ -281,7 +282,7 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
 
     /** {@inheritDoc} */
     @Override
-    public void deleteListEntity() {
+    public void deleteListEntity(AjaxRequestTarget target) {
         log.debug("deleting User entity from User Table");
         TiTAUser user = null;
         int index = -1;
@@ -342,13 +343,13 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
 
     /** {@inheritDoc} */
     @Override
-    public void saveListEntity() {
+    public void saveListEntity(AjaxRequestTarget target) {
         // not implemented
     }
 
     /** {@inheritDoc} */
     @Override
-    public void updateListEntity() {
+    public void updateListEntity(AjaxRequestTarget target) {
         int index = -1;
         try {
             index = table.getSelectedRows()[0];
@@ -370,6 +371,12 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
 	@Override
 	public void loadListEntities() {
 		//not implemented
+	}
+
+	@Override
+	public List<Effort> getEntityList() {
+		//not implemented
+		return null;
 	}
 
 }

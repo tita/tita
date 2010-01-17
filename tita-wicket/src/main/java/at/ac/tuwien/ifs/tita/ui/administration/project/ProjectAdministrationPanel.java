@@ -32,6 +32,7 @@ import org.slf4j.LoggerFactory;
 import org.wicketstuff.table.Table;
 
 import at.ac.tuwien.ifs.tita.business.service.project.IProjectService;
+import at.ac.tuwien.ifs.tita.entity.Effort;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus;
@@ -278,7 +279,7 @@ public class ProjectAdministrationPanel extends Panel implements IAdministration
 
     /** {@inheritDoc} */
     @Override
-    public void deleteListEntity() {
+    public void deleteListEntity(AjaxRequestTarget target) {
         TiTAProject project = null;
 
         int index = -1;
@@ -306,7 +307,7 @@ public class ProjectAdministrationPanel extends Panel implements IAdministration
     }
 
     /** {@inheritDoc} */
-    public List<TiTAProject> getListEntities(int maxsize) {
+    public List<TiTAProject> getEntityList(int maxsize) {
         List<TiTAProject> projectList = null;
         try {
             projectList = titaProjectService.getOrderedProjects(maxsize, "name");
@@ -321,19 +322,19 @@ public class ProjectAdministrationPanel extends Panel implements IAdministration
     /** {@inheritDoc} */
     @Override
     public void reloadTable(AjaxRequestTarget target) {
-        tm.reload(getListEntities(0));
+        tm.reload(getEntityList(0));
         target.addComponent(table);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void saveListEntity() {
+    public void saveListEntity(AjaxRequestTarget target) {
         // not implemented
     }
 
     /** {@inheritDoc} */
     @Override
-    public void updateListEntity() {
+    public void updateListEntity(AjaxRequestTarget target) {
         int index = -1;
         try {
             index = table.getSelectedRows()[0];
@@ -349,8 +350,13 @@ public class ProjectAdministrationPanel extends Panel implements IAdministration
     }
 
 	@Override
+	public List<Effort> getEntityList() {
+		//not implemented
+		return null;
+	}
+
+	@Override
 	public void loadListEntities() {
 		//not implemented
 	}
-
 }
