@@ -55,7 +55,7 @@ public interface IIssueTrackerService {
      *             if project is null
      */
     Map<Long, ITaskTrackable> getIssueTrackerTasks(IProjectTrackable project)
-            throws ProjectNotFoundException;
+        throws ProjectNotFoundException;
 
 
     /**
@@ -69,7 +69,7 @@ public interface IIssueTrackerService {
      *             if project is null
      */
     Map<Long, ITaskTrackable> getIssueTrackerTasksByProjectId(Long projectId)
-            throws ProjectNotFoundException;
+        throws ProjectNotFoundException;
 
     /**
      * Method returns a map of all tasks for the chosen project. If the method
@@ -82,7 +82,7 @@ public interface IIssueTrackerService {
      *             if project is null
      */
     Map<Long, ITaskTrackable> getIssueTrackerTasksByProjectName(String projectName)
-            throws ProjectNotFoundException;
+        throws ProjectNotFoundException;
 
     /**
      * Method manages a update of a single project.

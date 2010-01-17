@@ -21,10 +21,10 @@ import javax.persistence.PersistenceException;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Property;
 
-import at.ac.tuwien.ifs.tita.dao.GenericHibernateDao;
-import at.ac.tuwien.ifs.tita.dao.issuetracker.IssueTrackerProjectDao;
-import at.ac.tuwien.ifs.tita.dao.issuetracker.task.IssueTrackerTaskDao;
-import at.ac.tuwien.ifs.tita.dao.project.TiTAProjectDao;
+import at.ac.tuwien.ifs.tita.dao.interfaces.IGenericHibernateDao;
+import at.ac.tuwien.ifs.tita.dao.interfaces.IIssueTrackerProjectDao;
+import at.ac.tuwien.ifs.tita.dao.interfaces.IIssueTrackerTaskDao;
+import at.ac.tuwien.ifs.tita.dao.interfaces.ITiTAProjectDao;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerProject;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerTask;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
@@ -40,24 +40,24 @@ import at.ac.tuwien.ifs.tita.entity.TiTAUser;
  */
 public class ProjectService implements IProjectService {
 
-    private TiTAProjectDao titaProjectDao;
-    private IssueTrackerTaskDao issueTrackerTaskDao;
-    private IssueTrackerProjectDao issueTrackerProjectDao;
-    private GenericHibernateDao<TiTATask, Long> titaTaskDao;
+    private ITiTAProjectDao titaProjectDao;
+    private IIssueTrackerTaskDao issueTrackerTaskDao;
+    private IIssueTrackerProjectDao issueTrackerProjectDao;
+    private IGenericHibernateDao<TiTATask, Long> titaTaskDao;
 
-    public void setTitaProjectDao(TiTAProjectDao titaProjectDao) {
+    public void setTitaProjectDao(ITiTAProjectDao titaProjectDao) {
         this.titaProjectDao = titaProjectDao;
     }
 
-    public void setIssueTrackerTaskDao(IssueTrackerTaskDao issueTrackerTaskDao) {
+    public void setIssueTrackerTaskDao(IIssueTrackerTaskDao issueTrackerTaskDao) {
         this.issueTrackerTaskDao = issueTrackerTaskDao;
     }
 
-    public void setIssueTrackerProjectDao(IssueTrackerProjectDao issueTrackerProjectDao) {
+    public void setIssueTrackerProjectDao(IIssueTrackerProjectDao issueTrackerProjectDao) {
         this.issueTrackerProjectDao = issueTrackerProjectDao;
     }
 
-    public void setTitaTaskDao(GenericHibernateDao<TiTATask, Long> titaTaskDao) {
+    public void setTitaTaskDao(IGenericHibernateDao<TiTATask, Long> titaTaskDao) {
         this.titaTaskDao = titaTaskDao;
     }
 

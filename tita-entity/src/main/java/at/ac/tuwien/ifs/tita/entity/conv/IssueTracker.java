@@ -49,6 +49,10 @@ public class IssueTracker extends ConvBaseEntity{
         return url;  
     }
 
+    /**
+     * Returns true, if IssueTracker is a Mantis-Issue-Tracker.
+     * @return - true if mantis
+     */
     public Boolean isMantisType(){
         if(super.getId().equals(C_MANTIS)){
             return true;

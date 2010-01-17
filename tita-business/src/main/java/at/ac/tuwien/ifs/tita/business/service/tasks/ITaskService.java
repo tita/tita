@@ -22,7 +22,6 @@ import javax.persistence.PersistenceException;
 import org.springframework.transaction.annotation.Transactional;
 
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerTask;
-import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTATask;
 import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 import at.ac.tuwien.ifs.tita.issuetracker.enums.IssueStatus;
@@ -83,7 +82,7 @@ public interface ITaskService {
      *             - if parameter is null or another Exception is thrown
      */
     IssueTrackerTask saveIssueTrackerTask(IssueTrackerTask issueTrackerTask)
-            throws PersistenceException;
+        throws PersistenceException;
 
     /**
      * Method to delete a issue tracker task.
@@ -139,17 +138,18 @@ public interface ITaskService {
      */
     IssueTracker getIssueTrackerById(Long id) throws PersistenceException;
 
-    /**
-     * Method to get all Tasks that were produced for self defined time efforts
-     * for a specific project.
-     * 
-     * @param titaProject
-     *            - a tita project
-     * @return a map of tita tasks
-     * @throws PersistenceException
-     *             - if Parameter is null or another Exception is thrown
-     */
-    Map<Long, TiTATask> getTiTATasks(TiTAProject titaProject) throws PersistenceException;
+    //TODO: will the procedure be needed?
+//    /**
+//     * Method to get all Tasks that were produced for self defined time efforts
+//     * for a specific project.
+//     * 
+//     * @param titaProject
+//     *            - a tita project
+//     * @return a map of tita tasks
+//     * @throws PersistenceException
+//     *             - if Parameter is null or another Exception is thrown
+//     */
+//    Map<Long, TiTATask> getTiTATasks(TiTAProject titaProject) throws PersistenceException;
 
     /**
      * Method to fetch all tasks for the tita project and the added issue
@@ -163,7 +163,7 @@ public interface ITaskService {
      *             pnfe - if a project is null
      */
     void fetchTaskFromIssueTrackerProjects(Long projectTitaId, Long userTitaId)
-            throws ProjectNotFoundException;
+        throws ProjectNotFoundException;
 
     /**
      * Method to get all Tasks from all issue trakcer projects that are included

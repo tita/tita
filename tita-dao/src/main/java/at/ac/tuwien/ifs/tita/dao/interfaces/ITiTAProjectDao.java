@@ -24,7 +24,7 @@ import at.ac.tuwien.ifs.tita.entity.TiTAProject;
  * @author herbert
  *
  */
-public interface ITiTAProjectDao {
+public interface ITiTAProjectDao extends IGenericHibernateDao<TiTAProject, Long>{
 
     /**
      * Returns a list of tita projects for a given username.
@@ -32,4 +32,5 @@ public interface ITiTAProjectDao {
      * @return List of TiTAProject
      */
     List<TiTAProject> findTiTAProjectsForUsername(String username);
+
 }

@@ -16,13 +16,16 @@ package at.ac.tuwien.ifs.tita.issuetracker.util;
 import at.ac.tuwien.ifs.tita.entity.Effort;
 import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 
+/**
+ * Class for generating IssueTrackerUrls.
+ * @author Karin
+ *
+ */
 public class IssueTrackerUrlUtil {
     
     /**
      * Composes an Url to get the Task-description of the IssueTrackerTask.
-     * @param issueTrackerUrl - url to the issueTracker
-     * @param projectName - Name of the IssueTracker-Project
-     * @param taskId - Id of the IssueTrackerTask
+     * @param e - effort the url is for
      * @return - created url
      */
     public static String getUrl(Effort e){

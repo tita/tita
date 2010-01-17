@@ -24,7 +24,7 @@ import at.ac.tuwien.ifs.tita.entity.IssueTrackerTask;
  * @author herbert
  * 
  */
-public interface IIssueTrackerTaskDao {
+public interface IIssueTrackerTaskDao extends IGenericHibernateDao<IssueTrackerTask, Long>{
     /**
      * Find IssueTrackerTasks for given tita project.
      * 
@@ -35,4 +35,5 @@ public interface IIssueTrackerTaskDao {
      * @return IssueTrackerTask
      */
     IssueTrackerTask findIssueTrackerTask(Long tp, Long it, Long itp, Long itt);
+
 }

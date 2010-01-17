@@ -29,8 +29,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import at.ac.tuwien.ifs.tita.business.service.tasks.ITaskService;
 import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
-import at.ac.tuwien.ifs.tita.dao.project.TiTAProjectDao;
-import at.ac.tuwien.ifs.tita.dao.user.UserDAO;
+import at.ac.tuwien.ifs.tita.dao.interfaces.ITiTAProjectDao;
+import at.ac.tuwien.ifs.tita.dao.interfaces.IUserDAO;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
@@ -58,10 +58,10 @@ public class TaskServiceTest extends IssueTrackerServiceTest {
 
     @Qualifier("titaProjectDao")
     @Autowired
-    private TiTAProjectDao titaProjectDao;
+    private ITiTAProjectDao titaProjectDao;
 
     @Autowired
-    private UserDAO titaUserDao;
+    private IUserDAO titaUserDao;
 
     @Autowired
     private IUserService userService;
