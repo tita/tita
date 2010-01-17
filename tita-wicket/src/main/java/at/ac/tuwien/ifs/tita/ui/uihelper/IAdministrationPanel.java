@@ -21,9 +21,9 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 /**
  * Interface ITitaAdministrationPanel provides access to basic administration
  * methods to administrate an entity and the table.
- *
+ * 
  * @author msiedler
- *
+ * 
  */
 public interface IAdministrationPanel {
 
@@ -49,9 +49,8 @@ public interface IAdministrationPanel {
 
     /**
      * Reloads table with ajax request.
-     *
-     * @param target
-     *            AjaxRequestTarget
+     * 
+     * @param target AjaxRequestTarget
      */
     void reloadTable(AjaxRequestTarget target);
 }
