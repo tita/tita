@@ -191,7 +191,7 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
         table.setDefaultRenderer(ButtonDelete.class, btReDelete);
         table.setDefaultEditor(ButtonDelete.class, btReDelete);
 
-        LinkToIssueTrackerRenderer lkRenderer = new LinkToIssueTrackerRenderer();
+        LinkToIssueTrackerRenderer lkRenderer = new LinkToIssueTrackerRenderer(this);
         table.setDefaultRenderer(ExternalLink.class, lkRenderer);
         table.setDefaultEditor(ExternalLink.class, lkRenderer);
 
@@ -639,5 +639,9 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
 
     public Date getDateUntil() {
         return dateUntil;
+    }
+    
+    public List<Effort> getEntityList(){
+        return this.timeeffortList;
     }
 }

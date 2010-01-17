@@ -22,6 +22,9 @@ import org.wicketstuff.table.SelectableListItem;
 import org.wicketstuff.table.cell.CellEditor;
 import org.wicketstuff.table.cell.CellRender;
 
+import at.ac.tuwien.ifs.tita.entity.Effort;
+import at.ac.tuwien.ifs.tita.issuetracker.util.IssueTrackerUrlUtil;
+
 /**
  * 
  * Renders link to issuetracker.
@@ -31,7 +34,10 @@ import org.wicketstuff.table.cell.CellRender;
  */
 public class LinkToIssueTrackerRenderer implements CellRender, CellEditor {
 
-    public LinkToIssueTrackerRenderer() {
+    private IAdministrationPanel panel = null;
+
+    public LinkToIssueTrackerRenderer(IAdministrationPanel panel) {
+        this.panel = panel;
     }
 
     /**
@@ -40,12 +46,15 @@ public class LinkToIssueTrackerRenderer implements CellRender, CellEditor {
     @SuppressWarnings("unchecked")
     @Override
     public Component getRenderComponent(String id, IModel model, SelectableListItem parent, int row, int column) {
-        // return new Label(id, model);
-        /*
-         * IModel<String> newModel = model; newModel.setObject("google"); return
-         * new Label(id, newModel);
-         */
-        return new LinkToIssueTracker(id, "http://www.google.com", "google");
+        Effort e = panel.getEntityList().get(row);
+        if(e.getIssueTTask() != null){
+
+             
+            return new LinkToIssueTracker(id, IssueTrackerUrlUtil.getUrl(e), 
+                "#"+e.getIssueTTask().getId());
+        }
+        return new LinkToIssueTracker(id, "", 
+                "");
     }
 
     /**
@@ -54,16 +63,6 @@ public class LinkToIssueTrackerRenderer implements CellRender, CellEditor {
     @SuppressWarnings("unchecked")
     @Override
     public Component getEditorComponent(String id, IModel model, SelectableListItem parent, int row, int column) {
-        return new LinkToIssueTracker(id, "http://www.google.com", "google");
-        // return new LenientLink(id, "http://www.google.com", "google");
-        /*
-         * return new LenientAjaxButton(id) {
-         * 
-         * @Override public void onSubmit(AjaxRequestTarget target, Form<?>
-         * form1) { panel.deleteListEntity(); panel.reloadTable(target); }
-         * 
-         * @Override protected void onComponentTag(ComponentTag tag) {
-         * super.onComponentTag(tag); tag.put("class", "buttonDelete"); } };
-         */
+        return new LinkToIssueTracker(id, "", "");
     }
 }

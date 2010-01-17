@@ -16,7 +16,11 @@
  */
 package at.ac.tuwien.ifs.tita.ui.uihelper;
 
+import java.util.List;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
+
+import at.ac.tuwien.ifs.tita.entity.Effort;
 
 /**
  * Interface ITitaAdministrationPanel provides access to basic administration
@@ -63,4 +67,11 @@ public interface IAdministrationPanel {
      *            - AjaxRequestTarget
      */
     void reloadTable(AjaxRequestTarget target);
+    
+    
+    /**
+     * Returns a list of efforts.
+     * @return - effort list
+     */
+    List<Effort> getEntityList();
 }

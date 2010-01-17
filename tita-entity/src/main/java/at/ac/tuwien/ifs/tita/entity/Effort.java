@@ -250,22 +250,6 @@ public class Effort extends BaseEntity<Long> {
     }
 
     /**
-     * Generates the Url to get to the Task of the Issuetracker. For example:
-     * projectname: Tita issue nr: 43 �> www.mantis.com/tita-issue:43
-     * 
-     * @return generated URL-String
-     */
-    public String getUrlToIssueTrackerTask() {
-        if (issueTTask != null) {
-            String url = issueTTask.getIsstProject().getIssueTracker().getUrl();
-            String projectname = issueTTask.getIsstProject().getProjectName();
-            Long taskno = issueTTask.getIsstTaskId();
-            return url + "/" + projectname + ":" + taskno;
-        }
-        return "";
-    }
-
-    /**
      * Adds time to current duration.
      * 
      * @param dur
