@@ -27,11 +27,11 @@ import org.wicketstuff.table.cell.CellEditor;
 import org.wicketstuff.table.cell.CellRender;
 
 /**
- *
+ * 
  * Renders button delete.
- *
+ * 
  * @author msiedler
- *
+ * 
  */
 public class ButtonDeleteRenderer implements CellRender, CellEditor {
 
@@ -62,8 +62,7 @@ public class ButtonDeleteRenderer implements CellRender, CellEditor {
         return new LenientAjaxButton(id) {
             @Override
             public void onSubmit(AjaxRequestTarget target, Form<?> form1) {
-                panel.deleteListEntity();
-                panel.reloadTable(target);
+                panel.deleteListEntity(target);
             }
 
             @Override

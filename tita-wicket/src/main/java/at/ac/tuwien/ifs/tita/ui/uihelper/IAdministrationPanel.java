@@ -21,16 +21,19 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 /**
  * Interface ITitaAdministrationPanel provides access to basic administration
  * methods to administrate an entity and the table.
- *
+ * 
  * @author msiedler
- *
+ * 
  */
 public interface IAdministrationPanel {
 
     /**
      * Deletes a table list entry.
+     * 
+     * @param target
+     *            - AjaxRequestTarget
      */
-    void deleteListEntity();
+    void deleteListEntity(AjaxRequestTarget target);
 
     /**
      * Loads list entities.
@@ -39,19 +42,25 @@ public interface IAdministrationPanel {
 
     /**
      * Saves list entity to database and table.
+     * 
+     * @param target
+     *            - AjaxRequestTarget
      */
-    void saveListEntity();
+    void saveListEntity(AjaxRequestTarget target);
 
     /**
      * Updates list entity in database and table.
+     * 
+     * @param target
+     *            - AjaxRequestTarget
      */
-    void updateListEntity();
+    void updateListEntity(AjaxRequestTarget target);
 
     /**
      * Reloads table with ajax request.
-     *
+     * 
      * @param target
-     *            AjaxRequestTarget
+     *            - AjaxRequestTarget
      */
     void reloadTable(AjaxRequestTarget target);
 }
