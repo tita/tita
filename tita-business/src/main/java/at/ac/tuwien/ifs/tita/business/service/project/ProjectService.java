@@ -30,6 +30,8 @@ import at.ac.tuwien.ifs.tita.entity.IssueTrackerTask;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTATask;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
+import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
+import at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus;
 
 /**
  * Service for manipulating (insert, update, delete, search... ) tita projects
@@ -44,7 +46,8 @@ public class ProjectService implements IProjectService {
     private IssueTrackerTaskDao issueTrackerTaskDao;
     private IssueTrackerProjectDao issueTrackerProjectDao;
     private GenericHibernateDao<TiTATask, Long> titaTaskDao;
-
+    private GenericHibernateDao<IssueTracker, Long> issueTrackerDao;
+    
     public void setTitaProjectDao(TiTAProjectDao titaProjectDao) {
         this.titaProjectDao = titaProjectDao;
     }
@@ -59,6 +62,10 @@ public class ProjectService implements IProjectService {
 
     public void setTitaTaskDao(GenericHibernateDao<TiTATask, Long> titaTaskDao) {
         this.titaTaskDao = titaTaskDao;
+    }
+    
+    public void setIssueTrackerDao(GenericHibernateDao<IssueTracker, Long> issueTrackerDao) {
+    	this.issueTrackerDao = issueTrackerDao;
     }
 
     /** {@inheritDoc} */
@@ -112,4 +119,33 @@ public class ProjectService implements IProjectService {
     public TiTATask saveTiTATask(TiTATask task) {
         return titaTaskDao.save(task);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<IssueTracker> getAvailableIssueTracker() {
+        return issueTrackerDao.findAll();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<ProjectStatus> getAvailableProjectStati() throws PersistenceException {
+        return titaProjectDao.getAvailableProjectStati();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<TiTAProject> getOrderedProjects(int maxResult, String orderBy) throws PersistenceException {
+        try {
+            return titaProjectDao.findProjectsOrderedByName(maxResult, orderBy);
+        } catch (Exception e) {
+            throw new PersistenceException(e);
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public TiTAProject saveProject(TiTAProject project) throws PersistenceException {
+        return titaProjectDao.save(project);
+    }
+    
 }

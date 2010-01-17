@@ -90,7 +90,12 @@ public class TiTAApplication extends SwarmWebApplication {
             factory.addPolicyFile(getServletContext().getResource("/WEB-INF/tita.hive"));
             factory.setAlias("hp", "at.ac.tuwien.ifs.tita.ui.BasePage");
 
-            // Aliases for Admin
+         // Aliases for Admin
+            factory.setAlias("userAdministration",
+                    "at.ac.tuwien.ifs.tita.ui.administration.user.UserAdministrationPage");
+            factory.setAlias("projectAdministration",
+                    "at.ac.tuwien.ifs.tita.ui.administration.project.ProjectAdministrationPage");
+
 
             // Aliases for timeconsumer
             factory.setAlias("effortsPage", "at.ac.tuwien.ifs.tita.ui.startpages.EffortsPage");

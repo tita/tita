@@ -123,7 +123,6 @@ public class CSVReaderTest extends
 
         userDAO.save(us1);
         userDAO.save(us2);
-        userDAO.flushnClear();
 
         et1 = new Effort(new Date(System.currentTimeMillis()), 1000L, false,
                 "tita task 1 - effort 1", us1);

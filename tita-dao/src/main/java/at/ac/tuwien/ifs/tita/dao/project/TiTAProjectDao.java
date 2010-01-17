@@ -17,9 +17,17 @@ package at.ac.tuwien.ifs.tita.dao.project;
 
 import java.util.List;
 
+import javax.persistence.PersistenceException;
+
+import org.hibernate.Criteria;
+import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
+
 import at.ac.tuwien.ifs.tita.dao.GenericHibernateDao;
 import at.ac.tuwien.ifs.tita.dao.interfaces.ITiTAProjectDao;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
+import at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus;
 
 /**
  * Data acces object for TiTAProject.
@@ -46,5 +54,34 @@ public class TiTAProjectDao extends GenericHibernateDao<TiTAProject, Long>
         query.addEntity(TiTAProject.class);
 
         return query.list();
+    }
+    
+    /** {@inheritDoc} **/
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<TiTAProject> findProjectsOrderedByName(int maxResult, String orderBy) throws PersistenceException {
+        Criteria crit = getSession().createCriteria(TiTAProject.class);
+
+        if (maxResult > 0) {
+            crit.setMaxResults(maxResult);
+        }
+
+        crit.add(Restrictions.eq("deleted", false));
+
+        crit.addOrder(Order.asc(orderBy));
+        crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+
+        return crit.list();
+    }
+
+    /** {@inheritDoc} **/
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<ProjectStatus> getAvailableProjectStati() throws PersistenceException {
+        Criteria crit = getSession().createCriteria(ProjectStatus.class);
+
+        crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+
+        return crit.list();
     }
 }

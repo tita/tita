@@ -14,6 +14,7 @@
 
 package at.ac.tuwien.ifs.tita.business.service.user;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.PersistenceException;
@@ -22,6 +23,7 @@ import at.ac.tuwien.ifs.tita.dao.GenericHibernateDao;
 import at.ac.tuwien.ifs.tita.dao.interfaces.IUserDAO;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
+import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 import at.ac.tuwien.ifs.tita.entity.conv.Role;
 
 /**
@@ -35,6 +37,7 @@ public class UserService implements IUserService {
 
     private IUserDAO userDao;
     private GenericHibernateDao<Role, Long> roleDao;
+    private GenericHibernateDao<IssueTracker, Long> issueTrackerDao;
 
     public void setUserDao(IUserDAO userDao) {
         this.userDao = userDao;
@@ -42,6 +45,10 @@ public class UserService implements IUserService {
 
     public void setRoleDao(GenericHibernateDao<Role, Long> roleDao) {
         this.roleDao = roleDao;
+    }
+    
+    public void setIssueTrackerDao(GenericHibernateDao<IssueTracker, Long> issueTrackerDao) {
+    	this.issueTrackerDao = issueTrackerDao;
     }
 
     /** {@inheritDoc} */
@@ -117,5 +124,28 @@ public class UserService implements IUserService {
     @Override
     public Long findTargetHoursForTiTAProjectAndTiTAUser(Long userId, Long projectId) {
         return userDao.findTargetHoursForTiTAProjectAndTiTAUser(userId, projectId);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<IssueTracker> getAvailableIssueTracker() {
+        return issueTrackerDao.findAll();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<TiTAUser> getOrderedUsers(int maxResult) throws PersistenceException {
+        return userDao.findUsersOrdered(maxResult);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<String> getRoleDescriptions() throws PersistenceException {
+        List<String> descriptions = new ArrayList<String>();
+        for (Role r : roleDao.findByExample(new Role())) {
+            descriptions.add(r.getDescription());
+        }
+
+        return descriptions;
     }
 }

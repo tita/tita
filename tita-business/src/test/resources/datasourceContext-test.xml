@@ -44,11 +44,13 @@
   <!-- The Services -->
   <bean id="projectService" class="at.ac.tuwien.ifs.tita.business.service.project.ProjectService">
     <property name="titaProjectDao" ref="titaProjectDao"/>
+    <property name="issueTrackerDao" ref="issueTrackerDAO"/>
   </bean>
   
   <bean id="userService" class="at.ac.tuwien.ifs.tita.business.service.user.UserService">
     <property name="userDao" ref="userDAO" />
     <property name="roleDao" ref="roleDAO" />
+    <property name="issueTrackerDao" ref="issueTrackerDAO"/>
   </bean>       
    <bean id="timeEffortService" class="at.ac.tuwien.ifs.tita.business.service.time.EffortService">
     <property name="timeEffortDao" ref="timeEffortDAO"/>

@@ -20,6 +20,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -70,12 +71,12 @@ public class TiTAUser extends BaseEntity<Long>{
     @JoinColumn(name = "ROLE_ID") //,insertable=false) //, referencedColumnName = "ID")
     private Role role;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set<TiTAUserProject> titaUserProjects;
 
 
     @OneToMany(mappedBy = "user",
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, fetch = FetchType.EAGER)
     private Set<IssueTrackerLogin> issueTrackerLogins;
 
     @SuppressWarnings("unused")
@@ -84,7 +85,7 @@ public class TiTAUser extends BaseEntity<Long>{
     private Long modificationVersion;
 
     public TiTAUser() {
-
+    	this.deleted = false;
     }
 
     public TiTAUser(String userName, String password, String firstName,

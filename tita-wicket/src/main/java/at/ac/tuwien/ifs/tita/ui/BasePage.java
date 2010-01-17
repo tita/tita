@@ -28,6 +28,8 @@ import org.apache.wicket.security.hive.authentication.LoginContext;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
+import at.ac.tuwien.ifs.tita.ui.administration.project.ProjectAdministrationPage;
+import at.ac.tuwien.ifs.tita.ui.administration.user.UserAdministrationPage;
 import at.ac.tuwien.ifs.tita.ui.evaluation.timeconsumer.DailyViewPage;
 import at.ac.tuwien.ifs.tita.ui.evaluation.timeconsumer.MonthlyViewPage;
 import at.ac.tuwien.ifs.tita.ui.evaluation.timecontroller.MultipleProjectsView;
@@ -105,6 +107,8 @@ public class BasePage extends SecureWebPage {
      */
     private void addAdminLinks(WebMarkupContainer administratorGroup) {
         administratorGroup.add(new SecurePageLink("adminPageLink", AdminPage.class));
+        administratorGroup.add(new SecurePageLink("userAdministrationLink", UserAdministrationPage.class));
+        administratorGroup.add(new SecurePageLink("projectAdministrationLink", ProjectAdministrationPage.class));
 
     }
 

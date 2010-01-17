@@ -17,6 +17,8 @@ package at.ac.tuwien.ifs.tita.dao.interfaces;
 
 import java.util.List;
 
+import javax.persistence.PersistenceException;
+
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 
@@ -61,4 +63,14 @@ public interface IUserDAO extends IGenericHibernateDao<TiTAUser, Long> {
      * @return a list of tita user, that are included in that project.
      */
     List<TiTAUser> findUsersForTiTAProject(TiTAProject project);
+    
+    /**
+     * Searches the Database for a List of Users.
+     * 
+     * @param maxResult the maximum size of List.
+     * @throws PersistenceException if Exception was thrown before.
+     * @return a List of TiTAUsers.
+     */
+    public List<TiTAUser> findUsersOrdered(int maxResult) throws PersistenceException;
+
 }
