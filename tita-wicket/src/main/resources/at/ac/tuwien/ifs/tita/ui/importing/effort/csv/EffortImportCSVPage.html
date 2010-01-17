@@ -37,59 +37,60 @@
     </fieldset>
   </form>
 </div>
-   
-<div id="effortImportColumnChoice">
-  <form wicket:id="choiceForImportEffortOptions">
+<div id="effortChosingDiv">   
+  <div id="effortImportColumnChoice">
+    <form wicket:id="choiceForImportEffortOptions">
+    
+    <div id="effortImportDate" class="paddingForElements">
+      <div id="effortImportDateLabel" class="floatingLabelAndDropdwon">
+        <span wicket:id="labelDate"></span>
+      </div>
+      <div id="effortImportDateDropdown">
+        <select wicket:id="dropdownDate"></select>
+      </div>
+    </div>
+    <div class="paddingForElements">
+      <div id="effortImportStarttime" class="floatingLabelAndDropdwon">
+        <span wicket:id="labelStarttime"></span> 
+      </div>
+      <div>
+        <select wicket:id="dropdownStarttime"></select>
+      </div>
+    </div>
+    <div class="paddingForElements">
+      <div id="effortImportEndtime" class="floatingLabelAndDropdwon">
+        <span wicket:id="labelEndtime"></span>
+      </div>
+      <div>
+        <select wicket:id="dropdownEndtime"></select>
+      </div>
+    </div>
+    <div class="paddingForElements">
+      <div id="effortImportDuration" class="floatingLabelAndDropdwon">
+        <span wicket:id="labelDuration"></span>
+      </div>
+      <div>
+        <select wicket:id="dropdownDuration"></select>
+      </div>
+    </div>
+    <div class="paddingForElements">
+      <div id="effortImportDescription" class="floatingLabelAndDropdwon">
+        <span wicket:id="labelDescription"></span>
+      </div>
+      <div>
+        <select wicket:id="dropdownDescription"></select>
+      </div>
+    </div>  
+    </form>
+  </div>
   
-  <div id="effortImportDate" class="paddingForElements">
-    <div id="effortImportDateLabel" class="floatingLabelAndDropdwon">
-      <span wicket:id="labelDate"></span>
-    </div>
-    <div id="effortImportDateDropdown">
-      <select wicket:id="dropdownDate"></select>
-    </div>
-  </div>
-  <div class="paddingForElements">
-    <div id="effortImportStarttime" class="floatingLabelAndDropdwon">
-      <span wicket:id="labelStarttime"></span> 
-    </div>
-    <div>
-      <select wicket:id="dropdownStarttime"></select>
-    </div>
-  </div>
-  <div class="paddingForElements">
-    <div id="effortImportEndtime" class="floatingLabelAndDropdwon">
-      <span wicket:id="labelEndtime"></span>
-    </div>
-    <div>
-      <select wicket:id="dropdownEndtime"></select>
-    </div>
-  </div>
-  <div class="paddingForElements">
-    <div id="effortImportDuration" class="floatingLabelAndDropdwon">
-      <span wicket:id="labelDuration"></span>
-    </div>
-    <div>
-      <select wicket:id="dropdownDuration"></select>
-    </div>
-  </div>
-  <div class="paddingForElements">
-    <div id="effortImportDescription" class="floatingLabelAndDropdwon">
-      <span wicket:id="labelDescription"></span>
-    </div>
-    <div>
-      <select wicket:id="dropdownDescription"></select>
-    </div>
-  </div>
-  </form>
-</div>
-
-<div id="effortImportProjectChooser">
-  <table wicket:id="effortImportTableForTiTAProject"></table>
-</div>  
-
-<div id="effortImportButton">
-  <input wicket:id="btnEffortImport" type="submit" value="Import Data"/>
+  <div id="effortImportProjectChooser">
+    <table wicket:id="effortImportTableForTiTAProject"></table>
+  </div> 
+  
+  <div id="effortImportButton">
+   <input wicket:id="btnEffortImport" type="submit" value="Import Data"/>
+  </div> 
 </div>
 
 <div id="effortImportResult">

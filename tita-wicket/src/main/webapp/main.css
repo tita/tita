@@ -341,6 +341,12 @@ dl.accordion-menu dd.a-m-d .bd{
 	height: 235px;
 }
 
+#effortChosingDiv {
+	float: left;
+	width: 1024px;
+	height: 200px;
+}
+
 #effortImportColumnChoice {
 	float: left;
 	width: 400px;
@@ -355,21 +361,24 @@ dl.accordion-menu dd.a-m-d .bd{
 }
 
 #effortImportResult {
+	width: 1024px;
+	height: 300px;
 	clear: both;
 }
 
 #effortImportButton {
 	float: right;
-	margin-right: 10px;
+	margin-left: 350px;
+	margin
 }
 
 .floatingLabelAndDropdwon {
-	width: 150px;
+	width: 120px;
 	float: left;
 }
 
 .paddingForElements {
-	padding: 2px;
+	padding: 3px;
 }
 
 

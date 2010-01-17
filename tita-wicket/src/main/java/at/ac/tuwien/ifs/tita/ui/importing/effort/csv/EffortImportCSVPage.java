@@ -28,6 +28,7 @@ import javax.swing.ListSelectionModel;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.form.upload.UploadProgressBar;
 import org.apache.wicket.markup.html.basic.Label;
@@ -89,11 +90,14 @@ public class EffortImportCSVPage extends BasePage {
     private TableModelTiTAProject tmForTiTAProject;
     private TableModelEffortImport tmForImportedEfforts;
 
+    private AjaxButton importData;
+
     private DropDownChoice<SelectOption> ddDate;
     private DropDownChoice<SelectOption> ddStarttime;
     private DropDownChoice<SelectOption> ddEndtime;
     private DropDownChoice<SelectOption> ddDuration;
     private DropDownChoice<SelectOption> ddDescription;
+    private List<DropDownChoice<SelectOption>> listOfDropDowns = new ArrayList<DropDownChoice<SelectOption>>();
 
     private FileChooserForm ajaxSimpleUploadForm;
     private File csvFile = null;
@@ -112,6 +116,7 @@ public class EffortImportCSVPage extends BasePage {
         form = new Form<Object>("choiceForImportEffortOptions");
         form.setOutputMarkupId(true);
         displayDropDownChoices();
+        displayButtons();
         add(form);
 
         // initialise tables
@@ -119,24 +124,17 @@ public class EffortImportCSVPage extends BasePage {
         tmForTiTAProject = new TableModelTiTAProject(titaProjectList);
         tmForImportedEfforts = new TableModelEffortImport(effortResult);
         displayTables();
-
-        displayButtons();
     }
 
     /**
      * Displays the buttons for the target/actual comparison.
      */
     public void displayButtons() {
-        add(new AjaxButton("btnEffortImport", form) {
+        importData = new AjaxButton("btnEffortImport", form) {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
 
-                // importEffortData(String csvPath, String[] header,
-                // CellProcessor[] processors, TiTAProject titaProject);
-                // File csvFile = new File(getUploadFolder(),
-                // ajaxSimpleUploadForm.fileChooser
-                // .getFileUpload().getClientFileName());
-                String testPath = csvFile.getAbsolutePath();
+
 
                 if (tableForTiTAProject.getSelectedRows().length > 0 && csvFile != null) {
                     TiTAProject titaProject = (TiTAProject) tableForTiTAProject.getTableModel()
@@ -150,9 +148,12 @@ public class EffortImportCSVPage extends BasePage {
                     String[] header = new String[] { "date", "description", "duration",
                             "startTime", "endTime" };
 
+                    String[] testHeader = getDropDownValues(listOfDropDowns);
+                    CellProcessor[] testProcessors = getCellProcessors(testHeader);
+
                     try {
                         List<Effort> importedEfforts = importEffortData(csvFile.getAbsolutePath(),
-                                header, processors, titaProject);
+                                testHeader, testProcessors, titaProject);
 
                         tmForImportedEfforts.reload(effortResult);
                         tableForImportedEfforts.setVisible(true);
@@ -167,7 +168,11 @@ public class EffortImportCSVPage extends BasePage {
                     }
                 }
             }
-        });
+        };
+
+        importData.setVisible(true);
+
+        add(importData);
     }
 
     /**
@@ -199,20 +204,27 @@ public class EffortImportCSVPage extends BasePage {
                 new PropertyModel<SelectOption>(this, "selectedEffortOptions"), selectOptions,
                 choiceRenderer);
 
+        listOfDropDowns.add(ddDate);
         form.add(new Label("labelDate", "Date:"));
         form.add(ddDate);
 
+        listOfDropDowns.add(ddStarttime);
         form.add(new Label("labelStarttime", "Starttime:"));
         form.add(ddStarttime);
 
+        listOfDropDowns.add(ddEndtime);
         form.add(new Label("labelEndtime", "Endtime:"));
         form.add(ddEndtime);
 
+        listOfDropDowns.add(ddDuration);
         form.add(new Label("labelDuration", "Duration:"));
         form.add(ddDuration);
 
+        listOfDropDowns.add(ddDescription);
         form.add(new Label("labelDescription", "Description:"));
         form.add(ddDescription);
+
+        addDropDownBehavior(listOfDropDowns);
     }
 
     /**
@@ -254,51 +266,136 @@ public class EffortImportCSVPage extends BasePage {
         add(tableForImportedEfforts);
     }
 
-    /**
-     * Remove a selectOption.
-     *
-     * @param selectOption
-     *            - s
-     */
-    public void removeSelectOption(SelectOption selectOption) {
 
-        for (int i = 0; i < selectOptions.size(); i++) {
-            if (selectOptions.get(i).getKey().equals(selectOption.getKey())) {
-                selectOptions.remove(i);
-            }
+    /**
+     * Method to set the behavior for each dropDownChoice.
+     *
+     * @param dropDownChoiceList
+     *            - a list of dropDownChoices.
+     */
+    public void addDropDownBehavior(List<DropDownChoice<SelectOption>> dropDownChoiceList) {
+        for (DropDownChoice<SelectOption> dropDownChoice : dropDownChoiceList) {
+            dropDownChoice.setOutputMarkupId(true);
+            dropDownChoice.setNullValid(false);
+            dropDownChoice.setConvertedInput(selectedEffortOptions);
+
+            dropDownChoice.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+                @Override
+                protected void onUpdate(AjaxRequestTarget target) {
+                    // importData.setVisible(checkDropDownChoiceValues(listOfDropDowns));
+                    target.addComponent(importData);
+                }
+            });
         }
     }
 
     /**
-     * Create a SelectOption for the selected value of the chosenOption.
+     * Check the chosen values for the dropDownChoices to set the import Button
+     * visible.
      *
-     * @param chosenOption
-     *            - the key
-     * @return the select option
+     * @param dropDownChoiceList
+     *            - a list of dropDownChoices.
+     * @return true, if every dropDwon has set a value, else false.
      */
-    public SelectOption getSelectOptionForDropdownValue(String chosenOption) {
-
-        if (chosenOption.equals("date")) {
-            return new SelectOption("date", "Date");
+    public boolean checkDropDownChoiceValues(List<DropDownChoice<SelectOption>> dropDownChoiceList) {
+        for (DropDownChoice<SelectOption> d : dropDownChoiceList) {
+            String o = "";
+            if (d.getConvertedInput() != null) {
+                o = d.getConvertedInput().getKey();
+            } else {
+                o = d.getModel().getObject().getKey();
+            }
+            if ("  ".equals(o)) {
+                return false;
+            }
         }
 
-        if (chosenOption.equals("starttime")) {
-            return new SelectOption("starttime", "Starttime");
+        return true;
+    }
+
+    /**
+     * Returns the selected order to map the data from the csv file to tita.
+     *
+     * @param dropDownChoiceList
+     *            a list of dropDownChoices
+     * @return the order of the data in the csv file as String array.
+     */
+    public String[] getDropDownValues(List<DropDownChoice<SelectOption>> dropDownChoiceList) {
+
+        // CHECKSTYLE:OFF
+        String[] headers = new String[5];
+
+        int i = 0;
+        int counter = 0;
+        String header = "";
+        for (DropDownChoice<SelectOption> d : dropDownChoiceList) {
+
+            if (counter == 0) {
+                header = "date";
+            }
+
+            if (counter == 1) {
+                header = "startTime";
+            }
+
+            if (counter == 2) {
+                header = "endTime";
+            }
+
+            if (counter == 3) {
+                header = "duration";
+            }
+
+            if (counter == 4) {
+                header = "description";
+            }
+
+            String key = d.getConvertedInput().getKey();
+            i = Integer.valueOf(key.substring(key.length() - 1, key.length())) - 1;
+            headers[i] = header;
+            counter++;
+
+        }
+        // CHECKSTYLE:ON
+
+        return headers;
+    }
+
+    /**
+     * Get cell processors for chosen headers.
+     *
+     * @param headers
+     *            the selected order
+     * @return the order for the cell processors
+     */
+    public CellProcessor[] getCellProcessors(String[] headers) {
+        // CHECKSTYLE:OFF
+        CellProcessor[] processors = new CellProcessor[5];
+        // CHECKSTYLE:ON
+        for (int i = 0; i < headers.length; i++) {
+
+            if (headers[i].equals("date")) {
+                processors[i] = new ParseDate("dd.MM.yyyy");
+            }
+
+            if (headers[i].equals("startTime")) {
+                processors[i] = new ParseDate("HH:mm:ss");
+            }
+
+            if (headers[i].equals("endTime")) {
+                processors[i] = new ParseDate("HH:mm:ss");
+            }
+
+            if (headers[i].equals("duration")) {
+                processors[i] = new ParseLong();
+            }
+
+            if (headers[i].equals("description")) {
+                processors[i] = null;
+            }
         }
 
-        if (chosenOption.equals("endtime")) {
-            return new SelectOption("endtime", "Endtime");
-        }
-
-        if (chosenOption.equals("duration")) {
-            return new SelectOption("duration", "Duration");
-        }
-
-        if (chosenOption.equals("description")) {
-            return new SelectOption("description", "Description");
-        } else {
-            return null;
-        }
+        return processors;
     }
 
     /**
@@ -346,9 +443,10 @@ public class EffortImportCSVPage extends BasePage {
 
         // find existing default-Task
 
-        TiTATask task = new TiTATask("default", user, titaProject, new HashSet<Effort>());
-
-        return reader.importEffortData(csvPath, header, processors, task, user);
+        TiTATask task = new TiTATask("importingEfforts", user, titaProject, new HashSet<Effort>());
+        titaProjectService.saveTiTATask(task);
+        List<Effort> a = reader.importEffortData(csvPath, header, processors, task, user);
+        return a;
     }
 
     /**

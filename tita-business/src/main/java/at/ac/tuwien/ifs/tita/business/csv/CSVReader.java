@@ -55,6 +55,8 @@ public class CSVReader implements IImportReader {
 
         List<Effort> listOfImportedEfforts = new ArrayList<Effort>();
 
+        // String[] headers = inFile.getCSVHeader(true);
+
         try {
             EffortBean effortBean;
             while ((effortBean = inFile.read(EffortBean.class, header, processors)) != null) {
