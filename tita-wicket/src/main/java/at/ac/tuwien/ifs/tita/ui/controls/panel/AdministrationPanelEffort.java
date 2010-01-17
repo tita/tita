@@ -26,7 +26,6 @@ import java.util.Set;
 import javax.persistence.PersistenceException;
 import javax.swing.ListSelectionModel;
 
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
@@ -38,6 +37,7 @@ import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
@@ -64,6 +64,9 @@ import at.ac.tuwien.ifs.tita.ui.uihelper.ButtonEditRenderer;
 import at.ac.tuwien.ifs.tita.ui.uihelper.DateTextFieldRenderer;
 import at.ac.tuwien.ifs.tita.ui.uihelper.IAdministrationPanel;
 import at.ac.tuwien.ifs.tita.ui.uihelper.LenientDateTextField;
+import at.ac.tuwien.ifs.tita.ui.uihelper.LinkToIssueTrackerRenderer;
+import at.ac.tuwien.ifs.tita.ui.uihelper.ValidationDateTextField;
+import at.ac.tuwien.ifs.tita.ui.uihelper.ValidationTextField;
 import at.ac.tuwien.ifs.tita.ui.utils.EffortUtils;
 import at.ac.tuwien.ifs.tita.ui.utils.GlobalUtils;
 import at.ac.tuwien.ifs.tita.ui.utils.IntegerConstants;
@@ -75,8 +78,7 @@ import at.ac.tuwien.ifs.tita.ui.utils.IntegerConstants;
  * @author msiedler
  * 
  */
-public class AdministrationPanelEffort extends Panel implements
-        IAdministrationPanel {
+public class AdministrationPanelEffort extends Panel implements IAdministrationPanel {
 
     @SpringBean(name = "titaEffortService")
     private IEffortService service;
@@ -94,8 +96,7 @@ public class AdministrationPanelEffort extends Panel implements
     private TiTAUser user = null;
 
     // Logger
-    private final Logger log = LoggerFactory
-            .getLogger(AdministrationPanelEffort.class);
+    private final Logger log = LoggerFactory.getLogger(AdministrationPanelEffort.class);
 
     // Actual time effort list
     private List<Effort> timeeffortList = new ArrayList<Effort>();
@@ -110,11 +111,11 @@ public class AdministrationPanelEffort extends Panel implements
 
     private TableModelEffort tm = null;
 
-    private TextField<String> teDescription = null;
-    private DateTextField teDate = null;
-    private TextField<String> teTimeLength = null;
-    private TextField<String> teStartTime = null;
-    private TextField<String> teEndTime = null;
+    private ValidationTextField<String> teDescription = null;
+    private ValidationDateTextField teDate = null;
+    private ValidationTextField<String> teTimeLength = null;
+    private ValidationTextField<String> teStartTime = null;
+    private ValidationTextField<String> teEndTime = null;
 
     private TextField<String> teFilterDescription = null;
     private DateTextField teFilterDateFrom = null;
@@ -126,8 +127,7 @@ public class AdministrationPanelEffort extends Panel implements
         super(id);
 
         this.project = project;
-        user = userService.getUserByUsername(TitaSession.getSession()
-                .getUsername());
+        user = userService.getUserByUsername(TitaSession.getSession().getUsername());
 
         displayPanel();
     }
@@ -191,6 +191,10 @@ public class AdministrationPanelEffort extends Panel implements
         table.setDefaultRenderer(ButtonDelete.class, btReDelete);
         table.setDefaultEditor(ButtonDelete.class, btReDelete);
 
+        LinkToIssueTrackerRenderer lkRenderer = new LinkToIssueTrackerRenderer(this);
+        table.setDefaultRenderer(ExternalLink.class, lkRenderer);
+        table.setDefaultEditor(ExternalLink.class, lkRenderer);
+
         table.setRowsPerPage(EffortUtils.ROWS_PER_PAGE);
         table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
@@ -202,10 +206,7 @@ public class AdministrationPanelEffort extends Panel implements
         form.add(new AjaxButton("buttonSave", form) {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
-                saveListEntity();
-                reloadTable(target);
-                clearFields();
-                target.addComponent(teDescription);
+                saveListEntity(target);
             }
 
             @Override
@@ -222,82 +223,61 @@ public class AdministrationPanelEffort extends Panel implements
      */
     private void displayTextFields() {
 
-        teDescription = new TextField<String>("tedescription",
+        teDescription = new ValidationTextField<String>("tedescription",
                 new Model<String>(""));
         teDescription
                 .add(StringValidator.maximumLength(IntegerConstants.FIFTY));
-        setTextFieldValid(teDescription);
         teDescription.setOutputMarkupId(true);
         form.add(teDescription);
 
-        teDate = new DateTextField("tedate", new PropertyModel<Date>(this,
-                "date"), new StyleDateConverter("S-", true));
+        teDate = new ValidationDateTextField("tedate", new PropertyModel<Date>(
+                this, "date"), new StyleDateConverter("S-", true));
         teDate.add(new DatePicker());
+        teDate.setOutputMarkupId(true);
         form.add(teDate);
 
-        teTimeLength = new TextField<String>("tetimelength", new Model<String>(
-                ""));
+        teTimeLength = new ValidationTextField<String>("tetimelength",
+                new Model<String>(""));
         teTimeLength.setType(String.class);
         teTimeLength.add(new AjaxFormComponentUpdatingBehavior("onchange") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
             }
         });
+        teTimeLength.setOutputMarkupId(true);
         form.add(teTimeLength);
 
-        teStartTime = new TextField<String>("testarttime",
+        teStartTime = new ValidationTextField<String>("testarttime",
                 new Model<String>(""));
-        teStartTime.setType(String.class);
+       teStartTime.setType(String.class);
         teStartTime.add(new AjaxFormComponentUpdatingBehavior("onchange") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
             }
         });
+        teStartTime.setOutputMarkupId(true);
         form.add(teStartTime);
 
-        teEndTime = new TextField<String>("teendtime", new Model<String>(""));
+        teEndTime = new ValidationTextField<String>("teendtime",
+                new Model<String>(""));
         teEndTime.setType(String.class);
         teEndTime.add(new AjaxFormComponentUpdatingBehavior("onchange") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
             }
         });
+        teEndTime.setOutputMarkupId(true);
         form.add(teEndTime);
-    }
-
-    /**
-     * Set Textfield class attribute to valid.
-     * 
-     * @param textfield
-     *            - textfield to set the class attribute
-     */
-    private void setTextFieldValid(TextField<?> textfield) {
-        textfield
-                .add(new AttributeModifier("class", new Model<String>("valid")));
-    }
-
-    /**
-     * Set Textfield class attribute to invalid.
-     * 
-     * @param textfield
-     *            - textfield to set the class attribute
-     */
-    private void setTextFieldInvalid(TextField<?> textfield) {
-        log.info("TEST");
-        textfield.add(new AttributeModifier("class", new Model<String>(
-                "invalid")));
     }
 
     /**
      * Display all FilterFields.
      */
     private void displayFilterFields() {
-        teFilterDescription = new TextField<String>("filterdescription",
-                new Model<String>("")) {
+        teFilterDescription = new TextField<String>("filterdescription", new Model<String>("")) {
 
         };
-        teFilterDescription.add(StringValidator
-                .maximumLength(IntegerConstants.FIFTY));
+        teFilterDescription.add(StringValidator.maximumLength(IntegerConstants.FIFTY));
         teFilterDescription.setType(String.class);
         teFilterDescription.add(new OnChangeAjaxBehavior() {
             @Override
@@ -307,8 +287,7 @@ public class AdministrationPanelEffort extends Panel implements
         });
         form.add(teFilterDescription);
 
-        teFilterDateFrom = new DateTextField("filterdatefrom",
-                new PropertyModel<Date>(this, "dateFrom"),
+        teFilterDateFrom = new DateTextField("filterdatefrom", new PropertyModel<Date>(this, "dateFrom"),
                 new StyleDateConverter("S-", true));
         teFilterDateFrom.add(new DatePicker());
         teFilterDateFrom.add(new AjaxFormComponentUpdatingBehavior("onchange") {
@@ -337,38 +316,33 @@ public class AdministrationPanelEffort extends Panel implements
             }
         });
 
-        teFilterDateUntil = new DateTextField("filterdateuntil",
-                new PropertyModel<Date>(this, "dateUntil"),
+        teFilterDateUntil = new DateTextField("filterdateuntil", new PropertyModel<Date>(this, "dateUntil"),
                 new StyleDateConverter("S-", true));
         teFilterDateUntil.add(new DatePicker());
-        teFilterDateUntil
-                .add(new AjaxFormComponentUpdatingBehavior("onchange") {
-                    @Override
-                    protected void onUpdate(AjaxRequestTarget target) {
-                        filterList(target);
-                    }
-                });
+        teFilterDateUntil.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                filterList(target);
+            }
+        });
         form.add(teFilterDateUntil);
     }
 
     /**
      * Filter effort list.
      * 
-     * @param target
-     *            AjaxRequestTarget
+     * @param target AjaxRequestTarget
      */
     private void filterList(AjaxRequestTarget target) {
         timeeffortList = new ArrayList<Effort>();
-        if (teFilterDescription.getModelObject().trim().compareTo("") == -1
-                && dateFrom == null && dateUntil == null) {
+        if (teFilterDescription.getModelObject().trim().compareTo("") == -1 && dateFrom == null && dateUntil == null) {
             timeeffortList = fullTimeEffortList.size() <= EffortUtils.MAXLISTSIZE ? fullTimeEffortList
                     : fullTimeEffortList.subList(0, EffortUtils.MAXLISTSIZE);
         } else {
             for (int i = 0; i < fullTimeEffortList.size(); i++) {
                 int match = -1;
                 if (teFilterDescription.getModelObject().trim().compareTo("") != -1) {
-                    if (fullTimeEffortList.get(i).matchDescription(
-                            teFilterDescription.getModelObject())) {
+                    if (fullTimeEffortList.get(i).matchDescription(teFilterDescription.getModelObject())) {
                         match = 1;
                     } else {
                         match = 0;
@@ -418,6 +392,17 @@ public class AdministrationPanelEffort extends Panel implements
         teTimeLength.setModelObject("");
     }
 
+    /**
+     * Sets all Validation text fields to valid state.
+     */
+    private void setAllTextFieldsValid() {
+        teDescription.setTextFieldValid();
+        teTimeLength.setTextFieldValid();
+        teEndTime.setTextFieldValid();
+        teStartTime.setTextFieldValid();
+        teDate.setTextFieldValid();
+    }
+
     // =========== DB METHODS ================================================
 
     /**
@@ -425,9 +410,7 @@ public class AdministrationPanelEffort extends Panel implements
      */
     public void loadListEntities() {
         try {
-            fullTimeEffortList = service
-                    .findEffortsForTiTAProjectAndTiTAUserOrdered(project
-                            .getId(), user.getId());
+            fullTimeEffortList = service.findEffortsForTiTAProjectAndTiTAUserOrdered(project.getId(), user.getId());
 
             timeeffortList = fullTimeEffortList.size() <= EffortUtils.MAXLISTSIZE ? fullTimeEffortList
                     : fullTimeEffortList.subList(0, EffortUtils.MAXLISTSIZE);
@@ -439,43 +422,84 @@ public class AdministrationPanelEffort extends Panel implements
     /**
      * {@inheritDoc}
      */
-    public void saveListEntity() {
+    public void saveListEntity(AjaxRequestTarget target) {
         Effort timeEffort = null;
         try {
             timeEffort = new Effort();
 
-            timeEffort.setDate(teDate.getModelObject());
-            timeEffort.setDescription(teDescription.getModelObject());
+            Date newDate = teDate.getModelObject();
+            if (newDate != null) {
+                timeEffort.setDate(newDate);
+                teDate.setTextFieldValid();
+                target.addComponent(teDate);
+            } else {
+                teDate.setTextFieldInvalid();
+                target.addComponent(teDate);
+            }
+
+            String description = teDescription.getModelObject();
+            if (description != null) {
+                timeEffort.setDescription(description);
+                teDescription.setTextFieldValid();
+                target.addComponent(teDescription);
+            } else {
+                teDescription.setTextFieldInvalid();
+                target.addComponent(teDescription);
+            }
 
             Long startTime = null;
             try {
                 startTime = GlobalUtils.getTimeFromTextField(teStartTime);
 
-                if (startTime == null) {
-                    setTextFieldInvalid(teDescription);
+                if (startTime != null) {
+                    teStartTime.setTextFieldValid();
+                    timeEffort.setStartTime(startTime);
+                    target.addComponent(teStartTime);
+                } else {
+                    teStartTime.setTextFieldInvalid();
+                    target.addComponent(teStartTime);
                 }
             } catch (ParseException e) {
-                setTextFieldInvalid(teDescription);
+                teStartTime.setTextFieldInvalid();
+                target.addComponent(teStartTime);
             }
             Long endTime = null;
             try {
                 endTime = GlobalUtils.getTimeFromTextField(teEndTime);
+
+                if (endTime != null) {
+                    teEndTime.setTextFieldValid();
+                    timeEffort.setEndTime(endTime);
+                    target.addComponent(teEndTime);
+                } else {
+                    teEndTime.setTextFieldInvalid();
+                    target.addComponent(teEndTime);
+                }
             } catch (ParseException e) {
-                // TODO Error Handling
+                teEndTime.setTextFieldInvalid();
+                target.addComponent(teEndTime);
             }
             Long duration = null;
             try {
                 duration = GlobalUtils.getDurationFromTextField(teTimeLength);
+
+                if (duration != null) {
+                    timeEffort.setDuration(duration);
+                    teTimeLength.setTextFieldValid();
+                    target.addComponent(teTimeLength);
+                } else {
+                    teTimeLength.setTextFieldInvalid();
+                    target.addComponent(teTimeLength);
+                }
             } catch (ParseException e) {
-                // TODO Error Handling
+                teTimeLength.setTextFieldInvalid();
+                target.addComponent(teTimeLength);
             }
 
-            if (startTime != null && endTime != null && duration != null) {
-                timeEffort.setDuration(duration);
-                timeEffort.setDeleted(false);
-                timeEffort.setStartTime(startTime);
-                timeEffort.setEndTime(endTime);
+            if (newDate != null && description != null && startTime != null
+                    && endTime != null && duration != null) {
 
+                timeEffort.setDeleted(false);
                 timeEffort.setUser(user);
 
                 Set<Effort> set = new HashSet<Effort>();
@@ -486,6 +510,10 @@ public class AdministrationPanelEffort extends Panel implements
 
                 taskService.saveTiTATask(task);
                 service.saveEffort(timeEffort);
+                setAllTextFieldsValid();
+
+                reloadTable(target);
+                clearFields();
             }
         } catch (PersistenceException e) {
             log.error(e.getMessage());
@@ -495,7 +523,7 @@ public class AdministrationPanelEffort extends Panel implements
     /**
      * {@inheritDoc}
      */
-    public void deleteListEntity() {
+    public void deleteListEntity(AjaxRequestTarget target) {
         Effort timeEffort = null;
         try {
             timeEffort = (Effort) tm.getValueAt(tm.getSelectedRow(), -1);
@@ -503,7 +531,7 @@ public class AdministrationPanelEffort extends Panel implements
             timeEffort.setDeleted(true);
             service.saveEffort(timeEffort);
 
-            loadListEntities();
+            reloadTable(target);
         } catch (PersistenceException e) {
             log.error(e.getMessage());
         }
@@ -513,39 +541,34 @@ public class AdministrationPanelEffort extends Panel implements
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
-    public void updateListEntity() {
+    public void updateListEntity(AjaxRequestTarget target) {
         Effort timeEffort = null;
         try {
             timeEffort = (Effort) tm.getValueAt(table.getSelectedRows()[0], -1);
 
-            timeEffort.setDate(((LenientDateTextField) table
-                    .getSelectedComponent(IntegerConstants.ZERO))
+            timeEffort.setDate(((LenientDateTextField) table.getSelectedComponent(IntegerConstants.ZERO))
                     .getModelObject());
-            timeEffort.setDescription(((LenientTextField) table
-                    .getSelectedComponent(IntegerConstants.ONE))
+            timeEffort.setDescription(((LenientTextField) table.getSelectedComponent(IntegerConstants.ONE))
                     .getModelObject().toString());
 
             Long startTime = null;
             try {
-                startTime = GlobalUtils
-                        .getTimeFromTextField((LenientTextField) table
-                                .getSelectedComponent(IntegerConstants.TWO));
+                startTime = GlobalUtils.getTimeFromTextField((LenientTextField) table
+                        .getSelectedComponent(IntegerConstants.TWO));
             } catch (ParseException e) {
                 // TODO Error Handling
             }
             Long endTime = null;
             try {
-                endTime = GlobalUtils
-                        .getTimeFromTextField((LenientTextField) table
-                                .getSelectedComponent(IntegerConstants.THREE));
+                endTime = GlobalUtils.getTimeFromTextField((LenientTextField) table
+                        .getSelectedComponent(IntegerConstants.THREE));
             } catch (ParseException e) {
                 // TODO Error Handling
             }
             Long duration = null;
             try {
-                duration = GlobalUtils
-                        .getDurationFromTextField((LenientTextField) table
-                                .getSelectedComponent(IntegerConstants.FOUR));
+                duration = GlobalUtils.getDurationFromTextField((LenientTextField) table
+                        .getSelectedComponent(IntegerConstants.FOUR));
             } catch (ParseException e) {
                 // TODO Error Handling
             }
@@ -562,6 +585,8 @@ public class AdministrationPanelEffort extends Panel implements
                 timeEffort.setDeleted(false);
                 timeEffort.setStartTime(startTime);
                 service.saveEffort(timeEffort);
+
+                reloadTable(target);
             }
         } catch (PersistenceException e) {
             log.error(e.getMessage());
@@ -614,5 +639,9 @@ public class AdministrationPanelEffort extends Panel implements
 
     public Date getDateUntil() {
         return dateUntil;
+    }
+    
+    public List<Effort> getEntityList(){
+        return this.timeeffortList;
     }
 }

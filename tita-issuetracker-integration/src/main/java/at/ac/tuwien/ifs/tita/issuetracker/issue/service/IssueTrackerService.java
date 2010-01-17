@@ -141,7 +141,7 @@ public class IssueTrackerService implements IIssueTrackerService {
     /** {@inheritDoc} */
     @Override
     public Map<Long, ITaskTrackable> getIssueTrackerTasks(IProjectTrackable project)
-            throws ProjectNotFoundException {
+        throws ProjectNotFoundException {
 
         if (project == null) {
             log.error("Project not found.");
@@ -155,7 +155,7 @@ public class IssueTrackerService implements IIssueTrackerService {
     /** {@inheritDoc} */
     @Override
     public Map<Long, ITaskTrackable> getIssueTrackerTasksByProjectId(Long projectId)
-            throws ProjectNotFoundException {
+        throws ProjectNotFoundException {
 
         if (projectId == null) {
             log.error("Project not found.");
@@ -175,7 +175,7 @@ public class IssueTrackerService implements IIssueTrackerService {
     /** {@inheritDoc} */
     @Override
     public Map<Long, ITaskTrackable> getIssueTrackerTasksByProjectName(String projectName)
-            throws ProjectNotFoundException {
+        throws ProjectNotFoundException {
 
         if (projectName == null) {
             log.error("Project not found.");

@@ -17,27 +17,26 @@
 package at.ac.tuwien.ifs.tita.ui.uihelper;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.ComponentTag;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 import org.wicketstuff.table.SelectableListItem;
 import org.wicketstuff.table.cell.CellEditor;
 import org.wicketstuff.table.cell.CellRender;
 
+import at.ac.tuwien.ifs.tita.entity.Effort;
+import at.ac.tuwien.ifs.tita.issuetracker.util.IssueTrackerUrlUtil;
+
 /**
  * 
- * Renders button delete.
+ * Renders link to issuetracker.
  * 
- * @author msiedler
+ * @author rene
  * 
  */
-public class ButtonDeleteRenderer implements CellRender, CellEditor {
+public class LinkToIssueTrackerRenderer implements CellRender, CellEditor {
 
     private IAdministrationPanel panel = null;
 
-    public ButtonDeleteRenderer(IAdministrationPanel panel) {
+    public LinkToIssueTrackerRenderer(IAdministrationPanel panel) {
         this.panel = panel;
     }
 
@@ -47,7 +46,15 @@ public class ButtonDeleteRenderer implements CellRender, CellEditor {
     @SuppressWarnings("unchecked")
     @Override
     public Component getRenderComponent(String id, IModel model, SelectableListItem parent, int row, int column) {
-        return new Label(id, model);
+        Effort e = panel.getEntityList().get(row);
+        if(e.getIssueTTask() != null){
+
+             
+            return new LinkToIssueTracker(id, IssueTrackerUrlUtil.getUrl(e), 
+                "#"+e.getIssueTTask().getId());
+        }
+        return new LinkToIssueTracker(id, "", 
+                "");
     }
 
     /**
@@ -56,18 +63,6 @@ public class ButtonDeleteRenderer implements CellRender, CellEditor {
     @SuppressWarnings("unchecked")
     @Override
     public Component getEditorComponent(String id, IModel model, SelectableListItem parent, int row, int column) {
-
-        return new LenientAjaxButton(id) {
-            @Override
-            public void onSubmit(AjaxRequestTarget target, Form<?> form1) {
-                panel.deleteListEntity(target);
-            }
-
-            @Override
-            protected void onComponentTag(ComponentTag tag) {
-                super.onComponentTag(tag);
-                tag.put("class", "buttonDelete");
-            }
-        };
+        return new LinkToIssueTracker(id, "", "");
     }
 }

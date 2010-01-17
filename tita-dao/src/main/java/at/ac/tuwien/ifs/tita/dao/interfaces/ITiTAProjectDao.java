@@ -27,7 +27,7 @@ import at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus;
  * @author herbert
  *
  */
-public interface ITiTAProjectDao {
+public interface ITiTAProjectDao extends IGenericHibernateDao<TiTAProject, Long>{
 
     /**
      * Returns a list of tita projects for a given username.

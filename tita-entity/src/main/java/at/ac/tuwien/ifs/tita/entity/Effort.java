@@ -197,7 +197,7 @@ public class Effort extends BaseEntity<Long> {
     }
 
     /**
-     * filter function.
+     * Filter out all matching Efforts with a specific description.
      * 
      * @param filterString
      *            - Filter string
@@ -208,21 +208,22 @@ public class Effort extends BaseEntity<Long> {
     }
 
     /**
-     * Filter out all matching Efforts with a specific date.
+     * Filter out all matching Efforts with a date after the parameter date.
      * 
-     * @param date1 Date
-     * @return Boolean
+     * @param date1
+     *            - filter date
+     * @return true if it contains the string pattern.
      */
     public Boolean matchDateFrom(Date date1) {
         return date.after(date1) || date.compareTo(date1) == 0;
     }
 
     /**
-     * TODO write javadoc.
+     * Filter out all matching Efforts with a date before the parameter date.
      * 
      * @param date1
-     *            TODO write javadoc.
-     * @return TODO write javadoc.
+     *            - filter date
+     * @return true if it contains the string pattern.
      */
     public Boolean matchDateUntil(Date date1) {
         return date.before(date1) || date.compareTo(date1) == 0;
@@ -246,22 +247,6 @@ public class Effort extends BaseEntity<Long> {
 
     public void setStartTime(Long startTime) {
         this.startTime = startTime;
-    }
-
-    /**
-     * Generates the Url to get to the Task of the Issuetracker. For example:
-     * projectname: Tita issue nr: 43 �> www.mantis.com/tita-issue:43
-     * 
-     * @return generated URL-String
-     */
-    public String getUrlToIssueTrackerTask() {
-        if (issueTTask != null) {
-            String url = issueTTask.getIsstProject().getIssueTracker().getUrl();
-            String projectname = issueTTask.getIsstProject().getProjectName();
-            Long taskno = issueTTask.getIsstTaskId();
-            return url + "/" + projectname + ":" + taskno;
-        }
-        return "";
     }
 
     /**

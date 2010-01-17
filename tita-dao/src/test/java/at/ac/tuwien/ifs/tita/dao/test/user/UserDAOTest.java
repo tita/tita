@@ -41,7 +41,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import at.ac.tuwien.ifs.tita.dao.interfaces.IGenericHibernateDao;
-import at.ac.tuwien.ifs.tita.dao.user.UserDAO;
+import at.ac.tuwien.ifs.tita.dao.interfaces.IUserDAO;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.entity.TiTAUserProject;
@@ -71,7 +71,7 @@ public class UserDAOTest {
     private IGenericHibernateDao<TiTAProject, Long> titaProjectDAO;
 
     @Autowired
-    private UserDAO titaUserDao;
+    private IUserDAO titaUserDao;
 
     @Qualifier("userTitaDAO")
     @Autowired

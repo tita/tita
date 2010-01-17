@@ -27,7 +27,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name="CONV_ISSUE_TRACKER")
 public class IssueTracker extends ConvBaseEntity{
-
+    private static final Long C_MANTIS = 1L;
+    
     @Column(name = "URL")
     private String url;
 
@@ -46,5 +47,16 @@ public class IssueTracker extends ConvBaseEntity{
 
     public String getUrl() {
         return url;  
+    }
+
+    /**
+     * Returns true, if IssueTracker is a Mantis-Issue-Tracker.
+     * @return - true if mantis
+     */
+    public Boolean isMantisType(){
+        if(super.getId().equals(C_MANTIS)){
+            return true;
+        }
+        return false;
     }
 }

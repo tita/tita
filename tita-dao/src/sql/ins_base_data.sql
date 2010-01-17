@@ -14,7 +14,7 @@
 
 
 --insert into CONV_ISSUE_TRACKER (ID, DESCRIPTION, URL) values (1, 'it 1', 'www.mantis.com');
-insert into CONV_ISSUE_TRACKER (ID, DESCRIPTION, URL) values (1, 'it 1', 'http://localhost/mantisbt-1.1.8');
+insert into CONV_ISSUE_TRACKER (ID, DESCRIPTION, URL) values (1, 'it 1', 'http://localhost/mantisbt-1.1.8/view.php?');
 
 insert into CONV_ROLE (ID, DESCRIPTION) values (1, 'Administrator');
 insert into CONV_ROLE (ID, DESCRIPTION) values (2, 'Time consumer');

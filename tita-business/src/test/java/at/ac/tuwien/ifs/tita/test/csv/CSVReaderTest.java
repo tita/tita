@@ -45,8 +45,8 @@ import at.ac.tuwien.ifs.tita.business.csv.CSVReader;
 import at.ac.tuwien.ifs.tita.business.csv.IImportReader;
 import at.ac.tuwien.ifs.tita.business.service.time.IEffortService;
 import at.ac.tuwien.ifs.tita.dao.interfaces.IGenericHibernateDao;
-import at.ac.tuwien.ifs.tita.dao.project.TiTAProjectDao;
-import at.ac.tuwien.ifs.tita.dao.user.UserDAO;
+import at.ac.tuwien.ifs.tita.dao.interfaces.ITiTAProjectDao;
+import at.ac.tuwien.ifs.tita.dao.interfaces.IUserDAO;
 import at.ac.tuwien.ifs.tita.entity.Effort;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerProject;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerTask;
@@ -84,7 +84,7 @@ public class CSVReaderTest extends
     private IEffortService service;
 
     @Autowired
-    private TiTAProjectDao titaProjectDAO;
+    private ITiTAProjectDao titaProjectDAO;
 
     @Qualifier("userTitaDAO")
     @Autowired
@@ -99,7 +99,7 @@ public class CSVReaderTest extends
     private IGenericHibernateDao<IssueTracker, Long> issueTrackerDAO;
 
     @Autowired
-    private UserDAO userDAO;
+    private IUserDAO userDAO;
 
     /**
      * Prepare on TiTA Project for testing effort dao.
