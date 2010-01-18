@@ -42,7 +42,7 @@ public final class GlobalUtils {
             "HH:mm:ss");
     public static final DateFormat TIMEFORMAT24HOURS = new SimpleDateFormat(
             "HH:mm");
-    
+
     private static final int C_SIXTY = 60;
     private static final int C_THREE_THOUSAND_SIX_HUNDRED = 3600;
     private static final int C_MILLI_SECONDS = 1000;
@@ -146,16 +146,17 @@ public final class GlobalUtils {
      * @param field
      *            to read
      * @return time as long
-     * @throws ParseException
-     *             parse exception
      */
-    public static Long getTimeFromTextField(TextField<String> field)
-            throws ParseException {
-        if (field != null) {
-            if (field.getModelObject().compareTo("") != 0) {
-                return GlobalUtils.TIMEFORMAT24HOURS.parse(
-                        field.getModelObject()).getTime();
+    public static Long getTimeFromTextField(TextField<String> field) {
+        try {
+            if (field != null) {
+                if (field.getModelObject().compareTo("") != 0) {
+                    return GlobalUtils.TIMEFORMAT24HOURS.parse(
+                            field.getModelObject()).getTime();
+                }
             }
+        } catch (ParseException e) {
+            return null;
         }
         return null;
     }
@@ -166,23 +167,24 @@ public final class GlobalUtils {
      * @param field
      *            to read
      * @return duration as long
-     * @throws ParseException
-     *             parse exception
      */
-    public static Long getDurationFromTextField(TextField<String> field)
-            throws ParseException {
-        if (field != null) {
-            if (field.getModelObject().compareTo("") != 0) {
-                return GlobalUtils.TIMELENGTHFORMAT.parse(
-                        field.getModelObject()).getTime();
+    public static Long getDurationFromTextField(TextField<String> field) {
+        try {
+            if (field != null) {
+                if (field.getModelObject().compareTo("") != 0) {
+                    return GlobalUtils.TIMELENGTHFORMAT.parse(
+                            field.getModelObject()).getTime();
+                }
             }
+        } catch (ParseException e) {
+            return null;
         }
         return null;
     }
-    
+
     /**
      * Returns the duration as a sum in date format.
-     *
+     * 
      * @param duration
      *            the measured sum
      * @return the sum as String
