@@ -20,19 +20,26 @@
         <link rel="stylesheet" type="text/css" href="main.css"/>
     </head>
     <body>
-        <div id="loginBox">
-		    <div class="loginTitle">
-		        <div class="loginError" wicket:id="feedback">Username or password incorrect</div>
-		    </div>
-		    <div class="loginFormBox" wicket:id="loginPanel">
-		        Login panel comes here
-		    </div>
-		</div>
-        Login with
-        <ul>
-        <li>admin/admin    OR</li>
-        <li>timecontroller/timecontroller   OR</li>
-        <li>timeconsumer/timeconsumer</li>
-        </ul>
+    <div id="container">
+            <div id="header" class="textcenter">
+              <h1><strong style='color:red'>Ti</strong>ny 
+                         <strong style='color:red'>T</strong>ime 
+                         Tracking
+                         <strong style='color:red'>A</strong>ssistent</h1>
+           </div>
+          <div id="contents">
+      		    <div wicket:id="loginPanel" id="loginPanel"></div>
+                <div wicket:id="feedback" style="color:red">Username or password incorrect</div>
+                <div id="info" style="margin-left: auto;
+    margin-right: auto;width:300px">
+                    Login with
+                    <ul>
+                    <li>admin/admin    OR</li>
+                    <li>timecontroller/timecontroller   OR</li>
+                    <li>timeconsumer/timeconsumer</li>
+                    </ul>
+              </div>
+        </div>
+     </div>
     </body>
 </html>
