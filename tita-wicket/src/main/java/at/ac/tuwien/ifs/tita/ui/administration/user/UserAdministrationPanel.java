@@ -368,15 +368,16 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
         }
     }
 
-	@Override
-	public void loadListEntities() {
-		//not implemented
-	}
+    /** {@inheritDoc} */
+    @Override
+    public void loadListEntities() {
+        // not implemented
+    }
 
-	@Override
-	public List<Effort> getEntityList() {
-		//not implemented
-		return null;
-	}
+    @Override
+    public List<Effort> getEntityList() {
+        // not implemented
+        return null;
+    }
 
 }

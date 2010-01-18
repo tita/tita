@@ -34,129 +34,127 @@ import at.ac.tuwien.ifs.tita.ui.utils.IntegerConstants;
  */
 public class TableModelUser extends AbstractTitaTableModel {
 
-	// Logger
-	private final Logger log = LoggerFactory.getLogger(TableModelUser.class);
+    // Logger
+    private final Logger log = LoggerFactory.getLogger(TableModelUser.class);
 
-	public TableModelUser(List<TiTAUser> list) {
-		super(list);
+    public TableModelUser(List<TiTAUser> list) {
+        super(list);
 
-		columnNames = new String[] { "Username", "First Name", "Last Name",
-				"Email", "Deleted", "Role", "", "" };
-	}
+        columnNames = new String[] { "Username", "First Name", "Last Name", "Email", "Deleted", "Role", "", "" };
+    }
 
-	/** {@inheritDoc} **/
-	@Override
-	public Class<?> getColumnClass(int columnIndex) {
-		if (columnIndex == IntegerConstants.FOUR) {
-			return Boolean.class;
-		} else if (columnIndex == IntegerConstants.FIVE) {
-			return Role.class;
-		} else if (columnIndex == IntegerConstants.SIX) {
-			return ButtonEdit.class;
-		} else if (columnIndex == IntegerConstants.SEVEN) {
-			return ButtonDelete.class;
-		} else {
-			return super.getColumnClass(columnIndex);
-		}
-	}
+    /** {@inheritDoc} **/
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        if (columnIndex == IntegerConstants.FOUR) {
+            return Boolean.class;
+        } else if (columnIndex == IntegerConstants.FIVE) {
+            return Role.class;
+        } else if (columnIndex == IntegerConstants.SIX) {
+            return ButtonEdit.class;
+        } else if (columnIndex == IntegerConstants.SEVEN) {
+            return ButtonDelete.class;
+        } else {
+            return super.getColumnClass(columnIndex);
+        }
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Object getValueAt(int row, int col) {
-		TiTAUser user = null;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Object getValueAt(int row, int col) {
+        TiTAUser user = null;
 
-		try {
-			user = (TiTAUser) list.get(row);
+        try {
+            user = (TiTAUser) list.get(row);
 
-			if (col == IntegerConstants.ZERO) {
-				return user.getUserName();
-			} else if (col == IntegerConstants.ONE) {
-				return user.getFirstName();
-			} else if (col == IntegerConstants.TWO) {
-				return user.getLastName();
-			} else if (col == IntegerConstants.THREE) {
-				return user.getEmail();
-			} else if (col == IntegerConstants.FOUR) {
-				return user.isDeleted();
-			} else if (col == IntegerConstants.FIVE) {
-				if (user.getRole() != null) {
-					return user.getRole().getDescription();
-				} else {
-					return null;
-				}
-			} else if (col == IntegerConstants.SIX) {
-				return null;
-			} else if (col == IntegerConstants.SEVEN) {
-				return null;
-			} else {
-				return user;
-			}
+            if (col == IntegerConstants.ZERO) {
+                return user.getUserName();
+            } else if (col == IntegerConstants.ONE) {
+                return user.getFirstName();
+            } else if (col == IntegerConstants.TWO) {
+                return user.getLastName();
+            } else if (col == IntegerConstants.THREE) {
+                return user.getEmail();
+            } else if (col == IntegerConstants.FOUR) {
+                return user.isDeleted();
+            } else if (col == IntegerConstants.FIVE) {
+                if (user.getRole() != null) {
+                    return user.getRole().getDescription();
+                } else {
+                    return null;
+                }
+            } else if (col == IntegerConstants.SIX) {
+                return null;
+            } else if (col == IntegerConstants.SEVEN) {
+                return null;
+            } else {
+                return user;
+            }
 
-		} catch (IndexOutOfBoundsException e) {
-			log.error(e.getMessage());
-		} catch (ClassCastException e) {
-			log.error(e.getMessage());
-		}
-		return null;
-	}
+        } catch (IndexOutOfBoundsException e) {
+            log.error(e.getMessage());
+        } catch (ClassCastException e) {
+            log.error(e.getMessage());
+        }
+        return null;
+    }
 
-	/** {@inheritDoc} **/
-	@Override
-	public void setValueAt(Object aValue, int row, int col) {
-		TiTAUser user = null;
+    /** {@inheritDoc} **/
+    @Override
+    public void setValueAt(Object aValue, int row, int col) {
+        TiTAUser user = null;
 
-		try {
-			user = (TiTAUser) list.get(row);
+        try {
+            user = (TiTAUser) list.get(row);
 
-			if (col == IntegerConstants.ZERO) {
-				user.setUserName(aValue.toString());
-			} else if (col == IntegerConstants.ONE) {
-				user.setFirstName(aValue.toString());
-			} else if (col == IntegerConstants.TWO) {
-				user.setLastName(aValue.toString());
-			} else if (col == IntegerConstants.THREE) {
-				// email, deleted, role
-				user.setEmail(aValue.toString());
-			} else if (col == IntegerConstants.FOUR) {
-				if (aValue.toString().trim().equalsIgnoreCase("true")) {
-					user.setDeleted(true);
-				} else {
-					user.setDeleted(false);
-				}
-			} else if (col == IntegerConstants.FIVE) {
-				user.setRole((Role) aValue);
-			}
-		} catch (IndexOutOfBoundsException e) {
-			log.error(e.getMessage());
-		} catch (ClassCastException e) {
-			log.error(e.getMessage());
-		}
+            if (col == IntegerConstants.ZERO) {
+                user.setUserName(aValue.toString());
+            } else if (col == IntegerConstants.ONE) {
+                user.setFirstName(aValue.toString());
+            } else if (col == IntegerConstants.TWO) {
+                user.setLastName(aValue.toString());
+            } else if (col == IntegerConstants.THREE) {
+                // email, deleted, role
+                user.setEmail(aValue.toString());
+            } else if (col == IntegerConstants.FOUR) {
+                if (aValue.toString().trim().equalsIgnoreCase("true")) {
+                    user.setDeleted(true);
+                } else {
+                    user.setDeleted(false);
+                }
+            } else if (col == IntegerConstants.FIVE) {
+                user.setRole((Role) aValue);
+            }
+        } catch (IndexOutOfBoundsException e) {
+            log.error(e.getMessage());
+        } catch (ClassCastException e) {
+            log.error(e.getMessage());
+        }
 
-	}
+    }
 
-	/** {@inheritDoc} **/
-	@Override
-	public boolean isCellEditable(int row, int column) {
-		if (column == IntegerConstants.SIX || column == IntegerConstants.SEVEN) {
-			return true;
-		}
+    /** {@inheritDoc} **/
+    @Override
+    public boolean isCellEditable(int row, int column) {
+        if (column == IntegerConstants.SIX || column == IntegerConstants.SEVEN) {
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	/**
-	 * Method for adding a User to the TableModel.
-	 * 
-	 * @param user
-	 *            the user to be displayed
-	 */
-	@SuppressWarnings("unchecked")
-	public void addEntity(TiTAUser user) {
-		if (user != null) {
-			((List<TiTAUser>) list).add(user);
-		}
-	}
+    /**
+     * Method for adding a User to the TableModel.
+     * 
+     * @param user the user to be displayed
+     */
+    @SuppressWarnings("unchecked")
+    public void addEntity(TiTAUser user) {
+        if (user != null) {
+            ((List<TiTAUser>) list).add(user);
+        }
+    }
 
 }

@@ -355,6 +355,7 @@
             <exclude>**/*.zargo</exclude>
             <exclude>**/*.jasper</exclude>
             <exclude>**/*.log</exclude>
+			<exclude>**/*.log.*</exclude>
             <exclude>**/*.MF</exclude>
             <exclude>**/*.checkstyle</exclude>
             <exclude>**/*.js</exclude>

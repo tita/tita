@@ -26,9 +26,9 @@ import at.ac.tuwien.ifs.tita.ui.utils.IntegerConstants;
 
 /**
  * Provides all necessary table model methods for entity Effort.
- *
+ * 
  * @author msiedler
- *
+ * 
  */
 public class TableModelTiTAProject extends AbstractTitaTableModel {
 
@@ -56,11 +56,11 @@ public class TableModelTiTAProject extends AbstractTitaTableModel {
             } else if (col == IntegerConstants.ONE) {
                 return titaProject.getDescription();
             } else if (col == IntegerConstants.TWO) {
-            	if(titaProject.getProjectStatus()!= null) {
-                return titaProject.getProjectStatus().getDescription();
-            	} else {
-            		return null;
-            	}
+                if (titaProject.getProjectStatus() != null) {
+                    return titaProject.getProjectStatus().getDescription();
+                } else {
+                    return null;
+                }
             } else {
                 return titaProject;
             }
@@ -72,7 +72,6 @@ public class TableModelTiTAProject extends AbstractTitaTableModel {
         }
         return null;
     }
-
 
     /**
      * {@inheritDoc}

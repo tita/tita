@@ -153,7 +153,7 @@ public class UserProjectPanel extends Panel {
 
         form.addOrReplace(new AjaxButton("buttonDelete") {
             @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
                 int selection = -1;
                 try {
                     selection = actualProjectsTable.getSelectedRows()[0];
@@ -172,7 +172,7 @@ public class UserProjectPanel extends Panel {
 
         form.addOrReplace(new AjaxButton("buttonAdd") {
             @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
                 int selection = -1;
                 try {
                     selection = table.getSelectedRows()[0];
@@ -228,7 +228,7 @@ public class UserProjectPanel extends Panel {
     public class TableModelProjectWithoutButton extends AbstractTitaTableModel {
 
         // Logger
-        private final Logger log = LoggerFactory.getLogger(TableModelProject.class);
+        private final Logger locallog = LoggerFactory.getLogger(TableModelProject.class);
 
         public TableModelProjectWithoutButton(List<TiTAProject> list) {
             super(list);
@@ -268,11 +268,11 @@ public class UserProjectPanel extends Panel {
                     return project;
                 }
             } catch (IndexOutOfBoundsException e) {
-                log.error(e.getMessage());
+                locallog.error(e.getMessage());
             } catch (ClassCastException e) {
-                log.error(e.getMessage());
+                locallog.error(e.getMessage());
             } catch (NullPointerException e) {
-                log.error(e.getMessage());
+                locallog.error(e.getMessage());
             }
             return null;
         }

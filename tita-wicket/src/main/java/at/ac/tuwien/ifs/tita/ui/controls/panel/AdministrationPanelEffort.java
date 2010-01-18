@@ -65,11 +65,10 @@ import at.ac.tuwien.ifs.tita.ui.uihelper.DateTextFieldRenderer;
 import at.ac.tuwien.ifs.tita.ui.uihelper.IAdministrationPanel;
 import at.ac.tuwien.ifs.tita.ui.uihelper.LenientDateTextField;
 import at.ac.tuwien.ifs.tita.ui.uihelper.LinkToIssueTrackerRenderer;
-<<<<<<< HEAD
-=======
+
 import at.ac.tuwien.ifs.tita.ui.uihelper.ValidationDateTextField;
 import at.ac.tuwien.ifs.tita.ui.uihelper.ValidationTextField;
->>>>>>> master
+
 import at.ac.tuwien.ifs.tita.ui.utils.EffortUtils;
 import at.ac.tuwien.ifs.tita.ui.utils.GlobalUtils;
 import at.ac.tuwien.ifs.tita.ui.utils.IntegerConstants;
@@ -194,11 +193,7 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
         table.setDefaultRenderer(ButtonDelete.class, btReDelete);
         table.setDefaultEditor(ButtonDelete.class, btReDelete);
 
-<<<<<<< HEAD
-        LinkToIssueTrackerRenderer lkRenderer = new LinkToIssueTrackerRenderer();
-=======
         LinkToIssueTrackerRenderer lkRenderer = new LinkToIssueTrackerRenderer(this);
->>>>>>> master
         table.setDefaultRenderer(ExternalLink.class, lkRenderer);
         table.setDefaultEditor(ExternalLink.class, lkRenderer);
 
@@ -230,15 +225,6 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
      */
     private void displayTextFields() {
 
-<<<<<<< HEAD
-        teDescription = new TextField<String>("tedescription", new Model<String>(""));
-        teDescription.add(StringValidator.maximumLength(IntegerConstants.FIFTY));
-        setTextFieldValid(teDescription);
-        teDescription.setOutputMarkupId(true);
-        form.add(teDescription);
-
-        teDate = new DateTextField("tedate", new PropertyModel<Date>(this, "date"), new StyleDateConverter("S-", true));
-=======
         teDescription = new ValidationTextField<String>("tedescription",
                 new Model<String>(""));
         teDescription
@@ -248,17 +234,14 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
 
         teDate = new ValidationDateTextField("tedate", new PropertyModel<Date>(
                 this, "date"), new StyleDateConverter("S-", true));
->>>>>>> master
+
         teDate.add(new DatePicker());
         teDate.setOutputMarkupId(true);
         form.add(teDate);
 
-<<<<<<< HEAD
-        teTimeLength = new TextField<String>("tetimelength", new Model<String>(""));
-=======
         teTimeLength = new ValidationTextField<String>("tetimelength",
                 new Model<String>(""));
->>>>>>> master
+
         teTimeLength.setType(String.class);
         teTimeLength.add(new AjaxFormComponentUpdatingBehavior("onchange") {
             @Override
@@ -268,14 +251,10 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
         teTimeLength.setOutputMarkupId(true);
         form.add(teTimeLength);
 
-<<<<<<< HEAD
-        teStartTime = new TextField<String>("testarttime", new Model<String>(""));
-        teStartTime.setType(String.class);
-=======
         teStartTime = new ValidationTextField<String>("testarttime",
                 new Model<String>(""));
        teStartTime.setType(String.class);
->>>>>>> master
+
         teStartTime.add(new AjaxFormComponentUpdatingBehavior("onchange") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
@@ -297,28 +276,6 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
     }
 
     /**
-<<<<<<< HEAD
-     * Set Textfield class attribute to valid.
-     * 
-     * @param textfield - textfield to set the class attribute
-     */
-    private void setTextFieldValid(TextField<?> textfield) {
-        textfield.add(new AttributeModifier("class", new Model<String>("valid")));
-    }
-
-    /**
-     * Set Textfield class attribute to invalid.
-     * 
-     * @param textfield - textfield to set the class attribute
-     */
-    private void setTextFieldInvalid(TextField<?> textfield) {
-        log.info("TEST");
-        textfield.add(new AttributeModifier("class", new Model<String>("invalid")));
-    }
-
-    /**
-=======
->>>>>>> master
      * Display all FilterFields.
      */
     private void displayFilterFields() {
