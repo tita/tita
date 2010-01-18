@@ -60,8 +60,7 @@ public class ButtonDeleteRenderer implements CellRender, CellEditor {
         return new LenientAjaxButton(id) {
             @Override
             public void onSubmit(AjaxRequestTarget target, Form<?> form1) {
-                panel.deleteListEntity();
-                panel.reloadTable(target);
+                panel.deleteListEntity(target);
             }
 
             @Override

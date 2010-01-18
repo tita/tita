@@ -19,8 +19,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.NoResultException;
+import javax.persistence.PersistenceException;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.Order;
 import org.springframework.stereotype.Repository;
 
 import at.ac.tuwien.ifs.tita.dao.GenericHibernateDao;
@@ -145,5 +149,21 @@ public class UserDAO extends GenericHibernateDao<TiTAUser, Long> implements IUse
         } else {
             return targetHours;
         }
+    }
+    
+    /** {@inheritDoc} **/
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<TiTAUser> findUsersOrdered(int maxResult) throws PersistenceException {
+        Criteria crit = getSession().createCriteria(TiTAUser.class);
+
+        if (maxResult > 0) {
+            crit.setMaxResults(maxResult);
+        }
+
+        crit.addOrder(Order.asc("userName"));
+        crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+
+        return crit.list();
     }
 }

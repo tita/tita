@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
+import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 import at.ac.tuwien.ifs.tita.entity.conv.Role;
 
 /**
@@ -145,4 +146,30 @@ public interface IUserService {
      * @return the value for the target hours or null, if it is unlimited.
      */
     Long findTargetHoursForTiTAProjectAndTiTAUser(Long userId, Long projectId);
+    
+    /**
+     * Returns a List of Users, where the size of the list can be declared.
+     * 
+     * @param maxResult the maximum size of list
+     * @return a list of TiTAUsers
+     * @throws PersistenceException if an Exception from the DAO was thrown.
+     */
+    List<TiTAUser> getOrderedUsers(int maxResult) throws PersistenceException;
+
+    /**
+     * Fetches all Role Descriptions.
+     * 
+     * @return a List of all available Role Descpriptions.
+     * @throws PersistenceException if an Exception from DAO was thrown.
+     */
+    List<String> getRoleDescriptions() throws PersistenceException;
+
+    /**
+     * Fetches all available IssueTracker.
+     * 
+     * @return a List of all available IssueTracker.
+     * @throws PersistenceException if an Exception from DAO was thrown.
+     */
+    List<IssueTracker> getAvailableIssueTracker() throws PersistenceException;
+
 }

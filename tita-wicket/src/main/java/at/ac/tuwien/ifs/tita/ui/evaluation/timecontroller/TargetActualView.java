@@ -54,6 +54,7 @@ import at.ac.tuwien.ifs.tita.ui.models.AbstractTitaTableModel;
 import at.ac.tuwien.ifs.tita.ui.models.TableModelTargetActualComparison;
 import at.ac.tuwien.ifs.tita.ui.models.TableModelTiTAProject;
 import at.ac.tuwien.ifs.tita.ui.models.TableModelTiTAUser;
+import at.ac.tuwien.ifs.tita.ui.utils.GlobalUtils;
 import at.ac.tuwien.ifs.tita.ui.utils.IntegerConstants;
 
 /**
@@ -120,8 +121,8 @@ public class TargetActualView extends BasePage {
 
         displayTables();
 
-        form.add(tableForTiTAUser);
-        form.add(tableForTiTAProject);
+        add(tableForTiTAUser);
+        add(tableForTiTAProject);
         targetActualComparison.add(tableForResults);
 
         displayLabels();
@@ -181,7 +182,7 @@ public class TargetActualView extends BasePage {
             }
         };
 
-        tableForTiTAUser.setWidths(new String[] { "150", "150", "150", "150", "150" });
+        tableForTiTAUser.setWidths(new String[] { "100", "100", "100", "150", "100" });
         tableForTiTAUser.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         tableForTiTAProject = new Table("taTableForTiTAProject", tmForTiTAProject) {
@@ -208,7 +209,7 @@ public class TargetActualView extends BasePage {
             }
         };
 
-        tableForTiTAProject.setWidths(new String[] { "150", "150", "150" });
+        tableForTiTAProject.setWidths(new String[] { "150", "150", "100" });
         tableForTiTAProject.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         tableForResults = new Table("taTableForTiTAResult", tmForTargetActualComparison) {
@@ -244,10 +245,10 @@ public class TargetActualView extends BasePage {
         lblTargetHours.setVisible(false);
         lblTargetHours.setOutputMarkupId(true);
 
-        lblDescriptionForActualHours = new Label("labelDescriptionActualHours", "TargetHours:");
+        lblDescriptionForActualHours = new Label("labelDescriptionActualHours", "ActualHours:");
         lblDescriptionForActualHours.setVisible(false);
 
-        lblDescriptionForTargetHours = new Label("labelDescriptionTargetHours", "ActualHours:");
+        lblDescriptionForTargetHours = new Label("labelDescriptionTargetHours", "TargetHours:");
         lblDescriptionForTargetHours.setVisible(false);
 
         lblDescriptionTargetActualComparison = new Label("labelDescriptionTargetActualComparison",
@@ -316,7 +317,7 @@ public class TargetActualView extends BasePage {
      */
     private boolean loadTargetActualComparison() {
 
-        if (tableForTiTAProject.getSelectedRows().length > 0
+        if (tableForTiTAUser.getSelectedRows().length > 0
                 && tableForTiTAProject.getSelectedRows().length > 0) {
             TiTAProject project = (TiTAProject) tableForTiTAProject.getTableModel().getValueAt(
                     tableForTiTAProject.getSelectedRows()[0], IntegerConstants.FIFTY);
@@ -332,9 +333,9 @@ public class TargetActualView extends BasePage {
                     tmForTargetActualComparison.reload(effortResult);
                     makeVisible(true);
 
-                    setMessageForlblActualHours(effortService
-                            .totalizeEffortsForTiTAProjectAndTiTAUser(project.getId(),
-                                    titaUser.getId()).toString());
+                    setMessageForlblActualHours(GlobalUtils.getDurationAsString(effortService
+                            .totalizeEffortsForTiTAProjectAndTiTAUser(project.getId(), titaUser
+                                    .getId())));
 
                     Long targetHours = userService.findTargetHoursForTiTAProjectAndTiTAUser(
                             titaUser.getId(), project.getId());
@@ -342,7 +343,7 @@ public class TargetActualView extends BasePage {
                     if (targetHours == null) {
                         setMessageForlblTargetHours("No value for the target hours saved.");
                     } else {
-                        setMessageForlblTargetHours(targetHours.toString());
+                        setMessageForlblTargetHours(targetHours.toString() + ":00");
                     }
 
                     setMessageForlblDescriptionTargetActualComparison("Target Actual Comparison:");
@@ -350,7 +351,8 @@ public class TargetActualView extends BasePage {
                     return true;
                 } else {
                     lblDescriptionTargetActualComparison.setVisible(true);
-                    setMessageForlblDescriptionTargetActualComparison("No efforts found for the comparison.");
+                    setMessageForlblDescriptionTargetActualComparison("No efforts found for the "
+                            + "chosen user and project.");
 
                 }
             }

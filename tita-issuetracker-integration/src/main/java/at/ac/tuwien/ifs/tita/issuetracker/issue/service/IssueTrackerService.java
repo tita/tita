@@ -49,13 +49,17 @@ public class IssueTrackerService implements IIssueTrackerService {
     private final Logger log = LoggerFactory.getLogger(IssueTrackerService.class);
 
     public IssueTrackerService(IssueTrackerLogin login) {
-        this.loggedUser = login;
-        this.dao = new IssueTrackerMantisDao(login);
-        this.projects = this.dao.findAccessibleProjects();
+        loggedUser = login;
+        dao = new IssueTrackerMantisDao(login);
+        projects = dao.findAccessibleProjects();
     }
 
     public IIssueTrackerDao getIssueTrackerDao() {
-        return this.dao;
+        return dao;
+    }
+
+    public IssueTrackerLogin getLoggedUser() {
+        return loggedUser;
     }
 
     public void setProjects(Map<Long, IProjectTrackable> projects) {
@@ -63,18 +67,18 @@ public class IssueTrackerService implements IIssueTrackerService {
     }
 
     public Map<Long, IProjectTrackable> getProjects() {
-        return this.projects;
+        return projects;
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateAll() {
-        this.dao = new IssueTrackerMantisDao(this.loggedUser);
+        dao = new IssueTrackerMantisDao(loggedUser);
 
-        this.log.debug("Fetching all projects");
-        this.projects = this.dao.findAccessibleProjects();
+        log.debug("Fetching all projects");
+        projects = dao.findAccessibleProjects();
 
-        dispatcher = new DispatcherThread(this.projects, this.loggedUser);
+        dispatcher = new DispatcherThread(projects, loggedUser);
         dispatcher.run();
     }
 
@@ -82,8 +86,8 @@ public class IssueTrackerService implements IIssueTrackerService {
     @Override
     public void updateProject(IProjectTrackable project) {
 
-        this.log.debug("Fetching all tasks for the project: " + project.getName());
-        Map<Long, ITaskTrackable> tasklist = this.dao.findAllTasksForProject(project.getId());
+        log.debug("Fetching all tasks for the project: " + project.getName());
+        Map<Long, ITaskTrackable> tasklist = dao.findAllTasksForProject(project.getId());
 
         for (ITaskTrackable task : tasklist.values()) {
             task.setProject(project);
@@ -91,14 +95,14 @@ public class IssueTrackerService implements IIssueTrackerService {
 
         project.setTasks(tasklist);
 
-        this.projects.put(project.getId(), project);
+        projects.put(project.getId(), project);
     }
 
     /** {@inheritDoc} */
     @Override
     @Deprecated
     public void updateProject(Long projectId) {
-        worker = new WorkerThread(projectId, this.loggedUser);
+        worker = new WorkerThread(projectId, loggedUser);
         worker.start();
     }
 
@@ -108,7 +112,7 @@ public class IssueTrackerService implements IIssueTrackerService {
             IssueStatus status) throws ProjectNotFoundException {
 
         if (project == null) {
-            this.log.error("Project not found.");
+            log.error("Project not found.");
             throw new ProjectNotFoundException("No project was set.");
         }
 
@@ -137,30 +141,30 @@ public class IssueTrackerService implements IIssueTrackerService {
     /** {@inheritDoc} */
     @Override
     public Map<Long, ITaskTrackable> getIssueTrackerTasks(IProjectTrackable project)
-            throws ProjectNotFoundException {
+        throws ProjectNotFoundException {
 
         if (project == null) {
-            this.log.error("Project not found.");
+            log.error("Project not found.");
             throw new ProjectNotFoundException("No project was set.");
         }
 
-        this.log.debug("Fetching Tasks from project over the webservice: " + project.getName());
-        return this.dao.findAllTasksForProject(project.getId());
+        log.debug("Fetching Tasks from project over the webservice: " + project.getName());
+        return dao.findAllTasksForProject(project.getId());
     }
 
     /** {@inheritDoc} */
     @Override
     public Map<Long, ITaskTrackable> getIssueTrackerTasksByProjectId(Long projectId)
-            throws ProjectNotFoundException {
+        throws ProjectNotFoundException {
 
         if (projectId == null) {
-            this.log.error("Project not found.");
+            log.error("Project not found.");
             throw new ProjectNotFoundException("No project was set.");
         }
 
-        for (IProjectTrackable project : this.projects.values()) {
+        for (IProjectTrackable project : projects.values()) {
             if (project.getId().equals(projectId)) {
-                this.log.debug("Fetching Tasks from project: " + project.getName());
+                log.debug("Fetching Tasks from project: " + project.getName());
                 return project.getTasks();
             }
         }
@@ -171,16 +175,16 @@ public class IssueTrackerService implements IIssueTrackerService {
     /** {@inheritDoc} */
     @Override
     public Map<Long, ITaskTrackable> getIssueTrackerTasksByProjectName(String projectName)
-            throws ProjectNotFoundException {
+        throws ProjectNotFoundException {
 
         if (projectName == null) {
-            this.log.error("Project not found.");
+            log.error("Project not found.");
             throw new ProjectNotFoundException("No project was set.");
         }
 
-        for (IProjectTrackable project : this.projects.values()) {
+        for (IProjectTrackable project : projects.values()) {
             if (project.getName().equals(projectName)) {
-                this.log.debug("Fetching Tasks from project: " + project.getName());
+                log.debug("Fetching Tasks from project: " + project.getName());
                 return project.getTasks();
             }
         }
@@ -192,9 +196,9 @@ public class IssueTrackerService implements IIssueTrackerService {
     @Override
     public void assignTask(Long taskId) {
         try {
-            this.dao.assignTask(taskId);
+            dao.assignTask(taskId);
         } catch (MCException e) {
-            this.log.error("Assign Task was not succesful.");
+            log.error("Assign Task was not succesful.");
         }
     }
 
@@ -202,9 +206,9 @@ public class IssueTrackerService implements IIssueTrackerService {
     @Override
     public void closeTask(Long taskId) {
         try {
-            this.dao.closeTask(taskId);
+            dao.closeTask(taskId);
         } catch (MCException e) {
-            this.log.error("Closing Task was not succesful.");
+            log.error("Closing Task was not succesful.");
         }
     }
 }

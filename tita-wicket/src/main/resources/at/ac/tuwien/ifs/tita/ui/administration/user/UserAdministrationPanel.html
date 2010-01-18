@@ -1,0 +1,82 @@
+<!-- 
+   Copyright 2009 TiTA Project, Vienna University of Technology
+   
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+   
+       http://www.apache.org/licenses/LICENSE\-2.0
+       
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" >
+    <body>
+      <wicket:panel>
+        <h1>Welcome to the UserAdministration</h1>
+        <div wicket:id="listContainer">
+          <form wicket:id="listForm">
+            <table wicket:id="userTable" />
+            <button wicket:id="newUserButton" type="submit">New User</button>
+          </form>
+        </div>
+        <div wicket:id="detailContainer">
+           <form wicket:id="form">
+            <table>
+              <tr>
+                <td><h3 wicket:id="lbUserName"></h3></td>
+                <td><input wicket:id="tfUserName"></input></td>
+              </tr>
+              <tr>
+                <td><h3 wicket:id="lbFirstName"></h3></td>
+	              <td><input wicket:id="tfFirstName"></input></td>
+              </tr>
+              <tr>
+                <td><h3 wicket:id="lbLastName"></h3></td>
+                <td><input wicket:id="tfLastName"></input></td>
+              </tr>
+              <tr>
+                <td><h3 wicket:id="lbEmail"></h3></td>
+                <td><input wicket:id="tfEmail"></input></td>
+              </tr>
+              <tr>
+                <td><h3 wicket:id="lbPassword"></h3></td>
+                <td><input wicket:id="ptfPassword" type="password"></input></td>
+              </tr>
+              <tr>
+                <td><h3 wicket:id="lbPasswordRepetition"></h3></td>
+                <td><input wicket:id="ptfPasswordRepetition" type="password"></input></td>
+              </tr>
+              <tr>
+                <td><h3 wicket:id="lbDeleted"></h3></td>
+                <td><input wicket:id="checkBoxDeleted" type="checkbox"></input></td>
+              </tr>
+              <tr>
+                <td><h3 wicket:id="lbRole"></h3></td>
+                <td><select wicket:id="dropDownRole"></select></td>
+              </tr>
+              <tr>
+                <td><h3 wicket:id="lbProjects"></h3></td>
+                <td><table wicket:id="userProjectTable"></table></td>
+                <td><button wicket:id="addProjectButton" type="submit">+</button></td>
+              </tr>
+              <tr>
+                <td><h3 wicket:id="lbIssueTracker"></h3></td>
+                <td><table wicket:id="issueTrackerTable"></table></td>
+                <td><button wicket:id="addLoginButton" type="submit">+</button></td>
+              </tr>
+              <tr>
+                <td><button wicket:id="save" type="submit">Save</button></td>
+                <td><button wicket:id="cancel" type="submit">Cancel</button></td>
+              </tr>
+            </table>
+           </form>
+        </div>
+        <div wicket:id="userProjectPanel" class="foreGroundDiv"></div>
+        <div wicket:id="userIssueTrackerLoginPanel" class="foreGroundDiv"></div>
+      </wicket:panel>
+    </body>
+</html>

@@ -16,25 +16,35 @@
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" >
 <body>
 	<wicket:extend>
-		<form wicket:id="targetActualComparisonForm">
-			<table wicket:id="taTableForTiTAUser"></table>
-			<table wicket:id="taTableForTiTAProject"></table>
-			<input wicket:id="btnRefreshTables" type="submit" value="Refresh Tables" />
-			<input wicket:id="btnShowTargetActual" type="submit" value="Show Target/Actual" />
-			<input wicket:id="btnShowTargetActualAsPDF" type="submit" value="Show As PDF" />
+
+        <div id="targetActualTables">  
+            <div id="targetActualTableUser">
+              <table wicket:id="taTableForTiTAUser"></table>
+            </div>
+            <div id="targetActualTableProject">
+              <table wicket:id="taTableForTiTAProject"></table>
+            </div>
+        </div>
+          
+		<form id="formTargetActual" wicket:id="targetActualComparisonForm">
+  		  <input wicket:id="btnRefreshTables" type="submit" value="Refresh Tables" />
+  		  <input wicket:id="btnShowTargetActual" type="submit" value="Show Target/Actual" />
+  		  <input wicket:id="btnShowTargetActualAsPDF" type="submit" value="Show As PDF" />
 		</form>
 		
 		<div wicket:id="targetActualComparison"> 
-			<span wicket:id="labelDescriptionTargetActualComparison"></span>
+			<h4><span wicket:id="labelDescriptionTargetActualComparison"></span></h4>
        		<table wicket:id="taTableForTiTAResult"></table>
-       		<div>
-	       		<span wicket:id="labelDescriptionActualHours"></span>
-	       		<span wicket:id="labelActualHours"></span>
-       		</div>
-       		<div>
-	       		<span wicket:id="labelDescriptionTargetHours"></span>
-	       		<span wicket:id="labelTargetHours"></span>
-       		</div>
+       		<div id="targetActualResult">
+              <div id="targetActualResultActual">
+  	       		<h4><span wicket:id="labelDescriptionActualHours"></span>
+  	       		<span wicket:id="labelActualHours"></span></h4>
+              </div>
+         	  <div id="targetActualResultTarget">
+  	       		<h4><span wicket:id="labelDescriptionTargetHours"></span>
+  	       		<span wicket:id="labelTargetHours"></span></h4>
+         	  </div>
+            </div>
    		</div>
 	</wicket:extend>
 </body>

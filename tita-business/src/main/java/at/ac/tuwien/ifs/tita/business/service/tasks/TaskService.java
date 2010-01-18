@@ -23,10 +23,10 @@ import javax.persistence.PersistenceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import at.ac.tuwien.ifs.tita.dao.GenericHibernateDao;
-import at.ac.tuwien.ifs.tita.dao.issuetracker.task.IssueTrackerTaskDao;
-import at.ac.tuwien.ifs.tita.dao.project.TiTAProjectDao;
-import at.ac.tuwien.ifs.tita.dao.user.UserDAO;
+import at.ac.tuwien.ifs.tita.dao.interfaces.IGenericHibernateDao;
+import at.ac.tuwien.ifs.tita.dao.interfaces.IIssueTrackerTaskDao;
+import at.ac.tuwien.ifs.tita.dao.interfaces.ITiTAProjectDao;
+import at.ac.tuwien.ifs.tita.dao.interfaces.IUserDAO;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerProject;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerTask;
@@ -52,18 +52,19 @@ import at.ac.tuwien.ifs.tita.issuetracker.issue.service.IssueTrackerService;
 
 public class TaskService implements ITaskService {
 
-    private UserDAO titaUserDao;
+    private IUserDAO titaUserDao;
 
-    private TiTAProjectDao titaProjectDao;
+    private ITiTAProjectDao titaProjectDao;
 
     private TiTAProject titaProject;
     private TiTAUser titaUser;
 
-    private IssueTrackerTaskDao issueTrackerTaskDao;
-    private GenericHibernateDao<TiTATask, Long> titaTaskDao;
-    private GenericHibernateDao<IssueTracker, Long>  issueTrackerDao;
+    private IIssueTrackerTaskDao issueTrackerTaskDao;
+    private IGenericHibernateDao<TiTATask, Long> titaTaskDao;
+    private IGenericHibernateDao<IssueTracker, Long>  issueTrackerDao;
 
-    private Map<Long, ITaskTrackable> mapOfTasksFromAllProjectsIncludedInTiTAProject = new TreeMap<Long, ITaskTrackable>();
+    private Map<Long, ITaskTrackable> mapOfTasksFromAllProjectsIncludedInTiTAProject 
+        = new TreeMap<Long, ITaskTrackable>();
 
     private IIssueTrackerService issueTrackerService;
 
@@ -75,12 +76,6 @@ public class TaskService implements ITaskService {
 
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public Map<Long, TiTATask> getTiTATasks(TiTAProject pojectTita)
-            throws PersistenceException {
-        return issueTrackerTaskDao.getTiTATasksForTitaProject(pojectTita);
-    }
 
     /** {@inheritDoc} */
     @Override
@@ -92,14 +87,14 @@ public class TaskService implements ITaskService {
     /** {@inheritDoc} */
     @Override
     public void deleteIssueTrackerTask(IssueTrackerTask issueTrackerTask)
-            throws PersistenceException {
+        throws PersistenceException {
         issueTrackerTaskDao.delete(issueTrackerTask);
     }
 
     /** {@inheritDoc} */
     @Override
     public IssueTrackerTask getIssueTrackerTaskById(Long id)
-            throws PersistenceException {
+        throws PersistenceException {
         return issueTrackerTaskDao.findById(id);
     }
 
@@ -124,21 +119,21 @@ public class TaskService implements ITaskService {
     /** {@inheritDoc} */
     @Override
     public IssueTracker saveIssueTracker(IssueTracker issueTracker)
-            throws PersistenceException {
+        throws PersistenceException {
         return issueTrackerDao.save(issueTracker);
     }
 
     /** {@inheritDoc} */
     @Override
     public void deleteIssueTracker(IssueTracker issueTracker)
-            throws PersistenceException {
+        throws PersistenceException {
         issueTrackerDao.delete(issueTracker);
     }
 
     /** {@inheritDoc} */
     @Override
     public IssueTracker getIssueTrackerById(Long id)
-            throws PersistenceException {
+        throws PersistenceException {
         return issueTrackerDao.findById(id);
     }
 
@@ -264,23 +259,23 @@ public class TaskService implements ITaskService {
         issueTrackerService.closeTask(taskId);
     }
 
-    public void setIssueTrackerDao(GenericHibernateDao<IssueTracker, Long>  issueTrackerDao) {
+    public void setIssueTrackerDao(IGenericHibernateDao<IssueTracker, Long>  issueTrackerDao) {
         this.issueTrackerDao = issueTrackerDao;
     }
 
-    public void setTitaUserDao(UserDAO titaUserDao) {
+    public void setTitaUserDao(IUserDAO titaUserDao) {
         this.titaUserDao = titaUserDao;
     }
 
-    public void setTitaProjectDao(TiTAProjectDao titaProjectDao) {
+    public void setTitaProjectDao(ITiTAProjectDao titaProjectDao) {
         this.titaProjectDao = titaProjectDao;
     }
 
-    public void setIssueTrackerTaskDao(IssueTrackerTaskDao issueTrackerTaskDao) {
+    public void setIssueTrackerTaskDao(IIssueTrackerTaskDao issueTrackerTaskDao) {
         this.issueTrackerTaskDao = issueTrackerTaskDao;
     }
 
-    public void setTitaTaskDao(GenericHibernateDao<TiTATask, Long> titaTaskDao) {
+    public void setTitaTaskDao(IGenericHibernateDao<TiTATask, Long> titaTaskDao) {
         this.titaTaskDao = titaTaskDao;
     }
 

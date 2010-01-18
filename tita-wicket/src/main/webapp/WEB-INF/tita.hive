@@ -25,6 +25,10 @@ grant principal org.apache.wicket.security.hive.authorization.SimplePrincipal "a
 {
     permission ${ComponentPermission} "${adminPage}", "render";
     permission ${ComponentPermission} "${adminPage}", "enable";
+    permission ${ComponentPermission} "${userAdministration}", "inherit, render";
+    permission ${ComponentPermission} "${userAdministration}", "enable";
+    permission ${ComponentPermission} "${projectAdministration}", "inherit, render";
+    permission ${ComponentPermission} "${projectAdministration}", "enable";
 };
 
 grant principal org.apache.wicket.security.hive.authorization.SimplePrincipal "timeconsumer"

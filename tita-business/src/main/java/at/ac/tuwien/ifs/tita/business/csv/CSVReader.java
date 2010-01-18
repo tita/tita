@@ -15,6 +15,8 @@ package at.ac.tuwien.ifs.tita.business.csv;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.PersistenceException;
 
@@ -46,10 +48,14 @@ public class CSVReader implements IImportReader {
      * {@inheritDoc}
      */
     @Override
-    public void importEffortData(String path, String[] header, CellProcessor[] processors,
+    public List<Effort> importEffortData(String path, String[] header, CellProcessor[] processors,
             TiTATask task, TiTAUser user) throws IOException, PersistenceException {
         ICsvBeanReader inFile = new CsvBeanReader(new FileReader(path),
                 CsvPreference.EXCEL_NORTH_EUROPE_PREFERENCE);
+
+        List<Effort> listOfImportedEfforts = new ArrayList<Effort>();
+
+        // String[] headers = inFile.getCSVHeader(true);
 
         try {
             EffortBean effortBean;
@@ -59,11 +65,14 @@ public class CSVReader implements IImportReader {
                         .getDuration(), effortBean.getDescription(), false, user);
                 effortService.saveEffort(effort);
                 task.getTitaEfforts().add(effort);
+
+                listOfImportedEfforts.add(effort);
             }
         } finally {
             inFile.close();
         }
 
+        return listOfImportedEfforts;
     }
 
 }

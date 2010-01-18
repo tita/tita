@@ -50,8 +50,8 @@ import at.ac.tuwien.ifs.tita.entity.BaseEntity;
  * @param <T> class of entity
  * @param <ID> class of associated key (Long, Integer, ...)
  */
-public class GenericHibernateDao<T, ID extends Serializable> extends PersistenceContextProvider implements
-        IGenericHibernateDao<T, ID> {
+public class GenericHibernateDao<T, ID extends Serializable> extends PersistenceContextProvider 
+    implements IGenericHibernateDao<T, ID> {
 
     protected Class<T> persistenceClass;
 
@@ -81,7 +81,8 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
             myEntity = (T) criteria.uniqueResult();
         } catch (Exception e) {
             throw new PersistenceException("Fehler beim lesen eines Entities: Class="
-                    + this.persistenceClass.getSimpleName() + " Key=" + id.toString() + "\n" + e.getMessage(), e);
+                + this.persistenceClass.getSimpleName() + " Key=" + id.toString() 
+                + "\n" + e.getMessage(), e);
         }
 
         return myEntity;
@@ -99,7 +100,8 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
                 entity = (T) getSession().load(this.persistenceClass, id);
             }
         } catch (Exception e) {
-            throw new PersistenceException("Failure during reading entity. Class=" + this.persistenceClass.getSimpleName()
+            throw new PersistenceException("Failure during reading entity. Class=" 
+                    + this.persistenceClass.getSimpleName()
                     + "\n" + e.getMessage(), e);
         }
 
@@ -116,7 +118,8 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
             myList = getSession().createCriteria(this.persistenceClass).setResultTransformer(
                     CriteriaSpecification.DISTINCT_ROOT_ENTITY).list();
         } catch (Exception e) {
-            throw new PersistenceException("Failure during reading entities. Class=" + this.persistenceClass.getSimpleName()
+            throw new PersistenceException("Failure during reading entities. Class=" 
+                    + this.persistenceClass.getSimpleName()
                     + "\n" + e.getMessage(), e);
         }
 
@@ -137,7 +140,8 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
             crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
             myList = crit.list();
         } catch (Exception e) {
-            throw new PersistenceException("Failure during reading entities. Class=" + this.persistenceClass.getSimpleName()
+            throw new PersistenceException("Failure during reading entities. Class=" 
+                    + this.persistenceClass.getSimpleName()
                     + "\n" + e.getMessage(), e);
         }
 
@@ -181,7 +185,8 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
             crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
             myList = crit.scroll(ScrollMode.FORWARD_ONLY);
         } catch (Exception e) {
-            throw new PersistenceException("Failure during reading entities. Class=" + this.persistenceClass.getSimpleName()
+            throw new PersistenceException("Failure during reading entities. Class=" 
+                    + this.persistenceClass.getSimpleName()
                     + "\n" + e.getMessage(), e);
         }
 
@@ -247,7 +252,8 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
         try {
             getSession().delete(entity);
         } catch (Exception e) {
-            throw new PersistenceException("Failure during deleting entity. Class=" + this.persistenceClass.getSimpleName()
+            throw new PersistenceException("Failure during deleting entity. Class=" 
+                    + this.persistenceClass.getSimpleName()
                     + "\n" + e.getMessage(), e);
         }
     }
@@ -257,7 +263,8 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
         try {
             getSession().delete(findById(id));
         } catch (Exception e) {
-            throw new PersistenceException("Failure during deleting entity: Id=" + id.toString() + "\n"
+            throw new PersistenceException("Failure during deleting entity: Id=" 
+                    + id.toString() + "\n"
                     + e.getMessage(), e);
         }
     }
@@ -274,7 +281,8 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
         try {
             mergedEntity = (T) getSession().merge(entity);
         } catch (Exception e) {
-            throw new PersistenceException("Failure during merging entity: " + entity + "\n" + e.getMessage(), e);
+            throw new PersistenceException("Failure during merging entity: " + entity 
+                    + "\n" + e.getMessage(), e);
         }
         return mergedEntity;
     }
@@ -284,7 +292,8 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
         try {
             getSession().evict(entity);
         } catch (Exception e) {
-            throw new PersistenceException("Failure during flushing session.\n" + e.getMessage(), e);
+            throw new PersistenceException("Failure during flushing session.\n" 
+                    + e.getMessage(), e);
         }
     }
 
@@ -314,7 +323,8 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
      * @return List of result records
      */
     @SuppressWarnings("unchecked")
-    protected List<T> findByCriteriaOrdered(Criterion criterions[], Order orders[], String aliases[]) {
+    protected List<T> findByCriteriaOrdered(Criterion criterions[], Order orders[], 
+            String aliases[]) {
         Criteria crit = getSession().createCriteria(this.persistenceClass);
         if (aliases != null) {
             for (String alias : aliases) {
@@ -344,7 +354,7 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
      *                e
      */
     protected T findRecordByUniqueKeyCriteria(String exceptionKeyString, Criterion... criterion)
-            throws PersistenceException {
+        throws PersistenceException {
 
         List<T> resultList = findByCriteria(criterion);
 

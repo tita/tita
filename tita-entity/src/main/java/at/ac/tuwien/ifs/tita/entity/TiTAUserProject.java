@@ -15,6 +15,7 @@
  */
 package at.ac.tuwien.ifs.tita.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -46,7 +47,7 @@ public class TiTAUserProject extends BaseEntity<Long> {
     @Column(name = "TARGET_HOURS")
     private Long targetHours;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
     private TiTAUser user;
 

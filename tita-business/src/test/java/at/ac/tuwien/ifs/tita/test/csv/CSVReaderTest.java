@@ -45,8 +45,8 @@ import at.ac.tuwien.ifs.tita.business.csv.CSVReader;
 import at.ac.tuwien.ifs.tita.business.csv.IImportReader;
 import at.ac.tuwien.ifs.tita.business.service.time.IEffortService;
 import at.ac.tuwien.ifs.tita.dao.interfaces.IGenericHibernateDao;
-import at.ac.tuwien.ifs.tita.dao.project.TiTAProjectDao;
-import at.ac.tuwien.ifs.tita.dao.user.UserDAO;
+import at.ac.tuwien.ifs.tita.dao.interfaces.ITiTAProjectDao;
+import at.ac.tuwien.ifs.tita.dao.interfaces.IUserDAO;
 import at.ac.tuwien.ifs.tita.entity.Effort;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerProject;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerTask;
@@ -84,7 +84,7 @@ public class CSVReaderTest extends
     private IEffortService service;
 
     @Autowired
-    private TiTAProjectDao titaProjectDAO;
+    private ITiTAProjectDao titaProjectDAO;
 
     @Qualifier("userTitaDAO")
     @Autowired
@@ -99,7 +99,7 @@ public class CSVReaderTest extends
     private IGenericHibernateDao<IssueTracker, Long> issueTrackerDAO;
 
     @Autowired
-    private UserDAO userDAO;
+    private IUserDAO userDAO;
 
     /**
      * Prepare on TiTA Project for testing effort dao.
@@ -123,7 +123,6 @@ public class CSVReaderTest extends
 
         userDAO.save(us1);
         userDAO.save(us2);
-        userDAO.flushnClear();
 
         et1 = new Effort(new Date(System.currentTimeMillis()), 1000L, false,
                 "tita task 1 - effort 1", us1);
@@ -238,12 +237,6 @@ public class CSVReaderTest extends
                 "startTime", "endTime" };
 
         assertEquals("Before importing", C_TWO, tit1.getTitaEfforts().size());
-        try {
-            assertEquals("Before importing", C_EIGHT, service
-                    .getActualEfforts().size());
-        } catch (PersistenceException e2) {
-            fail("");
-        }
 
         try {
             reader.importEffortData(path, header, processors, tit1, us1);
@@ -254,11 +247,5 @@ public class CSVReaderTest extends
         assertEquals("Three Efforts were imported", C_TWO + C_THREE, tit1
                 .getTitaEfforts().size());
 
-        try {
-            assertEquals("Three Efforts were imported", C_EIGHT + C_THREE,
-                    service.getActualEfforts().size());
-        } catch (PersistenceException e) {
-            fail("");
-        }
     }
 }

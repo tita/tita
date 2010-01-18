@@ -18,6 +18,8 @@ package at.ac.tuwien.ifs.tita.test.service.time;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -46,9 +48,9 @@ import at.ac.tuwien.ifs.tita.entity.Effort;
 
 /**
  * Effort Service Test.
- * 
+ *
  * @author herbert
- * 
+ *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:datasourceContext-test.xml" })
@@ -56,16 +58,20 @@ import at.ac.tuwien.ifs.tita.entity.Effort;
 @Transactional
 public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextTests {
 
+    private static final long C_MOCKING_VALUE_1 = 311500L;
+
+    private static IEffortService effortService;
+
     private static final long C_THREE_HUNDRED = 300L;
-
     private static final long C_TWO_HUNDRED = 200L;
-
     private static final long C_HUNDRED = 100L;
-
     private final Logger log = LoggerFactory.getLogger(EffortServiceTest.class);
 
     @Autowired
     private IEffortService service;
+
+
+
 
     /**
      * Test.
@@ -158,8 +164,41 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
     }
 
     /**
-     * Prepare database for test -> insert 3 efforts.
+     * Mocking the <tt>EffortService</tt> to show the integration of the
+     * <tt>EffortDAO</tt> in the service layer for <tt>Effort</tt> objects.
      * 
+     * The test case shows that the dao returns the values fetched from the
+     * database and is provided from the service.
+     *
+     * In this case the sum of efforts from a project a user has worked for, is
+     * expected.
+     */
+    @Test
+    public void totalizeEffortsForTiTAProjectAndTiTAUserMocking() {
+        effortService = mock(IEffortService.class);
+        doReturn(C_MOCKING_VALUE_1).when(effortService).totalizeEffortsForTiTAProjectAndTiTAUser(
+                1L, 1L);
+    }
+
+    /**
+     * Mocking the <tt>EffortService</tt> to show the integration of the
+     * <tt>EffortDAO</tt> in the service layer for <tt>Effort</tt> objects.
+     * 
+     * The test case shows that the dao returns the values fetched from the
+     * database and is provided from the service.
+     *
+     * In this case a list of efforts is expected.
+     */
+    @Test
+    public void findEffortsForTiTAProjectAndTiTAUserMocking() {
+        effortService = mock(IEffortService.class);
+        doReturn(new ArrayList<Effort>()).when(effortService).findEffortsForTiTAProjectAndTiTAUser(
+                1L, 1L);
+    }
+
+    /**
+     * Prepare database for test -> insert 3 efforts.
+     *
      * @return List of efforts
      */
     private List<Effort> prepareEfforts() {
@@ -197,7 +236,7 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
 
     /**
      * Delete all inserted efforts.
-     * 
+     *
      * @param efforts List
      * @throws PersistenceException titaDao
      */
@@ -206,4 +245,5 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
             service.deleteEffort(eff);
         }
     }
+
 }

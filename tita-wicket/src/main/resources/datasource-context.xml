@@ -37,6 +37,7 @@
   <bean id="userService" class="at.ac.tuwien.ifs.tita.business.service.user.UserService">
     <property name="userDao" ref="userDAO" />
     <property name="roleDao" ref="roleDAO" />
+    <property name="issueTrackerDao" ref="issueTrackerDAO" />
   </bean>    
   
   <bean id="timeEffortService" class="at.ac.tuwien.ifs.tita.business.service.time.EffortService">
@@ -48,6 +49,7 @@
     <property name="issueTrackerProjectDao" ref="issueTrackerProjectDAO"/>
     <property name="issueTrackerTaskDao" ref="issueTrackerTaskDAO"/>
     <property name="titaTaskDao" ref="titataskDAO"/>
+    <property name="issueTrackerDao" ref="issueTrackerDAO" />
   </bean>
   
   <bean id="taskService" class="at.ac.tuwien.ifs.tita.business.service.tasks.TaskService">

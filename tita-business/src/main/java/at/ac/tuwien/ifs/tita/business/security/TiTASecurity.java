@@ -16,6 +16,8 @@ package at.ac.tuwien.ifs.tita.business.security;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import org.apache.axis.encoding.Base64;
+
 /**
  * Class for Security functionality.
  * 
@@ -34,24 +36,8 @@ public class TiTASecurity {
      */
     public static String calcHash(String pwd) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance(HASHALG);
-        byte[] encryptMsg = md.digest(pwd.getBytes());
-        return bytes2String(encryptMsg);
+        String encryptMsg = Base64.encode(md.digest(pwd.getBytes()));
+        return encryptMsg;
     }
 
-    /**
-     * Converts byte array in readable String.
-     * 
-     * @param bytes digest to convert.
-     * @return digest as readable String.
-     */
-    private static String bytes2String(byte[] bytes) {
-        StringBuilder string = new StringBuilder();
-        for (byte b : bytes) {
-            // CHECKSTYLE:OFF
-            String hexString = Integer.toHexString(0x00FF & b);
-            // CHKECKSTYLE:ON
-            string.append(hexString.length() == 1 ? "0" + hexString : hexString);
-        }
-        return string.toString();
-    }
 }

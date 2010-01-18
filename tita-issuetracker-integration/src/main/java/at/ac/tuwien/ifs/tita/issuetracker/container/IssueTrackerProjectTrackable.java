@@ -37,7 +37,8 @@ public class IssueTrackerProjectTrackable implements IProjectTrackable, Serializ
     private URL url;
     private ViewState viewState;
 
-    public IssueTrackerProjectTrackable(long id, String name, String description, ProjectStatus status,
+    public IssueTrackerProjectTrackable(long id, String name, String description, 
+            ProjectStatus status,
             URL url, ViewState viewState) {
         this.id = id;
         this.name = name;

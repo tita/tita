@@ -24,6 +24,8 @@ import at.ac.tuwien.ifs.tita.entity.IssueTrackerTask;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTATask;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
+import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
+import at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus;
 
 /**
  * IProjectService encapsulates all tita project based db operations.
@@ -33,10 +35,8 @@ import at.ac.tuwien.ifs.tita.entity.TiTAUser;
  */
 @Transactional
 public interface IProjectService {
-    
     /**
      * Saves an issue tracker task.
-     * 
      * @param itt IssueTrackerTask
      * @return IssueTrackerTask
      * @throws PersistenceException pe
@@ -72,13 +72,11 @@ public interface IProjectService {
 
     /**
      * Returns a list of all tita projects for a given user.
-     * 
      * @param user
      *            - the specific tita user
      * @return List of TiTAProjects
      */
     List<TiTAProject> findTiTAProjectsForUser(TiTAUser user);
-    
     /** Finds an issue tracker task for a given tita project.
      * @param tp Long
      * @param it Long
@@ -104,4 +102,41 @@ public interface IProjectService {
      * @return TiTATask
      */
     TiTATask saveTiTATask(TiTATask task);
+    
+    /**
+     * Saves a new project or updates an existing one.
+     * 
+     * @param project the project to be saved
+     * @throws PersistenceException if Parameter is null or another Exception is
+     *         thrown
+     * @return the saved Project.
+     */
+    TiTAProject saveProject(TiTAProject project) throws PersistenceException;
+    
+    /**
+     * Returns a List of Projects, where the size of the list can be declared.
+     * 
+     * @param maxResult the maximum size of list
+     * @param orderBy the attribute of TiTAProject to be ordered by.
+     * @return a list of TiTAProjects
+     * @throws PersistenceException if an Exception from the DAO was thrown.
+     */
+    List<TiTAProject> getOrderedProjects(int maxResult, String orderBy) throws PersistenceException;
+
+    /**
+     * Returns a List of all available Project Stati.
+     * 
+     * @return a List of all stored Project Stati.
+     * @throws PersistenceException if an Exception from the DAO was thrown.
+     */
+    List<ProjectStatus> getAvailableProjectStati() throws PersistenceException;
+
+    /**
+     * Fetches all available IssueTracker.
+     * 
+     * @return a List of all available IssueTracker.
+     * @throws PersistenceException if an Exception from DAO was thrown.
+     */
+    List<IssueTracker> getAvailableIssueTracker() throws PersistenceException;
+
 }

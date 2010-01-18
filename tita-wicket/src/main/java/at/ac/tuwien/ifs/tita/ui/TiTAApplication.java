@@ -29,7 +29,9 @@ import org.apache.wicket.security.hive.config.PolicyFileHiveFactory;
 import org.apache.wicket.security.hive.config.SwarmPolicyFileHiveFactory;
 import org.apache.wicket.security.swarm.SwarmWebApplication;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
+import org.apache.wicket.util.file.Folder;
 
+import at.ac.tuwien.ifs.tita.ui.importing.effort.csv.EffortImportCSVPage;
 import at.ac.tuwien.ifs.tita.ui.login.TitaLoginContext;
 import at.ac.tuwien.ifs.tita.ui.login.TitaSession;
 
@@ -37,7 +39,8 @@ import at.ac.tuwien.ifs.tita.ui.login.TitaSession;
  * Wicket Application for testing Hello World from DB.
  */
 public class TiTAApplication extends SwarmWebApplication {
-
+    private Folder uploadFolder = null;
+    
     public TiTAApplication() {
     }
 
@@ -49,6 +52,12 @@ public class TiTAApplication extends SwarmWebApplication {
         super.init();
         addComponentInstantiationListener(new SpringComponentInjector(this));
         InjectorHolder.getInjector().inject(this);
+        
+        uploadFolder = new Folder(System.getProperty("java.io.tmpdir"), "wicket-uploads");
+        // Ensure folder exists
+        uploadFolder.mkdirs();
+
+        mountBookmarkablePage("/single", EffortImportCSVPage.class);
 
     }
 
@@ -81,7 +90,12 @@ public class TiTAApplication extends SwarmWebApplication {
             factory.addPolicyFile(getServletContext().getResource("/WEB-INF/tita.hive"));
             factory.setAlias("hp", "at.ac.tuwien.ifs.tita.ui.BasePage");
 
-            // Aliases for Admin
+         // Aliases for Admin
+            factory.setAlias("userAdministration",
+                    "at.ac.tuwien.ifs.tita.ui.administration.user.UserAdministrationPage");
+            factory.setAlias("projectAdministration",
+                    "at.ac.tuwien.ifs.tita.ui.administration.project.ProjectAdministrationPage");
+
 
             // Aliases for timeconsumer
             factory.setAlias("effortsPage", "at.ac.tuwien.ifs.tita.ui.startpages.EffortsPage");
@@ -132,5 +146,14 @@ public class TiTAApplication extends SwarmWebApplication {
      */
     public LoginContext getLogoffContext() {
         return new TitaLoginContext();
+    }
+    
+    /**
+     * Return the upload folder.
+     * 
+     * @return the folder for uploads
+     */
+    public Folder getUploadFolder() {
+        return uploadFolder;
     }
 }

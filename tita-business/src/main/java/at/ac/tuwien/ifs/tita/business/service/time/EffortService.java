@@ -97,14 +97,6 @@ public class EffortService implements IEffortService {
      * {@inheritDoc}
      */
     @Override
-    public List<Effort> getActualEfforts() throws PersistenceException {
-        return timeEffortDao.getActualTimeEfforts();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public List<UserProjectEffort> getEffortsSummaryForProjectAndUserNames(
             List<String> projects, List<String> usernames, String grouping) {
         return timeEffortDao.findEffortsForTiTAProjectAndTimeConsumerId(

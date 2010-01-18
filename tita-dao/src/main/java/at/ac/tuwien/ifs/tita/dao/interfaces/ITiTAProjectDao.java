@@ -17,14 +17,17 @@ package at.ac.tuwien.ifs.tita.dao.interfaces;
 
 import java.util.List;
 
+import javax.persistence.PersistenceException;
+
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
+import at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus;
 
 /**
  * Interface for TiTAProjectDao implementation.
  * @author herbert
  *
  */
-public interface ITiTAProjectDao {
+public interface ITiTAProjectDao extends IGenericHibernateDao<TiTAProject, Long>{
 
     /**
      * Returns a list of tita projects for a given username.
@@ -32,4 +35,23 @@ public interface ITiTAProjectDao {
      * @return List of TiTAProject
      */
     List<TiTAProject> findTiTAProjectsForUsername(String username);
+    
+    /**
+     * Searches the Database for a List of Projects, ordered by their name.
+     * 
+     * @param maxResult the maximum size of List.
+     * @param orderBy the attribute to order the List.
+     * @return a List of TiTAProject.
+     * @throws PersistenceException if Exception was thrown before.
+     */
+    List<TiTAProject> findProjectsOrderedByName(int maxResult, String orderBy) throws PersistenceException;
+    
+    /**
+     * Returns a List of all available Project Stati.
+     * 
+     * @return a List of all stored Project Stati.
+     * @throws PersistenceException if Exception was thrown before.
+     */
+    List<ProjectStatus> getAvailableProjectStati() throws PersistenceException;
+
 }

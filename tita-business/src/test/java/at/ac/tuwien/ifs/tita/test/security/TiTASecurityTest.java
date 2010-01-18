@@ -50,7 +50,7 @@ public class TiTASecurityTest extends AbstractTransactionalJUnit4SpringContextTe
     public void testCalcHash() {
         try {
             String pwd = "pwd";
-            String hash = "a1159e9df3670d549d04524532629f5477ceb7deec9b45e47e8c009506ecb2c8";
+            String hash = "oRWenfNnDVSdBFJFMmKfVHfOt97sm0XkfowAlQbsssg=";
             Assert.assertEquals(hash, TiTASecurity.calcHash(pwd));
         } catch (NoSuchAlgorithmException e) {
             fail();
