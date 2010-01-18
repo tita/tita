@@ -116,9 +116,9 @@ public class EffortService implements IEffortService {
      * {@inheritDoc}
      */
     @Override
-    public Long findEffortsForIssueTrackerTask(TiTAProject tp, TiTAUser tu,
+    public Long findEffortsSumForIssueTrackerTask(TiTAProject tp, TiTAUser tu,
             Long issTProjectId, Long isstTTaskId, Long isstId) {
-        return timeEffortDao.findEffortsForIssueTrackerTask(tp.getId(), tu
+        return timeEffortDao.findEffortsSumForIssueTrackerTask(tp.getId(), tu
                 .getUserName(), issTProjectId, isstTTaskId, isstId);
     }
 
