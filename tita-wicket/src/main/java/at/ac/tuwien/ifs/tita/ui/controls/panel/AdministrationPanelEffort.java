@@ -230,11 +230,13 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
 
         teDate = new ValidationDateTextField("tedate", new PropertyModel<Date>(this, "date"), new StyleDateConverter(
                 "S-", true));
+
         teDate.add(new DatePicker());
         teDate.setOutputMarkupId(true);
         form.add(teDate);
 
         teTimeLength = new ValidationTextField<String>("tetimelength", new Model<String>(""));
+
         teTimeLength.setType(String.class);
         teTimeLength.add(new AjaxFormComponentUpdatingBehavior("onchange") {
             @Override
@@ -246,6 +248,7 @@ public class AdministrationPanelEffort extends Panel implements IAdministrationP
 
         teStartTime = new ValidationTextField<String>("testarttime", new Model<String>(""));
         teStartTime.setType(String.class);
+
         teStartTime.add(new AjaxFormComponentUpdatingBehavior("onchange") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {

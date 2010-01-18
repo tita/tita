@@ -276,7 +276,7 @@ public class UserForm extends Form<TiTAUser> {
     public class TableModelIssueTrackerLoginWithoutButtons extends AbstractTitaTableModel {
 
         // Logger
-        private final Logger log = LoggerFactory.getLogger(TableModelIssueTrackerLoginWithoutButtons.class);
+        private final Logger locallog = LoggerFactory.getLogger(TableModelIssueTrackerLoginWithoutButtons.class);
 
         public TableModelIssueTrackerLoginWithoutButtons(List<IssueTrackerLogin> list) {
             super(list);
@@ -309,11 +309,11 @@ public class UserForm extends Form<TiTAUser> {
                 }
 
             } catch (IndexOutOfBoundsException e) {
-                log.error("Error IndexOutOfBoundsException occured: " + e.getMessage());
+                locallog.error("Error IndexOutOfBoundsException occured: " + e.getMessage());
             } catch (ClassCastException e) {
-                log.error("Error ClassCastException occured: " + e.getMessage());
+                locallog.error("Error ClassCastException occured: " + e.getMessage());
             } catch (NullPointerException e) {
-                log.error("Error NullPointerException occured: " + e.getMessage());
+                locallog.error("Error NullPointerException occured: " + e.getMessage());
             }
             return null;
         }

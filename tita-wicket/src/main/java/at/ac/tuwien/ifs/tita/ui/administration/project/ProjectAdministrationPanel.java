@@ -52,7 +52,7 @@ import at.ac.tuwien.ifs.tita.ui.utils.EffortUtils;
 public class ProjectAdministrationPanel extends Panel implements IAdministrationPanel {
 
     // the service for DB-Operations
-	@SpringBean(name = "titaProjectService")
+    @SpringBean(name = "titaProjectService")
     private IProjectService titaProjectService;
 
     // the containers
@@ -349,14 +349,15 @@ public class ProjectAdministrationPanel extends Panel implements IAdministration
         }
     }
 
-	@Override
-	public List<Effort> getEntityList() {
-		//not implemented
-		return null;
-	}
+    @Override
+    public List<Effort> getEntityList() {
+        // not implemented
+        return null;
+    }
 
-	@Override
-	public void loadListEntities() {
-		//not implemented
-	}
+    /** {@inheritDoc} */
+    @Override
+    public void loadListEntities() {
+        // not implemented
+    }
 }

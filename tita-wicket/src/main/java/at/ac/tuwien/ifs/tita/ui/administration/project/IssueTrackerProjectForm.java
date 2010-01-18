@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
@@ -87,8 +86,9 @@ public class IssueTrackerProjectForm extends Form<IssueTrackerProject> {
                 "projectName")));
         addOrReplace(new DropDownChoice<IssueTracker>("dropDownIssueTracker", new PropertyModel<IssueTracker>(
                 issueTrackerProject, "issueTracker"), issueTracker));
-//        addOrReplace(new CheckBox("checkBoxDeletedIssueTrackerProject", new PropertyModel<Boolean>(issueTrackerProject,
-//                "deleted")));
+        // addOrReplace(new CheckBox("checkBoxDeletedIssueTrackerProject", new
+        // PropertyModel<Boolean>(issueTrackerProject,
+        // "deleted")));
     }
 
     /**
@@ -97,7 +97,7 @@ public class IssueTrackerProjectForm extends Form<IssueTrackerProject> {
     private void addLabels() {
         addOrReplace(new Label("lbProjectName", "Project Name: "));
         addOrReplace(new Label("lbIssueTracker", "Issue Tracker: "));
-//        addOrReplace(new Label("lbDeleted", "Deleted: "));
+        // addOrReplace(new Label("lbDeleted", "Deleted: "));
     }
 
     /**

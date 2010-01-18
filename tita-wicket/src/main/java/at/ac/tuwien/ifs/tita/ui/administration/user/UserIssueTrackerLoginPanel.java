@@ -28,7 +28,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wicketstuff.table.Table;
 
-import at.ac.tuwien.ifs.tita.entity.BaseEntity;
 import at.ac.tuwien.ifs.tita.entity.Effort;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
@@ -251,14 +250,15 @@ public class UserIssueTrackerLoginPanel extends Panel implements IAdministration
         // not implemented
     }
 
-	@Override
-	public void loadListEntities() {
-		//not implemented
-	}
+    /** {@inheritDoc} */
+    @Override
+    public void loadListEntities() {
+        // not implemented
+    }
 
-	@Override
-	public List<Effort> getEntityList() {
-		// not implemented
-		return null;
-	}
+    @Override
+    public List<Effort> getEntityList() {
+        // not implemented
+        return null;
+    }
 }

@@ -19,7 +19,6 @@ import java.util.List;
 
 import javax.persistence.PersistenceException;
 
-import at.ac.tuwien.ifs.tita.dao.GenericHibernateDao;
 import at.ac.tuwien.ifs.tita.dao.interfaces.IGenericHibernateDao;
 import at.ac.tuwien.ifs.tita.dao.interfaces.IUserDAO;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
@@ -47,9 +46,9 @@ public class UserService implements IUserService {
     public void setRoleDao(IGenericHibernateDao<Role, Long> roleDao) {
         this.roleDao = roleDao;
     }
-    
+
     public void setIssueTrackerDao(IGenericHibernateDao<IssueTracker, Long> issueTrackerDao) {
-    	this.issueTrackerDao = issueTrackerDao;
+        this.issueTrackerDao = issueTrackerDao;
     }
 
     /** {@inheritDoc} */

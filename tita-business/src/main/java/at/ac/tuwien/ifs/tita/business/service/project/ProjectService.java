@@ -21,12 +21,9 @@ import javax.persistence.PersistenceException;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Property;
 
-import at.ac.tuwien.ifs.tita.dao.GenericHibernateDao;
 import at.ac.tuwien.ifs.tita.dao.interfaces.IGenericHibernateDao;
 import at.ac.tuwien.ifs.tita.dao.interfaces.IIssueTrackerProjectDao;
 import at.ac.tuwien.ifs.tita.dao.interfaces.IIssueTrackerTaskDao;
-import at.ac.tuwien.ifs.tita.dao.issuetracker.IssueTrackerProjectDao;
-import at.ac.tuwien.ifs.tita.dao.issuetracker.task.IssueTrackerTaskDao;
 import at.ac.tuwien.ifs.tita.dao.project.TiTAProjectDao;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerProject;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerTask;
@@ -39,9 +36,9 @@ import at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus;
 /**
  * Service for manipulating (insert, update, delete, search... ) tita projects
  * in TiTA.
- *
+ * 
  * @author herbert
- *
+ * 
  */
 public class ProjectService implements IProjectService {
 
@@ -50,7 +47,7 @@ public class ProjectService implements IProjectService {
     private IIssueTrackerProjectDao issueTrackerProjectDao;
     private IGenericHibernateDao<TiTATask, Long> titaTaskDao;
     private IGenericHibernateDao<IssueTracker, Long> issueTrackerDao;
-    
+
     public void setTitaProjectDao(TiTAProjectDao titaProjectDao) {
         this.titaProjectDao = titaProjectDao;
     }
@@ -66,9 +63,9 @@ public class ProjectService implements IProjectService {
     public void setTitaTaskDao(IGenericHibernateDao<TiTATask, Long> titaTaskDao) {
         this.titaTaskDao = titaTaskDao;
     }
-    
+
     public void setIssueTrackerDao(IGenericHibernateDao<IssueTracker, Long> issueTrackerDao) {
-    	this.issueTrackerDao = issueTrackerDao;
+        this.issueTrackerDao = issueTrackerDao;
     }
 
     /** {@inheritDoc} */
@@ -80,7 +77,7 @@ public class ProjectService implements IProjectService {
     /** {@inheritDoc} */
     @Override
     public TiTAProject getProjectById(Long id) throws PersistenceException {
-    	return titaProjectDao.findById(id);
+        return titaProjectDao.findById(id);
     }
 
     /** {@inheritDoc} */
@@ -103,17 +100,14 @@ public class ProjectService implements IProjectService {
 
     /** {@inheritDoc} */
     @Override
-    public IssueTrackerTask findIssueTrackerTaskForTiTAProject(Long tp,
-            Long it, Long itp, Long itt) {
+    public IssueTrackerTask findIssueTrackerTaskForTiTAProject(Long tp, Long it, Long itp, Long itt) {
         return issueTrackerTaskDao.findIssueTrackerTask(tp, it, itp, itt);
     }
 
     /** {@inheritDoc} */
     @Override
-    public IssueTrackerProject findIssueTrackerProjectForTiTAProject(Long tp,
-            Long issueTrackerId, Long itp) {
-        return issueTrackerProjectDao
-                .findIssueTrackerProjectForTiTAProject(tp, issueTrackerId, itp);
+    public IssueTrackerProject findIssueTrackerProjectForTiTAProject(Long tp, Long issueTrackerId, Long itp) {
+        return issueTrackerProjectDao.findIssueTrackerProjectForTiTAProject(tp, issueTrackerId, itp);
     }
 
     /** {@inheritDoc} */
@@ -149,5 +143,5 @@ public class ProjectService implements IProjectService {
     public TiTAProject saveProject(TiTAProject project) throws PersistenceException {
         return titaProjectDao.save(project);
     }
-    
+
 }
