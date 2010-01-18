@@ -184,7 +184,7 @@ public class EffortDaoTest { // extends AbstractJpaTests {
     @Test
     public void testEffortsForIssueTrackerTaskShouldSucceed() {
         // CHECKSTYLE:OFF
-        Long effort = timeEffortDAO.findEffortsForIssueTrackerTask(1L, "hans", 96L, 24L, 1L);
+        Long effort = timeEffortDAO.findEffortsSumForIssueTrackerTask(1L, "hans", 96L, 24L, 1L);
         assertNotNull(effort);
         assertEquals(new Long(2000), effort);
         // CHECKSTYLE:ON

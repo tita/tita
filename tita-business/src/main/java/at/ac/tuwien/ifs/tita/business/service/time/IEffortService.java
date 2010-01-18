@@ -142,7 +142,7 @@ public interface IEffortService {
      *            Long
      * @return sum of duration of efforts
      */
-    Long findEffortsForIssueTrackerTask(TiTAProject tp, TiTAUser tu,
+    Long findEffortsSumForIssueTrackerTask(TiTAProject tp, TiTAUser tu,
             Long issTProjectId, Long isstTTaskId, Long isstId);
 
     /**

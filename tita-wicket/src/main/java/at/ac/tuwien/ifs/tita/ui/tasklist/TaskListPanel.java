@@ -285,7 +285,7 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
      * @return Effort
      */
     private Long readEffortFromDb(Long issueTrackerProjectId, Long taskId){
-        return effortService.findEffortsForIssueTrackerTask(project, user,
+        return effortService.findEffortsSumForIssueTrackerTask(project, user,
                 issueTrackerProjectId, taskId,C_ISSUE_TRACKER_ID);
     }
 

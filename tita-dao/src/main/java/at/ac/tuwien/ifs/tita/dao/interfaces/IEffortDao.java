@@ -107,7 +107,7 @@ public interface IEffortDao extends IGenericHibernateDao<Effort, Long> {
      *            Long
      * @return sum of duration of efforts
      */
-    Long findEffortsForIssueTrackerTask(Long tp, String username,
+    Long findEffortsSumForIssueTrackerTask(Long tp, String username,
             Long issTProjectId, Long isstTTaskId, Long isstId);
 
     /**

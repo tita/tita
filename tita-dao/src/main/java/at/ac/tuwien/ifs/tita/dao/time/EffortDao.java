@@ -279,7 +279,7 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements
 
     /** {@inheritDoc} */
     @Override
-    public Long findEffortsForIssueTrackerTask(Long tpId, String username,
+    public Long findEffortsSumForIssueTrackerTask(Long tpId, String username,
             Long issTProjectId, Long isstTTaskId, Long isstId) {
         String queryString = "select sum(duration) as duration from effort e "
                 + "join issue_tracker_task itt on e.issuet_task_id = itt.id "
