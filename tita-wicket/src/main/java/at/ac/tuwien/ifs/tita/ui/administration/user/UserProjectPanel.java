@@ -39,7 +39,6 @@ import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.entity.TiTAUserProject;
 import at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus;
 import at.ac.tuwien.ifs.tita.ui.models.AbstractTitaTableModel;
-import at.ac.tuwien.ifs.tita.ui.models.TableModelProject;
 import at.ac.tuwien.ifs.tita.ui.utils.EffortUtils;
 import at.ac.tuwien.ifs.tita.ui.utils.IntegerConstants;
 
@@ -238,8 +237,8 @@ public class UserProjectPanel extends Panel {
     public class TableModelProjectWithoutButton extends AbstractTitaTableModel {
 
         // Logger
-        private final Logger log = LoggerFactory
-                .getLogger(TableModelProject.class);
+        private final Logger locallog = LoggerFactory
+                .getLogger(TableModelProjectWithoutButton.class);
 
         public TableModelProjectWithoutButton(List<TiTAProject> list) {
             super(list);
@@ -279,11 +278,11 @@ public class UserProjectPanel extends Panel {
                     return project;
                 }
             } catch (IndexOutOfBoundsException e) {
-                log.error(e.getMessage());
+                locallog.error(e.getMessage());
             } catch (ClassCastException e) {
-                log.error(e.getMessage());
+                locallog.error(e.getMessage());
             } catch (NullPointerException e) {
-                log.error(e.getMessage());
+                locallog.error(e.getMessage());
             }
             return null;
         }

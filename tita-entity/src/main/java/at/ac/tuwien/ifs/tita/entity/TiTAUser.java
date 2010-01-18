@@ -35,14 +35,14 @@ import at.ac.tuwien.ifs.tita.entity.conv.Role;
 
 /**
  * Entity for storing TiTA user.
- *
+ * 
  * @author karin
- *
+ * 
  */
 @Entity
 @Table(name = "TITA_USER")
 @SequenceGenerator(name = "seq_user", sequenceName = "USER_ID_SEQ", allocationSize = 1)
-public class TiTAUser extends BaseEntity<Long>{
+public class TiTAUser extends BaseEntity<Long> {
 
     @Id
     @Column(name = "ID")
@@ -68,15 +68,14 @@ public class TiTAUser extends BaseEntity<Long>{
     private Boolean deleted;
 
     @ManyToOne
-    @JoinColumn(name = "ROLE_ID") //,insertable=false) //, referencedColumnName = "ID")
+    @JoinColumn(name = "ROLE_ID")
+    // ,insertable=false) //, referencedColumnName = "ID")
     private Role role;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<TiTAUserProject> titaUserProjects;
 
-
-    @OneToMany(mappedBy = "user",
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }, fetch = FetchType.EAGER)
     private Set<IssueTrackerLogin> issueTrackerLogins;
 
     @SuppressWarnings("unused")
@@ -85,13 +84,11 @@ public class TiTAUser extends BaseEntity<Long>{
     private Long modificationVersion;
 
     public TiTAUser() {
-    	this.deleted = false;
+        this.deleted = false;
     }
 
-    public TiTAUser(String userName, String password, String firstName,
-            String lastName, String email, Boolean deleted, Role role,
- Set<TiTAUserProject> titaUserProjects,
-            Set<IssueTrackerLogin> issueTrackerLogins) {
+    public TiTAUser(String userName, String password, String firstName, String lastName, String email, Boolean deleted,
+            Role role, Set<TiTAUserProject> titaUserProjects, Set<IssueTrackerLogin> issueTrackerLogins) {
         super();
         this.userName = userName;
         this.password = password;

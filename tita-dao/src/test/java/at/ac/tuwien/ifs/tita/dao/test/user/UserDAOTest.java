@@ -132,12 +132,14 @@ public class UserDAOTest {
      */
     @Test
     public void findTargetHoursForTiTAProjectAndTiTAUserShouldReturnNull() {
-    	//TODO: repair test
-//        utpDao.delete(utpDao.findById(tup.getId()));
-//
-//        Long targetHours = titaUserDao.findTargetHoursForTiTAProjectAndTiTAUser(titaUser.getId(), titaProject.getId());
-//
-//        Assert.assertNull(targetHours);
+        // TODO: repair test
+        // utpDao.delete(utpDao.findById(tup.getId()));
+        //
+        // Long targetHours =
+        // titaUserDao.findTargetHoursForTiTAProjectAndTiTAUser(titaUser.getId(),
+        // titaProject.getId());
+        //
+        // Assert.assertNull(targetHours);
     }
 
     /**

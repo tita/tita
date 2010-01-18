@@ -30,8 +30,8 @@ import at.ac.tuwien.ifs.tita.entity.BaseEntity;
  * 
  */
 @MappedSuperclass
-@org.hibernate.annotations.Entity(mutable=false)
-public class ConvBaseEntity extends BaseEntity<Long> implements Serializable{
+@org.hibernate.annotations.Entity(mutable = false)
+public class ConvBaseEntity extends BaseEntity<Long> implements Serializable {
     @Id
     @Column(name = "ID")
     private Long id;
@@ -70,12 +70,14 @@ public class ConvBaseEntity extends BaseEntity<Long> implements Serializable{
     public void setDescription(String description) {
         this.description = description;
     }
-    
+
     /**
      * String method for GUI-Output overridden.
+     * 
+     * @return returns description.
      */
     @Override
     public String toString() {
-    	return this.description;
+        return this.description;
     }
 }

@@ -44,7 +44,8 @@ public class TableModelEffort extends AbstractTitaTableModel {
     public TableModelEffort(List<Effort> list) {
         super(list);
 
-        columnNames = new String[] { "Date", "Description", "Start Time", "End Time", "Duration", "", "", "Link" };
+        columnNames = new String[] { "Date", "Description", "Start Time",
+                "End Time", "Duration", "", "", "Link" };
     }
 
     /**
@@ -81,19 +82,22 @@ public class TableModelEffort extends AbstractTitaTableModel {
                 return te.getDescription();
             } else if (col == IntegerConstants.TWO) {
                 if (te.getStartTime() != null) {
-                    return GlobalUtils.TIMEFORMAT24HOURS.format(te.getStartTime());
+                    return GlobalUtils.TIMEFORMAT24HOURS.format(te
+                            .getStartTime());
                 } else {
                     return 0;
                 }
             } else if (col == IntegerConstants.THREE) {
                 if (te.getEndTime() != null) {
-                    return GlobalUtils.TIMEFORMAT24HOURS.format(te.getEndTime());
+                    return GlobalUtils.TIMEFORMAT24HOURS
+                            .format(te.getEndTime());
                 } else {
                     return 0;
                 }
             } else if (col == IntegerConstants.FOUR) {
                 if (te.getDuration() != null) {
-                    return GlobalUtils.TIMELENGTHFORMAT.format(te.getDuration());
+                    return GlobalUtils.TIMELENGTHFORMAT
+                            .format(te.getDuration());
                 } else {
                     return 0;
                 }
@@ -160,7 +164,8 @@ public class TableModelEffort extends AbstractTitaTableModel {
                 } catch (ParseException e) {
                     // Do nothing
                 }
-                te.setEndTime(endTime != null ? endTime : te.getStartTime() + te.getDuration() + GlobalUtils.HOUR);
+                te.setEndTime(endTime != null ? endTime : te.getStartTime()
+                        + te.getDuration() + GlobalUtils.HOUR);
             } else if (col == IntegerConstants.FOUR) {
                 Long duration = null;
                 try {
@@ -168,7 +173,8 @@ public class TableModelEffort extends AbstractTitaTableModel {
                 } catch (ParseException e) {
                     // Do nothing
                 }
-                te.setDuration(duration != null ? duration : te.getEndTime() - te.getStartTime() - GlobalUtils.HOUR);
+                te.setDuration(duration != null ? duration : te.getEndTime()
+                        - te.getStartTime() - GlobalUtils.HOUR);
             }
         } catch (IndexOutOfBoundsException e) {
             log.error(e.getMessage());
@@ -182,9 +188,11 @@ public class TableModelEffort extends AbstractTitaTableModel {
      */
     @Override
     public boolean isCellEditable(int row, int column) {
-        if (selectedRow != -1) {
-            if (selectedRow == row) {
-                return true;
+        if (column != IntegerConstants.SEVEN) {
+            if (selectedRow != -1) {
+                if (selectedRow == row) {
+                    return true;
+                }
             }
         }
         return false;

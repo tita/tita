@@ -266,6 +266,7 @@ public class UserIssueTrackerLoginPanel extends Panel implements
         // not implemented
     }
 
+    /** {@inheritDoc} */
     @Override
     public void loadListEntities() {
         // not implemented

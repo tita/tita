@@ -47,14 +47,11 @@ public class LinkToIssueTrackerRenderer implements CellRender, CellEditor {
     @Override
     public Component getRenderComponent(String id, IModel model, SelectableListItem parent, int row, int column) {
         Effort e = panel.getEntityList().get(row);
-        if(e.getIssueTTask() != null){
+        if (e.getIssueTTask() != null) {
 
-             
-            return new LinkToIssueTracker(id, IssueTrackerUrlUtil.getUrl(e), 
-                "#"+e.getIssueTTask().getId());
+            return new LinkToIssueTracker(id, IssueTrackerUrlUtil.getUrl(e), "#" + e.getIssueTTask().getId());
         }
-        return new LinkToIssueTracker(id, "", 
-                "");
+        return new LinkToIssueTracker(id, "", "");
     }
 
     /**

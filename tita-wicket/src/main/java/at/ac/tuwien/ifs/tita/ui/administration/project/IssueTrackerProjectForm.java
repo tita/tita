@@ -87,7 +87,6 @@ public class IssueTrackerProjectForm extends Form<IssueTrackerProject> {
      * displays the Table of issueTrackerProjects.
      */
     private void addComponents() {
-
         addOrReplace(new TextField<String>("tfProjectName",
                 new PropertyModel<String>(issueTrackerProject, "projectName")));
         addOrReplace(new DropDownChoice<IssueTracker>("dropDownIssueTracker",
