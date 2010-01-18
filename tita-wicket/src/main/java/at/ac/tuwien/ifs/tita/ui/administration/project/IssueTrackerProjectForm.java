@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
@@ -45,17 +44,23 @@ public class IssueTrackerProjectForm extends Form<IssueTrackerProject> {
     private final List<IssueTracker> issueTracker;
 
     // Logger
-    private final Logger log = LoggerFactory.getLogger(IssueTrackerProjectForm.class);
+    private final Logger log = LoggerFactory
+            .getLogger(IssueTrackerProjectForm.class);
 
     /**
      * public constructor.
      * 
-     * @param id the unique ID that is declared in the HTML-File for this Panel.
-     * @param project the Project to which the IssueTrackerProjects are added.
-     * @param parent the Parent Panel for Returning a Project on Close.
+     * @param id
+     *            the unique ID that is declared in the HTML-File for this
+     *            Panel.
+     * @param project
+     *            the Project to which the IssueTrackerProjects are added.
+     * @param parent
+     *            the Parent Panel for Returning a Project on Close.
      */
-    public IssueTrackerProjectForm(String id, IssueTrackerProject issueTrackerProject, List<IssueTracker> issueTracker,
-            final TiTAProject project) {
+    public IssueTrackerProjectForm(String id,
+            IssueTrackerProject issueTrackerProject,
+            List<IssueTracker> issueTracker, final TiTAProject project) {
         super(id);
 
         log.info("Creating Form for Adding a new IssueTrackerProject.");
@@ -83,12 +88,14 @@ public class IssueTrackerProjectForm extends Form<IssueTrackerProject> {
      */
     private void addComponents() {
 
-        addOrReplace(new TextField<String>("tfProjectName", new PropertyModel<String>(issueTrackerProject,
-                "projectName")));
-        addOrReplace(new DropDownChoice<IssueTracker>("dropDownIssueTracker", new PropertyModel<IssueTracker>(
-                issueTrackerProject, "issueTracker"), issueTracker));
-//        addOrReplace(new CheckBox("checkBoxDeletedIssueTrackerProject", new PropertyModel<Boolean>(issueTrackerProject,
-//                "deleted")));
+        addOrReplace(new TextField<String>("tfProjectName",
+                new PropertyModel<String>(issueTrackerProject, "projectName")));
+        addOrReplace(new DropDownChoice<IssueTracker>("dropDownIssueTracker",
+                new PropertyModel<IssueTracker>(issueTrackerProject,
+                        "issueTracker"), issueTracker));
+        // addOrReplace(new CheckBox("checkBoxDeletedIssueTrackerProject", new
+        // PropertyModel<Boolean>(issueTrackerProject,
+        // "deleted")));
     }
 
     /**
@@ -97,7 +104,7 @@ public class IssueTrackerProjectForm extends Form<IssueTrackerProject> {
     private void addLabels() {
         addOrReplace(new Label("lbProjectName", "Project Name: "));
         addOrReplace(new Label("lbIssueTracker", "Issue Tracker: "));
-//        addOrReplace(new Label("lbDeleted", "Deleted: "));
+        // addOrReplace(new Label("lbDeleted", "Deleted: "));
     }
 
     /**

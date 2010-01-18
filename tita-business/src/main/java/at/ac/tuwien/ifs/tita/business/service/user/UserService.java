@@ -19,7 +19,6 @@ import java.util.List;
 
 import javax.persistence.PersistenceException;
 
-import at.ac.tuwien.ifs.tita.dao.GenericHibernateDao;
 import at.ac.tuwien.ifs.tita.dao.interfaces.IGenericHibernateDao;
 import at.ac.tuwien.ifs.tita.dao.interfaces.IUserDAO;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
@@ -47,9 +46,10 @@ public class UserService implements IUserService {
     public void setRoleDao(IGenericHibernateDao<Role, Long> roleDao) {
         this.roleDao = roleDao;
     }
-    
-    public void setIssueTrackerDao(IGenericHibernateDao<IssueTracker, Long> issueTrackerDao) {
-    	this.issueTrackerDao = issueTrackerDao;
+
+    public void setIssueTrackerDao(
+            IGenericHibernateDao<IssueTracker, Long> issueTrackerDao) {
+        this.issueTrackerDao = issueTrackerDao;
     }
 
     /** {@inheritDoc} */
@@ -91,7 +91,8 @@ public class UserService implements IUserService {
 
     /** {@inheritDoc} */
     @Override
-    public TiTAUser getUserByUsername(String username) throws PersistenceException {
+    public TiTAUser getUserByUsername(String username)
+            throws PersistenceException {
         return userDao.findByUserName(username);
     }
 
@@ -123,8 +124,10 @@ public class UserService implements IUserService {
 
     /** {@inheritDoc} */
     @Override
-    public Long findTargetHoursForTiTAProjectAndTiTAUser(Long userId, Long projectId) {
-        return userDao.findTargetHoursForTiTAProjectAndTiTAUser(userId, projectId);
+    public Long findTargetHoursForTiTAProjectAndTiTAUser(Long userId,
+            Long projectId) {
+        return userDao.findTargetHoursForTiTAProjectAndTiTAUser(userId,
+                projectId);
     }
 
     /** {@inheritDoc} */
@@ -135,7 +138,8 @@ public class UserService implements IUserService {
 
     /** {@inheritDoc} */
     @Override
-    public List<TiTAUser> getOrderedUsers(int maxResult) throws PersistenceException {
+    public List<TiTAUser> getOrderedUsers(int maxResult)
+            throws PersistenceException {
         return userDao.findUsersOrdered(maxResult);
     }
 
