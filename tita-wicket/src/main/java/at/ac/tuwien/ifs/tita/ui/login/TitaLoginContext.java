@@ -65,6 +65,7 @@ public class TitaLoginContext extends UsernamePasswordContext {
 
             try {
                 TiTAUser u = service.getUserByUsername(username);
+                String test = TiTASecurity.calcHash(password);
 
                 if (TiTASecurity.calcHash(password).equals(u.getPassword())) {
                     if (u.getRole().getDescription().equals("Administrator")) {

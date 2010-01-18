@@ -15,6 +15,7 @@
  */
 package at.ac.tuwien.ifs.tita.ui.administration.user;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -30,6 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wicketstuff.table.Table;
 
+import at.ac.tuwien.ifs.tita.business.security.TiTASecurity;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.entity.TiTAUserProject;
@@ -157,8 +159,13 @@ public class UserForm extends Form<TiTAUser> {
 
         // if form should be submitted, but data should not be saved
         if (getPasswordRepetition().equals(user.getPassword())) {
-            parent.saveEntity(user);
-            parent.displayCurrentList();
+            try {
+                user.setPassword(TiTASecurity.calcHash(user.getPassword()));
+                parent.saveEntity(user);
+                parent.displayCurrentList();
+            } catch (NoSuchAlgorithmException e) {
+                log.error("Fatal Error, User cannot be found due to unknown Algorithm.");
+            }
         } else {
             this.error("Entered Password does not equal Password Repetition.");
         }
