@@ -66,6 +66,7 @@
     <commons-collections.version>20040616</commons-collections.version>
     <supercsv.version>1.52</supercsv.version>
     <spiffy.version>0.05</spiffy.version>
+		<bouncycastle.version>138</bouncycastle.version>
     
     <!-- mantis libs versions -->
     <mantis.connect.version>1.1.1.0</mantis.connect.version>
@@ -731,6 +732,12 @@
         <artifactId>axis</artifactId>
         <version>${axis.version}</version>
       </dependency>
+			
+			<dependency>
+				<groupId>bouncycastle</groupId>
+				<artifactId>bcprov-jdk14</artifactId>
+				<version>${bouncycastle.version}</version>
+			</dependency>
       
     </dependencies>
   </dependencyManagement>
