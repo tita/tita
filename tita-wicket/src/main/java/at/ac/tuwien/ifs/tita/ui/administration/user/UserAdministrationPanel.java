@@ -69,11 +69,11 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
     private Table table;
     private TableModelUser tm;
 
-    // the Entity List
-    private List<TiTAUser> list;
-
     // the form for sending data
     private UserForm form;
+
+    // the current User Object
+    private TiTAUser currentUser;
 
     // Logger
     private final Logger log = LoggerFactory.getLogger(UserAdministrationPanel.class);
@@ -85,11 +85,6 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
      */
     public UserAdministrationPanel(String id) {
         super(id);
-        try {
-            list = service.getOrderedUsers(0);
-        } catch (PersistenceException e) {
-            list = new ArrayList<TiTAUser>();
-        }
 
         // init the two WebmarkupContainer
         // Note, they have the same id for switching between them
@@ -108,18 +103,14 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
         addOrReplace(userProjectPanel);
         addOrReplace(userIssueTrackerPanel);
 
-        displayTable(list);
         // displayDetailsPage(new TiTAUser());
         // displayProjectPanel();
         // displayIssueTrackerLoginPanel();
-    }
 
-    /**
-     * Method for displaying a List of currently known users. Also hides other
-     * Panels.
-     */
-    public void displayCurrentList() {
-        displayTable(this.list);
+        loadListEntities();
+
+        this.setOutputMarkupId(true);
+        this.setOutputMarkupPlaceholderTag(true);
     }
 
     /**
@@ -195,13 +186,29 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
 
         form = new UserForm("form", user, roles, this);
 
-        form.addOrReplace(new Button("save"));
+        addButtonsForDetailsPage();
+
+        detailContainer.addOrReplace(form);
+
+        addOrReplace(detailContainer);
+    }
+
+    /**
+     * adds necessary buttons to the details page.
+     */
+    private void addButtonsForDetailsPage() {
+        form.addOrReplace(new Button("save") {
+            @Override
+            public void onSubmit() {
+                form.setSubmitMode(UserForm.C_PERMANENT_SUBMIT);
+            }
+        });
 
         Button cancelButton = new Button("cancel") {
             @Override
             public void onSubmit() {
                 log.debug("Cancel the Form");
-                displayCurrentList();
+                loadListEntities();
             }
         };
         cancelButton.setDefaultFormProcessing(false);
@@ -211,26 +218,22 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
             @Override
             public void onSubmit() {
                 log.debug("Opening ProjectPanel to Add Project to User");
-                displayProjectPanel();
+                form.setSubmitMode(UserForm.C_TEMPORARY_SUBMIT_THEN_SHOW_PROJECT_PANEL);
             }
         };
-        addProjectButton.setDefaultFormProcessing(false);
+        addProjectButton.setDefaultFormProcessing(true);
 
         Button addLoginButton = new Button("addLoginButton") {
             @Override
             public void onSubmit() {
                 log.debug("Opening IssueTrackerLoginPanel to Add IssueTrackerLogin to User");
-                displayIssueTrackerLoginPanel();
+                form.setSubmitMode(UserForm.C_TEMPORARY_SUBMIT_THEN_SHOW_LOGIN_PANEL);
             }
         };
-        addLoginButton.setDefaultFormProcessing(false);
+        addLoginButton.setDefaultFormProcessing(true);
 
         form.addOrReplace(addProjectButton);
         form.addOrReplace(addLoginButton);
-
-        detailContainer.addOrReplace(form);
-
-        addOrReplace(detailContainer);
     }
 
     /**
@@ -242,7 +245,7 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
             detailContainer.setVisible(true);
             listContainer.setVisible(false);
             userIssueTrackerPanel.setVisible(false);
-            userProjectPanel = new UserProjectPanel("userProjectPanel", form.getModelObject(), this);
+            userProjectPanel = new UserProjectPanel("userProjectPanel", currentUser, this);
             userProjectPanel.setVisible(true);
             this.addOrReplace(userProjectPanel);
         }
@@ -257,7 +260,7 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
             detailContainer.setVisible(true);
             listContainer.setVisible(false);
             userProjectPanel.setVisible(false);
-            userIssueTrackerPanel = new UserIssueTrackerLoginPanel("userIssueTrackerLoginPanel", form.getUser(), this);
+            userIssueTrackerPanel = new UserIssueTrackerLoginPanel("userIssueTrackerLoginPanel", currentUser, this);
             userIssueTrackerPanel.setVisible(true);
             this.addOrReplace(userIssueTrackerPanel);
         } else {
@@ -280,6 +283,15 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
         }
     }
 
+    /**
+     * sets the current User to edit.
+     * 
+     * @param user the user to edit
+     */
+    public void setCurrentUser(TiTAUser user) {
+        this.currentUser = user;
+    }
+
     /** {@inheritDoc} */
     @Override
     public void deleteListEntity(AjaxRequestTarget target) {
@@ -296,6 +308,7 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
             user = (TiTAUser) tm.getValueAt(index, -1);
             user.setDeleted(true);
             service.saveUser(user);
+            reloadTable(target);
         } catch (PersistenceException e) {
             log.error("Deleting User failed!");
             log.error("Cause: " + e.getMessage());
@@ -333,8 +346,8 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
     public void saveEntity(TiTAUser user) {
         try {
             tm.addEntity(user);
-            list.add(user);
             service.saveUser(user);
+            tm.reload();
         } catch (PersistenceException e) {
             log.error("Could not save User");
             log.error(e.getMessage());
@@ -361,6 +374,7 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
             try {
                 TiTAUser user = (TiTAUser) tm.getValueAt(index, -1);
                 displayDetailsPage(user);
+                target.addComponent(this);
             } catch (ClassCastException e) {
                 log.error("Could not edit Current User, ClassCastException occured.");
                 log.error(e.getMessage());
@@ -371,7 +385,13 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
     /** {@inheritDoc} */
     @Override
     public void loadListEntities() {
-        // not implemented
+        List<TiTAUser> list;
+        try {
+            list = service.getOrderedUsers(0);
+        } catch (PersistenceException e) {
+            list = new ArrayList<TiTAUser>();
+        }
+        displayTable(list);
     }
 
     @Override

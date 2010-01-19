@@ -43,8 +43,7 @@ import at.ac.tuwien.ifs.tita.ui.utils.EffortUtils;
 import at.ac.tuwien.ifs.tita.ui.utils.IntegerConstants;
 
 /**
- * UserProjectPanel allows to select an Existing Project from a Table to add it
- * to a User.
+ * UserProjectPanel allows to select an Existing Project from a Table to add it to a User.
  * 
  * @author ASE Group 10
  */
@@ -79,16 +78,11 @@ public class UserProjectPanel extends Panel {
     /**
      * public constructor.
      * 
-     * @param id
-     *            the unique ID that is declared in the HTML-File for this
-     *            Panel.
-     * @param user
-     *            the User to add the Projects
-     * @param parent
-     *            the Parent Panel for Returning a User on Close.
+     * @param id the unique ID that is declared in the HTML-File for this Panel.
+     * @param user the User to add the Projects
+     * @param parent the Parent Panel for Returning a User on Close.
      */
-    public UserProjectPanel(String id, TiTAUser user,
-            UserAdministrationPanel parent) {
+    public UserProjectPanel(String id, TiTAUser user, UserAdministrationPanel parent) {
         super(id);
 
         this.parent = parent;
@@ -101,8 +95,7 @@ public class UserProjectPanel extends Panel {
         try {
             list = service.getOrderedProjects(0, "name");
         } catch (PersistenceException e) {
-            log
-                    .error("could not load List of TiTAProjects, empty List will be created");
+            log.error("could not load List of TiTAProjects, empty List will be created");
             list = new ArrayList<TiTAProject>();
         }
 
@@ -130,8 +123,7 @@ public class UserProjectPanel extends Panel {
         this.actualProjects = projects;
 
         actualProjectsTM = new TableModelProjectWithoutButton(actualProjects);
-        actualProjectsTable = new Table("actualUserProjectTable",
-                actualProjectsTM);
+        actualProjectsTable = new Table("actualUserProjectTable", actualProjectsTM);
         actualProjectsTable.setWidths(EffortUtils.WIDTHS);
         container = new WebMarkupContainer("userProjectContainer");
         container.setOutputMarkupId(true);
@@ -166,8 +158,7 @@ public class UserProjectPanel extends Panel {
                 } catch (IndexOutOfBoundsException e) {
                     log.debug("nothing selected");
                 }
-                log.debug("deleting Project from user " + user.getUserName()
-                        + ", Selected Row was: " + selection);
+                log.debug("deleting Project from user " + user.getUserName() + ", Selected Row was: " + selection);
                 if (selection > -1) {
                     actualProjectsTM.removeProjectAtIndex(selection);
                     actualProjectsTM.reload();
@@ -211,11 +202,9 @@ public class UserProjectPanel extends Panel {
 
                     userProjectsList.add(up);
                 }
-                TiTAUser u = new TiTAUser(getUser().getUserName(), getUser()
-                        .getPassword(), getUser().getFirstName(), getUser()
-                        .getLastName(), getUser().getEmail(), getUser()
-                        .isDeleted(), getUser().getRole(), userProjectsList,
-                        getUser().getIssueTrackerLogins());
+                TiTAUser u = new TiTAUser(getUser().getUserName(), getUser().getPassword(), getUser().getFirstName(),
+                    getUser().getLastName(), getUser().getEmail(), getUser().isDeleted(), getUser().getRole(),
+                    userProjectsList, getUser().getIssueTrackerLogins());
 
                 parent.displayDetailsPage(u);
             }
@@ -237,8 +226,7 @@ public class UserProjectPanel extends Panel {
     public class TableModelProjectWithoutButton extends AbstractTitaTableModel {
 
         // Logger
-        private final Logger locallog = LoggerFactory
-                .getLogger(TableModelProjectWithoutButton.class);
+        private final Logger locallog = LoggerFactory.getLogger(TableModelProjectWithoutButton.class);
 
         public TableModelProjectWithoutButton(List<TiTAProject> list) {
             super(list);
@@ -319,8 +307,7 @@ public class UserProjectPanel extends Panel {
         /**
          * Adds a Project to the TableModel.
          * 
-         * @param project
-         *            the Project to Add.
+         * @param project the Project to Add.
          */
         @SuppressWarnings("unchecked")
         public void addProject(TiTAProject project) {
@@ -329,16 +316,14 @@ public class UserProjectPanel extends Panel {
                 liste.add(project);
                 this.reload(liste);
             } catch (ClassCastException e) {
-                log
-                        .error("Could not add Project to TableModel. ClassCast failed");
+                log.error("Could not add Project to TableModel. ClassCast failed");
             }
         }
 
         /**
          * Removes a Project from the TableModel.
          * 
-         * @param project
-         *            the Project to remove.
+         * @param project the Project to remove.
          */
         public void removeProject(TiTAProject project) {
             if (list.contains(project)) {
@@ -349,8 +334,7 @@ public class UserProjectPanel extends Panel {
         /**
          * Removes a Project from the TableModel.
          * 
-         * @param index
-         *            of the Project to remove.
+         * @param index of the Project to remove.
          */
         public void removeProjectAtIndex(int index) {
             if (list.size() > index) {
@@ -369,8 +353,7 @@ public class UserProjectPanel extends Panel {
                 ArrayList<TiTAProject> liste = (ArrayList<TiTAProject>) list;
                 return liste;
             } catch (ClassCastException e) {
-                log
-                        .error("Could not return the Current Projects. ClassCast of List failed");
+                log.error("Could not return the Current Projects. ClassCast of List failed");
                 return null;
             }
         }
@@ -378,8 +361,7 @@ public class UserProjectPanel extends Panel {
         /**
          * Returns the Project of a specific row index.
          * 
-         * @param row
-         *            the row index
+         * @param row the row index
          * @return the Project of the selected Row.
          */
         public TiTAProject getProjectAt(int row) {
@@ -401,8 +383,7 @@ public class UserProjectPanel extends Panel {
         /**
          * Returns if a specific Project is currently in this Tablemodel.
          * 
-         * @param project
-         *            to check for availability.
+         * @param project to check for availability.
          * @return true if project already in this Model.
          */
         public boolean containsProject(TiTAProject project) {
@@ -412,8 +393,7 @@ public class UserProjectPanel extends Panel {
         /**
          * Method for adding a Project to the TableModel.
          * 
-         * @param project
-         *            the Project to be displayed
+         * @param project the Project to be displayed
          */
         @SuppressWarnings("unchecked")
         public void addEntity(TiTAProject project) {

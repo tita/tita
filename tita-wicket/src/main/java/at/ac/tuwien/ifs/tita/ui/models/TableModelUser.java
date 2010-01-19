@@ -152,9 +152,8 @@ public class TableModelUser extends AbstractTitaTableModel {
      */
     @SuppressWarnings("unchecked")
     public void addEntity(TiTAUser user) {
-        if (user != null) {
+        if (user != null && !((List<TiTAUser>) list).contains(user)) {
             ((List<TiTAUser>) list).add(user);
         }
     }
-
 }

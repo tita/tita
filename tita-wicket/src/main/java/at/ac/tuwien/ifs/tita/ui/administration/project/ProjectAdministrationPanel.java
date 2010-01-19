@@ -66,7 +66,6 @@ public class ProjectAdministrationPanel extends Panel implements IAdministration
     private TableModelProject tm;
 
     // the Entity List
-    private List<TiTAProject> list;
     private List<ProjectStatus> projectStati;
 
     // the form for sending data
@@ -86,12 +85,6 @@ public class ProjectAdministrationPanel extends Panel implements IAdministration
      */
     public ProjectAdministrationPanel(String id) {
         super(id);
-        try {
-            // find all
-            list = titaProjectService.getOrderedProjects(0, "name");
-        } catch (PersistenceException e) {
-            list = new ArrayList<TiTAProject>();
-        }
 
         try {
             projectStati = titaProjectService.getAvailableProjectStati();
@@ -117,25 +110,14 @@ public class ProjectAdministrationPanel extends Panel implements IAdministration
         issueTrackerContainer.setOutputMarkupPlaceholderTag(true);
         addOrReplace(issueTrackerContainer);
 
-        displayTable(list);
-        // displayDetailsPage(new TiTAProject());
-        // displayIssueTrackerProjectForm(new IssueTrackerProject());
-
-        // displayTable(list);
-        // displayDetailsPage(new TiTAProject());
+        loadListEntities();
+        this.setOutputMarkupId(true);
+        this.setOutputMarkupPlaceholderTag(true);
     }
 
     /**
-     * Method for displaying a List of currently known Projects. Also hides
-     * other Panels.
-     */
-    public void displayCurrentList() {
-        displayTable(this.list);
-    }
-
-    /**
-     * Method for displaying a List of Projects. Also hides the details page if
-     * null value is given, just switch without refreshing data.
+     * Method for displaying a List of Projects. Also hides the details page if null value is given, just switch without
+     * refreshing data.
      * 
      * @param projectList the list of Projects.
      */
@@ -175,8 +157,7 @@ public class ProjectAdministrationPanel extends Panel implements IAdministration
     }
 
     /**
-     * Method for displaying the details site of a specific Project. Also hides
-     * the list page.
+     * Method for displaying the details site of a specific Project. Also hides the list page.
      * 
      * @param project the specific Project to show.
      */
@@ -190,22 +171,27 @@ public class ProjectAdministrationPanel extends Panel implements IAdministration
 
         form = new ProjectForm("projectForm", this, projectStati, project);
 
-        form.add(new Button("save"));
+        form.add(new Button("save") {
+            @Override
+            public void onSubmit() {
+                log.debug("Submitting Form.");
+                form.setSubmitMode(ProjectForm.C_PERMANENT_SUBMIT);
+            }
+        });
 
         Button addIssueTrackerProjectButton = new Button("addIssueTrackerProjectButton") {
             @Override
             public void onSubmit() {
                 log.debug("Opening Panel to Add IssueTrackerProject");
-                displayIssueTrackerProjectForm(new IssueTrackerProject());
+                form.setSubmitMode(ProjectForm.C_TEMPORARY_SUBMIT_THEN_SHOW_ISSUE_TRACKER_PROJECT_FORM);
             }
         };
-        addIssueTrackerProjectButton.setDefaultFormProcessing(false);
         form.add(addIssueTrackerProjectButton);
 
         Button cancelButton = new Button("cancelAddProjectButton") {
             @Override
             public void onSubmit() {
-                displayCurrentList();
+                loadListEntities();
             }
         };
         cancelButton.setDefaultFormProcessing(false);
@@ -219,21 +205,19 @@ public class ProjectAdministrationPanel extends Panel implements IAdministration
     /**
      * displays the Panel to add IssueTrackerProjects.
      * 
-     * @param project the project to update
+     * @param issTProject the project to update
      */
-    private void displayIssueTrackerProjectForm(IssueTrackerProject project) {
+    public void displayIssueTrackerProjectForm(IssueTrackerProject issTProject) {
         listContainer.setVisible(false);
         issueTrackerContainer.setVisible(true);
         detailContainer.setVisible(true);
 
-        currentProject = this.form.getProject();
-
-        if (project == null) {
+        if (issTProject == null) {
             issueTrackerForm = new IssueTrackerProjectForm("issueTrackerProjectForm", new IssueTrackerProject(),
-                    titaProjectService.getAvailableIssueTracker(), currentProject);
+                titaProjectService.getAvailableIssueTracker(), currentProject);
         }
-        issueTrackerForm = new IssueTrackerProjectForm("issueTrackerProjectForm", project, titaProjectService
-                .getAvailableIssueTracker(), currentProject);
+        issueTrackerForm = new IssueTrackerProjectForm("issueTrackerProjectForm", issTProject, titaProjectService
+            .getAvailableIssueTracker(), currentProject);
 
         issueTrackerForm.add(new Button("saveIssueTrackerProjectForm") {
             @Override
@@ -262,6 +246,15 @@ public class ProjectAdministrationPanel extends Panel implements IAdministration
     }
 
     /**
+     * Sets the current Project to Submit.
+     * 
+     * @param project the Project to submit
+     */
+    public void setCurrentProject(TiTAProject project) {
+        this.currentProject = project;
+    }
+
+    /**
      * Persists a Project and displays it in the current Project Table.
      * 
      * @param project the Project to display.
@@ -269,8 +262,8 @@ public class ProjectAdministrationPanel extends Panel implements IAdministration
     public void saveEntity(TiTAProject project) {
         try {
             titaProjectService.saveProject(project);
-            list.add(project);
-            tm.reload(list);
+            tm.addEntity(project);
+            tm.reload();
         } catch (PersistenceException e) {
             log.error("Could not save Project");
             log.error(e.getMessage());
@@ -296,7 +289,7 @@ public class ProjectAdministrationPanel extends Panel implements IAdministration
             titaProjectService.saveProject(project);
             tm.removeProjectAtIndex(index);
             tm.reload();
-            this.list = tm.getProjects();
+            target.addComponent(table);
         } catch (PersistenceException e) {
             log.error("Deleting Project failed!");
             log.error("Cause: " + e.getMessage());
@@ -346,6 +339,7 @@ public class ProjectAdministrationPanel extends Panel implements IAdministration
         if (index > -1) {
             TiTAProject project = tm.getProjectAt(index);
             displayDetailsPage(project);
+            target.addComponent(this);
         }
     }
 
@@ -358,6 +352,14 @@ public class ProjectAdministrationPanel extends Panel implements IAdministration
     /** {@inheritDoc} */
     @Override
     public void loadListEntities() {
-        // not implemented
+        List<TiTAProject> list;
+        try {
+            // find all
+            list = titaProjectService.getOrderedProjects(0, "name");
+        } catch (PersistenceException e) {
+            list = new ArrayList<TiTAProject>();
+        }
+
+        displayTable(list);
     }
 }

@@ -51,17 +51,17 @@ public class IssueTrackerLoginForm extends Form<IssueTrackerLogin> {
      * public constructor for creating new IssueTrackerLogins.
      * 
      * @param id the unique ID that is declared in the HTML-File for this Form.
-     * @param availableIssueTracker a List of available IssueTracker for
+     * @param availableIssT a List of available IssueTracker for
      *        Dropdown Box.
      * @param parent the parent panel to add the IssueTrackerLogin.
      */
-    public IssueTrackerLoginForm(String id, List<IssueTracker> availableIssueTracker, UserIssueTrackerLoginPanel parent) {
+    public IssueTrackerLoginForm(String id, List<IssueTracker> availableIssT, UserIssueTrackerLoginPanel parent) {
         super(id);
 
         this.parent = parent;
 
-        if (availableIssueTracker != null) {
-            this.availableIssueTracker = availableIssueTracker;
+        if (availableIssT != null) {
+            this.availableIssueTracker = availableIssT;
         } else {
             this.availableIssueTracker = new ArrayList<IssueTracker>();
         }

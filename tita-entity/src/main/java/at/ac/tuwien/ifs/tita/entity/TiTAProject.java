@@ -20,6 +20,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,14 +35,14 @@ import at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus;
 
 /**
  * Entity for storing projects that are associated with an issue tracker.
- *
+ * 
  * @author herbert
- *
+ * 
  */
 @Entity
 @Table(name = "TITA_PROJECT")
 @SequenceGenerator(name = "seq_project", sequenceName = "PROJECT_ID_SEQ", allocationSize = 1)
-public class TiTAProject extends BaseEntity<Long>{
+public class TiTAProject extends BaseEntity<Long> {
 
     @Id
     @Column(name = "ID", insertable = false)
@@ -61,26 +62,22 @@ public class TiTAProject extends BaseEntity<Long>{
     @JoinColumn(name = "STATUS_ID")
     private ProjectStatus projectStatus;
 
-    @OneToMany(mappedBy = "titaProject", cascade = { CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.REMOVE })
+    @OneToMany(mappedBy = "titaProject", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE })
     private Set<TiTATask> titaTasks;
 
-    @OneToMany(mappedBy = "titaProject", cascade = { CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.REMOVE })
+    @OneToMany(mappedBy = "titaProject", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }, fetch = FetchType.EAGER)
     private Set<IssueTrackerProject> issueTrackerProjects;
 
     @OneToMany(mappedBy = "project")
     private Set<TiTAUserProject> users;
-
 
     @SuppressWarnings("unused")
     @Column(name = "MODIFICATION_VERSION")
     @Version
     private Long modificationVersion;
 
-    public TiTAProject(String description, String name, Boolean deleted,
-            ProjectStatus projectStatus, Set<TiTATask> titaTasks,
-            Set<IssueTrackerProject> issueTrackerProjects) {
+    public TiTAProject(String description, String name, Boolean deleted, ProjectStatus projectStatus,
+        Set<TiTATask> titaTasks, Set<IssueTrackerProject> issueTrackerProjects) {
         super();
         this.description = description;
         this.name = name;

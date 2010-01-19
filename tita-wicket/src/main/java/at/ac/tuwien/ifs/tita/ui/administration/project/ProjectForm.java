@@ -50,6 +50,10 @@ import at.ac.tuwien.ifs.tita.ui.uihelper.LenientAjaxButton;
  * @author ASE Group 10
  */
 public class ProjectForm extends Form<TiTAProject> {
+
+    public static final int C_PERMANENT_SUBMIT = 0;
+    public static final int C_TEMPORARY_SUBMIT_THEN_SHOW_ISSUE_TRACKER_PROJECT_FORM = 1;
+
     // the object to save
     private final TiTAProject project;
 
@@ -64,6 +68,9 @@ public class ProjectForm extends Form<TiTAProject> {
     // the Parent panel to add Projects on submit
     private final ProjectAdministrationPanel parent;
 
+    // Mode for submitting
+    private int submitMode;
+
     // the Logger
     private final Logger log = LoggerFactory.getLogger(ProjectForm.class);
 
@@ -71,13 +78,12 @@ public class ProjectForm extends Form<TiTAProject> {
      * public constructor for creating a new Project.
      * 
      * @param id the Components name.
-     * @param issueTrackerProjects the List of available IssueTrackerProjects to
-     *        this Project.
+     * @param issueTrackerProjects the List of available IssueTrackerProjects to this Project.
      * @param parent the parent panel to add the Project when saving Form.
      * @param project the Project to create or modify.
      */
     public ProjectForm(String id, ProjectAdministrationPanel parent, List<ProjectStatus> projectStati,
-            TiTAProject project) {
+        TiTAProject project) {
         super(id);
 
         log.info("Opening Form for creating a NEW User");
@@ -86,7 +92,7 @@ public class ProjectForm extends Form<TiTAProject> {
 
         if (project == null) {
             this.project = new TiTAProject("", "", new Boolean(false), new ProjectStatus(), new HashSet<TiTATask>(),
-                    new HashSet<IssueTrackerProject>());
+                new HashSet<IssueTrackerProject>());
         } else {
             this.project = project;
         }
@@ -119,7 +125,7 @@ public class ProjectForm extends Form<TiTAProject> {
         addOrReplace(new TextField<String>("tfName", new PropertyModel<String>(project, "name")));
         addOrReplace(new CheckBox("checkBoxDeleted", new PropertyModel<Boolean>(project, "deleted")));
         addOrReplace(new DropDownChoice<ProjectStatus>("dropDownProjectStatus", new PropertyModel<ProjectStatus>(
-                project, "projectStatus"), projectStati));
+            project, "projectStatus"), projectStati));
 
         issueTrackerProjectTM = new TableModelIssueTrackerProject(this.issueTrackerProjects);
         issueTrackerProjectTable = new Table("issueTrackerProjectTable", issueTrackerProjectTM);
@@ -151,9 +157,15 @@ public class ProjectForm extends Form<TiTAProject> {
     /** {@inheritDoc} **/
     @Override
     public final void onSubmit() {
-        log.info("Submitting Form for Project " + project.getName());
-        parent.saveEntity(project);
-        parent.displayCurrentList();
+
+        if (submitMode == C_PERMANENT_SUBMIT) {
+            log.info("Submitting Form for Project " + project.getName());
+            parent.saveEntity(project);
+            parent.loadListEntities();
+        } else if (submitMode == C_TEMPORARY_SUBMIT_THEN_SHOW_ISSUE_TRACKER_PROJECT_FORM) {
+            parent.setCurrentProject(project);
+            parent.displayIssueTrackerProjectForm(new IssueTrackerProject());
+        }
     }
 
     /**
@@ -175,6 +187,19 @@ public class ProjectForm extends Form<TiTAProject> {
             issueTrackerProjectTM.deleteAt(issueTrackerProjectTM.getSelectedRow());
             issueTrackerProjectTM.reload();
             target.addComponent(this);
+        }
+    }
+
+    /**
+     * sets the specified submission mode.
+     * 
+     * @param mode the mode to set
+     */
+    public void setSubmitMode(int mode) {
+        if (mode != C_TEMPORARY_SUBMIT_THEN_SHOW_ISSUE_TRACKER_PROJECT_FORM) {
+            this.submitMode = C_PERMANENT_SUBMIT;
+        } else {
+            this.submitMode = mode;
         }
     }
 

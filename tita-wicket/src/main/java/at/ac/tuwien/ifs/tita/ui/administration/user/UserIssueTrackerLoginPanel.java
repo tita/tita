@@ -44,8 +44,7 @@ import at.ac.tuwien.ifs.tita.ui.utils.EffortUtils;
  * 
  * @author ASE Group 10
  */
-public class UserIssueTrackerLoginPanel extends Panel implements
-        IAdministrationPanel {
+public class UserIssueTrackerLoginPanel extends Panel implements IAdministrationPanel {
     // WebMarkupContainer
     private final WebMarkupContainer container;
 
@@ -66,22 +65,16 @@ public class UserIssueTrackerLoginPanel extends Panel implements
     private IssueTrackerLoginForm form;
 
     // Logger
-    private final Logger log = LoggerFactory
-            .getLogger(UserIssueTrackerLoginPanel.class);
+    private final Logger log = LoggerFactory.getLogger(UserIssueTrackerLoginPanel.class);
 
     /**
      * public Contructor.
      * 
-     * @param id
-     *            the unique ID that is declared in the HTML-File for this
-     *            Panel.
-     * @param user
-     *            the User to add the IssueTrackerLogins.
-     * @param parent
-     *            the Parent Panel for closing and returning a User.
+     * @param id the unique ID that is declared in the HTML-File for this Panel.
+     * @param user the User to add the IssueTrackerLogins.
+     * @param parent the Parent Panel for closing and returning a User.
      */
-    public UserIssueTrackerLoginPanel(final String id, final TiTAUser user,
-            final UserAdministrationPanel parent) {
+    public UserIssueTrackerLoginPanel(final String id, final TiTAUser user, final UserAdministrationPanel parent) {
         super(id);
 
         this.parent = parent;
@@ -114,8 +107,7 @@ public class UserIssueTrackerLoginPanel extends Panel implements
     /**
      * displays the table of IssueTrackerLogins.
      * 
-     * @param issueTrackerList
-     *            the list of IssueTracker.
+     * @param issueTrackerList the list of IssueTracker.
      */
     @SuppressWarnings("unchecked")
     public void displayTable(final List<IssueTrackerLogin> issueTrackerList) {
@@ -143,22 +135,19 @@ public class UserIssueTrackerLoginPanel extends Panel implements
     /**
      * shows the details page for IssueTrackerLogin.
      * 
-     * @param login
-     *            the login
+     * @param login the login
      */
     public void displayDetailsPage(IssueTrackerLogin login) {
         if (login == null) {
-            form = new IssueTrackerLoginForm("userIssueTrackerLoginForm",
-                    parent.getAvailableIssueTracker(), this);
+            form = new IssueTrackerLoginForm("userIssueTrackerLoginForm", parent.getAvailableIssueTracker(), this);
         } else {
-            form = new IssueTrackerLoginForm("userIssueTrackerLoginForm",
-                    parent.getAvailableIssueTracker(), login, this);
+            form = new IssueTrackerLoginForm("userIssueTrackerLoginForm", parent.getAvailableIssueTracker(), login,
+                this);
         }
 
         form.addOrReplace(new Button("userIssueTrackerLoginAddButton"));
 
-        Button userIssueTrackerLoginSaveButton = new Button(
-                "userIssueTrackerLoginSaveButton") {
+        Button userIssueTrackerLoginSaveButton = new Button("userIssueTrackerLoginSaveButton") {
             @Override
             public void onSubmit() {
                 log.info("Returning to UserForm.");
@@ -183,8 +172,7 @@ public class UserIssueTrackerLoginPanel extends Panel implements
     /**
      * sets a new User Object to the Panel.
      * 
-     * @param user
-     *            the new User
+     * @param user the new User
      */
     public void setUser(TiTAUser user) {
         this.user = user;
@@ -208,8 +196,7 @@ public class UserIssueTrackerLoginPanel extends Panel implements
             } catch (IndexOutOfBoundsException e) {
                 log.error("Error, Index out of Bounds Exception");
             } catch (ClassCastException e) {
-                log
-                        .error("Error, ClassCast of IssueTrackerLogin from Table Model failed.");
+                log.error("Error, ClassCast of IssueTrackerLogin from Table Model failed.");
             }
         }
     }
@@ -217,8 +204,7 @@ public class UserIssueTrackerLoginPanel extends Panel implements
     /**
      * adds an entity to the current in memory list.
      * 
-     * @param login
-     *            the IssueTrackerLogin.
+     * @param login the IssueTrackerLogin.
      */
     public void addEntityToList(IssueTrackerLogin login) {
         log.debug("Adding IssueTrackerLogin to List");
@@ -238,11 +224,9 @@ public class UserIssueTrackerLoginPanel extends Panel implements
             list.add(login);
         }
 
-        setUser(new TiTAUser(getUser().getUserName(), getUser().getPassword(),
-                getUser().getFirstName(), getUser().getLastName(), getUser()
-                        .getEmail(), getUser().isDeleted(),
-                getUser().getRole(), getUser().getTitaUserProjects(),
-                new HashSet<IssueTrackerLogin>(list)));
+        setUser(new TiTAUser(getUser().getUserName(), getUser().getPassword(), getUser().getFirstName(), getUser()
+            .getLastName(), getUser().getEmail(), getUser().isDeleted(), getUser().getRole(), getUser()
+            .getTitaUserProjects(), new HashSet<IssueTrackerLogin>(list)));
 
         displayTable(list);
     }

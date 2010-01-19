@@ -47,6 +47,10 @@ import at.ac.tuwien.ifs.tita.ui.utils.IntegerConstants;
  */
 public class UserForm extends Form<TiTAUser> {
 
+    public static final int C_PERMANENT_SUBMIT = 0;
+    public static final int C_TEMPORARY_SUBMIT_THEN_SHOW_PROJECT_PANEL = 1;
+    public static final int C_TEMPORARY_SUBMIT_THEN_SHOW_LOGIN_PANEL = 2;
+
     private static final String C_ISSUE_TRACKER_TABLE_NAME = "issueTrackerTable";
     private static final String C_USER_PROJECT_TABLE_NAME = "userProjectTable";
 
@@ -70,6 +74,14 @@ public class UserForm extends Form<TiTAUser> {
     // the Parent panel to add Users on Submit
     private final UserAdministrationPanel parent;
 
+    // the mode to submit the form
+    private int submitMode;
+
+    // the required TextFields must be set unrequired at temporary submit
+    private PasswordTextField ptfPassword;
+    private PasswordTextField ptfPasswordRepetition;
+    private DropDownChoice<Role> dropDownrole;
+
     // Logger
     private final Logger log = LoggerFactory.getLogger(UserForm.class);
 
@@ -85,7 +97,7 @@ public class UserForm extends Form<TiTAUser> {
         super(id);
         if (u == null) {
             this.user = new TiTAUser("", "", "", "", "", false, null, new HashSet<TiTAUserProject>(),
-                    new HashSet<IssueTrackerLogin>());
+                new HashSet<IssueTrackerLogin>());
 
         } else {
             this.user = u;
@@ -105,6 +117,8 @@ public class UserForm extends Form<TiTAUser> {
             this.titaProjects = new ArrayList<TiTAUserProject>(user.getTitaUserProjects());
         }
 
+        this.submitMode = C_PERMANENT_SUBMIT;
+
         addComponents();
         addLabel();
     }
@@ -118,12 +132,21 @@ public class UserForm extends Form<TiTAUser> {
         addOrReplace(new TextField<String>("tfFirstName", new PropertyModel<String>(user, "firstName")));
         addOrReplace(new TextField<String>("tfLastName", new PropertyModel<String>(user, "lastName")));
         addOrReplace(new TextField<String>("tfEmail", new PropertyModel<String>(user, "email")));
-        addOrReplace(new PasswordTextField("ptfPassword", new PropertyModel<String>(user, "password")));
-        addOrReplace(new PasswordTextField("ptfPasswordRepetition", new PropertyModel<String>(this,
-                "passwordRepetition")));
+
+        ptfPassword = new PasswordTextField("ptfPassword", new PropertyModel<String>(user, "password"));
+        ptfPassword.setRequired(false);
+        addOrReplace(ptfPassword);
+
+        ptfPasswordRepetition = new PasswordTextField("ptfPasswordRepetition", new PropertyModel<String>(this,
+            "passwordRepetition"));
+        ptfPasswordRepetition.setRequired(false);
+        addOrReplace(ptfPasswordRepetition);
 
         addOrReplace(new CheckBox("checkBoxDeleted", new PropertyModel<Boolean>(user, "deleted")));
-        addOrReplace(new DropDownChoice<Role>("dropDownRole", new PropertyModel<Role>(user, "role"), roles));
+
+        dropDownrole = new DropDownChoice<Role>("dropDownRole", new PropertyModel<Role>(user, "role"), roles);
+        dropDownrole.setRequired(false);
+        addOrReplace(dropDownrole);
 
         userProjectTM = new TableModelUserProject(titaProjects);
         userProjectTable = new Table(C_USER_PROJECT_TABLE_NAME, userProjectTM);
@@ -157,19 +180,33 @@ public class UserForm extends Form<TiTAUser> {
         log.debug("trying to save user " + getUser());
         log.debug("checking if repetition: " + getPasswordRepetition() + " equals the password " + user.getPassword());
 
-        // if form should be submitted, but data should not be saved
-        if (getPasswordRepetition().equals(user.getPassword())) {
-            try {
-                user.setPassword(TiTASecurity.calcHash(user.getPassword()));
-                parent.saveEntity(user);
-                parent.displayCurrentList();
-            } catch (NoSuchAlgorithmException e) {
-                log.error("Fatal Error, User cannot be found due to unknown Algorithm.");
+        // normal submit mode
+        if (submitMode == C_PERMANENT_SUBMIT) {
+            if (getPasswordRepetition().equals(user.getPassword())) {
+                try {
+                    user.setPassword(TiTASecurity.calcHash(user.getPassword()));
+                    parent.saveEntity(user);
+                    parent.loadListEntities();
+                } catch (NoSuchAlgorithmException e) {
+                    log.error("Fatal Error, User cannot be found due to unknown Algorithm.");
+                }
+            } else {
+                this.error("Entered Password does not equal Password Repetition.");
             }
-        } else {
-            this.error("Entered Password does not equal Password Repetition.");
+        } else if (submitMode == C_TEMPORARY_SUBMIT_THEN_SHOW_PROJECT_PANEL) {
+            parent.setCurrentUser(user);
+            parent.displayProjectPanel();
+        } else if (submitMode == C_TEMPORARY_SUBMIT_THEN_SHOW_LOGIN_PANEL) {
+            parent.setCurrentUser(user);
+            parent.displayIssueTrackerLoginPanel();
         }
+        this.submitMode = C_TEMPORARY_SUBMIT_THEN_SHOW_PROJECT_PANEL;
+    }
 
+    /** {@inheritDoc} **/
+    @Override
+    public final void onError() {
+        this.submitMode = C_TEMPORARY_SUBMIT_THEN_SHOW_PROJECT_PANEL;
     }
 
     /**
@@ -276,6 +313,38 @@ public class UserForm extends Form<TiTAUser> {
             issueTrackerLoginTM.reload(titaIssueTracker);
             issueTrackerLoginTable = new Table(C_ISSUE_TRACKER_TABLE_NAME, issueTrackerLoginTM);
             this.addOrReplace(issueTrackerLoginTable);
+        }
+    }
+
+    /**
+     * Sets the Mode of Submission of this Form. <br/>
+     * There are 3 Modes available:
+     * 
+     * <ul>
+     * <li>C_PERMANENT_SUBMIT (default)</li>
+     * <li>C_TEMPORARY_SUBMIT_THEN_SHOW_PROJECT_PANEL</li>
+     * <li>C_TEMPORARY_SUBMIT_THEN_SHOW_LOGIN_PANEL</li>
+     * </ul>
+     * 
+     * @param mode the Mode to submit.
+     */
+    public void setSubmitMode(int mode) {
+        if (mode != C_TEMPORARY_SUBMIT_THEN_SHOW_LOGIN_PANEL && mode != C_TEMPORARY_SUBMIT_THEN_SHOW_PROJECT_PANEL) {
+            this.submitMode = 0;
+            ptfPassword.setRequired(true);
+            ptfPasswordRepetition.setRequired(true);
+            dropDownrole.setRequired(true);
+            addOrReplace(dropDownrole);
+            addOrReplace(ptfPassword);
+            addOrReplace(ptfPasswordRepetition);
+        } else {
+            this.submitMode = mode;
+            ptfPassword.setRequired(false);
+            ptfPasswordRepetition.setRequired(false);
+            dropDownrole.setRequired(false);
+            addOrReplace(dropDownrole);
+            addOrReplace(ptfPassword);
+            addOrReplace(ptfPasswordRepetition);
         }
     }
 

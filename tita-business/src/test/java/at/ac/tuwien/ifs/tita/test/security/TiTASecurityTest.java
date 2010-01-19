@@ -30,6 +30,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import at.ac.tuwien.ifs.tita.business.security.TiTASecurity;
+import at.ac.tuwien.ifs.tita.business.security.exception.TiTASecurityException;
 
 /**
  * Security Testcases.
@@ -62,23 +63,21 @@ public class TiTASecurityTest extends AbstractTransactionalJUnit4SpringContextTe
      */
     @Test
     public void testEncryptingDecryptingPasswords() {
-        // String originalPassword = "PasswordToEncrypt";
-        // String userName = "testUser";
-        // String userPassword = "testPassword";
-        // String encryptedPassword = "";
-        // String decryptedPassword = "";
-        //
-        // try {
-        // encryptedPassword = TiTASecurity.getEncryptedPassword(userName,
-        // userPassword, originalPassword);
-        // decryptedPassword = TiTASecurity.getDecryptedPassword(userName,
-        // userPassword, encryptedPassword);
-        //
-        // Assert.assertEquals(originalPassword, decryptedPassword);
-        //
-        // } catch (TiTASecurityException e) {
-        // Assert.fail();
-        // }
+        String originalPassword = "PasswordToEncrypt";
+        String userName = "testUser";
+        String userPassword = "testPassword";
+        String encryptedPassword = "";
+        String decryptedPassword = "";
+
+        try {
+            encryptedPassword = TiTASecurity.getEncryptedPassword(userName, userPassword, originalPassword);
+            decryptedPassword = TiTASecurity.getDecryptedPassword(userName, userPassword, encryptedPassword);
+
+            Assert.assertEquals(originalPassword, decryptedPassword);
+
+        } catch (TiTASecurityException e) {
+            Assert.fail();
+        }
     }
 
     /**
@@ -86,14 +85,13 @@ public class TiTASecurityTest extends AbstractTransactionalJUnit4SpringContextTe
      */
     @Test
     public void testRestoringPasswordOfNonExistantUser() {
-        // boolean pass = false;
-        // try {
-        // TiTASecurity.getDecryptedPassword("NonExistingUser", "test",
-        // "fooPassword");
-        // } catch (TiTASecurityException e) {
-        // pass = true;
-        // }
-        //
-        // Assert.assertTrue(pass);
+        boolean pass = false;
+        try {
+            TiTASecurity.getDecryptedPassword("NonExistingUser", "test", "fooPassword");
+        } catch (TiTASecurityException e) {
+            pass = true;
+        }
+
+        Assert.assertTrue(pass);
     }
 }
