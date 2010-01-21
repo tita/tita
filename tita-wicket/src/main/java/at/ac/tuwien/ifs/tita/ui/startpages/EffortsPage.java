@@ -97,9 +97,11 @@ public class EffortsPage extends BasePage {
 
                 @Override
                 public Panel getPanel(String panelId) {
+                    AdministrationPanelEffort pEff = new AdministrationPanelEffort(panelId, p);
+                    taskListPanel.setAdministrationPanelEffort(pEff);
                     taskListPanel.resetPanelLists();
                     taskListPanel.loadIssueTrackerTasks(p);
-                    return new AdministrationPanelEffort(panelId, p);
+                    return pEff;
                 }
             });
         }

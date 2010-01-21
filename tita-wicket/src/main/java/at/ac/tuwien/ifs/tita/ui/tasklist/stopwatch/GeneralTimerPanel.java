@@ -96,7 +96,7 @@ public class GeneralTimerPanel extends Panel implements IHeaderContributor {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
                 if (effort != null && !started) {
-                    owner.saveEffortForTiTATask(effort);
+                    owner.saveEffortForTiTATask(effort,target);
                     description.setModelObject("");
                     duration.setModelObject("");
                 }

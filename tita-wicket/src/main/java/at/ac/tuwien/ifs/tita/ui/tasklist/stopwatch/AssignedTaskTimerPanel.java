@@ -73,7 +73,7 @@ public class AssignedTaskTimerPanel extends Panel implements IHeaderContributor 
                     owner.startTimerForIssue(task);
                     started = true;
                 } else {
-                    owner.stopTimerForIssue(task);
+                    owner.stopTimerForIssue(task, target);
                     started = false;
                 }
             }
@@ -83,7 +83,7 @@ public class AssignedTaskTimerPanel extends Panel implements IHeaderContributor 
             protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
                 started = false;
                 // beh.stop();
-                owner.stopTimerForIssue(task);
+                owner.stopTimerForIssue(task,target);
                 owner.closeTask(task, target);
             }
         });
