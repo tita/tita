@@ -36,7 +36,7 @@ public class IssueTrackerUrlUtil {
         Long taskno = e.getIssueTTask().getIsstTaskId();
         
         if(tracker.isMantisType()){
-            return url + "id="+taskno;
+            return url + "/view.php?id="+taskno;
         }
         throw new RuntimeException("IssueTrackerId " + tracker.getId() + " not specified "+
                 "for URL-Generation.");
