@@ -69,6 +69,12 @@ public class IssueTrackerService implements IIssueTrackerService {
     public Map<Long, IProjectTrackable> getProjects() {
         return projects;
     }
+    
+   
+    /** {@inheritDoc} */
+    public IProjectTrackable getProjectByProjectName(String name){
+        return dao.findProject(name);
+    }
 
     /** {@inheritDoc} */
     @Override

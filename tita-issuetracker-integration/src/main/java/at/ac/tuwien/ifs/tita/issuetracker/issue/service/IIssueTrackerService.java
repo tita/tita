@@ -127,6 +127,14 @@ public interface IIssueTrackerService {
      *            - the id of the task that should be closed.
      */
     void closeTask(Long taskId);
+    
+    
+    /**
+     * Find Project By Projectname.
+     * @param name - project name
+     * @return found project
+     */
+    IProjectTrackable getProjectByProjectName(String name);
 
 
 
