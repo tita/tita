@@ -495,11 +495,9 @@ public class AdministrationPanelEffort extends Panel implements
             if (newDate != null && description != null && startTime != null
                     && (endTime != null || duration != null)) {
                 if (endTime == null && duration != null) {
-                    timeEffort.setEndTime(startTime + duration
-                            + GlobalUtils.HOUR);
+                    timeEffort.setEndTime(startTime + duration);
                 } else if (duration == null && endTime != null) {
-                    timeEffort.setDuration(endTime - startTime
-                            - GlobalUtils.HOUR);
+                    timeEffort.setDuration(endTime - startTime);
                 }
 
                 timeEffort.setDeleted(false);
@@ -570,9 +568,9 @@ public class AdministrationPanelEffort extends Panel implements
 
             if (startTime != null && (endTime != null || duration != null)) {
                 if (duration == null && endTime != null) {
-                    duration = endTime - startTime - GlobalUtils.HOUR;
+                    duration = endTime - startTime;
                 } else if (endTime == null && duration != null) {
-                    endTime = startTime + duration + GlobalUtils.HOUR;
+                    endTime = startTime + duration;
                 }
 
                 timeEffort.setDuration(duration);
