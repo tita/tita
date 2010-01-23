@@ -24,6 +24,8 @@ import java.util.Date;
 
 import org.apache.wicket.markup.html.form.TextField;
 
+import at.ac.tuwien.ifs.tita.issuetracker.util.TiTATimeConverter;
+
 /**
  * GlobalUtils.
  * 
@@ -133,8 +135,7 @@ public final class GlobalUtils {
     public static Long getDurationFromObject(Object o) throws ParseException {
         if (o != null) {
             if (o.toString().compareTo("") != 0) {
-                return GlobalUtils.TIMELENGTHFORMAT.parse(o.toString())
-                        .getTime();
+                return TiTATimeConverter.getString2Duration(o.toString());
             }
         }
         return null;
@@ -172,8 +173,8 @@ public final class GlobalUtils {
         try {
             if (field != null) {
                 if (field.getModelObject().compareTo("") != 0) {
-                    return GlobalUtils.TIMELENGTHFORMAT.parse(
-                            field.getModelObject()).getTime();
+                    return TiTATimeConverter.getString2Duration(field
+                            .getModelObject());
                 }
             }
         } catch (ParseException e) {
