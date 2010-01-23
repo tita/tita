@@ -21,9 +21,7 @@
 
   <!-- The DAOs -->
   <bean id="timeEffortDAO" class="at.ac.tuwien.ifs.tita.dao.time.EffortDao"/>
-  <bean id="titataskDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
-    <constructor-arg value="at.ac.tuwien.ifs.tita.entity.TiTATask"/>
-  </bean>
+  <bean id="titaTaskDAO" class="at.ac.tuwien.ifs.tita.dao.task.TiTATaskDao"/>
   <bean id="issueTrackerTaskDAO" class="at.ac.tuwien.ifs.tita.dao.issuetracker.task.IssueTrackerTaskDao"/>
   <bean id="issueTrackerDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
     <constructor-arg value="at.ac.tuwien.ifs.tita.entity.conv.IssueTracker"/>

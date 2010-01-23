@@ -25,8 +25,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -39,7 +37,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "EFFORT")
 @SequenceGenerator(name = "seq_effort", sequenceName = "EEFORT_ID_SEQ", allocationSize = 1)
-@NamedQueries( { @NamedQuery(name = "Effort.getYears", query = "select distinct year(te.date) from Effort te where deleted=false order by 1 desc") })
 public class Effort extends BaseEntity<Long> {
 
     @Id
@@ -81,8 +78,7 @@ public class Effort extends BaseEntity<Long> {
     public Effort() {
     }
 
-    public Effort(Date date, Long duration, Boolean deleted,
-            String description, TiTAUser user) {
+    public Effort(Date date, Long duration, Boolean deleted, String description, TiTAUser user) {
         super();
         this.date = date;
         this.duration = duration;
@@ -91,8 +87,8 @@ public class Effort extends BaseEntity<Long> {
         this.user = user;
     }
 
-    public Effort(Date date, String description, Long startTime, Long endTime,
-            Long duration, Boolean deleted, TiTAUser user) {
+    public Effort(Date date, String description, Long startTime, Long endTime, Long duration, Boolean deleted,
+            TiTAUser user) {
         super();
         this.date = date;
         this.description = description;
@@ -103,8 +99,7 @@ public class Effort extends BaseEntity<Long> {
         this.user = user;
     }
 
-    public Effort(Long id, TiTATask titaTask, IssueTrackerTask issueTTask,
-            String description) {
+    public Effort(Long id, TiTATask titaTask, IssueTrackerTask issueTTask, String description) {
         super();
         this.id = id;
         this.titaTask = titaTask;
@@ -112,9 +107,8 @@ public class Effort extends BaseEntity<Long> {
         this.description = description;
     }
 
-    public Effort(TiTATask titaTask, IssueTrackerTask issueTTask, Date date,
-            Long startTime, Long endTime, Long duration, String description,
-            Boolean deleted, TiTAUser user) {
+    public Effort(TiTATask titaTask, IssueTrackerTask issueTTask, Date date, Long startTime, Long endTime,
+            Long duration, String description, Boolean deleted, TiTAUser user) {
         super();
         this.titaTask = titaTask;
         this.issueTTask = issueTTask;
@@ -134,14 +128,6 @@ public class Effort extends BaseEntity<Long> {
 
     public String getDescription() {
         return description;
-    }
-
-    public TiTATask getTitaTaskId() {
-        return titaTask;
-    }
-
-    public IssueTrackerTask getIssueTTaskId() {
-        return issueTTask;
     }
 
     public void setDate(Date date) {
@@ -192,15 +178,14 @@ public class Effort extends BaseEntity<Long> {
         return duration;
     }
 
-    public Boolean isTiTAEffort() {
+    public Boolean isTiTATaskEffort() {
         return titaTask.getId() != null;
     }
 
     /**
      * Filter out all matching Efforts with a specific description.
      * 
-     * @param filterString
-     *            - Filter string
+     * @param filterString - Filter string
      * @return true if it contains the string pattern.
      */
     public Boolean matchDescription(String filterString) {
@@ -210,8 +195,7 @@ public class Effort extends BaseEntity<Long> {
     /**
      * Filter out all matching Efforts with a date after the parameter date.
      * 
-     * @param date1
-     *            - filter date
+     * @param date1 - filter date
      * @return true if it contains the string pattern.
      */
     public Boolean matchDateFrom(Date date1) {
@@ -221,8 +205,7 @@ public class Effort extends BaseEntity<Long> {
     /**
      * Filter out all matching Efforts with a date before the parameter date.
      * 
-     * @param date1
-     *            - filter date
+     * @param date1 - filter date
      * @return true if it contains the string pattern.
      */
     public Boolean matchDateUntil(Date date1) {
@@ -252,8 +235,7 @@ public class Effort extends BaseEntity<Long> {
     /**
      * Adds time to current duration.
      * 
-     * @param dur
-     *            duration to add as long.
+     * @param dur duration to add as long.
      */
     public void addDuration(Long dur) {
         duration += dur;

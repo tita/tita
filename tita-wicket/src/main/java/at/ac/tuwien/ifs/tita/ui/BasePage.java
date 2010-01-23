@@ -115,6 +115,7 @@ public class BasePage extends SecureWebPage {
     /**
      * initialize the page.
      */
+    @SuppressWarnings("unchecked")
     protected void initLogoutLink() {
         // not a secure link because everyone can logoff.
         Link logoff = new Link("logoff") {

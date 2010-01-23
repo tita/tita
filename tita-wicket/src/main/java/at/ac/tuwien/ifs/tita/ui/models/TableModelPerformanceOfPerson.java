@@ -21,7 +21,7 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import at.ac.tuwien.ifs.tita.entity.util.UserProjectEffort;
+import at.ac.tuwien.ifs.tita.entity.util.UserProjectTaskEffort;
 import at.ac.tuwien.ifs.tita.issuetracker.util.TiTATimeConverter;
 
 /**
@@ -31,12 +31,12 @@ import at.ac.tuwien.ifs.tita.issuetracker.util.TiTATimeConverter;
  * @author herbert
  * 
  */
-public class TableModelMultipleProjectsEvaluation extends AbstractTableModel {
+public class TableModelPerformanceOfPerson extends AbstractTableModel {
 
     protected String[] columnNames;
-    private List<UserProjectEffort> list;
+    private List<UserProjectTaskEffort> list;
 
-    public TableModelMultipleProjectsEvaluation(List<UserProjectEffort> list, String[] colNames) {
+    public TableModelPerformanceOfPerson(List<UserProjectTaskEffort> list, String[] colNames) {
         this.list = list;
         columnNames = colNames;
     }
@@ -104,7 +104,7 @@ public class TableModelMultipleProjectsEvaluation extends AbstractTableModel {
      * 
      * @param list1 the list to set
      */
-    public void reload(List<UserProjectEffort> list1) {
+    public void reload(List<UserProjectTaskEffort> list1) {
         list = list1;
         reload();
     };

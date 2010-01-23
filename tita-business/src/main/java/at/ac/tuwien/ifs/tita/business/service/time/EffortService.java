@@ -72,8 +72,7 @@ public class EffortService implements IEffortService {
      * {@inheritDoc}
      */
     @Override
-    public List<Effort> getEffortsDailyView(Date date)
-            throws PersistenceException {
+    public List<Effort> getEffortsDailyView(Date date) throws PersistenceException {
         return timeEffortDao.getTimeEffortsDailyView(date);
     }
 
@@ -81,8 +80,7 @@ public class EffortService implements IEffortService {
      * {@inheritDoc}
      */
     @Override
-    public List<Effort> getEffortsMonthlyView(Integer year, Integer month)
-            throws PersistenceException {
+    public List<Effort> getEffortsMonthlyView(Integer year, Integer month) throws PersistenceException {
         return timeEffortDao.getTimeEffortsMonthlyView(year, month);
     }
 
@@ -97,18 +95,16 @@ public class EffortService implements IEffortService {
      * {@inheritDoc}
      */
     @Override
-    public List<UserProjectEffort> getEffortsSummaryForProjectAndUserNames(
-            List<String> projects, List<String> usernames, String grouping) {
-        return timeEffortDao.findEffortsForTiTAProjectAndTimeConsumerId(
-                projects, usernames, grouping);
+    public List<UserProjectEffort> getEffortsSummaryForProjectAndUserNames(List<String> projects,
+            List<String> usernames, String grouping) {
+        return timeEffortDao.findEffortsForTiTAProjectAndTimeConsumerId(projects, usernames, grouping);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<UserProjectEffort> getEffortsSummaryForProjectNames(
-            List<String> projects, String grouping) {
+    public List<UserProjectEffort> getEffortsSummaryForProjectNames(List<String> projects, String grouping) {
         return timeEffortDao.findEffortsForTiTAProjectId(projects, grouping);
     }
 
@@ -116,39 +112,33 @@ public class EffortService implements IEffortService {
      * {@inheritDoc}
      */
     @Override
-    public Long findEffortsSumForIssueTrackerTask(TiTAProject tp, TiTAUser tu,
-            Long issTProjectId, Long isstTTaskId, Long isstId) {
-        return timeEffortDao.findEffortsSumForIssueTrackerTask(tp.getId(), tu
-                .getUserName(), issTProjectId, isstTTaskId, isstId);
+    public Long findEffortsSumForIssueTrackerTask(TiTAProject tp, TiTAUser tu, Long issTProjectId, Long isstTTaskId,
+            Long isstId) {
+        return timeEffortDao.findEffortsSumForIssueTrackerTask(tp.getId(), tu.getUserName(), issTProjectId,
+                isstTTaskId, isstId);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<Effort> findEffortsForTiTAProjectAndTiTAUser(Long projectId,
-            Long userId) {
-        return timeEffortDao.findEffortsForTiTAProjectAndTiTAUser(projectId,
-                userId);
+    public List<Effort> findEffortsForTiTAProjectAndTiTAUser(Long projectId, Long userId) {
+        return timeEffortDao.findEffortsForTiTAProjectAndTiTAUser(projectId, userId);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Long totalizeEffortsForTiTAProjectAndTiTAUser(Long projectId,
-            Long userId) {
-        return timeEffortDao.totalizeEffortsForTiTAProjectAndTiTAUser(
-                projectId, userId);
+    public Long totalizeEffortsForTiTAProjectAndTiTAUser(Long projectId, Long userId) {
+        return timeEffortDao.totalizeEffortsForTiTAProjectAndTiTAUser(projectId, userId);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<Effort> findEffortsForTiTAProjectAndTiTAUserOrdered(
-            Long projectId, Long userId) {
-        return timeEffortDao.findEffortsForTiTAProjectAndTiTAUserOrdered(
-                projectId, userId);
+    public List<Effort> findEffortsForTiTAProjectAndTiTAUserOrdered(Long projectId, Long userId) {
+        return timeEffortDao.findEffortsForTiTAProjectAndTiTAUserOrdered(projectId, userId);
     }
 }

@@ -39,30 +39,27 @@ public interface IEffortService {
     /**
      * Saves a new timeEffort or updates an existing one.
      * 
-     * @param timeEffort
-     *            the timeEffort to be saved
-     * @throws PersistenceException
-     *             if Parameter is null or another Exception is thrown
+     * @param timeEffort the timeEffort to be saved
+     * @throws PersistenceException if Parameter is null or another Exception is
+     *         thrown
      */
     void saveEffort(Effort timeEffort) throws PersistenceException;
 
     /**
      * deletes an existing timeEffort.
      * 
-     * @param timeEffort
-     *            the timeEffort to be deleted
-     * @throws PersistenceException
-     *             if Parameter is null or another Exception is thrown
+     * @param timeEffort the timeEffort to be deleted
+     * @throws PersistenceException if Parameter is null or another Exception is
+     *         thrown
      */
     void deleteEffort(Effort timeEffort) throws PersistenceException;
 
     /**
      * returns a specific TimeEffort found to the id given.
      * 
-     * @param id
-     *            the unique identifier of an timeEffort
-     * @throws PersistenceException
-     *             if no timeEffort was found or another Exception is thrown
+     * @param id the unique identifier of an timeEffort
+     * @throws PersistenceException if no timeEffort was found or another
+     *         Exception is thrown
      * @return Effort found
      */
     Effort getEffortById(Long id) throws PersistenceException;
@@ -70,27 +67,21 @@ public interface IEffortService {
     /**
      * Gets a view for a day.
      * 
-     * @param date
-     *            dates which are selected
+     * @param date dates which are selected
      * @return list of efforts that match dates
-     * @throws PersistenceException
-     *             if anything goes wrong with db access.
+     * @throws PersistenceException if anything goes wrong with db access.
      */
     List<Effort> getEffortsDailyView(Date date) throws PersistenceException;
 
     /**
      * Gets a view for a month.
      * 
-     * @param year
-     *            year which is selected
-     * @param month
-     *            month which is selected
+     * @param year year which is selected
+     * @param month month which is selected
      * @return list of efforts that match dates
-     * @throws PersistenceException
-     *             if anything goes wrong with db access.
+     * @throws PersistenceException if anything goes wrong with db access.
      */
-    List<Effort> getEffortsMonthlyView(Integer year, Integer month)
-            throws PersistenceException;
+    List<Effort> getEffortsMonthlyView(Integer year, Integer month) throws PersistenceException;
 
     /**
      * Gets all years in which efforts were saved.
@@ -103,55 +94,42 @@ public interface IEffortService {
      * Gets a summary of Effort for List of user and projects - overall,
      * monthly, daily.
      * 
-     * @param projects
-     *            List of String
-     * @param usernames
-     *            List of String
-     * @param grouping
-     *            String
+     * @param projects List of String
+     * @param usernames List of String
+     * @param grouping String
      * @return UserProjectEffort List
      */
-    List<UserProjectEffort> getEffortsSummaryForProjectAndUserNames(
-            List<String> projects, List<String> usernames, String grouping);
+    List<UserProjectEffort> getEffortsSummaryForProjectAndUserNames(List<String> projects, List<String> usernames,
+            String grouping);
 
     /**
      * Gets a summary of Effort for and projects - overall, monthly, daily.
      * 
-     * @param projects
-     *            List of String
-     * @param grouping
-     *            String
+     * @param projects List of String
+     * @param grouping String
      * @return ProjectEffort List
      */
-    List<UserProjectEffort> getEffortsSummaryForProjectNames(
-            List<String> projects, String grouping);
+    List<UserProjectEffort> getEffortsSummaryForProjectNames(List<String> projects, String grouping);
 
     /**
      * Returns sum of Efforts per tita project, tita user, issue tracker
      * project, issue tracker task id, issue tracker id.
      * 
-     * @param tp
-     *            TiTAProject
-     * @param tu
-     *            TiTAUser
-     * @param issTProjectId
-     *            Long
-     * @param isstTTaskId
-     *            Long
-     * @param isstId
-     *            Long
+     * @param tp TiTAProject
+     * @param tu TiTAUser
+     * @param issTProjectId Long
+     * @param isstTTaskId Long
+     * @param isstId Long
      * @return sum of duration of efforts
      */
-    Long findEffortsSumForIssueTrackerTask(TiTAProject tp, TiTAUser tu,
-            Long issTProjectId, Long isstTTaskId, Long isstId);
+    Long findEffortsSumForIssueTrackerTask(TiTAProject tp, TiTAUser tu, Long issTProjectId, Long isstTTaskId,
+            Long isstId);
 
     /**
      * Totalize the efforts for a tita project and a tita user.
      * 
-     * @param projectId
-     *            - the id of the tita project
-     * @param userId
-     *            - the id of the tita user
+     * @param projectId - the id of the tita project
+     * @param userId - the id of the tita user
      * @return the totalized effort as sum
      */
     Long totalizeEffortsForTiTAProjectAndTiTAUser(Long projectId, Long userId);
@@ -159,25 +137,19 @@ public interface IEffortService {
     /**
      * Lists all effort objects for a tita project and a tita user.
      * 
-     * @param projectId
-     *            - the id of the tita project
-     * @param userId
-     *            - the id of the tita user
+     * @param projectId - the id of the tita project
+     * @param userId - the id of the tita user
      * @return a list of efforts
      */
-    List<Effort> findEffortsForTiTAProjectAndTiTAUser(Long projectId,
-            Long userId);
+    List<Effort> findEffortsForTiTAProjectAndTiTAUser(Long projectId, Long userId);
 
     /**
      * Lists all effort objects for a tita project and a tita user ordered by
      * end time.
      * 
-     * @param projectId
-     *            - the id of the tita project
-     * @param userId
-     *            - the id of the tita user
+     * @param projectId - the id of the tita project
+     * @param userId - the id of the tita user
      * @return a list of efforts
      */
-    List<Effort> findEffortsForTiTAProjectAndTiTAUserOrdered(Long projectId,
-            Long userId);
+    List<Effort> findEffortsForTiTAProjectAndTiTAUserOrdered(Long projectId, Long userId);
 }

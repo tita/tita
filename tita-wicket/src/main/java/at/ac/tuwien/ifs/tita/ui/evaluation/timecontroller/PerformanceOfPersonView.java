@@ -17,6 +17,7 @@ limitations under the License.
 package at.ac.tuwien.ifs.tita.ui.evaluation.timecontroller;
 
 import java.net.MalformedURLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,16 +44,19 @@ import org.slf4j.LoggerFactory;
 import org.wicketstuff.table.Table;
 
 import at.ac.tuwien.ifs.tita.business.service.project.IProjectService;
+import at.ac.tuwien.ifs.tita.business.service.tasks.ITaskService;
 import at.ac.tuwien.ifs.tita.business.service.time.IEffortService;
 import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
-import at.ac.tuwien.ifs.tita.entity.Effort;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
+import at.ac.tuwien.ifs.tita.entity.util.UserProjectTaskEffort;
+import at.ac.tuwien.ifs.tita.issuetracker.util.TiTATimeConverter;
 import at.ac.tuwien.ifs.tita.reporting.JasperPdfResource;
 import at.ac.tuwien.ifs.tita.ui.BasePage;
-import at.ac.tuwien.ifs.tita.ui.models.AbstractTitaTableModel;
+import at.ac.tuwien.ifs.tita.ui.models.TableModelPerformanceOfPerson;
 import at.ac.tuwien.ifs.tita.ui.models.TableModelTiTAProject;
 import at.ac.tuwien.ifs.tita.ui.models.TableModelTiTAUser;
+import at.ac.tuwien.ifs.tita.ui.utils.GlobalUtils;
 import at.ac.tuwien.ifs.tita.ui.utils.IntegerConstants;
 
 /**
@@ -74,15 +78,19 @@ public class PerformanceOfPersonView extends BasePage {
     @SpringBean(name = "timeEffortService")
     private IEffortService effortService;
 
-    @SpringBean(name = "targetActualComparison")
+    @SpringBean(name = "taskService")
+    private ITaskService taskService;
+
+    @SpringBean(name = "performanceOfPersonReport")
     private JasperPdfResource pdfResource;
 
     private Form<Object> form;
+    private WebMarkupContainer popUserTableContainer;
     private WebMarkupContainer popContainer;
 
     private List<TiTAUser> titaUserList = new ArrayList<TiTAUser>();
     private List<TiTAProject> titaProjectList = new ArrayList<TiTAProject>();
-    private List<Effort> effortResult = new ArrayList<Effort>();
+    private List<UserProjectTaskEffort> upteResult = new ArrayList<UserProjectTaskEffort>();
 
     private Table tableForTiTAUser;
     private Table tableForTiTAProject;
@@ -90,17 +98,27 @@ public class PerformanceOfPersonView extends BasePage {
 
     private TableModelTiTAUser tmForTiTAUser;
     private TableModelTiTAProject tmForTiTAProject;
-    private AbstractTitaTableModel tmForTargetActualComparison;
+    private TableModelPerformanceOfPerson tmPop;
+
+    private String[] columnNames;
 
     private Label lblActualHours;
     private Label lblTargetHours;
     private Label lblDescriptionForActualHours;
     private Label lblDescriptionForTargetHours;
-    private Label lblDescriptionTargetActualComparison;
+    private Label lblDescriptionPop;
+    private Label lblDescriptionPerformancePercent;
+    private Label lblPerformancePercent;
 
-    private String messageForlblDescriptionTargetActualComparison = "";
+    private String messageForlblDescriptionPop = "";
     private String messageForlblActualHours = "";
     private String messageForlblTargetHours = "";
+    private String messageForlblPerformancePercent = "";
+
+    private TiTAProject selectedProject;
+    private TiTAUser selectedUser;
+
+    private Button btnShowPoPAsPDF;
 
     public PerformanceOfPersonView() {
         form = new Form<Object>("popeForm");
@@ -110,24 +128,31 @@ public class PerformanceOfPersonView extends BasePage {
         popContainer.setOutputMarkupId(true);
         popContainer.setOutputMarkupPlaceholderTag(true);
 
+        popUserTableContainer = new WebMarkupContainer("popUserTableContainer");
+        popUserTableContainer.setOutputMarkupId(true);
+        popUserTableContainer.setOutputMarkupPlaceholderTag(true);
+
         loadTableValues();
 
         tmForTiTAUser = new TableModelTiTAUser(titaUserList);
         tmForTiTAProject = new TableModelTiTAProject(titaProjectList);
-        // tmForTargetActualComparison = new
-        // TableModelTargetActualComparison(effortResult);
+
+        columnNames = new String[] { "Id", "description", "duration" };
+        tmPop = new TableModelPerformanceOfPerson(upteResult, columnNames);
 
         displayTables();
 
-        add(tableForTiTAUser);
         add(tableForTiTAProject);
-        // targetActualComparison.add(tableForResults);
+        tableForTiTAUser.setVisible(false);
+        popUserTableContainer.add(tableForTiTAUser);
+        popContainer.add(tableForResults);
 
-        // displayLabels();
+        displayLabels();
         displayButtons();
 
         add(form);
         add(popContainer);
+        add(popUserTableContainer);
     }
 
     /**
@@ -152,35 +177,6 @@ public class PerformanceOfPersonView extends BasePage {
      * Displays the option tables.
      */
     public void displayTables() {
-        tableForTiTAUser = new Table("popTableForTiTAUser", tmForTiTAUser) {
-            @Override
-            protected void onSelection(AjaxRequestTarget target) {
-                if (!(tableForTiTAUser.getSelectedRows()[0] == tmForTiTAUser.getSelectedRow())) {
-                    tmForTiTAUser.setSelectedRow(tableForTiTAUser.getSelectedRows()[0]);
-                    tmForTiTAUser.reload();
-
-                    TiTAUser titaUser = (TiTAUser) tableForTiTAUser.getTableModel().getValueAt(
-                            tableForTiTAUser.getSelectedRows()[0], IntegerConstants.FIFTY);
-
-                    List<TiTAProject> listOfProjects = titaProjectService.findTiTAProjectsForUser(titaUser);
-
-                    if (listOfProjects != null) {
-                        tmForTiTAProject.reload(listOfProjects);
-                    }
-
-                    // makeVisible(false);
-                    // updateResultElements();
-
-                    target.addComponent(tableForTiTAProject);
-                    target.addComponent(tableForTiTAUser);
-                    target.addComponent(popContainer);
-                }
-            }
-        };
-
-        tableForTiTAUser.setWidths(new String[] { "100", "100", "100", "150", "100" });
-        tableForTiTAUser.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
         tableForTiTAProject = new Table("popTableForTiTAProject", tmForTiTAProject) {
             @Override
             protected void onSelection(AjaxRequestTarget target) {
@@ -191,14 +187,18 @@ public class PerformanceOfPersonView extends BasePage {
                     TiTAProject project = (TiTAProject) tableForTiTAProject.getTableModel().getValueAt(
                             tableForTiTAProject.getSelectedRows()[0], IntegerConstants.FIFTY);
 
+                    selectedProject = project;
+
                     List<TiTAUser> listOfUser = userService.findAllTiTAUsersForProject(project);
                     tmForTiTAUser.reload(listOfUser);
 
-                    // makeVisible(false);
-                    // updateResultElements();
+                    makeVisible(false);
+                    tableForTiTAUser.setVisible(true);
+                    popUserTableContainer.add(tableForTiTAUser);
+                    updateResultElements();
 
                     target.addComponent(tableForTiTAProject);
-                    target.addComponent(tableForTiTAUser);
+                    target.addComponent(popUserTableContainer);
                     target.addComponent(popContainer);
                 }
             }
@@ -207,24 +207,33 @@ public class PerformanceOfPersonView extends BasePage {
         tableForTiTAProject.setWidths(new String[] { "150", "150", "100" });
         tableForTiTAProject.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        /*
-         * tableForResults = new Table("taTableForTiTAResult",
-         * tmForTargetActualComparison) {
-         * 
-         * @Override protected void onSelection(AjaxRequestTarget target) { if
-         * (!(tableForResults.getSelectedRows()[0] ==
-         * tmForTargetActualComparison .getSelectedRow())) {
-         * tmForTargetActualComparison
-         * .setSelectedRow(tableForResults.getSelectedRows()[0]);
-         * tmForTargetActualComparison.reload();
-         * 
-         * target.addComponent(tableForResults); } } };
-         * 
-         * tableForResults.setWidths(new String[] { "95", "300", "80", "80",
-         * "78" });
-         * tableForResults.setSelectionMode(ListSelectionModel.SINGLE_SELECTION
-         * ); tableForResults.setVisible(false);
-         */
+        tableForTiTAUser = new Table("popTableForTiTAUser", tmForTiTAUser) {
+            @Override
+            protected void onSelection(AjaxRequestTarget target) {
+                if (!(tableForTiTAUser.getSelectedRows()[0] == tmForTiTAUser.getSelectedRow())) {
+                    tmForTiTAUser.setSelectedRow(tableForTiTAUser.getSelectedRows()[0]);
+                    tmForTiTAUser.reload();
+
+                    selectedUser = (TiTAUser) tableForTiTAUser.getTableModel().getValueAt(
+                            tableForTiTAUser.getSelectedRows()[0], IntegerConstants.FIFTY);
+                }
+            }
+        };
+
+        tableForTiTAUser.setWidths(new String[] { "100", "100", "100", "150", "100" });
+        tableForTiTAUser.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        tableForResults = new Table("popTableForTiTAResult", tmPop) {
+            @Override
+            protected void onSelection(AjaxRequestTarget target) {
+                // do nothing
+            }
+        };
+
+        tableForResults.setWidths(new String[] { "95", "300", "80", "80", "78" });
+        tableForResults.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tableForResults.setVisible(false);
+
     }
 
     /**
@@ -245,50 +254,33 @@ public class PerformanceOfPersonView extends BasePage {
         lblDescriptionForTargetHours = new Label("labelDescriptionTargetHours", "TargetHours:");
         lblDescriptionForTargetHours.setVisible(false);
 
-        lblDescriptionTargetActualComparison = new Label("labelDescriptionTargetActualComparison",
-                new PropertyModel<String>(this, "messageForlblDescriptionTargetActualComparison"));
-        lblDescriptionTargetActualComparison.setVisible(false);
-        lblDescriptionTargetActualComparison.setOutputMarkupId(true);
+        lblDescriptionPop = new Label("labelDescriptionPop", new PropertyModel<String>(this,
+                "messageForlblDescriptionPop"));
+        lblDescriptionPop.setVisible(false);
+        lblDescriptionPop.setOutputMarkupId(true);
+
+        lblDescriptionPerformancePercent = new Label("labelDescriptionPerformancePercent", "Percentage:");
+        lblDescriptionPerformancePercent.setVisible(false);
+
+        lblPerformancePercent = new Label("labelPerformancePercent", new PropertyModel<String>(this,
+                "messageForlblPerformancePercent"));
+        lblPerformancePercent.setVisible(false);
+        lblPerformancePercent.setOutputMarkupId(true);
 
         popContainer.add(lblActualHours);
         popContainer.add(lblTargetHours);
         popContainer.add(lblDescriptionForActualHours);
         popContainer.add(lblDescriptionForTargetHours);
-        popContainer.add(lblDescriptionTargetActualComparison);
+        popContainer.add(lblDescriptionPop);
+        popContainer.add(lblDescriptionPerformancePercent);
+        popContainer.add(lblPerformancePercent);
     }
 
     /**
      * Displays the buttons for the target/actual comparison.
      */
     public void displayButtons() {
-        form.add(new AjaxButton("btnRefreshTables", form) {
-            @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
-                loadTableValues();
-
-                // makeVisible(false);
-                // updateResultElements();
-
-                target.addComponent(tableForTiTAProject);
-                target.addComponent(tableForTiTAUser);
-                // target.addComponent(targetActualComparison);
-            }
-        });
-
-        form.add(new AjaxButton("btnShowPoP", form) {
-            @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
-                /*
-                 * if (loadTargetActualComparison()) { updateResultElements();
-                 * target.addComponent(targetActualComparison); }
-                 * 
-                 * updateResultElements();
-                 * target.addComponent(targetActualComparison);
-                 */
-            }
-        });
-
-        form.add(new Button("btnShowPoPAsPDF") {
+        btnShowPoPAsPDF = new Button("btnShowPoPAsPDF") {
             @Override
             public void onSubmit() {
                 try {
@@ -298,10 +290,138 @@ public class PerformanceOfPersonView extends BasePage {
                     rsrtarget.setFileName(pdfResource.getFilename());
                     RequestCycle.get().setRequestTarget(rsrtarget);
                 } catch (JRException e) {
-                    log.debug(e.getMessage());
+                    // TODO: GUI Exception Handling
+                    log.error(e.getMessage());
+                } catch (PersistenceException e) {
+                    // TODO: GUI Exception Handling
+                    log.error(e.getMessage());
                 }
             }
+
+            @Override
+            public boolean isEnabled() {
+                return tableForResults.isVisible();
+            }
+        };
+
+        form.add(btnShowPoPAsPDF);
+
+        form.add(new AjaxButton("btnShowPoP", form) {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
+                if (loadPerformanceOfPerson()) {
+                    updateResultElements();
+                    target.addComponent(popContainer);
+                }
+
+                updateResultElements();
+                target.addComponent(popContainer);
+                target.addComponent(btnShowPoPAsPDF);
+            }
         });
+
+        form.add(new AjaxButton("btnRefreshTables", form) {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
+                loadTableValues();
+
+                makeVisible(false);
+                tableForTiTAUser.setVisible(false);
+                popUserTableContainer.add(tableForTiTAUser);
+                updateResultElements();
+
+                target.addComponent(tableForTiTAProject);
+                target.addComponent(popUserTableContainer);
+                target.addComponent(popContainer);
+                target.addComponent(btnShowPoPAsPDF);
+            }
+        });
+
+    }
+
+    /**
+     * Loads the Performance Of Person view.
+     * 
+     * @return true if a project and a user was found.
+     */
+    private boolean loadPerformanceOfPerson() {
+
+        if (tableForTiTAUser.getSelectedRows().length > 0 && tableForTiTAProject.getSelectedRows().length > 0) {
+            TiTAProject project = (TiTAProject) tableForTiTAProject.getTableModel().getValueAt(
+                    tableForTiTAProject.getSelectedRows()[0], IntegerConstants.FIFTY);
+
+            TiTAUser titaUser = (TiTAUser) tableForTiTAUser.getTableModel().getValueAt(
+                    tableForTiTAUser.getSelectedRows()[0], IntegerConstants.FIFTY);
+
+            if (project != null && titaUser != null) {
+                upteResult = taskService.getPerformanceOfPersonView(project, titaUser);
+
+                if (upteResult != null && upteResult.size() > 0) {
+                    tmPop.reload(upteResult);
+                    makeVisible(true);
+
+                    Long duration = effortService.totalizeEffortsForTiTAProjectAndTiTAUser(project.getId(), titaUser
+                            .getId());
+                    setMessageForlblActualHours(GlobalUtils.getDurationAsString(duration));
+
+                    Long targetHours = userService.findTargetHoursForTiTAProjectAndTiTAUser(titaUser.getId(), project
+                            .getId());
+
+                    if (targetHours == null) {
+                        setMessageForlblTargetHours("No value for the target hours saved.");
+                        setMessageForlblPerformancePercent("");
+                    } else {
+                        setMessageForlblTargetHours(targetHours.toString() + ":00");
+                        Double hoursInMillis = Double.valueOf(TiTATimeConverter.getMillisFromHour(targetHours)
+                                .toString());
+                        // CHECKSTYLE:OFF
+                        Double percent = Double.valueOf(duration / hoursInMillis * 100);
+                        // CHECKSTYLE:ON
+                        setMessageForlblPerformancePercent(new DecimalFormat("#.00").format(percent) + "%");
+                    }
+
+                    setMessageForlblDescriptionPop("Performance of Person:");
+
+                    return true;
+                } else {
+                    lblDescriptionPop.setVisible(true);
+                    setMessageForlblDescriptionPop("No efforts found for the " + "chosen user and project.");
+
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Shows the elements of the result or set them to visible false.
+     * 
+     * @param visible if true, the elements are shown otherwise not.
+     */
+    public void makeVisible(boolean visible) {
+        tableForResults.setVisible(visible);
+        lblActualHours.setVisible(visible);
+        lblTargetHours.setVisible(visible);
+        lblDescriptionForActualHours.setVisible(visible);
+        lblDescriptionForTargetHours.setVisible(visible);
+        lblDescriptionPop.setVisible(visible);
+        lblDescriptionPerformancePercent.setVisible(visible);
+        lblPerformancePercent.setVisible(visible);
+    }
+
+    /**
+     * Update elements on the markup container.
+     */
+    public void updateResultElements() {
+        popContainer.add(tableForResults);
+        popContainer.add(lblActualHours);
+        popContainer.add(lblTargetHours);
+        popContainer.add(lblDescriptionForActualHours);
+        popContainer.add(lblDescriptionForTargetHours);
+        popContainer.add(lblDescriptionPop);
+        popContainer.add(lblDescriptionPerformancePercent);
+        popContainer.add(lblPerformancePercent);
     }
 
     /**
@@ -312,10 +432,11 @@ public class PerformanceOfPersonView extends BasePage {
     private void loadReport() throws JRException {
         ServletContext context = ((WebApplication) getApplication()).getServletContext();
         pdfResource.loadReport(context.getRealPath(pdfResource.getDesignFilename()));
-        // pdfResource.getReportParameters().put("actualHours",
-        // getMessageForlblActualHours());
-        // pdfResource.getReportParameters().put("targetHours",
-        // getMessageForlblTargetHours());
+        pdfResource.addReportParameter("actualHours", getMessageForlblActualHours());
+        pdfResource.addReportParameter("targetHours", getMessageForlblTargetHours());
+        pdfResource.addReportParameter("percentage", getMessageForlblPerformancePercent());
+        pdfResource.addReportParameter("project", selectedProject.getName());
+        pdfResource.addReportParameter("user", selectedUser.getFirstName() + " " + selectedUser.getLastName());
 
         try {
             pdfResource.getReportParameters().put("imageLocation",
@@ -323,6 +444,39 @@ public class PerformanceOfPersonView extends BasePage {
         } catch (MalformedURLException e) {
             e.getMessage();
         }
-        pdfResource.setReportDataSource(new JRTableModelDataSource(tmForTargetActualComparison));
+        pdfResource.setReportDataSource(new JRTableModelDataSource(tmPop));
     }
+
+    public void setMessageForlblDescriptionPop(String messageForlblDescriptionPop) {
+        this.messageForlblDescriptionPop = messageForlblDescriptionPop;
+    }
+
+    public String getMessageForlblDescriptionPop() {
+        return messageForlblDescriptionPop;
+    }
+
+    public void setMessageForlblActualHours(String messageForlblActualHours) {
+        this.messageForlblActualHours = messageForlblActualHours;
+    }
+
+    public String getMessageForlblActualHours() {
+        return messageForlblActualHours;
+    }
+
+    public void setMessageForlblTargetHours(String messageForlblTargetHours) {
+        this.messageForlblTargetHours = messageForlblTargetHours;
+    }
+
+    public String getMessageForlblTargetHours() {
+        return messageForlblTargetHours;
+    }
+
+    public void setMessageForlblPerformancePercent(String messageForlblPerformancePercent) {
+        this.messageForlblPerformancePercent = messageForlblPerformancePercent;
+    }
+
+    public String getMessageForlblPerformancePercent() {
+        return messageForlblPerformancePercent;
+    }
+
 }

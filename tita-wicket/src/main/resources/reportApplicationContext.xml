@@ -69,8 +69,8 @@
         </property>
     </bean>
     <bean id="performanceOfPersonReport" class="at.ac.tuwien.ifs.tita.reporting.JasperPdfResource">
-        <property name="designFilename" value="/reports/TargetActualComparison.jrxml" />
-        <property name="filename" value="TargetActualComparison.pdf" />
+        <property name="designFilename" value="/reports/PerformanceOfPersonView.jrxml" />
+        <property name="filename" value="PerformanceOfPerson.pdf" />
         <property name="reportParameters">
             <map>
                 <entry>

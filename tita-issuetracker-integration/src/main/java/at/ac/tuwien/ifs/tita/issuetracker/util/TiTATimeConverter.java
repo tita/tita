@@ -28,33 +28,29 @@ public class TiTATimeConverter {
     private static final int C_SIXTY = 60;
     private static final int C_THREETHOUSANDSIXHUNDRET = 3600;
     private static final int C_THREE = 3;
+    private static final int C_THREEMILLIONS6HUNDREDTHOUSAND = 3600000;
 
     /**
      * Converts a time duration to hours and minutes.
      * 
-     * @param time
-     *            Long
+     * @param time Long
      * @return String value of time
      */
     public static String getDuration2String(Long time) {
         String format = String.format("%%0%dd", 2);
         Long eltime = time / C_THOUSAND;
         String seconds = String.format(format, eltime % C_SIXTY);
-        String minutes = String.format(format, eltime
-                % C_THREETHOUSANDSIXHUNDRET / C_SIXTY);
-        String hours = String
-                .format(format, eltime / C_THREETHOUSANDSIXHUNDRET);
+        String minutes = String.format(format, eltime % C_THREETHOUSANDSIXHUNDRET / C_SIXTY);
+        String hours = String.format(format, eltime / C_THREETHOUSANDSIXHUNDRET);
         return hours + ":" + minutes + ":" + seconds;
     }
 
     /**
      * Converts a string to long time.
      * 
-     * @param time
-     *            - String to convert
+     * @param time - String to convert
      * @return converted long time
-     * @throws ParseException
-     *             - if string isn't in valid time format
+     * @throws ParseException - if string isn't in valid time format
      */
     public static Long getString2Duration(String time) throws ParseException {
         String[] timeArray = time.split(":");
@@ -71,5 +67,15 @@ public class TiTATimeConverter {
         } catch (NumberFormatException e) {
             throw new ParseException("", 1);
         }
+    }
+
+    /**
+     * Converts a hour to long time.
+     * 
+     * @param hour - hour to convert.
+     * @return converted long time
+     */
+    public static Long getMillisFromHour(Long hour) {
+        return hour * C_THREEMILLIONS6HUNDREDTHOUSAND;
     }
 }
