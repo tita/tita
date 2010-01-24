@@ -36,9 +36,9 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
  * The TaskService combines the IssueTrackerService, which fetches and manage
  * the data from the issue trackers, and encapsulates all Task-concerning
  * Database operations.
- * 
+ *
  * @author Christoph
- * 
+ *
  */
 @Transactional
 public interface ITaskService {
@@ -46,7 +46,7 @@ public interface ITaskService {
     /**
      * Method to save a tita task that is created to identify the self defined
      * effort.
-     * 
+     *
      * @param titaTask - task for the effort
      * @return titaTask - the saved tita task.
      * @throws PersistenceException - if parameter is null or another Exception
@@ -56,7 +56,7 @@ public interface ITaskService {
 
     /**
      * Method to delete a tita task.
-     * 
+     *
      * @param titaTask - the tita task to be deleted
      * @throws PersistenceException - if parameter is null or another Exception
      *         is thrown
@@ -65,7 +65,7 @@ public interface ITaskService {
 
     /**
      * Returns a specific tita task found to the id given.
-     * 
+     *
      * @param id the unique identifier of an tita task
      * @throws PersistenceException if no tita task was found or another
      *         Exception is thrown
@@ -75,7 +75,7 @@ public interface ITaskService {
 
     /**
      * Method to save a issue tracker task to Tita.
-     * 
+     *
      * @param issueTrackerTask - issue tracker task
      * @return issueTrackerTask - the saved issue tracker task.
      * @throws PersistenceException - if parameter is null or another Exception
@@ -85,7 +85,7 @@ public interface ITaskService {
 
     /**
      * Method to delete a issue tracker task.
-     * 
+     *
      * @param issueTrackerTask - the issue tracker task to be deleted
      * @throws PersistenceException - if parameter is null or another Exception
      *         is thrown
@@ -94,7 +94,7 @@ public interface ITaskService {
 
     /**
      * Returns a specific issue tracker task found to the id given.
-     * 
+     *
      * @param id the unique identifier of an issue tracker task
      * @throws PersistenceException if no issue tracker task was found or
      *         another Exception is thrown
@@ -104,7 +104,7 @@ public interface ITaskService {
 
     /**
      * Method to save a issue tracker.
-     * 
+     *
      * @param issueTracker - issue tracker configuration
      * @return the issue tracker to be saved.
      * @throws PersistenceException - if parameter is null or another Exception
@@ -114,7 +114,7 @@ public interface ITaskService {
 
     /**
      * Method to delete a issue tracker.
-     * 
+     *
      * @param issueTracker - the issue tracker to be deleted
      * @throws PersistenceException - if parameter is null or another Exception
      *         is thrown
@@ -123,7 +123,7 @@ public interface ITaskService {
 
     /**
      * Returns a specific issue tracker found to the id given.
-     * 
+     *
      * @param id the unique identifier of an issue tracker
      * @throws PersistenceException if no issue tracker was found or another
      *         Exception is thrown
@@ -148,25 +148,28 @@ public interface ITaskService {
 
     /**
      * Method to fetch all tasks for the tita project and the added issue
-     * tracker projects.
-     * 
-     * @param projectTitaId - id of the selected tita project
-     * @param userTitaId - id of the logged in user
-     * @throws ProjectNotFoundException pnfe - if a project is null
+     * tracker projects using a other thread.
+     *
+     * @param projectTitaId
+     *            - id of the selected tita project
+     * @param userTitaId
+     *            - id of the logged in user
+     * @throws ProjectNotFoundException
+     *             pnfe - if a project is null
      */
     void fetchTaskFromIssueTrackerProjects(Long projectTitaId, Long userTitaId) throws ProjectNotFoundException;
 
     /**
      * Method to get all Tasks from all issue trakcer projects that are included
      * in a tita project.
-     * 
+     *
      * @return a map of tasks from all projects included in the tita project.
      */
     Map<Long, ITaskTrackable> getMapOfTasksFromAllProjectsIncludedInTiTAProject();
 
     /**
      * Method to fetch all tasks from issue tracker group by issue tracker.
-     * 
+     *
      * @param url - parameter for grouping
      * @return map of tasks for a issue tracking tool url
      */
@@ -174,7 +177,7 @@ public interface ITaskService {
 
     /**
      * Method to fetch all tasks from issue tracker tasks group by issue status.
-     * 
+     *
      * @param status - parameter for grouping
      * @return map of tasks for a issue tracker
      */
@@ -183,7 +186,7 @@ public interface ITaskService {
     /**
      * Method to assign a task in the issue tracker. Tests are already done for
      * the issuetrackerservice.
-     * 
+     *
      * @param taskId - the id of the task that should be assigned.
      */
     void assignTask(Long taskId);
@@ -191,14 +194,14 @@ public interface ITaskService {
     /**
      * Method to close a task in the issue tracker. Tests are already done for
      * the issuetrackerservice.
-     * 
+     *
      * @param taskId - the id of the task that should be closed.
      */
     void closeTask(Long taskId);
 
     /**
      * Gets a IssueTrackerTask from the IssueTracker.
-     * 
+     *
      * @param taskId - issueTracker task Id
      * @param projectId - issueTracker project Id
      * @param issueTrackerId - issueTracker Id
@@ -209,10 +212,10 @@ public interface ITaskService {
     /**
      * Returns the view for performance of performacne evaluation, with data
      * from issuetracker tasks and tita tasks and the sum of their efforts.
-     * 
+     *
      * @param project selected project
      * @param user selected user
-     * 
+     *
      * @return tasks with their sum of efforts.
      */
     List<UserProjectTaskEffort> getPerformanceOfPersonView(TiTAProject project, TiTAUser user);

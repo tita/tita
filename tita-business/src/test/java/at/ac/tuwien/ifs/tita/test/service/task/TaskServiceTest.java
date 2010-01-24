@@ -57,9 +57,9 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
 
 /**
  * Task Service Testcases.
- * 
+ *
  * @author Christoph
- * 
+ *
  */
 
 public class TaskServiceTest extends IssueTrackerServiceTest {
@@ -152,7 +152,7 @@ public class TaskServiceTest extends IssueTrackerServiceTest {
 
     /**
      * Delete mantis projects for all tests.
-     * 
+     *
      * @throws InterruptedException e
      */
     @After
@@ -166,19 +166,25 @@ public class TaskServiceTest extends IssueTrackerServiceTest {
     /**
      * The test case should fetch the tasks from the issue tracker projects
      * 'projectName0' and 'projectName1' from mantis and provide as a list.
-     * 
-     * 
-     * 
-     * @throws ProjectNotFoundException pnfe
+     *
+     *
+     *
+     * @throws ProjectNotFoundException
+     *             pnfe
+     * @throws InterruptedException
+     *             ie
      */
     @Test
-    public void fetchTaskFromIssueTrackerProjects() throws ProjectNotFoundException {
+    public void fetchTaskFromIssueTrackerProjects() throws ProjectNotFoundException,
+            InterruptedException {
 
         Map<Long, ITaskTrackable> map = taskService.getMapOfTasksFromAllProjectsIncludedInTiTAProject();
 
         // Assert.assertNull(this.taskService.getMapOfTasksFromAllProjectsIncludedInTiTAProject());
         taskService.fetchTaskFromIssueTrackerProjects(titaProject.getId(), titaUser.getId());
+
         // CHECKSTYLE:OFF
+        Thread.sleep(20000);
         assertEquals(4, taskService.getMapOfTasksFromAllProjectsIncludedInTiTAProject().size());
         // CHECKSTYLE:ON
         // getOutputOfTasks(this.taskService.getMapOfTasksFromAllProjectsIncludedInTiTAProject());
@@ -188,7 +194,7 @@ public class TaskServiceTest extends IssueTrackerServiceTest {
     /**
      * The test case should return 4 tasks, because every task has the status
      * 'NEW'.
-     * 
+     *
      * @throws ProjectNotFoundException pnfe
      */
 
@@ -209,7 +215,7 @@ public class TaskServiceTest extends IssueTrackerServiceTest {
     /**
      * The test case should return 4 tasks, because every task is provided from
      * mantis with the same url.
-     * 
+     *
      * @throws ProjectNotFoundException pnfe
      */
     @Test
@@ -298,7 +304,7 @@ public class TaskServiceTest extends IssueTrackerServiceTest {
 
     /**
      * Helper method.
-     * 
+     *
      * @param tasks a map of tasks
      * @return the output as a well formed string for developing tests
      */

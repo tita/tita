@@ -50,9 +50,9 @@ import at.ac.tuwien.ifs.tita.issuetracker.issue.service.IssueTrackerService;
  * The TaskService combines the IssueTrackerService, which fetches and manage
  * the data from the issue trackers, and encapsulates all Task-concerning
  * Database operations.
- * 
+ *
  * @author Christoph
- * 
+ *
  */
 
 public class TaskService implements ITaskService {
@@ -151,6 +151,23 @@ public class TaskService implements ITaskService {
     /** {@inheritDoc} */
     @Override
     public void fetchTaskFromIssueTrackerProjects(Long projectTitaId, Long userTitaId) throws ProjectNotFoundException {
+        FetchingThread fetcher = new FetchingThread(projectTitaId, userTitaId);
+        fetcher.run();
+    }
+
+    /**
+     * Private Method to fetch all tasks for the tita project and the added
+     * issue tracker projects.
+     *
+     * @param projectTitaId
+     *            - id of the selected tita project
+     * @param userTitaId
+     *            - id of the logged in user
+     * @throws ProjectNotFoundException
+     *             pnfe - if a project is null
+     */
+    private void fetchingTasks(Long projectTitaId, Long userTitaId) throws ProjectNotFoundException {
+        Map<Long, ITaskTrackable> newMap = new TreeMap<Long, ITaskTrackable>();
 
         titaProject = titaProjectDao.findById(projectTitaId);
 
@@ -158,7 +175,6 @@ public class TaskService implements ITaskService {
             log.debug("TaskService - fetchTaskFromIssueTrackerProjects: Project not found.");
             throw new ProjectNotFoundException("Project not found.");
         }
-        mapOfTasksFromAllProjectsIncludedInTiTAProject.clear();
 
         titaUser = titaUserDao.findById(userTitaId);
 
@@ -171,7 +187,7 @@ public class TaskService implements ITaskService {
             Map<Long, IProjectTrackable> mapOfProjects = issueTrackerService.getProjects();
 
             log.info("Check all accessible projects from the Issue Tracker: " + login.getIssueTracker().getUrl());
-            if (this.titaProject.getIssueTrackerProjects() != null && mapOfProjects != null
+            if (titaProject.getIssueTrackerProjects() != null && mapOfProjects != null
                     && mapOfProjects.values() != null) {
                 for (IssueTrackerProject issueTrackerProject : titaProject.getIssueTrackerProjects()) {
 
@@ -190,13 +206,16 @@ public class TaskService implements ITaskService {
 
                                 for (ITaskTrackable taskTrackable : mapOfTasks.values()) {
                                     key++;
-                                    mapOfTasksFromAllProjectsIncludedInTiTAProject.put(key, taskTrackable);
+                                    newMap.put(key, taskTrackable);
                                 }
                             }
                         }
                     }
                 }
             }
+
+            mapOfTasksFromAllProjectsIncludedInTiTAProject.clear();
+            mapOfTasksFromAllProjectsIncludedInTiTAProject.putAll(newMap);
         }
     }
 
@@ -301,5 +320,37 @@ public class TaskService implements ITaskService {
 
     public void setTimeEffortDao(IEffortDao timeEffortDao) {
         this.timeEffortDao = timeEffortDao;
+    }
+
+    /**
+     * Thread for fetching tasks.
+     *
+     * @author Christoph
+     *
+     */
+    public class FetchingThread extends Thread {
+
+        private Long projectTitaId;
+        private Long userTitaId;
+        private final Logger log = LoggerFactory.getLogger(FetchingThread.class);
+
+        public FetchingThread(Long projectTitaId, Long userTitaId) {
+            super("FetcherThread");
+            this.projectTitaId = projectTitaId;
+            this.userTitaId = userTitaId;
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public void run() {
+
+            try {
+                log.info("Connection opened for update.");
+                fetchingTasks(projectTitaId, userTitaId);
+
+            } catch (Exception ex) {
+                log.error("Connection error while data update.");
+            }
+        }
     }
 }

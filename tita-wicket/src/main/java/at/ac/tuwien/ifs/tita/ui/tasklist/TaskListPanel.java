@@ -105,7 +105,7 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
     private Map<Long, ClosedTaskTimerPanel> closedTasks;
     private GeneralTimerPanel generalTimer;
     private AdministrationPanelEffort ape;
-    
+
     public TaskListPanel(String id, TiTAProject titaProject) {
         super(id);
         newTasks = new TreeMap<Long, NewTaskTimerPanel>();
@@ -164,7 +164,7 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
         dropDownView.add(new AjaxFormComponentUpdatingBehavior("onchange") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
-                loadIssueTrackerTasks(project);
+                changeGrouping(project);
                 target.addComponent(containerTaskList);
             }
         });
@@ -192,8 +192,8 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
         assignedTasks.clear();
         closedTasks.clear();
     }
-    
-    
+
+
 
     public TiTAProject getProject() {
         return project;
@@ -221,6 +221,30 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
         } catch (ProjectNotFoundException e) {
             log.error(e.getMessage());
         }
+    }
+
+    /**
+     * Load all tasks from mantis.
+     *
+     * @param tp
+     *            TiTAProject
+     */
+    public void changeGrouping(TiTAProject tp) {
+        project = tp;
+
+        // clear all accordion items
+        accordionPanel.removeAllAccordionPanelItems();
+        // taskService.fetchTaskFromIssueTrackerProjects(project.getId(),
+        // user.getId());
+        if (isOrderByState()) {
+            generateIssueList(taskService.sortingTasksByIssueStatus(IssueStatus.NEW));
+            generateIssueList(taskService.sortingTasksByIssueStatus(IssueStatus.ASSIGNED));
+            generateIssueList(taskService.sortingTasksByIssueStatus(IssueStatus.CLOSED));
+        } else {
+            generateIssueList(taskService.sortingTasksByIssueTracker(C_HOST));
+        }
+        updateAccordion();
+
     }
 
     /**
@@ -340,8 +364,8 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
         Effort eff = timerCoordinator.stopTiTATimer(user.getId());
         generalTimer.setEffort(eff);
     }
-    
-    
+
+
 
     public GeneralTimerPanel getGeneralTimer() {
         return generalTimer;
@@ -353,8 +377,8 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
      * @param target AjaxRequestTarget
      */
     public void saveEffortForTiTATask(Effort effort, AjaxRequestTarget target){
-        
-        effortService.saveEffortForTiTATask(effort, generalTimer.getDescription(), 
+
+        effortService.saveEffortForTiTATask(effort, generalTimer.getDescription(),
                 user, project);
 //        effortService.clear();
         ape.reloadTable(target);
@@ -381,14 +405,14 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
      * @param task ITaskTrackable
      * @param target AjaxRequestTarget
      */
-    private void saveIssueTrackerTaskEfforts(Effort effort, ITaskTrackable task, 
+    private void saveIssueTrackerTaskEfforts(Effort effort, ITaskTrackable task,
                                              AjaxRequestTarget target){
-        
+
         effortService.saveIssueTrackerTaskEfforts(effort, task, user, project);
         ape.reloadTable(target);
-        
-        
-        
+
+
+
 ////      persist issue tracker task anOd effort and read it from db to get actual effort value
 //        IssueTrackerTask itt = projectService.findIssueTrackerTaskForTiTAProject(project.getId(),
 //                                       C_ISSUE_TRACKER_ID, task.getProject().getId(), task.getId());
@@ -421,15 +445,15 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
 //        }
     }
 
-    
+
     /**
      * Sets current administration panel for efforts.
      * @param ap AdministrationPanelEffort
      */
     public void setAdministrationPanelEffort(AdministrationPanelEffort ap){
-        this.ape = ap;
+        ape = ap;
     }
-    
+
     /**
      * Returns, if order of the issues is by issue state or not.
      * @return true, if order by state
