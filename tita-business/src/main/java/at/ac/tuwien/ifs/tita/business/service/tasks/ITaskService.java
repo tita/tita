@@ -202,8 +202,11 @@ public interface ITaskService {
      * 
      * @param project selected project
      * @param user selected user
+     * @param loggedInUser logged in user
+     * @throws ProjectNotFoundException pnfe - if a project is null
      * 
      * @return tasks with their sum of efforts.
      */
-    List<UserProjectTaskEffort> getPerformanceOfPersonView(TiTAProject project, TiTAUser user);
+    List<UserProjectTaskEffort> getPerformanceOfPersonView(TiTAProject project, TiTAUser user, String loggedInUser)
+            throws ProjectNotFoundException;
 }

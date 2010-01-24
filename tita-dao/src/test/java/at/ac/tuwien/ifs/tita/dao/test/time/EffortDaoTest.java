@@ -251,4 +251,23 @@ public class EffortDaoTest { // extends AbstractJpaTests {
         }
     }
 
+    /**
+     * Test: Get duration sum for titaTasks.
+     */
+    @Test
+    public void findEffortsSumForTiTATasks() {
+        // CHECKSTYLE:OFF
+        Assert.assertEquals(24000L, (long) timeEffortDAO.findEffortsSumForTiTATasks(1L, 1L, 3L));
+        // CHECKSTYLE:ON
+    }
+
+    /**
+     * Test: Get duration sum for issueTrackerTasks.
+     */
+    @Test
+    public void findEffortsSumForIssueTrackerTasks() {
+        // CHECKSTYLE:OFF
+        Assert.assertEquals(9000L, (long) timeEffortDAO.findEffortsSumForIssueTrackerTasks(1L, 1L, 4L));
+        // CHECKSTYLE:ON
+    }
 }

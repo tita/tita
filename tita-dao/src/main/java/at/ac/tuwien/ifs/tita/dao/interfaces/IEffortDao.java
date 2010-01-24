@@ -106,6 +106,17 @@ public interface IEffortDao extends IGenericHibernateDao<Effort, Long> {
     Long findEffortsSumForTiTATasks(Long projectId, Long userId, Long taskId);
 
     /**
+     * Returns sum of Efforts per tita project, tita user and issueTrackerTasks.
+     * 
+     * @param projectId Long
+     * @param userId String
+     * @param taskId Long
+     * 
+     * @return sum of duration of efforts from issueTrackerTasks.
+     */
+    Long findEffortsSumForIssueTrackerTasks(Long projectId, Long userId, Long taskId);
+
+    /**
      * Totalize the efforts for a tita project and a tita user.
      * 
      * @param projectId - the id of the tita project

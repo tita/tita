@@ -41,16 +41,8 @@ public class TiTATaskDao extends GenericHibernateDao<TiTATask, Long> implements 
     }
 
     /** {@inheritDoc} */
-    @SuppressWarnings("unchecked")
     @Override
     public List<TiTATask> findTiTATasksforUserProject(TiTAProject project, TiTAUser user) {
         return findByCriteria(new Criterion[] { Restrictions.eq("titaProject", project), Restrictions.eq("user", user) });
-        // String queryString =
-        // "select task from TiTATask tt where tt.titaProject = " + projectId +
-        // " and tt.user = "
-        // + userId;
-
-        // Query q = getSession().createQuery(queryString);
-        // return q.list();
     }
 }

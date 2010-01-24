@@ -17,6 +17,7 @@ package at.ac.tuwien.ifs.tita.dao.issuetracker.task;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 import at.ac.tuwien.ifs.tita.dao.GenericHibernateDao;
@@ -30,23 +31,21 @@ import at.ac.tuwien.ifs.tita.entity.IssueTrackerTask;
  * 
  */
 @Repository
-public class IssueTrackerTaskDao extends GenericHibernateDao<IssueTrackerTask, Long> 
-                                 implements IIssueTrackerTaskDao{
+public class IssueTrackerTaskDao extends GenericHibernateDao<IssueTrackerTask, Long> implements IIssueTrackerTaskDao {
 
     public IssueTrackerTaskDao() {
         super(IssueTrackerTask.class);
     }
-    
+
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
-    @Override     
-    public IssueTrackerTask findIssueTrackerTask(Long tp,Long it, Long itp, Long itt){
+    @Override
+    public IssueTrackerTask findIssueTrackerTask(Long tp, Long it, Long itp, Long itt) {
         String queryString = "select * from issue_tracker_task itt "
-            + "join issue_tracker_project itp on itt.issue_tracker_project_id = itp.id "
-            + "join tita_project tp on itp.tita_project_id = tp.id " 
-            + "where tp.id = ? and itp.isst_id = ? and itp.isst_project_id = ? "
-            + "and itt.isst_task_id = ? ";
-    
+                + "join issue_tracker_project itp on itt.issue_tracker_project_id = itp.id "
+                + "join tita_project tp on itp.tita_project_id = tp.id "
+                + "where tp.id = ? and itp.isst_id = ? and itp.isst_project_id = ? " + "and itt.isst_task_id = ? ";
+
         org.hibernate.SQLQuery q = getSession().createSQLQuery(queryString);
         q.addEntity(IssueTrackerTask.class);
         // CHECKSTYLE:OFF
@@ -55,13 +54,26 @@ public class IssueTrackerTaskDao extends GenericHibernateDao<IssueTrackerTask, L
         q.setParameter(2, itp);
         q.setParameter(3, itt);
         // CHECKSTYLE:ON
-    
+
         List<IssueTrackerTask> task = q.list();
-        
-        if(task.size() != 0){
+
+        if (task.size() != 0) {
             return task.get(0);
-        }else{
+        } else {
             return null;
         }
+    }
+
+    /** {@inheritDoc} */
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<IssueTrackerTask> findIssueTrackerTasksforUserProject(Long projectId, Long userId) {
+        String queryString = "select distinct itt from Effort e " + "join e.issueTTask as itt "
+                + "join itt.isstProject as itp " + "join itp.titaProject as tp " + "where e.user = " + userId
+                + " and tp.id = " + projectId + " and e.deleted != true";
+
+        Query q = getSession().createQuery(queryString);
+
+        return q.list();
     }
 }

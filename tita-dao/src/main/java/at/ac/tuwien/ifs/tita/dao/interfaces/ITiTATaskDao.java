@@ -34,7 +34,7 @@ public interface ITiTATaskDao extends IGenericHibernateDao<TiTATask, Long> {
      * @param project TiTAProject tita project
      * @param user TiTAUser issue tracker
      * 
-     * @return TiTATask
+     * @return List of TiTATask
      */
     List<TiTATask> findTiTATasksforUserProject(TiTAProject project, TiTAUser user);
 }
