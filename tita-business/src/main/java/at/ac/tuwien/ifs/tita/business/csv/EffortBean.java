@@ -13,15 +13,16 @@
  */
 package at.ac.tuwien.ifs.tita.business.csv;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * EffortBean for importing value, in this case the same as in Effort.
- * 
+ *
  * @author Christoph
- * 
+ *
  */
-public class EffortBean {
+public class EffortBean implements Serializable {
     private Date date;
     private Date startTime;
     private Date endTime;

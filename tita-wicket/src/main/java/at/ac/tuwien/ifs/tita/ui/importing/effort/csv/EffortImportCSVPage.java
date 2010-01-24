@@ -31,6 +31,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.form.upload.UploadProgressBar;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -80,6 +81,7 @@ public class EffortImportCSVPage extends BasePage {
     private IProjectService titaProjectService;
 
     private Form<Object> form;
+    private WebMarkupContainer results;
 
     private List<TiTAProject> titaProjectList = new ArrayList<TiTAProject>();
     private List<Effort> effortResult = new ArrayList<Effort>();
@@ -113,6 +115,10 @@ public class EffortImportCSVPage extends BasePage {
 
         addFileChooserForm();
 
+        results = new WebMarkupContainer("effortsImportresults");
+        results.setOutputMarkupId(true);
+        results.setOutputMarkupPlaceholderTag(true);
+
         form = new Form<Object>("choiceForImportEffortOptions");
         form.setOutputMarkupId(true);
         displayDropDownChoices();
@@ -124,6 +130,8 @@ public class EffortImportCSVPage extends BasePage {
         tmForTiTAProject = new TableModelTiTAProject(titaProjectList);
         tmForImportedEfforts = new TableModelEffortImport(effortResult);
         displayTables();
+
+        add(results);
     }
 
     /**
@@ -141,23 +149,29 @@ public class EffortImportCSVPage extends BasePage {
                             .getValueAt(tableForTiTAProject.getSelectedRows()[0],
                                     IntegerConstants.FIFTY);
 
-                    CellProcessor[] processors = new CellProcessor[] { new ParseDate("dd.MM.yyyy"),
-                            null, new ParseLong(), new ParseDate("HH:mm:ss"),
-                            new ParseDate("HH:mm:ss") };
+                    String[] headers = getDropDownValues(listOfDropDowns);
 
-                    String[] header = new String[] { "date", "description", "duration",
-                            "startTime", "endTime" };
+                    for (String header : headers) {
+                        if (header == null) {
 
-                    String[] testHeader = getDropDownValues(listOfDropDowns);
-                    CellProcessor[] testProcessors = getCellProcessors(testHeader);
+                        }
+                    }
+
+
+                    CellProcessor[] processors = getCellProcessors(headers);
 
                     try {
+                        effortResult.clear();
                         List<Effort> importedEfforts = importEffortData(csvFile.getAbsolutePath(),
-                                testHeader, testProcessors, titaProject);
+                                headers, processors, titaProject);
+                        effortResult.addAll(importedEfforts);
+
 
                         tmForImportedEfforts.reload(effortResult);
                         tableForImportedEfforts.setVisible(true);
-                        target.addComponent(tableForImportedEfforts);
+
+                        results.add(tableForImportedEfforts);
+                        target.addComponent(results);
 
                     } catch (PersistenceException e) {
                         // TODO Auto-generated catch block
@@ -238,6 +252,9 @@ public class EffortImportCSVPage extends BasePage {
                     tmForTiTAProject.setSelectedRow(tableForTiTAProject.getSelectedRows()[0]);
                     tmForTiTAProject.reload();
 
+                    tableForImportedEfforts.setVisible(false);
+                    target.addComponent(tableForImportedEfforts);
+
                 }
             }
         };
@@ -262,8 +279,8 @@ public class EffortImportCSVPage extends BasePage {
 
         tableForImportedEfforts.setWidths(new String[] { "95", "300", "80", "80", "78" });
         tableForImportedEfforts.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        tableForImportedEfforts.setVisible(false);
-        add(tableForImportedEfforts);
+        tableForImportedEfforts.setVisible(true);
+        results.add(tableForImportedEfforts);
     }
 
 
@@ -283,6 +300,9 @@ public class EffortImportCSVPage extends BasePage {
                 @Override
                 protected void onUpdate(AjaxRequestTarget target) {
                     // importData.setVisible(checkDropDownChoiceValues(listOfDropDowns));
+
+                    tableForImportedEfforts.setVisible(false);
+                    target.addComponent(tableForImportedEfforts);
                     target.addComponent(importData);
                 }
             });

@@ -50,6 +50,14 @@
       </div>
     </div>
     <div class="paddingForElements">
+      <div id="effortImportDescription" class="floatingLabelAndDropdwon">
+        <span wicket:id="labelDescription"></span>
+      </div>
+      <div>
+        <select wicket:id="dropdownDescription"></select>
+      </div>
+    </div>  
+    <div class="paddingForElements">
       <div id="effortImportStarttime" class="floatingLabelAndDropdwon">
         <span wicket:id="labelStarttime"></span> 
       </div>
@@ -73,14 +81,6 @@
         <select wicket:id="dropdownDuration"></select>
       </div>
     </div>
-    <div class="paddingForElements">
-      <div id="effortImportDescription" class="floatingLabelAndDropdwon">
-        <span wicket:id="labelDescription"></span>
-      </div>
-      <div>
-        <select wicket:id="dropdownDescription"></select>
-      </div>
-    </div>  
     </form>
   </div>
   
@@ -92,11 +92,11 @@
    <input wicket:id="btnEffortImport" type="submit" value="Import Data"/>
   </div> 
 </div>
-
 <div id="effortImportResult">
-  <table wicket:id="effortImportTableForResults"></table>
+  <div wicket:id="effortsImportresults">
+    <table wicket:id="effortImportTableForResults"></table>
+  </div>
 </div>
-
 </wicket:extend>
 </body>
 </html>

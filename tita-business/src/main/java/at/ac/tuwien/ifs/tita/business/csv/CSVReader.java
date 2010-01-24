@@ -45,6 +45,22 @@ public class CSVReader implements IImportReader {
     }
 
     /**
+     * Returns the first data row or the headers of the csv file.
+     *
+     * @param path
+     *            - file path
+     * @return the first data row or the headers
+     * @throws IOException
+     *             io
+     */
+    public String[] getFirstDataSourceOrHeader(String path) throws IOException {
+        ICsvBeanReader inFile = new CsvBeanReader(new FileReader(path),
+                CsvPreference.EXCEL_NORTH_EUROPE_PREFERENCE);
+
+        return inFile.getCSVHeader(true);
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

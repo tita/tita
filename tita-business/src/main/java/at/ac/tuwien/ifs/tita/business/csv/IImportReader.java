@@ -34,7 +34,7 @@ public interface IImportReader {
 
     /**
      * Imports Efforts from a File.
-     * 
+     *
      * @param path
      *            - file path
      * @param header
@@ -46,7 +46,7 @@ public interface IImportReader {
      * @param processors
      *            - processors
      * @return list of imported efforts
-     * 
+     *
      * @throws PersistenceException
      *             titaDao
      * @throws IOException
@@ -55,4 +55,15 @@ public interface IImportReader {
     List<Effort> importEffortData(String path, String[] header, CellProcessor[] processors,
             TiTATask task,
             TiTAUser user) throws IOException, PersistenceException;
+
+    /**
+     * Returns the first data row or the headers of the csv file.
+     *
+     * @param path
+     *            - file path
+     * @return the first data row or the headers
+     * @throws IOException
+     *             io
+     */
+    String[] getFirstDataSourceOrHeader(String path) throws IOException;
 }
