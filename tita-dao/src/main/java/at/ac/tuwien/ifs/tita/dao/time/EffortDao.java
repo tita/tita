@@ -40,7 +40,6 @@ import at.ac.tuwien.ifs.tita.entity.util.UserProjectEffort;
  * TimeEffortDao.
  * 
  * @author markus
- * @author rene
  * 
  */
 public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEffortDao {

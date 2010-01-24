@@ -26,15 +26,15 @@ import at.ac.tuwien.ifs.tita.entity.conv.Role;
 
 /**
  * IUserService encapsulates all User-concerning Database operations.
- *
+ * 
  * @author ASE Group 10 - TiTA
- *
+ * 
  */
 @Transactional
 public interface IUserService {
     /**
      * Saves a new user or updates an existing one.
-     *
+     * 
      * @param user the user to be saved
      * @throws PersistenceException if Parameter is null or another Exception is
      *         thrown
@@ -44,7 +44,7 @@ public interface IUserService {
 
     /**
      * deletes an existing user.
-     *
+     * 
      * @param user the user to be deleted
      * @throws PersistenceException if Parameter is null or another Exception is
      *         thrown
@@ -53,7 +53,7 @@ public interface IUserService {
 
     /**
      * returns a specific User found to the id given.
-     *
+     * 
      * @param id the unique identifier of an user
      * @throws PersistenceException if no user was found or another Exception is
      *         thrown
@@ -64,17 +64,16 @@ public interface IUserService {
     /**
      * returns a specific User found to the username given.
      * 
-     * @param username
-     *            the unique identifier of an user
-     * @throws PersistenceException
-     *             if no user was found or another Exception is thrown
+     * @param username the unique identifier of an user
+     * @throws PersistenceException if no user was found or another Exception is
+     *         thrown
      * @return the specified User, if found.
      */
     TiTAUser getUserByUsername(String username) throws PersistenceException;
 
     /**
      * Saves a new Role or updates an existing one.
-     *
+     * 
      * @param role the role to be saved
      * @throws PersistenceException if Parameter is null or another Exception is
      *         thrown
@@ -84,7 +83,7 @@ public interface IUserService {
 
     /**
      * deletes an existing role.
-     *
+     * 
      * @param role the role to be deleted
      * @throws PersistenceException if Parameter is null or another Exception is
      *         thrown
@@ -93,7 +92,7 @@ public interface IUserService {
 
     /**
      * returns a specific Role found to the id given.
-     *
+     * 
      * @param id the unique identifier of an role
      * @throws PersistenceException if no role was found or another Exception is
      *         thrown
@@ -102,10 +101,18 @@ public interface IUserService {
     Role getRoleById(Long id) throws PersistenceException;
 
     /**
+     * returns a specific Role found to the name given.
+     * 
+     * @param name of role
+     * @return the specified Role if name was found, null otherwise
+     */
+    Role getRoleByName(String name);
+
+    /**
      * returns all undeleted Users.
      * 
-     * @throws PersistenceException
-     *             if no user was found or another Exception is thrown
+     * @throws PersistenceException if no user was found or another Exception is
+     *         thrown
      * @return all Users if found
      */
     List<TiTAUser> getUndeletedUsers() throws PersistenceException;
@@ -113,14 +120,15 @@ public interface IUserService {
     /**
      * returns all Roles.
      * 
-     * @throws PersistenceException
-     *             if no role was found or another Exception is thrown
+     * @throws PersistenceException if no role was found or another Exception is
+     *         thrown
      * @return all Roles if found
      */
     List<Role> getRoles() throws PersistenceException;
 
     /**
      * Returns a list of all existing tita users.
+     * 
      * @param projects List of tita projects
      * @return List of TiTAUsers
      */
@@ -128,25 +136,32 @@ public interface IUserService {
 
     /**
      * Finds all users for a tita project.
-     *
-     * @param project
-     *            - the given project
+     * 
+     * @param project - the given project
      * @return a list of tita user, that are included in that project.
      */
     List<TiTAUser> findAllTiTAUsersForProject(TiTAProject project);
 
     /**
+     * Finds all users for a tita project by role.
+     * 
+     * @param project - the given project
+     * @param role - role of user
+     * @return a list of tita user, that are included in that project and have
+     *         the given role.
+     */
+    List<TiTAUser> findAllTiTAUsersForProjectByRole(TiTAProject project, Role role);
+
+    /**
      * Finds the targetHours for a tita project a user is added with a defined
      * value.
-     *
-     * @param userId
-     *            - the id of the tita user
-     * @param projectId
-     *            - the id of the tita project
+     * 
+     * @param userId - the id of the tita user
+     * @param projectId - the id of the tita project
      * @return the value for the target hours or null, if it is unlimited.
      */
     Long findTargetHoursForTiTAProjectAndTiTAUser(Long userId, Long projectId);
-    
+
     /**
      * Returns a List of Users, where the size of the list can be declared.
      * 

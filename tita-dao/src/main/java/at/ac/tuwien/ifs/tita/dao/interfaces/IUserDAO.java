@@ -21,6 +21,7 @@ import javax.persistence.PersistenceException;
 
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
+import at.ac.tuwien.ifs.tita.entity.conv.Role;
 
 /**
  * Interface for UserDao.
@@ -63,7 +64,16 @@ public interface IUserDAO extends IGenericHibernateDao<TiTAUser, Long> {
      * @return a list of tita user, that are included in that project.
      */
     List<TiTAUser> findUsersForTiTAProject(TiTAProject project);
-    
+
+    /**
+     * Finds all users for a tita project by role.
+     * 
+     * @param project - the given project
+     * @param role - the given role
+     * @return a list of tita user, that are included in that project by role.
+     */
+    List<TiTAUser> findUsersForTiTAProjectByRole(TiTAProject project, Role role);
+
     /**
      * Searches the Database for a List of Users.
      * 
