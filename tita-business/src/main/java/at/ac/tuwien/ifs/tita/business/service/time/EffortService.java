@@ -205,7 +205,7 @@ public class EffortService implements IEffortService {
             tempProject.setIssueTrackerTasks(tasks);
         }
         saveEffort(effort);
-        timeEffortDao.flushnClear();
+//        timeEffortDao.flushnClear();
     }
 
     /**
@@ -227,7 +227,7 @@ public class EffortService implements IEffortService {
             effort.setTitaTask(tt);
             saveEffort(effort);
             tt.getTitaEfforts().add(effort);
-            timeEffortDao.flushnClear();
+//            timeEffortDao.flushnClear();
         }
     }
     
