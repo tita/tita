@@ -16,6 +16,7 @@
 
 package at.ac.tuwien.ifs.tita.issuetracker.container;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import at.ac.tuwien.ifs.tita.issuetracker.enums.ViewState;
@@ -27,7 +28,7 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ICommentTrackable;
  * @author Karin
  * 
  */
-public class IssueTrackerCommentTrackable implements ICommentTrackable {
+public class IssueTrackerCommentTrackable implements ICommentTrackable, Serializable  {
     private Date creationTime;
     private final long id;
     private Date lastChange;

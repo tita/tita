@@ -224,10 +224,15 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
     public T save(T entity) {
         T persistedEntity = null;
 
-        persistedEntity = findById(((BaseEntity<ID>) entity).getId());
-        if (persistedEntity != null) {
-            return merge(entity);
-        } else {
+        if(((BaseEntity<ID>) entity).getId() != null){
+            persistedEntity = findById(((BaseEntity<ID>) entity).getId());
+            if (persistedEntity != null) {
+                return merge(entity);
+            } else {
+                persist(entity);
+                return entity;
+            }
+        } else{
             persist(entity);
             return entity;
         }

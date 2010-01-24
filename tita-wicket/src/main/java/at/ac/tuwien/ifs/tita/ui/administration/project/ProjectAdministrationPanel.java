@@ -213,11 +213,12 @@ public class ProjectAdministrationPanel extends Panel implements IAdministration
         detailContainer.setVisible(true);
 
         if (issTProject == null) {
-            issueTrackerForm = new IssueTrackerProjectForm("issueTrackerProjectForm", new IssueTrackerProject(),
+            issueTrackerForm = new IssueTrackerProjectForm("issueTrackerProjectForm", 
+                    new IssueTrackerProject(),
                 titaProjectService.getAvailableIssueTracker(), currentProject);
         }
-        issueTrackerForm = new IssueTrackerProjectForm("issueTrackerProjectForm", issTProject, titaProjectService
-            .getAvailableIssueTracker(), currentProject);
+        issueTrackerForm = new IssueTrackerProjectForm("issueTrackerProjectForm", 
+                issTProject, titaProjectService.getAvailableIssueTracker(), currentProject);
 
         issueTrackerForm.add(new Button("saveIssueTrackerProjectForm") {
             @Override

@@ -139,7 +139,7 @@ public class ProjectService implements IProjectService {
     /** {@inheritDoc} */
     @Override
     public List<TiTAProject> getOrderedProjects(int maxResult, String orderBy)
-            throws PersistenceException {
+        throws PersistenceException {
         try {
             return titaProjectDao.findProjectsOrderedByName(maxResult, orderBy);
         } catch (Exception e) {
@@ -150,8 +150,9 @@ public class ProjectService implements IProjectService {
     /** {@inheritDoc} */
     @Override
     public TiTAProject saveProject(TiTAProject project)
-            throws PersistenceException {
-        return titaProjectDao.save(project);
+        throws PersistenceException {
+        titaProjectDao.save(project);
+        return project;
     }
 
 }

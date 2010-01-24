@@ -72,6 +72,7 @@ public class EffortsPage extends BasePage {
         }else{
             taskListPanel =  new TaskListPanel("taskList",null);
         }
+        super.setPanel(taskListPanel);
         add(taskListPanel);
     }
 

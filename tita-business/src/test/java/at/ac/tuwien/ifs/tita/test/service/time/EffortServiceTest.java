@@ -57,7 +57,7 @@ import at.ac.tuwien.ifs.tita.entity.Effort;
 @TransactionConfiguration
 @Transactional
 public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextTests {
-
+    
     private static final long C_MOCKING_VALUE_1 = 311500L;
 
     private static IEffortService effortService;
@@ -67,6 +67,7 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
     private static final long C_HUNDRED = 100L;
     private final Logger log = LoggerFactory.getLogger(EffortServiceTest.class);
 
+    private DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
     @Autowired
     private IEffortService service;
 
@@ -80,7 +81,7 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
     public void testSaveTimeEffort() {
 
         String strdate = "18.10.2009";
-        DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+        
         Date date = null;
 
         try {
@@ -90,10 +91,10 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
         }
 
         Effort timeEffort = new Effort(date, "Test-Description", C_HUNDRED, C_TWO_HUNDRED, C_THREE_HUNDRED, false, null);
-
+        Effort savedEffort = null;
         try {
             service.saveEffort(timeEffort);
-            Effort savedEffort = service.getEffortById(timeEffort.getId());
+            savedEffort = service.getEffortById(timeEffort.getId());
             assertEquals(timeEffort.getDate(), savedEffort.getDate());
             assertEquals(timeEffort.getDescription(), savedEffort.getDescription());
             assertEquals(timeEffort.getStartTime(), savedEffort.getStartTime());
@@ -105,26 +106,25 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
         } catch (PersistenceException e) {
             fail();
         } finally {
-            service.deleteEffort(timeEffort);
+            service.deleteEffort(savedEffort);
         }
 
     }
 
     /**
      * Test.
+     * @throws PersistenceException - ex
      */
     @Test
-    public void testDeleteTimeEffort() {
+    public void testDeleteTimeEffort() throws PersistenceException{
         Effort timeEffort = new Effort(null, null, null, "Das ist die Test TimeEffort 2");
-        try {
-            service.saveEffort(timeEffort);
-            Assert.assertNotNull(timeEffort.getId());
+        service.saveEffort(timeEffort);
+        Assert.assertNotNull(timeEffort.getId());
+        timeEffort = service.getEffortById(timeEffort.getId());
 
-            service.deleteEffort(timeEffort);
-            Assert.assertNull(service.getEffortById(timeEffort.getId()));
-        } catch (PersistenceException e) {
-            fail();
-        }
+        service.deleteEffort(timeEffort);
+        Assert.assertNull(service.getEffortById(timeEffort.getId()));
+
     }
 
     /**
@@ -140,7 +140,8 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
             Date date = new Date();
             timeEffort.setDate(date);
             service.saveEffort(timeEffort);
-            Assert.assertEquals(service.getEffortById(timeEffort.getId()).getDate(), date);
+            Assert.assertEquals(formatter.format(date), 
+                    formatter.format(service.getEffortById(timeEffort.getId()).getDate()));
         } catch (PersistenceException e) {
             fail();
         }
@@ -204,7 +205,6 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
     private List<Effort> prepareEfforts() {
         String strdate1 = "18.10.2009";
         String strdate2 = "25.05.2008";
-        DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
         Date date1 = null;
         Date date2 = null;
 

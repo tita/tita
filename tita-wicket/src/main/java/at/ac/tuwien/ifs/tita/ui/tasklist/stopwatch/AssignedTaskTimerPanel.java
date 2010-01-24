@@ -26,6 +26,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.util.time.Duration;
 
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
@@ -66,16 +67,21 @@ public class AssignedTaskTimerPanel extends Panel implements IHeaderContributor 
 
         taskTimerForm.add(new Label("taskId", task.getId().toString()));
         taskTimerForm.add(new Label("taskDescription", task.getDescription()));
-        taskTimerForm.add(new AjaxButton("startStopTimer", taskTimerForm) {
+        taskTimerForm.add(new AjaxButton("startStopTimer", new Model<String>(), taskTimerForm) {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
+               
                 if (!started) {
                     owner.startTimerForIssue(task);
                     started = true;
+                    this.getModel().setObject("Stop");
                 } else {
                     owner.stopTimerForIssue(task, target);
                     started = false;
+                    this.getModel().setObject("Start");
                 }
+                this.setLabel(this.getModel());
+                target.addComponent(this);
             }
         });
         taskTimerForm.add(new AjaxButton("closeTask", taskTimerForm) {

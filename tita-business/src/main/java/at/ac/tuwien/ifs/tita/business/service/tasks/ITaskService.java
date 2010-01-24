@@ -208,4 +208,13 @@ public interface ITaskService {
      *            - the id of the task that should be closed.
      */
     void closeTask(Long taskId);
+    
+    /**
+     * Gets a IssueTrackerTask from the IssueTracker.
+     * @param taskId - issueTracker task Id
+     * @param projectId - issueTracker project Id
+     * @param issueTrackerId - issueTracker Id
+     * @return found IssueTrackerTask
+     */
+    ITaskTrackable getIssueTrackerTaskById(Long taskId, Long projectId, Long issueTrackerId);
 }
