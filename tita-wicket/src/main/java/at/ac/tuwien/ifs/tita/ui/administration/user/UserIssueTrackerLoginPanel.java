@@ -139,9 +139,11 @@ public class UserIssueTrackerLoginPanel extends Panel implements IAdministration
      */
     public void displayDetailsPage(IssueTrackerLogin login) {
         if (login == null) {
-            form = new IssueTrackerLoginForm("userIssueTrackerLoginForm", parent.getAvailableIssueTracker(), this);
+            form = new IssueTrackerLoginForm("userIssueTrackerLoginForm",
+                    parent.getAvailableIssueTracker(), this);
         } else {
-            form = new IssueTrackerLoginForm("userIssueTrackerLoginForm", parent.getAvailableIssueTracker(), login,
+            form = new IssueTrackerLoginForm("userIssueTrackerLoginForm", 
+                    parent.getAvailableIssueTracker(), login,
                 this);
         }
 

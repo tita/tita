@@ -181,6 +181,7 @@ public class PerformanceOfPersonView extends BasePage {
             @Override
             protected void onSelection(AjaxRequestTarget target) {
                 if (!(tableForTiTAProject.getSelectedRows()[0] == tmForTiTAProject.getSelectedRow())) {
+
                     tmForTiTAProject.setSelectedRow(tableForTiTAProject.getSelectedRows()[0]);
                     tmForTiTAProject.reload();
 

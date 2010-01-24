@@ -199,7 +199,7 @@ public class TimerCoordinator implements Runnable {
      * @param userId Long
      * @return ActiveTaskEffort
      */
-    private ActiveTaskEffort findTiTATaskForUser(Long userId){
+    public ActiveTaskEffort findTiTATaskForUser(Long userId){
         for(ActiveTaskEffort ate : titaTasks){
             if(ate.getUserId().equals(userId)){
                 return ate;
@@ -253,27 +253,29 @@ public class TimerCoordinator implements Runnable {
      */
     public synchronized void unregisterUser(Long userId) {
         if (registeredUsers.containsKey(userId)) {
-            removeAllUnsavedTasksOfUser(userId);
             registeredUsers.remove(userId);
         }
     }
-
-    /**
-     * Removes all unstopped tasks of a user.
-     * @param userId Long
-     */
-    private void removeAllUnsavedTasksOfUser(Long userId) {
-        ActiveTaskEffort ate = null;
-
-        for (ActiveTask at : activeTasks) {
-            at.removeEffortForUser(userId);
-        }
-
-        ate = findTiTATaskForUser(userId);
-        if (ate != null) {
-            titaTasks.remove(ate);
-        }
-    }
+    
+//    /**
+//     * Removes all unstopped tasks of a user.
+//     * @param userId Long
+//     * @return list of efforts to save
+//     */
+//    private List<Effort> removeAllUnsavedTasksOfUser(Long userId) {
+//        ActiveTaskEffort ate = null;
+//        List<Effort> efforts = new ArrayList<Effort>();
+//        for (ActiveTask at : activeTasks) {
+//            efforts.add(stopIssueTimer(userId, at.getTaskIdForUser(userId)));
+//        }
+//
+//        ate = findTiTATaskForUser(userId);
+//        if (ate != null) {
+//            efforts.add(stopTiTATimer(userId));
+//        }
+//        
+//        return efforts;
+//    }
 
     /**
      * Get all active tasks for a given user id.

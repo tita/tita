@@ -137,6 +137,18 @@ public class TaskService implements ITaskService {
     }
 
     /** {@inheritDoc} */
+    public ITaskTrackable getIssueTrackerTaskById(Long taskId, Long projectId, Long issueTrackerId) {
+        // TODO: check for issueTrackerID too!
+        for (Long i = 1L; i <= mapOfTasksFromAllProjectsIncludedInTiTAProject.size(); i++) {
+            ITaskTrackable t = mapOfTasksFromAllProjectsIncludedInTiTAProject.get(i);
+            if (t.getProject().getId().equals(projectId) && t.getId().equals(taskId)) {
+                return t;
+            }
+        }
+        return null;
+    }
+
+    /** {@inheritDoc} */
     @Override
     public void fetchTaskFromIssueTrackerProjects(Long projectTitaId, Long userTitaId) throws ProjectNotFoundException {
 
@@ -244,15 +256,21 @@ public class TaskService implements ITaskService {
     /** {@inheritDoc} */
     @Override
     public List<UserProjectTaskEffort> getPerformanceOfPersonView(TiTAProject project, TiTAUser user) {
+        List<UserProjectTaskEffort> popView = new ArrayList<UserProjectTaskEffort>();
+
+        List<IssueTrackerTask> issueTrackerTasks = issueTrackerTaskDao.findIssueTrackerTasksforUserProject(project
+                .getId(), user.getId());
+        for (IssueTrackerTask t : issueTrackerTasks) {
+            popView.add(new UserProjectTaskEffort("#" + t.getIsstTaskId(), t.getDescription(), timeEffortDao
+                    .findEffortsSumForIssueTrackerTasks(project.getId(), user.getId(), t.getId())));
+        }
+
         // get all titatasks with their efforts sum
         List<TiTATask> titaTasks = titaTaskDao.findTiTATasksforUserProject(project, user);
-
-        List<UserProjectTaskEffort> popView = new ArrayList<UserProjectTaskEffort>();
         for (TiTATask t : titaTasks) {
             popView.add(new UserProjectTaskEffort("T" + t.getId(), t.getDescription(), timeEffortDao
                     .findEffortsSumForTiTATasks(project.getId(), user.getId(), t.getId())));
         }
-        // get all issuetracker tasks with their effortsum
 
         return popView;
     }

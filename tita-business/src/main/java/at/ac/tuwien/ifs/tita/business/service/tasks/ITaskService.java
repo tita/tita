@@ -197,6 +197,16 @@ public interface ITaskService {
     void closeTask(Long taskId);
 
     /**
+     * Gets a IssueTrackerTask from the IssueTracker.
+     * 
+     * @param taskId - issueTracker task Id
+     * @param projectId - issueTracker project Id
+     * @param issueTrackerId - issueTracker Id
+     * @return found IssueTrackerTask
+     */
+    ITaskTrackable getIssueTrackerTaskById(Long taskId, Long projectId, Long issueTrackerId);
+
+    /**
      * Returns the view for performance of performacne evaluation, with data
      * from issuetracker tasks and tita tasks and the sum of their efforts.
      * 

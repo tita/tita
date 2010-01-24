@@ -303,6 +303,19 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
 
     /** {@inheritDoc} */
     @Override
+    public Long findEffortsSumForIssueTrackerTasks(Long projectId, Long userId, Long taskId) {
+        String queryString = "select sum(e.duration) as sum " + "from Effort e " + "join e.issueTTask as itt "
+                + "join itt.isstProject as itp " + "join itp.titaProject as tp " + "where e.user = " + userId
+                + " and tp.id = " + projectId + " and itt.id= " + taskId + " and e.deleted != true";
+
+        Query q = getSession().createQuery(queryString);
+
+        Long result = (Long) q.uniqueResult();
+        return (result != null) ? result : 0L;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public Long totalizeEffortsForTiTAProjectAndTiTAUser(Long projectId, Long userId) {
 
         String first = "select sum(e.duration) as sum " + "from Effort e " + "join e.titaTask as tt "

@@ -18,7 +18,6 @@ package at.ac.tuwien.ifs.tita.test.service.task;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -33,8 +32,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
@@ -42,12 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import at.ac.tuwien.ifs.tita.business.service.project.IProjectService;
 import at.ac.tuwien.ifs.tita.business.service.tasks.ITaskService;
-import at.ac.tuwien.ifs.tita.business.service.time.IEffortService;
 import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
-import at.ac.tuwien.ifs.tita.dao.interfaces.IGenericHibernateDao;
-import at.ac.tuwien.ifs.tita.dao.interfaces.ITiTAProjectDao;
-import at.ac.tuwien.ifs.tita.dao.interfaces.IUserDAO;
-import at.ac.tuwien.ifs.tita.entity.Effort;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerTask;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
@@ -83,22 +75,8 @@ public class TaskServiceDaoTest {
     @Resource(name = "userService")
     private IUserService userService;
 
-    @Resource(name = "timeEffortService")
-    private IEffortService timeEffortService;
-
     @Resource(name = "projectService")
     private IProjectService projectService;
-
-    @Qualifier("titaProjectDao")
-    @Autowired
-    private ITiTAProjectDao titaProjectDAO;
-
-    @Autowired
-    private IUserDAO titaUserDao;
-
-    @Qualifier("roleDAO")
-    @Autowired
-    private IGenericHibernateDao<Role, Long> roleDao;
 
     private TiTAUser user;
     private TiTAUserProject tup;
@@ -196,39 +174,6 @@ public class TaskServiceDaoTest {
         } finally {
             service.deleteIssueTrackerTask(issueTrackerTask);
         }
-    }
-
-    /**
-     * Test for Performance of Person.
-     */
-    @Test
-    public void getPerformanceOfPersonViewTest() {
-        // CHECKSTYLE:OFF
-        TiTATask titaTask1 = new TiTATask("task1", user, titaProject, null);
-        TiTATask titaTask2 = new TiTATask("task2", user, titaProject, null);
-        Effort e1 = new Effort(new Date(), 3600000L, false, "effort", user);
-        Effort e2 = new Effort(new Date(), 3600000L, false, "effort2", user);
-
-        try {
-            service.saveTiTATask(titaTask1);
-            service.saveTiTATask(titaTask2);
-            e1.setTitaTask(titaTask1);
-            e2.setTitaTask(titaTask1);
-            timeEffortService.saveEffort(e1);
-            timeEffortService.saveEffort(e2);
-            Assert.assertNotNull(service.getPerformanceOfPersonView(titaProject, user));
-            Assert.assertEquals(2, service.getPerformanceOfPersonView(titaProject, user).size());
-            Assert.assertEquals(7200000L, (long) service.getPerformanceOfPersonView(titaProject, user).get(0)
-                    .getDuration());
-        } catch (PersistenceException e) {
-            fail();
-        } finally {
-            // timeEffortService.deleteEffort(e1);
-            // timeEffortService.deleteEffort(e2);
-            service.deleteTiTATask(titaTask1);
-            service.deleteTiTATask(titaTask2);
-        }
-        // CHECKSTYLE:ON
     }
 
     /**

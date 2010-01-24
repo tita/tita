@@ -16,6 +16,8 @@
  */
 package at.ac.tuwien.ifs.tita.dao.interfaces;
 
+import java.util.List;
+
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerTask;
 
 /**
@@ -24,7 +26,7 @@ import at.ac.tuwien.ifs.tita.entity.IssueTrackerTask;
  * @author herbert
  * 
  */
-public interface IIssueTrackerTaskDao extends IGenericHibernateDao<IssueTrackerTask, Long>{
+public interface IIssueTrackerTaskDao extends IGenericHibernateDao<IssueTrackerTask, Long> {
     /**
      * Find IssueTrackerTasks for given tita project.
      * 
@@ -36,4 +38,13 @@ public interface IIssueTrackerTaskDao extends IGenericHibernateDao<IssueTrackerT
      */
     IssueTrackerTask findIssueTrackerTask(Long tp, Long it, Long itp, Long itt);
 
+    /**
+     * Find IssueTrackerTasks for given tita project.
+     * 
+     * @param projectId projectId as Long
+     * @param userId userId as Long
+     * 
+     * @return List of IssueTrackerTasks
+     */
+    List<IssueTrackerTask> findIssueTrackerTasksforUserProject(Long projectId, Long userId);
 }

@@ -51,7 +51,8 @@
     <property name="issueTrackerDao" ref="issueTrackerDAO"/>
   </bean>       
    <bean id="timeEffortService" class="at.ac.tuwien.ifs.tita.business.service.time.EffortService">
-    <property name="timeEffortDao" ref="timeEffortDAO"/>
+    <constructor-arg  ref="timeEffortDAO"/>
+    <constructor-arg ref="projectService"/>
   </bean>
 
   <bean id="taskService" class="at.ac.tuwien.ifs.tita.business.service.tasks.TaskService">

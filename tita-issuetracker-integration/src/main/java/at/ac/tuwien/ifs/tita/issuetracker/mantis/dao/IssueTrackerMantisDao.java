@@ -72,7 +72,6 @@ public class IssueTrackerMantisDao implements IIssueTrackerDao {
 
 
     public IssueTrackerMantisDao(IssueTrackerLogin login) {
-        // TODO: read values from DB
         this.user = login.getUserName();
         this.pwd = login.getPassword();
         this.urlAsString = login.getIssueTracker().getUrl();

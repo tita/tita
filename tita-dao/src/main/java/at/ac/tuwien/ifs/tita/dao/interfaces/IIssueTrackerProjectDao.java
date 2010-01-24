@@ -37,5 +37,6 @@ public interface IIssueTrackerProjectDao {
      *            Long
      * @return the IssueTrackerProject for tita project.
      */
-    IssueTrackerProject findIssueTrackerProjectForTiTAProject(Long tp, Long issueTrackerId, Long itp);
+    IssueTrackerProject findIssueTrackerProjectForTiTAProject(
+            Long tp, Long issueTrackerId, Long itp);
 }
