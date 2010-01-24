@@ -79,7 +79,7 @@ public class EffortService implements IEffortService {
     @Override
     public void saveEffort(Effort effort) throws PersistenceException {
         timeEffortDao.save(effort);
-        timeEffortDao.flushnClear();
+//        timeEffortDao.flushnClear();
     }
 
     /**
@@ -223,11 +223,11 @@ public class EffortService implements IEffortService {
             effort.setUser(user);
 
             TiTATask tt = new TiTATask(description, user, project, new HashSet<Effort>());
+            tt.getTitaEfforts().add(effort);
             projectService.saveTiTATask(tt);
-
+            
             effort.setTitaTask(tt);
             saveEffort(effort);
-            tt.getTitaEfforts().add(effort);
             // timeEffortDao.flushnClear();
         }
     }

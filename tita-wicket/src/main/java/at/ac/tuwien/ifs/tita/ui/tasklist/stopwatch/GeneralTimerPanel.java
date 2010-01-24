@@ -96,7 +96,7 @@ public class GeneralTimerPanel extends Panel implements IHeaderContributor {
                 if (effort != null && !started) {
                     owner.saveEffortForTiTATask(effort,target);
                     description.setModelObject("");
-                    duration.setModelObject("");
+                    duration.setModelObject("00:00:00");
                 }
                 target.addComponent(description);
                 target.addComponent(duration);
