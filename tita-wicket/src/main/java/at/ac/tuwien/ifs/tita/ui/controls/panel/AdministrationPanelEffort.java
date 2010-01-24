@@ -428,8 +428,14 @@ public class AdministrationPanelEffort extends Panel implements
                     .findEffortsForTiTAProjectAndTiTAUserOrdered(project
                             .getId(), user.getId());
 
-            timeeffortList = fullTimeEffortList.size() <= EffortUtils.MAXLISTSIZE ? fullTimeEffortList
-                    : fullTimeEffortList.subList(0, EffortUtils.MAXLISTSIZE);
+            if (fullTimeEffortList.size() <= EffortUtils.MAXLISTSIZE) {
+                timeeffortList = fullTimeEffortList;
+            } else {
+                for (int i = 0; i < EffortUtils.MAXLISTSIZE; i++) {
+                    timeeffortList.clear();
+                    timeeffortList.add(fullTimeEffortList.get(i));
+                }
+            }
         } catch (PersistenceException e) {
             log.error(e.getMessage());
         }
