@@ -18,17 +18,19 @@ package at.ac.tuwien.ifs.tita.ui.administration.user;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.PersistenceException;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +42,7 @@ import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.entity.TiTAUserProject;
 import at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus;
 import at.ac.tuwien.ifs.tita.ui.models.AbstractTitaTableModel;
+import at.ac.tuwien.ifs.tita.ui.models.TableModelUserProject;
 import at.ac.tuwien.ifs.tita.ui.utils.EffortUtils;
 import at.ac.tuwien.ifs.tita.ui.utils.IntegerConstants;
 
@@ -63,15 +66,17 @@ public class UserProjectPanel extends Panel {
     private final TableModelProjectWithoutButton tm;
 
     // the Table to Add Projects
-    private final List<TiTAProject> actualProjects;
+    private final List<TiTAUserProject> actualProjects;
     private final Table actualProjectsTable;
-    private final TableModelProjectWithoutButton actualProjectsTM;
+    private final TableModelUserProject actualProjectsTM;
 
     // the Parent Panel
     private final UserAdministrationPanel parent;
 
     // the user
     private final TiTAUser user;
+
+    private Long targetHours;
 
     // Logger
     private final Logger log = LoggerFactory.getLogger(UserProjectPanel.class);
@@ -114,16 +119,13 @@ public class UserProjectPanel extends Panel {
         };
         table.setWidths(EffortUtils.WIDTHS);
 
-        ArrayList<TiTAProject> projects = new ArrayList<TiTAProject>();
         if (this.user.getTitaUserProjects() != null) {
-            for (TiTAUserProject temp : this.user.getTitaUserProjects()) {
-                projects.add(temp.getProject());
-            }
+            this.actualProjects = new ArrayList<TiTAUserProject>(this.user.getTitaUserProjects());
+        } else {
+            this.actualProjects = new ArrayList<TiTAUserProject>();
         }
-        // now initialize the Table that shows the actual Projects
-        this.actualProjects = projects;
 
-        actualProjectsTM = new TableModelProjectWithoutButton(actualProjects);
+        actualProjectsTM = new TableModelUserProject(actualProjects);
         actualProjectsTable = new Table("actualUserProjectTable", actualProjectsTM);
         actualProjectsTable.setWidths(EffortUtils.WIDTHS);
         container = new WebMarkupContainer("userProjectContainer");
@@ -152,6 +154,9 @@ public class UserProjectPanel extends Panel {
     private void addButtons() {
         Form<String> form = new Form<String>("dummyForm");
 
+        form.addOrReplace(new TextField<Double>("tfTargetHours", new PropertyModel<Double>(this, "targetHours")));
+        form.addOrReplace(new Label("lbTargetHours", "Target Hours: "));
+
         form.addOrReplace(new AjaxButton("buttonDelete") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
@@ -163,7 +168,7 @@ public class UserProjectPanel extends Panel {
                 }
                 log.debug("deleting Project from user " + user.getUserName() + ", Selected Row was: " + selection);
                 if (selection > -1) {
-                    actualProjectsTM.removeProjectAtIndex(selection);
+                    actualProjectsTM.removeUserProjectAtIndex(selection);
                     actualProjectsTM.reload();
 
                     target.addComponent(container);
@@ -185,7 +190,11 @@ public class UserProjectPanel extends Panel {
                 if (selection > -1) {
                     TiTAProject project = tm.getProjectAt(selection);
                     if (!actualProjectsTM.containsProject(project)) {
-                        actualProjectsTM.addEntity(project);
+                        TiTAUserProject up = new TiTAUserProject();
+                        up.setProject(project);
+                        up.setUser(user);
+                        up.setTargetHours(targetHours);
+                        actualProjectsTM.addEntity(up);
                         actualProjectsTM.reload();
 
                         target.addComponent(container);
@@ -197,16 +206,8 @@ public class UserProjectPanel extends Panel {
         form.addOrReplace(new Button("buttonOk") {
             @Override
             public void onSubmit() {
-                Set<TiTAUserProject> userProjectsList = new HashSet<TiTAUserProject>();
-                for (TiTAProject p : actualProjectsTM.getProjects()) {
-                    TiTAUserProject up = new TiTAUserProject();
-                    up.setUser(user);
-                    up.setProject(p);
-
-                    userProjectsList.add(up);
-                }
                 TiTAUser u = getUser();
-                u.setTitaUserProjects(userProjectsList);
+                u.setTitaUserProjects(new HashSet<TiTAUserProject>(actualProjectsTM.getUserProjects()));
                 parent.displayDetailsPage(u);
             }
         });

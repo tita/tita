@@ -20,8 +20,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAUserProject;
-import at.ac.tuwien.ifs.tita.ui.uihelper.ButtonDelete;
 import at.ac.tuwien.ifs.tita.ui.utils.IntegerConstants;
 
 /**
@@ -38,17 +38,13 @@ public class TableModelUserProject extends AbstractTitaTableModel {
     public TableModelUserProject(List<TiTAUserProject> list) {
         super(list);
 
-        columnNames = new String[] { "Project Name", "" };
+        columnNames = new String[] { "Project Name", "Target Hours" };
     }
 
     /** {@inheritDoc} **/
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        if (columnIndex == IntegerConstants.ONE) {
-            return ButtonDelete.class;
-        } else {
-            return super.getColumnClass(columnIndex);
-        }
+        return super.getColumnClass(columnIndex);
     }
 
     /** {@inheritDoc} **/
@@ -65,7 +61,7 @@ public class TableModelUserProject extends AbstractTitaTableModel {
                     return null;
                 }
             } else if (columnIndex == IntegerConstants.ONE) {
-                return null;
+                return userProject.getTargetHours();
             } else {
                 return userProject;
             }
@@ -93,6 +89,76 @@ public class TableModelUserProject extends AbstractTitaTableModel {
      */
     @SuppressWarnings("unchecked")
     public List<TiTAUserProject> getList() {
+        return (List<TiTAUserProject>) list;
+    }
+
+    /**
+     * Returns the UserProject of a specific row index.
+     * 
+     * @param row the row index
+     * @return the UserProject of the selected Row.
+     */
+    public TiTAUserProject getUserProjectAt(int row) {
+        TiTAUserProject project = null;
+
+        try {
+            project = (TiTAUserProject) list.get(row);
+            return project;
+        } catch (IndexOutOfBoundsException e) {
+            log.error(e.getMessage());
+        } catch (ClassCastException e) {
+            log.error(e.getMessage());
+        } catch (NullPointerException e) {
+            log.error(e.getMessage());
+        }
+        return null;
+    }
+
+    /**
+     * Removes a UserProject from the TableModel.
+     * 
+     * @param index of the UserProject to remove.
+     */
+    public void removeUserProjectAtIndex(int index) {
+        if (list.size() > index) {
+            list.remove(index);
+        }
+    }
+
+    /**
+     * Returns if a specific UserProject is currently in this Tablemodel.
+     * 
+     * @param userProject to check for availability.
+     * @return true if userProject already in this Model.
+     */
+    @SuppressWarnings("unchecked")
+    public boolean containsProject(TiTAProject project) {
+        for (TiTAUserProject up : (List<TiTAUserProject>) list) {
+            if (up.getProject().equals(project)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Method for adding a UserProject to the TableModel.
+     * 
+     * @param userProject the UserProject to be displayed
+     */
+    @SuppressWarnings("unchecked")
+    public void addEntity(TiTAUserProject userProject) {
+        if (userProject != null) {
+            ((List<TiTAUserProject>) list).add(userProject);
+        }
+    }
+
+    /**
+     * returns all containing UserProjects.
+     * 
+     * @return the list of userprojects.
+     */
+    public List<TiTAUserProject> getUserProjects() {
         return (List<TiTAUserProject>) list;
     }
 

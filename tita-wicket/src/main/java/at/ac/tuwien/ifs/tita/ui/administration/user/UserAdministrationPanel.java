@@ -395,6 +395,7 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
             }
             tm.reload();
         } catch (PersistenceException e) {
+            form.error("Could not save the User!");
             e.printStackTrace();
             log.error("Could not save User");
             log.error(e.getMessage());
