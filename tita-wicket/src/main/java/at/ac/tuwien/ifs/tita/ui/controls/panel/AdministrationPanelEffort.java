@@ -71,11 +71,11 @@ import at.ac.tuwien.ifs.tita.ui.utils.GlobalUtils;
 import at.ac.tuwien.ifs.tita.ui.utils.IntegerConstants;
 
 /**
- * 
+ *
  * Wicket Panel for time effort administration.
- * 
+ *
  * @author msiedler
- * 
+ *
  */
 public class AdministrationPanelEffort extends Panel implements
         IAdministrationPanel {
@@ -341,7 +341,7 @@ public class AdministrationPanelEffort extends Panel implements
 
     /**
      * Filter effort list.
-     * 
+     *
      * @param target
      *            AjaxRequestTarget
      */
@@ -431,8 +431,8 @@ public class AdministrationPanelEffort extends Panel implements
             if (fullTimeEffortList.size() <= EffortUtils.MAXLISTSIZE) {
                 timeeffortList = fullTimeEffortList;
             } else {
+                timeeffortList.clear();
                 for (int i = 0; i < EffortUtils.MAXLISTSIZE; i++) {
-                    timeeffortList.clear();
                     timeeffortList.add(fullTimeEffortList.get(i));
                 }
             }
@@ -604,7 +604,7 @@ public class AdministrationPanelEffort extends Panel implements
 
     /**
      * Returns current project.
-     * 
+     *
      * @return the project
      */
     public TiTAProject getProject() {
@@ -613,7 +613,7 @@ public class AdministrationPanelEffort extends Panel implements
 
     /**
      * Returns current date.
-     * 
+     *
      * @return the date
      */
     public Date getDate() {
@@ -641,6 +641,6 @@ public class AdministrationPanelEffort extends Panel implements
     }
 
     public List<Effort> getEntityList() {
-        return this.timeeffortList;
+        return timeeffortList;
     }
 }
