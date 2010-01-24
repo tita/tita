@@ -39,8 +39,10 @@
   </bean>    
   
   <bean id="timeEffortService" class="at.ac.tuwien.ifs.tita.business.service.time.EffortService">
-    <property name="timeEffortDao" ref="timeEffortDAO"/>
+    <constructor-arg ref="timeEffortDAO"/>
+    <constructor-arg ref="titaProjectService"/>
   </bean>
+
   
   <bean id="titaProjectService" class="at.ac.tuwien.ifs.tita.business.service.project.ProjectService">
     <property name="titaProjectDao" ref="titaProjectDAO"/>
@@ -65,6 +67,7 @@
  
   <bean id="titaEffortService" class="at.ac.tuwien.ifs.tita.business.service.time.EffortService">
     <constructor-arg ref="timeEffortDAO"/>
+    <constructor-arg ref="titaProjectService"/>
   </bean>
   
   <!-- <bean id="generalTimer" class="at.ac.tuwien.ifs.tita.entity.util.GeneralTimer"/>  -->

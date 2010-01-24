@@ -15,14 +15,14 @@ package at.ac.tuwien.ifs.tita.issuetracker.util;
 
 import at.ac.tuwien.ifs.tita.entity.Effort;
 import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
-
 /**
  * Class for generating IssueTrackerUrls.
  * @author Karin
  *
  */
 public class IssueTrackerUrlUtil {
-    
+    //TODO: Refactor IssueTrackerTool
+    private static final Long C_MANTIS= 1L;
     /**
      * Composes an Url to get the Task-description of the IssueTrackerTask.
      * @param e - effort the url is for
@@ -35,7 +35,8 @@ public class IssueTrackerUrlUtil {
         String projectname = e.getIssueTTask().getIsstProject().getProjectName();
         Long taskno = e.getIssueTTask().getIsstTaskId();
         
-        if(tracker.isMantisType()){
+        
+        if(tracker.getId().equals(C_MANTIS)){
             return url + "/view.php?id="+taskno;
         }
         throw new RuntimeException("IssueTrackerId " + tracker.getId() + " not specified "+

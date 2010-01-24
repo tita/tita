@@ -135,6 +135,20 @@ public class TaskService implements ITaskService {
     public IssueTracker getIssueTrackerById(Long id) throws PersistenceException {
         return issueTrackerDao.findById(id);
     }
+    
+  
+    /** {@inheritDoc} */
+    public ITaskTrackable getIssueTrackerTaskById(Long taskId, Long projectId, Long issueTrackerId){
+        //TODO: check for issueTrackerID too!
+        for(Long i = 1L; i <= mapOfTasksFromAllProjectsIncludedInTiTAProject.size(); i++){
+            ITaskTrackable t = mapOfTasksFromAllProjectsIncludedInTiTAProject.get(i);
+            if(t.getProject().getId().equals(projectId) &&
+                    t.getId().equals(taskId)){
+                return t;
+            }
+        }
+        return null;
+    }
 
     /** {@inheritDoc} */
     @Override
