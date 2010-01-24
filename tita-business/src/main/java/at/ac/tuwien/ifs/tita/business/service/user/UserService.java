@@ -47,8 +47,7 @@ public class UserService implements IUserService {
         this.roleDao = roleDao;
     }
 
-    public void setIssueTrackerDao(
-            IGenericHibernateDao<IssueTracker, Long> issueTrackerDao) {
+    public void setIssueTrackerDao(IGenericHibernateDao<IssueTracker, Long> issueTrackerDao) {
         this.issueTrackerDao = issueTrackerDao;
     }
 
@@ -91,8 +90,7 @@ public class UserService implements IUserService {
 
     /** {@inheritDoc} */
     @Override
-    public TiTAUser getUserByUsername(String username)
-            throws PersistenceException {
+    public TiTAUser getUserByUsername(String username) throws PersistenceException {
         return userDao.findByUserName(username);
     }
 
@@ -124,10 +122,8 @@ public class UserService implements IUserService {
 
     /** {@inheritDoc} */
     @Override
-    public Long findTargetHoursForTiTAProjectAndTiTAUser(Long userId,
-            Long projectId) {
-        return userDao.findTargetHoursForTiTAProjectAndTiTAUser(userId,
-                projectId);
+    public Long findTargetHoursForTiTAProjectAndTiTAUser(Long userId, Long projectId) {
+        return userDao.findTargetHoursForTiTAProjectAndTiTAUser(userId, projectId);
     }
 
     /** {@inheritDoc} */
@@ -138,8 +134,7 @@ public class UserService implements IUserService {
 
     /** {@inheritDoc} */
     @Override
-    public List<TiTAUser> getOrderedUsers(int maxResult)
-            throws PersistenceException {
+    public List<TiTAUser> getOrderedUsers(int maxResult) throws PersistenceException {
         return userDao.findUsersOrdered(maxResult);
     }
 
@@ -152,5 +147,20 @@ public class UserService implements IUserService {
         }
 
         return descriptions;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Role getRoleByName(String name) {
+        Role r = new Role();
+        r.setDescription(name);
+        List<Role> roles = roleDao.findByExample(r);
+        return (roles.size() > 0) ? roles.get(0) : null;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<TiTAUser> findAllTiTAUsersForProjectByRole(TiTAProject project, Role role) {
+        return userDao.findUsersForTiTAProjectByRole(project, role);
     }
 }

@@ -22,7 +22,6 @@ import javax.persistence.Table;
  * Entity for storing Roles in TiTa.
  * 
  * @author karin
- * @author rene
  */
 
 @Entity

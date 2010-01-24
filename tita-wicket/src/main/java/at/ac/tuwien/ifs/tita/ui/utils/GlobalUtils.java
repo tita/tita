@@ -30,7 +30,6 @@ import at.ac.tuwien.ifs.tita.issuetracker.util.TiTATimeConverter;
  * GlobalUtils.
  * 
  * @author msiedler
- * @author rene
  * 
  */
 public final class GlobalUtils {
@@ -38,12 +37,9 @@ public final class GlobalUtils {
     public static final int LISTSIZE = 10;
     public static final long HOUR = 3600000;
 
-    public static final DateFormat DATEFORMAT = new SimpleDateFormat(
-            "dd.MM.yyyy");
-    public static final DateFormat TIMELENGTHFORMAT = new SimpleDateFormat(
-            "HH:mm:ss");
-    public static final DateFormat TIMEFORMAT24HOURS = new SimpleDateFormat(
-            "HH:mm");
+    public static final DateFormat DATEFORMAT = new SimpleDateFormat("dd.MM.yyyy");
+    public static final DateFormat TIMELENGTHFORMAT = new SimpleDateFormat("HH:mm:ss");
+    public static final DateFormat TIMEFORMAT24HOURS = new SimpleDateFormat("HH:mm");
 
     private static final int C_SIXTY = 60;
     private static final int C_THREE_THOUSAND_SIX_HUNDRED = 3600;
@@ -52,8 +48,7 @@ public final class GlobalUtils {
     /**
      * Converts date into Calendar.
      * 
-     * @param d
-     *            date to convert
+     * @param d date to convert
      * @return calendar with date
      */
     public static Calendar getCalendarFromDate(Date d) {
@@ -65,10 +60,8 @@ public final class GlobalUtils {
     /**
      * Calculates the difference between to dates.
      * 
-     * @param d1
-     *            startdate
-     * @param d2
-     *            enddate
+     * @param d1 startdate
+     * @param d2 enddate
      * @return difference as date
      */
     public static Date getTimeDifference(Date d1, Date d2) {
@@ -78,8 +71,7 @@ public final class GlobalUtils {
     /**
      * Converts milliseconds to Long.
      * 
-     * @param t1
-     *            time in milliseconds
+     * @param t1 time in milliseconds
      * @return converted date
      */
     public static Date getDateFromLong(Long t1) {
@@ -89,17 +81,14 @@ public final class GlobalUtils {
     /**
      * Parse object to time with type long.
      * 
-     * @param o
-     *            object to parse
+     * @param o object to parse
      * @return long object
-     * @throws ParseException
-     *             parse exception
+     * @throws ParseException parse exception
      */
     public static Long getTimeFromObject(Object o) throws ParseException {
         if (o != null) {
             if (o.toString().compareTo("") != 0) {
-                return GlobalUtils.TIMEFORMAT24HOURS.parse(o.toString())
-                        .getTime();
+                return GlobalUtils.TIMEFORMAT24HOURS.parse(o.toString()).getTime();
             }
         }
         return null;
@@ -108,11 +97,9 @@ public final class GlobalUtils {
     /**
      * Parse object to date object.
      * 
-     * @param o
-     *            object to parse
+     * @param o object to parse
      * @return date object
-     * @throws ParseException
-     *             parse exception
+     * @throws ParseException parse exception
      */
     public static Date getDateFromObject(Object o) throws ParseException {
         if (o != null) {
@@ -126,11 +113,9 @@ public final class GlobalUtils {
     /**
      * Parse object to duration with type long.
      * 
-     * @param o
-     *            object to parse
+     * @param o object to parse
      * @return duration with type long
-     * @throws ParseException
-     *             parse exception
+     * @throws ParseException parse exception
      */
     public static Long getDurationFromObject(Object o) throws ParseException {
         if (o != null) {
@@ -144,16 +129,14 @@ public final class GlobalUtils {
     /**
      * Get time data from textfield.
      * 
-     * @param field
-     *            to read
+     * @param field to read
      * @return time as long
      */
     public static Long getTimeFromTextField(TextField<String> field) {
         try {
             if (field != null) {
                 if (field.getModelObject().compareTo("") != 0) {
-                    return GlobalUtils.TIMEFORMAT24HOURS.parse(
-                            field.getModelObject()).getTime();
+                    return GlobalUtils.TIMEFORMAT24HOURS.parse(field.getModelObject()).getTime();
                 }
             }
         } catch (ParseException e) {
@@ -165,16 +148,14 @@ public final class GlobalUtils {
     /**
      * Get duration from textfield.
      * 
-     * @param field
-     *            to read
+     * @param field to read
      * @return duration as long
      */
     public static Long getDurationFromTextField(TextField<String> field) {
         try {
             if (field != null) {
                 if (field.getModelObject().compareTo("") != 0) {
-                    return TiTATimeConverter.getString2Duration(field
-                            .getModelObject());
+                    return TiTATimeConverter.getString2Duration(field.getModelObject());
                 }
             }
         } catch (ParseException e) {
@@ -186,8 +167,7 @@ public final class GlobalUtils {
     /**
      * Returns the duration as a sum in date format.
      * 
-     * @param duration
-     *            the measured sum
+     * @param duration the measured sum
      * @return the sum as String
      */
     public static String getDurationAsString(Long duration) {
