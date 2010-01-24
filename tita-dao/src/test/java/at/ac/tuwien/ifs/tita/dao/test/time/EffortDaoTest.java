@@ -69,7 +69,8 @@ public class EffortDaoTest { // extends AbstractJpaTests {
     /**
      * Prepare on TiTA Project for testing effort dao.
      * 
-     * @throws Exception ex
+     * @throws Exception
+     *             ex
      */
     @Before
     public void prepareDB() throws Exception {
@@ -81,9 +82,12 @@ public class EffortDaoTest { // extends AbstractJpaTests {
      */
     @After
     public void cleanDB() {
-        executor.executeSql("delete from EFFORT;" + "delete from TITA_TASK;" + "delete from ISSUE_TRACKER_TASK;"
-                + "delete from ISSUE_TRACKER_PROJECT;" + "delete from USER_PROJECT;" + "delete from TITA_PROJECT;"
-                + "delete from CONV_PROJECT_STATUS;" + "delete from CONV_ISSUE_TRACKER;" + "delete from ISST_LOGIN;"
+        executor.executeSql("delete from EFFORT;" + "delete from TITA_TASK;"
+                + "delete from ISSUE_TRACKER_TASK;"
+                + "delete from ISSUE_TRACKER_PROJECT;"
+                + "delete from USER_PROJECT;" + "delete from TITA_PROJECT;"
+                + "delete from CONV_PROJECT_STATUS;"
+                + "delete from CONV_ISSUE_TRACKER;" + "delete from ISST_LOGIN;"
                 + "delete from TITA_USER;" + "delete from CONV_ROLE;commit;");
     }
 
@@ -96,7 +100,8 @@ public class EffortDaoTest { // extends AbstractJpaTests {
         li.add("tita_test");
 
         // CHECKSTYLE:OFF
-        List<UserProjectEffort> leff = timeEffortDAO.findEffortsForTiTAProjectId(li, "month");
+        List<UserProjectEffort> leff = timeEffortDAO
+                .findEffortsForTiTAProjectId(li, "month");
 
         assertNotNull(leff);
         assertEquals(10, leff.size());
@@ -132,7 +137,8 @@ public class EffortDaoTest { // extends AbstractJpaTests {
         List<String> ti = new ArrayList<String>();
         ti.add("hans");
         // CHECKSTYLE:OFF
-        List<UserProjectEffort> leff = timeEffortDAO.findEffortsForTiTAProjectAndTimeConsumerId(li, ti, "overall");
+        List<UserProjectEffort> leff = timeEffortDAO
+                .findEffortsForTiTAProjectAndTimeConsumerId(li, ti, "overall");
 
         assertNotNull(leff);
         assertEquals(1, leff.size());
@@ -145,7 +151,8 @@ public class EffortDaoTest { // extends AbstractJpaTests {
     @Test
     public void findEffortsForTiTAProjectAndTiTAUser() {
 
-        List<Effort> list = timeEffortDAO.findEffortsForTiTAProjectAndTiTAUser(1L, 2L);
+        List<Effort> list = timeEffortDAO.findEffortsForTiTAProjectAndTiTAUser(
+                1L, 2L);
         // CHECKSTYLE:OFF
         assertNotNull(list);
         assertEquals(4, list.size());
@@ -158,10 +165,11 @@ public class EffortDaoTest { // extends AbstractJpaTests {
     @Test
     public void findEffortsForTiTAProjectAndTiTAUserOrdered() {
 
-        List<Effort> list = timeEffortDAO.findEffortsForTiTAProjectAndTiTAUserOrdered(1L, 2L);
+        List<Effort> list = timeEffortDAO
+                .findEffortsForTiTAProjectAndTiTAUserOrdered(1L, 2L);
         // CHECKSTYLE:OFF
         assertNotNull(list);
-        assertEquals(4, list.size());
+        assertEquals(2, list.size());
         // CHECKSTYLE:ON
     }
 
@@ -171,7 +179,8 @@ public class EffortDaoTest { // extends AbstractJpaTests {
     @Test
     public void totalizeEffortsForTiTAProjectAndTiTAUser() {
 
-        Long sumOfEfforts = timeEffortDAO.totalizeEffortsForTiTAProjectAndTiTAUser(1L, 1L);
+        Long sumOfEfforts = timeEffortDAO
+                .totalizeEffortsForTiTAProjectAndTiTAUser(1L, 1L);
         // CHECKSTYLE:OFF
         assertNotNull(sumOfEfforts);
         assertEquals(311500.0, sumOfEfforts, 0.0);
@@ -184,7 +193,8 @@ public class EffortDaoTest { // extends AbstractJpaTests {
     @Test
     public void testEffortsForIssueTrackerTaskShouldSucceed() {
         // CHECKSTYLE:OFF
-        Long effort = timeEffortDAO.findEffortsSumForIssueTrackerTask(1L, "hans", 96L, 24L, 1L);
+        Long effort = timeEffortDAO.findEffortsSumForIssueTrackerTask(1L,
+                "hans", 96L, 24L, 1L);
         assertNotNull(effort);
         assertEquals(new Long(2000), effort);
         // CHECKSTYLE:ON
@@ -257,7 +267,8 @@ public class EffortDaoTest { // extends AbstractJpaTests {
     @Test
     public void findEffortsSumForTiTATasks() {
         // CHECKSTYLE:OFF
-        Assert.assertEquals(24000L, (long) timeEffortDAO.findEffortsSumForTiTATasks(1L, 1L, 3L));
+        Assert.assertEquals(24000L, (long) timeEffortDAO
+                .findEffortsSumForTiTATasks(1L, 1L, 3L));
         // CHECKSTYLE:ON
     }
 
@@ -267,7 +278,8 @@ public class EffortDaoTest { // extends AbstractJpaTests {
     @Test
     public void findEffortsSumForIssueTrackerTasks() {
         // CHECKSTYLE:OFF
-        Assert.assertEquals(9000L, (long) timeEffortDAO.findEffortsSumForIssueTrackerTasks(1L, 1L, 4L));
+        Assert.assertEquals(9000L, (long) timeEffortDAO
+                .findEffortsSumForIssueTrackerTasks(1L, 1L, 4L));
         // CHECKSTYLE:ON
     }
 }
