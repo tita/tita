@@ -57,6 +57,8 @@ import at.ac.tuwien.ifs.tita.issuetracker.issue.service.IssueTrackerService;
 
 public class TaskService implements ITaskService {
 
+    private FetchingThread fetcher;
+
     private IUserDAO titaUserDao;
 
     private ITiTAProjectDao titaProjectDao;
@@ -151,7 +153,7 @@ public class TaskService implements ITaskService {
     /** {@inheritDoc} */
     @Override
     public void fetchTaskFromIssueTrackerProjects(Long projectTitaId, Long userTitaId) throws ProjectNotFoundException {
-        FetchingThread fetcher = new FetchingThread(projectTitaId, userTitaId);
+        fetcher = new FetchingThread(projectTitaId, userTitaId);
         fetcher.run();
     }
 
@@ -352,5 +354,18 @@ public class TaskService implements ITaskService {
                 log.error("Connection error while data update.");
             }
         }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void startUpdate() {
+        fetcher.run();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void stopUpdate() {
+        fetcher.stop();
+        fetcher = null;
     }
 }

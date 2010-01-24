@@ -219,4 +219,14 @@ public interface ITaskService {
      * @return tasks with their sum of efforts.
      */
     List<UserProjectTaskEffort> getPerformanceOfPersonView(TiTAProject project, TiTAUser user);
+
+    /**
+     * Starts the update thread.
+     */
+    void startUpdate();
+
+    /**
+     * Stops the update thread.
+     */
+    void stopUpdate();
 }
