@@ -36,7 +36,6 @@ import at.ac.tuwien.ifs.tita.entity.TiTAUser;
  * Login Context for Tita - to authenticate Users and grant principals.
  * 
  * @author Karin
- * @author rene
  * 
  */
 public class TitaLoginContext extends UsernamePasswordContext {

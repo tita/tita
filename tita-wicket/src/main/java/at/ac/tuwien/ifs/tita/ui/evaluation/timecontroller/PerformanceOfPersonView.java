@@ -190,7 +190,8 @@ public class PerformanceOfPersonView extends BasePage {
 
                     selectedProject = project;
 
-                    List<TiTAUser> listOfUser = userService.findAllTiTAUsersForProject(project);
+                    List<TiTAUser> listOfUser = userService.findAllTiTAUsersForProjectByRole(project, userService
+                            .getRoleByName("Time consumer"));
                     tmForTiTAUser.reload(listOfUser);
 
                     makeVisible(false);
@@ -320,24 +321,6 @@ public class PerformanceOfPersonView extends BasePage {
                 target.addComponent(btnShowPoPAsPDF);
             }
         });
-
-        form.add(new AjaxButton("btnRefreshTables", form) {
-            @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
-                loadTableValues();
-
-                makeVisible(false);
-                tableForTiTAUser.setVisible(false);
-                popUserTableContainer.add(tableForTiTAUser);
-                updateResultElements();
-
-                target.addComponent(tableForTiTAProject);
-                target.addComponent(popUserTableContainer);
-                target.addComponent(popContainer);
-                target.addComponent(btnShowPoPAsPDF);
-            }
-        });
-
     }
 
     /**

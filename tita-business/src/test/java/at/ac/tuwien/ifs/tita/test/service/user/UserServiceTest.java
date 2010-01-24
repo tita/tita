@@ -41,7 +41,6 @@ import at.ac.tuwien.ifs.tita.entity.conv.Role;
  * Test.
  * 
  * @author herbert
- * @author rene
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:datasourceContext-test.xml" })
@@ -121,6 +120,22 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
         try {
             // CHECKSTYLE:OFF
             Role r = service.getRoleById(997L);
+            // CHECKSTYLE:ON
+            Assert.assertNotNull(r);
+            Assert.assertEquals("role1", r.getDescription());
+        } catch (PersistenceException e) {
+            fail();
+        }
+    }
+
+    /**
+     * Test.
+     */
+    @Test
+    public void testGetRoleByName() {
+        try {
+            // CHECKSTYLE:OFF
+            Role r = service.getRoleByName("role1");
             // CHECKSTYLE:ON
             Assert.assertNotNull(r);
             Assert.assertEquals("role1", r.getDescription());

@@ -187,4 +187,6 @@ public interface IEffortService {
      */
     void saveIssueTrackerTaskEfforts(Effort effort, Long isstTaskId, Long isstProjectId,
             String isstTaskDescription, TiTAUser user,  Long titaProjectId);
+    
+//    void clear();
 }

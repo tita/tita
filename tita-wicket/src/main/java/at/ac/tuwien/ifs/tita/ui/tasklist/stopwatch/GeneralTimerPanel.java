@@ -16,7 +16,6 @@
  */
 package at.ac.tuwien.ifs.tita.ui.tasklist.stopwatch;
 
-import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -26,7 +25,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.time.Duration;
 
@@ -41,7 +39,7 @@ import at.ac.tuwien.ifs.tita.ui.tasklist.TaskListPanel;
  * 
  */
 public class GeneralTimerPanel extends Panel implements IHeaderContributor {
-    private ResourceReference style = new CompressedResourceReference(GeneralTimerPanel.class, "tasktimer.css");
+//    private ResourceReference style = new CompressedResourceReference(GeneralTimerPanel.class, "tasktimer.css");
     private Form<Object> taskTimerForm;
     private TaskListPanel owner;
     private Effort effort = null;
@@ -109,7 +107,7 @@ public class GeneralTimerPanel extends Panel implements IHeaderContributor {
     /** {@inheritDoc} */
     @Override
     public void renderHead(IHeaderResponse response) {
-        response.renderCSSReference(style);
+//        response.renderCSSReference(style);
     }
 
     /**

@@ -135,11 +135,11 @@ public class TimerCoordinator implements Runnable {
             } else {
                 activeTasks.add(new ActiveTask(tId));
             }
-            if (registeredUsers.containsKey(userId)) {
+//            if (registeredUsers.containsKey(userId)) {
                 count = registeredUsers.get(userId);
                 count++;
                 registeredUsers.put(userId, count);
-            }
+//            }
         }
     }
 
@@ -162,11 +162,11 @@ public class TimerCoordinator implements Runnable {
                     effort.setEndTime(System.currentTimeMillis());
                     active.removeEffortForUser(userId);
                     // subtract active tasks by 1 for given user and tasks count
-                    if (registeredUsers.containsKey(userId)) {
+//                    if (registeredUsers.containsKey(userId)) {
                         count = registeredUsers.get(userId);
                         count--;
                         registeredUsers.put(userId, count);
-                    }
+//                    }
                 }
             }
         }
@@ -185,11 +185,11 @@ public class TimerCoordinator implements Runnable {
                 titaTasks.add(new ActiveTaskEffort(userId, new Effort(null, null, new Date(),
                                                     System.currentTimeMillis(), null,
                                                     0L, null, false, null)));
-                if (registeredUsers.containsKey(userId)) {
+//                if (registeredUsers.containsKey(userId)) {
                     count = registeredUsers.get(userId);
                     count++;
                     registeredUsers.put(userId, count);
-                }
+//                }
             }
         }
     }
@@ -226,11 +226,11 @@ public class TimerCoordinator implements Runnable {
                 effort = ate.getEffort();
                 effort.setEndTime(System.currentTimeMillis());
                 titaTasks.remove(userId);
-                if (registeredUsers.containsKey(userId)) {
+//                if (registeredUsers.containsKey(userId)) {
                     count = registeredUsers.get(userId);
                     count--;
                     registeredUsers.put(userId, count);
-                }
+//                }
             }
         }
         return effort;

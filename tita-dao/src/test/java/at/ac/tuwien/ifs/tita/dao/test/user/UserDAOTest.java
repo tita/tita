@@ -65,6 +65,7 @@ public class UserDAOTest {
     private TiTAProject titaProject;
     private TiTAUserProject tup;
     private Role role;
+    private Role role2;
 
     @Qualifier("titaProjectDAO")
     @Autowired
@@ -89,6 +90,7 @@ public class UserDAOTest {
     public void setUp() {
 
         role = new Role(1L, "Administrator");
+        role2 = new Role(2L, "TimeConsumer");
         titaUser = new TiTAUser("test-user", "test-password", "Christoph", "Zehetner", "test@example.com", false, role,
                 null, null);
         titaProject = new TiTAProject("test-description", "test-project", false, null, null, null);
@@ -99,6 +101,7 @@ public class UserDAOTest {
         titaUser.setTitaUserProjects(stup);
 
         roleDao.save(role);
+        roleDao.save(role2);
         titaProjectDAO.save(titaProject);
         titaProjectDAO.flushnClear();
         titaUserDao.save(titaUser);
@@ -182,6 +185,25 @@ public class UserDAOTest {
             Assert.assertEquals("test-password", u.getPassword());
             Assert.assertNotNull(u.getRole());
             Assert.assertEquals("Administrator", u.getRole().getDescription());
+        } catch (PersistenceException e) {
+            fail();
+        }
+    }
+
+    /**
+     * Test: Get TiTAUser by project and role.
+     */
+    @Test
+    public void testfindUsersForTiTAProjectByRole() {
+        try {
+            List<TiTAUser> u = titaUserDao.findUsersForTiTAProjectByRole(titaProject, role);
+            Assert.assertNotNull(u);
+            Assert.assertNotNull(u.get(0).getRole());
+            Assert.assertEquals("Administrator", u.get(0).getRole().getDescription());
+
+            List<TiTAUser> u2 = titaUserDao.findUsersForTiTAProjectByRole(titaProject, role2);
+            Assert.assertNotNull(u2);
+            Assert.assertEquals(0, u2.size());
         } catch (PersistenceException e) {
             fail();
         }
