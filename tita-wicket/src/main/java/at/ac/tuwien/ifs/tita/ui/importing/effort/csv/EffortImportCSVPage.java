@@ -93,6 +93,8 @@ public class EffortImportCSVPage extends BasePage {
     private TableModelEffortImport tmForImportedEfforts;
 
     private AjaxButton importData;
+    private Label lblMessageForUser;
+    private String messageForUser;
 
     private DropDownChoice<SelectOption> ddDate;
     private DropDownChoice<SelectOption> ddStarttime;
@@ -119,6 +121,8 @@ public class EffortImportCSVPage extends BasePage {
         results.setOutputMarkupId(true);
         results.setOutputMarkupPlaceholderTag(true);
 
+        displayResultLabel();
+
         form = new Form<Object>("choiceForImportEffortOptions");
         form.setOutputMarkupId(true);
         displayDropDownChoices();
@@ -135,6 +139,25 @@ public class EffortImportCSVPage extends BasePage {
     }
 
     /**
+     * Display resutl label.
+     */
+    public void displayResultLabel() {
+
+        lblMessageForUser = new Label("labelMessageForUser", new PropertyModel<String>(this,
+                "messageForUser"));
+        lblMessageForUser.setVisible(false);
+        lblMessageForUser.setOutputMarkupId(true);
+        results.add(lblMessageForUser);
+    }
+
+    /**
+     * Update for the user message.
+     */
+    public void updateResultContainer() {
+        results.add(lblMessageForUser);
+    }
+
+    /**
      * Displays the buttons for the target/actual comparison.
      */
     public void displayButtons() {
@@ -142,7 +165,7 @@ public class EffortImportCSVPage extends BasePage {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
 
-
+                boolean importSuccesful = true;
 
                 if (tableForTiTAProject.getSelectedRows().length > 0 && csvFile != null) {
                     TiTAProject titaProject = (TiTAProject) tableForTiTAProject.getTableModel()
@@ -153,33 +176,56 @@ public class EffortImportCSVPage extends BasePage {
 
                     for (String header : headers) {
                         if (header == null) {
-
+                            importSuccesful = false;
+                            setMessageForUser("The first line in the csv file looks like this: \n");
+                            try {
+                                for (String h1 : reader.getFirstDataSourceOrHeader(csvFile
+                                        .getAbsolutePath())) {
+                                    setMessageForUser(getMessageForUser() + " " + h1 + ",");
+                                }
+                                setMessageForUser(getMessageForUser()
+                                        + " \n You have to map your columns to our fields.");
+                                break;
+                            } catch (IOException e) {
+                                e.getMessage();
+                            }
                         }
                     }
 
+                    if (importSuccesful) {
+                        CellProcessor[] processors = getCellProcessors(headers);
 
-                    CellProcessor[] processors = getCellProcessors(headers);
+                        try {
+                            effortResult.clear();
+                            List<Effort> importedEfforts = importEffortData(csvFile
+                                    .getAbsolutePath(), headers, processors, titaProject);
+                            effortResult.addAll(importedEfforts);
 
-                    try {
+                            tmForImportedEfforts.reload(effortResult);
+                            tableForImportedEfforts.setVisible(true);
+                            lblMessageForUser.setVisible(false);
+
+                        } catch (PersistenceException e) {
+                            e.getMessage();
+                        } catch (IOException io) {
+                            io.getMessage();
+                        } catch(Exception e) {
+                            effortResult.clear();
+                            tmForImportedEfforts.reload(effortResult);
+                            tableForImportedEfforts.setVisible(false);
+                            lblMessageForUser.setVisible(true);
+                            setMessageForUser("Parsing Error: You have to map your fields to ours.");
+                        }
+                    } else {
                         effortResult.clear();
-                        List<Effort> importedEfforts = importEffortData(csvFile.getAbsolutePath(),
-                                headers, processors, titaProject);
-                        effortResult.addAll(importedEfforts);
-
-
                         tmForImportedEfforts.reload(effortResult);
-                        tableForImportedEfforts.setVisible(true);
-
-                        results.add(tableForImportedEfforts);
-                        target.addComponent(results);
-
-                    } catch (PersistenceException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                        tableForImportedEfforts.setVisible(false);
+                        lblMessageForUser.setVisible(true);
                     }
+
+                    results.add(tableForImportedEfforts);
+                    results.add(lblMessageForUser);
+                    target.addComponent(results);
                 }
             }
         };
@@ -279,10 +325,9 @@ public class EffortImportCSVPage extends BasePage {
 
         tableForImportedEfforts.setWidths(new String[] { "95", "300", "80", "80", "78" });
         tableForImportedEfforts.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        tableForImportedEfforts.setVisible(true);
+        tableForImportedEfforts.setVisible(false);
         results.add(tableForImportedEfforts);
     }
-
 
     /**
      * Method to set the behavior for each dropDownChoice.
@@ -302,7 +347,10 @@ public class EffortImportCSVPage extends BasePage {
                     // importData.setVisible(checkDropDownChoiceValues(listOfDropDowns));
 
                     tableForImportedEfforts.setVisible(false);
-                    target.addComponent(tableForImportedEfforts);
+                    lblMessageForUser.setVisible(false);
+                    results.add(tableForImportedEfforts);
+                    results.add(lblMessageForUser);
+                    target.addComponent(results);
                     target.addComponent(importData);
                 }
             });
@@ -599,6 +647,14 @@ public class EffortImportCSVPage extends BasePage {
      */
     private Folder getUploadFolder() {
         return ((TiTAApplication) Application.get()).getUploadFolder();
+    }
+
+    public void setMessageForUser(String messageForUser) {
+        this.messageForUser = messageForUser;
+    }
+
+    public String getMessageForUser() {
+        return messageForUser;
     }
 
 }
