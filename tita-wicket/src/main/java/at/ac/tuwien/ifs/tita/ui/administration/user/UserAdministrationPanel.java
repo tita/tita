@@ -17,6 +17,7 @@ package at.ac.tuwien.ifs.tita.ui.administration.user;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.PersistenceException;
 
@@ -24,17 +25,25 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wicketstuff.table.Table;
 
+import at.ac.tuwien.ifs.tita.business.service.project.IProjectService;
 import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
 import at.ac.tuwien.ifs.tita.entity.Effort;
+import at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin;
+import at.ac.tuwien.ifs.tita.entity.IssueTrackerProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
+import at.ac.tuwien.ifs.tita.entity.TiTAUserProject;
 import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 import at.ac.tuwien.ifs.tita.entity.conv.Role;
+import at.ac.tuwien.ifs.tita.issuetracker.interfaces.IProjectTrackable;
+import at.ac.tuwien.ifs.tita.issuetracker.issue.service.IIssueTrackerService;
+import at.ac.tuwien.ifs.tita.issuetracker.issue.service.IssueTrackerService;
 import at.ac.tuwien.ifs.tita.ui.models.TableModelUser;
 import at.ac.tuwien.ifs.tita.ui.uihelper.ButtonDelete;
 import at.ac.tuwien.ifs.tita.ui.uihelper.ButtonDeleteRenderer;
@@ -53,6 +62,8 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
     // the service for DB-Operations
     @SpringBean(name = "userService")
     private IUserService service;
+    @SpringBean(name = "titaProjectService")
+    private IProjectService titaProjectService;
 
     // the containers
     private final WebMarkupContainer listContainer;
@@ -103,6 +114,8 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
         addOrReplace(userProjectPanel);
         addOrReplace(userIssueTrackerPanel);
 
+        add(new FeedbackPanel("feedback").setOutputMarkupId(true));
+
         // displayDetailsPage(new TiTAUser());
         // displayProjectPanel();
         // displayIssueTrackerLoginPanel();
@@ -114,8 +127,8 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
     }
 
     /**
-     * Method for displaying a List of Users. Also hides the details page if
-     * null value is given, just switch without refreshing data.
+     * Method for displaying a List of Users. Also hides the details page if null value is given, just switch without
+     * refreshing data.
      * 
      * @param userList the list of users.
      */
@@ -159,8 +172,7 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
     }
 
     /**
-     * Method for displaying the details site of a specific User. Also hides the
-     * list page.
+     * Method for displaying the details site of a specific User. Also hides the list page.
      * 
      * @param user the specific User to show.
      */
@@ -237,8 +249,7 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
     }
 
     /**
-     * displays the Panel to add Projects to the user. only possible if
-     * detailView has been initialized.
+     * displays the Panel to add Projects to the user. only possible if detailView has been initialized.
      */
     public void displayProjectPanel() {
         if (form != null) {
@@ -252,8 +263,7 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
     }
 
     /**
-     * displays the Panel to add IssueTrackerLogins to the user. only possible
-     * if detailView has been initialized.
+     * displays the Panel to add IssueTrackerLogins to the user. only possible if detailView has been initialized.
      */
     public void displayIssueTrackerLoginPanel() {
         if (form != null) {
@@ -266,6 +276,21 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
         } else {
             log.error("Form is null!");
         }
+    }
+
+    /**
+     * returns an IssueTrackerLogin for a specific IssueTracker if a Login for current User exists
+     * 
+     * @return a corresponding IssueTrackerLogin if existant.
+     */
+    public IssueTrackerLogin getLoginForIssueTracker(IssueTracker issueTracker) {
+        Set<IssueTrackerLogin> logins = form.getUser().getIssueTrackerLogins();
+        for (IssueTrackerLogin login : logins) {
+            if (login.getIssueTracker().getDescription().equals(issueTracker.getDescription())) {
+                return login;
+            }
+        }
+        return null;
     }
 
     /**
@@ -345,13 +370,52 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
      */
     public void saveEntity(TiTAUser user) {
         try {
+            this.currentUser = user;
             tm.addEntity(user);
-            service.saveUser(user);
+
+            TiTAUser savedUser = service.saveUser(user);
+
+            for (IssueTrackerLogin login : user.getIssueTrackerLogins()) {
+                service.saveIssueTrackerLogin(login, savedUser);
+            }
+            for (TiTAUserProject userProject : user.getTitaUserProjects()) {
+                for (IssueTrackerProject issProject : userProject.getProject().getIssueTrackerProjects()) {
+                    IssueTrackerLogin login = getLoginForIssueTracker(issProject.getIssueTracker());
+                    if (login != null) {
+                        IIssueTrackerService issueTrackerService = new IssueTrackerService(login);
+                        IProjectTrackable project = issueTrackerService.getProjectByProjectName(issProject
+                            .getProjectName());
+                        if (project != null) {
+                            issProject.setIsstProjectId(project.getId());
+                        }
+                    }
+                }
+                userProject.setUser(savedUser);
+                titaProjectService.saveUserProject(userProject);
+            }
             tm.reload();
         } catch (PersistenceException e) {
+            e.printStackTrace();
             log.error("Could not save User");
             log.error(e.getMessage());
         }
+    }
+
+    /**
+     * Looks for existence of a specific User.
+     * 
+     * @param user The user to look for.
+     * @return true if user already exists.
+     */
+    public boolean userExists(TiTAUser user) {
+        try {
+            if (service.getUserByUsername(user.getUserName()) != null) {
+                return true;
+            }
+        } catch (Exception e) {
+            log.error("Exception occured while finding a User.");
+        }
+        return false;
     }
 
     /** {@inheritDoc} */

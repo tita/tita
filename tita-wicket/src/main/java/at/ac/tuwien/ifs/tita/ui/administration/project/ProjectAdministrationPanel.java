@@ -16,7 +16,9 @@
 package at.ac.tuwien.ifs.tita.ui.administration.project;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.PersistenceException;
@@ -32,10 +34,16 @@ import org.slf4j.LoggerFactory;
 import org.wicketstuff.table.Table;
 
 import at.ac.tuwien.ifs.tita.business.service.project.IProjectService;
+import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
 import at.ac.tuwien.ifs.tita.entity.Effort;
+import at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
+import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 import at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus;
+import at.ac.tuwien.ifs.tita.issuetracker.issue.service.IIssueTrackerService;
+import at.ac.tuwien.ifs.tita.issuetracker.issue.service.IssueTrackerService;
+import at.ac.tuwien.ifs.tita.ui.login.TitaSession;
 import at.ac.tuwien.ifs.tita.ui.models.TableModelProject;
 import at.ac.tuwien.ifs.tita.ui.uihelper.ButtonDelete;
 import at.ac.tuwien.ifs.tita.ui.uihelper.ButtonDeleteRenderer;
@@ -54,6 +62,13 @@ public class ProjectAdministrationPanel extends Panel implements IAdministration
     // the service for DB-Operations
     @SpringBean(name = "titaProjectService")
     private IProjectService titaProjectService;
+    @SpringBean(name = "userService")
+    private IUserService userService;
+
+    private List<IssueTracker> issueTracker;
+    private Map<String, IssueTrackerLogin> issueTrackerLoginMap;
+
+    private IIssueTrackerService issueTrackerService;
 
     // the containers
     private final WebMarkupContainer listContainer;
@@ -109,6 +124,22 @@ public class ProjectAdministrationPanel extends Panel implements IAdministration
         issueTrackerContainer.setOutputMarkupId(true);
         issueTrackerContainer.setOutputMarkupPlaceholderTag(true);
         addOrReplace(issueTrackerContainer);
+
+        try {
+            Set<IssueTrackerLogin> issueTrackerLogins = userService.getUserByUsername(
+                TitaSession.getSession().getUsername()).getIssueTrackerLogins();
+            issueTracker = new ArrayList<IssueTracker>();
+            issueTrackerLoginMap = new HashMap<String, IssueTrackerLogin>();
+
+            if (issueTrackerLogins != null) {
+                for (IssueTrackerLogin login : issueTrackerLogins) {
+                    issueTracker.add(login.getIssueTracker());
+                    issueTrackerLoginMap.put(login.getIssueTracker().getDescription(), login);
+                }
+            }
+        } catch (Exception e) {
+            error("Could not load available IssueTracker for current User");
+        }
 
         loadListEntities();
         this.setOutputMarkupId(true);
@@ -213,12 +244,11 @@ public class ProjectAdministrationPanel extends Panel implements IAdministration
         detailContainer.setVisible(true);
 
         if (issTProject == null) {
-            issueTrackerForm = new IssueTrackerProjectForm("issueTrackerProjectForm", 
-                    new IssueTrackerProject(),
-                titaProjectService.getAvailableIssueTracker(), currentProject);
+            issueTrackerForm = new IssueTrackerProjectForm("issueTrackerProjectForm", new IssueTrackerProject(),
+                issueTracker, currentProject);
         }
-        issueTrackerForm = new IssueTrackerProjectForm("issueTrackerProjectForm", 
-                issTProject, titaProjectService.getAvailableIssueTracker(), currentProject);
+        issueTrackerForm = new IssueTrackerProjectForm("issueTrackerProjectForm", issTProject, issueTracker,
+            currentProject);
 
         issueTrackerForm.add(new Button("saveIssueTrackerProjectForm") {
             @Override
@@ -226,7 +256,12 @@ public class ProjectAdministrationPanel extends Panel implements IAdministration
                 log.debug("Saving IssueTrackerProjectForm");
 
                 Set<IssueTrackerProject> tmpSet = currentProject.getIssueTrackerProjects();
-                tmpSet.add(issueTrackerForm.getIssueTrackerProject());
+                IssueTrackerProject issTProjectToAdd = issueTrackerForm.getIssueTrackerProject();
+                issueTrackerService = new IssueTrackerService(issueTrackerLoginMap.get(issTProjectToAdd
+                    .getIssueTracker().getDescription()));
+                issTProjectToAdd.setIsstProjectId(issueTrackerService.getProjectByProjectName(
+                    issTProjectToAdd.getProjectName()).getId());
+                tmpSet.add(issTProjectToAdd);
                 currentProject.setIssueTrackerProjects(tmpSet);
 
                 displayDetailsPage(currentProject);

@@ -19,6 +19,7 @@ import javax.persistence.PersistenceException;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
@@ -36,8 +37,7 @@ public interface IUserService {
      * Saves a new user or updates an existing one.
      * 
      * @param user the user to be saved
-     * @throws PersistenceException if Parameter is null or another Exception is
-     *         thrown
+     * @throws PersistenceException if Parameter is null or another Exception is thrown
      * @return the saved User.
      */
     TiTAUser saveUser(TiTAUser user) throws PersistenceException;
@@ -46,8 +46,7 @@ public interface IUserService {
      * deletes an existing user.
      * 
      * @param user the user to be deleted
-     * @throws PersistenceException if Parameter is null or another Exception is
-     *         thrown
+     * @throws PersistenceException if Parameter is null or another Exception is thrown
      */
     void deleteUser(TiTAUser user) throws PersistenceException;
 
@@ -55,8 +54,7 @@ public interface IUserService {
      * returns a specific User found to the id given.
      * 
      * @param id the unique identifier of an user
-     * @throws PersistenceException if no user was found or another Exception is
-     *         thrown
+     * @throws PersistenceException if no user was found or another Exception is thrown
      * @return the specified User, if found.
      */
     TiTAUser getUserById(Long id) throws PersistenceException;
@@ -65,8 +63,7 @@ public interface IUserService {
      * returns a specific User found to the username given.
      * 
      * @param username the unique identifier of an user
-     * @throws PersistenceException if no user was found or another Exception is
-     *         thrown
+     * @throws PersistenceException if no user was found or another Exception is thrown
      * @return the specified User, if found.
      */
     TiTAUser getUserByUsername(String username) throws PersistenceException;
@@ -75,8 +72,7 @@ public interface IUserService {
      * Saves a new Role or updates an existing one.
      * 
      * @param role the role to be saved
-     * @throws PersistenceException if Parameter is null or another Exception is
-     *         thrown
+     * @throws PersistenceException if Parameter is null or another Exception is thrown
      * @return the saved Role.
      */
     Role saveRole(Role role) throws PersistenceException;
@@ -85,8 +81,7 @@ public interface IUserService {
      * deletes an existing role.
      * 
      * @param role the role to be deleted
-     * @throws PersistenceException if Parameter is null or another Exception is
-     *         thrown
+     * @throws PersistenceException if Parameter is null or another Exception is thrown
      */
     void deleteRole(Role role) throws PersistenceException;
 
@@ -94,8 +89,7 @@ public interface IUserService {
      * returns a specific Role found to the id given.
      * 
      * @param id the unique identifier of an role
-     * @throws PersistenceException if no role was found or another Exception is
-     *         thrown
+     * @throws PersistenceException if no role was found or another Exception is thrown
      * @return the specified Role if id was found
      */
     Role getRoleById(Long id) throws PersistenceException;
@@ -111,8 +105,7 @@ public interface IUserService {
     /**
      * returns all undeleted Users.
      * 
-     * @throws PersistenceException if no user was found or another Exception is
-     *         thrown
+     * @throws PersistenceException if no user was found or another Exception is thrown
      * @return all Users if found
      */
     List<TiTAUser> getUndeletedUsers() throws PersistenceException;
@@ -120,8 +113,7 @@ public interface IUserService {
     /**
      * returns all Roles.
      * 
-     * @throws PersistenceException if no role was found or another Exception is
-     *         thrown
+     * @throws PersistenceException if no role was found or another Exception is thrown
      * @return all Roles if found
      */
     List<Role> getRoles() throws PersistenceException;
@@ -147,14 +139,12 @@ public interface IUserService {
      * 
      * @param project - the given project
      * @param role - role of user
-     * @return a list of tita user, that are included in that project and have
-     *         the given role.
+     * @return a list of tita user, that are included in that project and have the given role.
      */
     List<TiTAUser> findAllTiTAUsersForProjectByRole(TiTAProject project, Role role);
 
     /**
-     * Finds the targetHours for a tita project a user is added with a defined
-     * value.
+     * Finds the targetHours for a tita project a user is added with a defined value.
      * 
      * @param userId - the id of the tita user
      * @param projectId - the id of the tita project
@@ -186,5 +176,15 @@ public interface IUserService {
      * @throws PersistenceException if an Exception from DAO was thrown.
      */
     List<IssueTracker> getAvailableIssueTracker() throws PersistenceException;
+
+    /**
+     * saves a Login to a specific user.
+     * 
+     * @param login the login to save
+     * @param user the user for the public key
+     * @return the saved login, with encrypted passwords
+     * @throws PersistenceException if an Exception from DAO was thrown.
+     */
+    IssueTrackerLogin saveIssueTrackerLogin(IssueTrackerLogin login, TiTAUser user) throws PersistenceException;
 
 }

@@ -62,6 +62,9 @@ public class UserForm extends Form<TiTAUser> {
     // roles needed for Dropdownbox
     private final List<Role> roles;
 
+    // marks wheter user is updated or created
+    private boolean isUserNewlyCreated;
+
     // Lists needed for Tables
     private final List<TiTAUserProject> titaProjects;
     private Table userProjectTable;
@@ -98,9 +101,10 @@ public class UserForm extends Form<TiTAUser> {
         if (u == null) {
             this.user = new TiTAUser("", "", "", "", "", false, null, new HashSet<TiTAUserProject>(),
                 new HashSet<IssueTrackerLogin>());
-
+            isUserNewlyCreated = true;
         } else {
             this.user = u;
+            isUserNewlyCreated = false;
         }
 
         this.parent = parent;
@@ -145,13 +149,18 @@ public class UserForm extends Form<TiTAUser> {
         addOrReplace(new CheckBox("checkBoxDeleted", new PropertyModel<Boolean>(user, "deleted")));
 
         dropDownrole = new DropDownChoice<Role>("dropDownRole", new PropertyModel<Role>(user, "role"), roles);
+        if (user.getRole() != null) {
+            dropDownrole.setConvertedInput(user.getRole());
+        }
         dropDownrole.setRequired(false);
         addOrReplace(dropDownrole);
 
         userProjectTM = new TableModelUserProject(titaProjects);
+        userProjectTM.reload();
         userProjectTable = new Table(C_USER_PROJECT_TABLE_NAME, userProjectTM);
 
         issueTrackerLoginTM = new TableModelIssueTrackerLoginWithoutButtons(titaIssueTracker);
+        issueTrackerLoginTM.reload();
         issueTrackerLoginTable = new Table(C_ISSUE_TRACKER_TABLE_NAME, issueTrackerLoginTM);
 
         addOrReplace(issueTrackerLoginTable);
@@ -180,13 +189,19 @@ public class UserForm extends Form<TiTAUser> {
         log.debug("trying to save user " + getUser());
         log.debug("checking if repetition: " + getPasswordRepetition() + " equals the password " + user.getPassword());
 
+        user.setTitaUserProjects(new HashSet<TiTAUserProject>(this.titaProjects));
+        user.setIssueTrackerLogins(new HashSet<IssueTrackerLogin>(this.titaIssueTracker));
         // normal submit mode
         if (submitMode == C_PERMANENT_SUBMIT) {
             if (getPasswordRepetition().equals(user.getPassword())) {
                 try {
                     user.setPassword(TiTASecurity.calcHash(user.getPassword()));
-                    parent.saveEntity(user);
-                    parent.loadListEntities();
+                    if (!parent.userExists(user) || !isUserNewlyCreated) {
+                        parent.saveEntity(user);
+                        parent.loadListEntities();
+                    } else {
+                        this.error("Username already exists.");
+                    }
                 } catch (NoSuchAlgorithmException e) {
                     log.error("Fatal Error, User cannot be found due to unknown Algorithm.");
                 }
@@ -240,8 +255,7 @@ public class UserForm extends Form<TiTAUser> {
     }
 
     /**
-     * Adds a new UserProject to the Form List and Refreshes the
-     * UserProjectTable.
+     * Adds a new UserProject to the Form List and Refreshes the UserProjectTable.
      * 
      * @param userProject the userProject to Add.
      */
@@ -255,8 +269,7 @@ public class UserForm extends Form<TiTAUser> {
     /**
      * Returns the currently selected UserProject of the UserProjectTable.
      * 
-     * @return the currently selected UserProject, if no project is selected
-     *         null.
+     * @return the currently selected UserProject, if no project is selected null.
      */
     public TiTAUserProject getCurrentUserProject() {
         if (userProjectTM.getSelectedRow() > 1) {
@@ -266,8 +279,7 @@ public class UserForm extends Form<TiTAUser> {
     }
 
     /**
-     * Adds a new IssueTrackerLogin to the Form List and Refreshes the
-     * IssueTrackerLoginTable.
+     * Adds a new IssueTrackerLogin to the Form List and Refreshes the IssueTrackerLoginTable.
      * 
      * @param issueTrackerLogin the userProject to Add.
      */
@@ -279,11 +291,9 @@ public class UserForm extends Form<TiTAUser> {
     }
 
     /**
-     * Returns the currently selected IssueTrackerLogin of the
-     * IssueTrackerLoginTable.
+     * Returns the currently selected IssueTrackerLogin of the IssueTrackerLoginTable.
      * 
-     * @return the currently selected IssueTrackerLogin, if no login is selected
-     *         null.
+     * @return the currently selected IssueTrackerLogin, if no login is selected null.
      */
     public IssueTrackerLogin getCurrentIssueTrackerLogin() {
         if (issueTrackerLoginTM.getSelectedRow() > 1) {

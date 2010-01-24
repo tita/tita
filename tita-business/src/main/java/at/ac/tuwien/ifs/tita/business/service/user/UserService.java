@@ -19,16 +19,18 @@ import java.util.List;
 
 import javax.persistence.PersistenceException;
 
+import at.ac.tuwien.ifs.tita.business.security.TiTASecurity;
+import at.ac.tuwien.ifs.tita.business.security.exception.TiTASecurityException;
 import at.ac.tuwien.ifs.tita.dao.interfaces.IGenericHibernateDao;
 import at.ac.tuwien.ifs.tita.dao.interfaces.IUserDAO;
+import at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 import at.ac.tuwien.ifs.tita.entity.conv.Role;
 
 /**
- * Service for manipulating (insert, update, delete, search... ) users and roles
- * in TiTA.
+ * Service for manipulating (insert, update, delete, search... ) users and roles in TiTA.
  * 
  * @author ASE Group 10 - TiTA
  * 
@@ -38,6 +40,7 @@ public class UserService implements IUserService {
     private IUserDAO userDao;
     private IGenericHibernateDao<Role, Long> roleDao;
     private IGenericHibernateDao<IssueTracker, Long> issueTrackerDao;
+    private IGenericHibernateDao<IssueTrackerLogin, Long> issueTrackerLoginDao;
 
     public void setUserDao(IUserDAO userDao) {
         this.userDao = userDao;
@@ -49,6 +52,10 @@ public class UserService implements IUserService {
 
     public void setIssueTrackerDao(IGenericHibernateDao<IssueTracker, Long> issueTrackerDao) {
         this.issueTrackerDao = issueTrackerDao;
+    }
+
+    public void setIssueTrackerLoginDao(IGenericHibernateDao<IssueTrackerLogin, Long> issueTrackerLoginDao) {
+        this.issueTrackerLoginDao = issueTrackerLoginDao;
     }
 
     /** {@inheritDoc} */
@@ -162,5 +169,25 @@ public class UserService implements IUserService {
     @Override
     public List<TiTAUser> findAllTiTAUsersForProjectByRole(TiTAProject project, Role role) {
         return userDao.findUsersForTiTAProjectByRole(project, role);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public IssueTrackerLogin saveIssueTrackerLogin(IssueTrackerLogin login, TiTAUser user) throws PersistenceException {
+
+        try {
+            if (login.getId() == null) {
+                login.setPassword(TiTASecurity.getEncryptedPassword(user.getUserName(), login.getPassword()));
+            }
+        } catch (TiTASecurityException e) {
+            try {
+                login.setPassword(TiTASecurity.getEncryptedPassword(user.getUserName(), user.getPassword(), login
+                    .getPassword()));
+            } catch (TiTASecurityException e1) {
+                throw new PersistenceException(e1.getMessage());
+            }
+        }
+        login.setUser(user);
+        return issueTrackerLoginDao.save(login);
     }
 }

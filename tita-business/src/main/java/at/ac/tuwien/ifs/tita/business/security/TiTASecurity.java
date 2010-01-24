@@ -228,6 +228,66 @@ public class TiTASecurity {
     }
 
     /**
+     * Encrypts the issueTrackerPassword for a specified User, if user-key is not available, an exception will be
+     * thrown.
+     * 
+     * @param userName the user to encrypt the password.
+     * @param issueTrackerPassword the password to encrypt.
+     * @return the encrypted password
+     * @throws TiTASecurityException if anything goes wrong.
+     */
+    public static String getEncryptedPassword(String userName, String issueTrackerPassword)
+        throws TiTASecurityException {
+        if (!isKeyStoreInitialized()) {
+            initOrLoadKeyStore();
+        }
+
+        String encryptedPassword = "";
+
+        PublicKey publicKey = null;
+
+        try {
+            if (keyStore.containsAlias("certificate" + userName)) {
+                publicKey = keyStore.getCertificate("certificate" + userName).getPublicKey();
+            } else {
+                throw new TiTASecurityException("User in Keystore not found");
+            }
+
+            Cipher cipher = Cipher.getInstance(KEYALG);
+            cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+
+            encryptedPassword = Base64.encode(cipher.doFinal(issueTrackerPassword.getBytes()));
+
+            saveKeyStore();
+        } catch (KeyStoreException e) {
+            log.error("Error Decrypting given Password, KeystoreException was thrown.");
+            throw new TiTASecurityException("Could not restore Password, KeystoreException was thrown.\n"
+                + e.getMessage());
+        } catch (NoSuchAlgorithmException e) {
+            log.error("Error Decrypting given Password, given Algorithm was not found.");
+            throw new TiTASecurityException("Could not restore Password, given Algorithm was not found.\n"
+                + e.getMessage());
+        } catch (NoSuchPaddingException e) {
+            log.error("Error Decrypting given Password, NoSuchPaddingException was thrown.");
+            throw new TiTASecurityException("Could not restore Password, NoSuchPaddingException was thrown.\n"
+                + e.getMessage());
+        } catch (InvalidKeyException e) {
+            log.error("Error Decrypting given Password, Key was invalid.");
+            throw new TiTASecurityException("Could not restore Password, Key was invalid.\n" + e.getMessage());
+        } catch (BadPaddingException e) {
+            log.error("Error Decrypting given Password, BadPaddingException was thrown.");
+            throw new TiTASecurityException("Could not restore Password, BadPaddingException was thrown.\n"
+                + e.getMessage());
+        } catch (IllegalBlockSizeException e) {
+            log.error("Error Decrypting given Password, Blocksize of Cipher is not valid.");
+            throw new TiTASecurityException("Could not restore Password, Blocksize of Cipher is not valid.\n"
+                + e.getMessage());
+        }
+
+        return encryptedPassword;
+    }
+
+    /**
      * reads the Keys of a specific User from the FileSystem.
      * 
      * @param userName the KeyPair-owner
@@ -342,8 +402,7 @@ public class TiTASecurity {
      * @param pair the KeyPair to create a Certificate for.
      * @param userName the Issuer of the Certificate
      * @return a 10 Year valid Certificate for the User.
-     * @throws TiTASecurityException If an error occurs during the generation
-     *         Process.
+     * @throws TiTASecurityException If an error occurs during the generation Process.
      */
     private static X509Certificate generateV3Certificate(KeyPair pair, String userName) throws TiTASecurityException {
 
@@ -394,8 +453,7 @@ public class TiTASecurity {
     }
 
     /**
-     * checks if File already exists and creates the Folders and Files of the
-     * Filestore, if not existant.
+     * checks if File already exists and creates the Folders and Files of the Filestore, if not existant.
      * 
      * @param keyStoreFile the file to check for existency
      * @return true if file exists, else false

@@ -30,14 +30,14 @@ import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 
 /**
  * Entity for storing login-Data for Users to login at IssueTrackers.
- *
+ * 
  * @author karin
- *
+ * 
  */
 @Entity
 @Table(name = "ISST_LOGIN")
 @SequenceGenerator(name = "seq_isst_login", sequenceName = "ISST_LOGIN_ID_SEQ", allocationSize = 1)
-public class IssueTrackerLogin extends BaseEntity<Long>{
+public class IssueTrackerLogin extends BaseEntity<Long> {
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_isst_login")
@@ -50,11 +50,13 @@ public class IssueTrackerLogin extends BaseEntity<Long>{
     private String password;
 
     @ManyToOne
-    @JoinColumn(name = "USER_ID") //, referencedColumnName = "ID")
+    @JoinColumn(name = "USER_ID")
+    // , referencedColumnName = "ID")
     private TiTAUser user;
 
     @ManyToOne
-    @JoinColumn(name = "ISST_ID") //, referencedColumnName = "ID")
+    @JoinColumn(name = "ISST_ID")
+    // , referencedColumnName = "ID")
     private IssueTracker issueTracker;
 
     @SuppressWarnings("unused")
@@ -66,8 +68,7 @@ public class IssueTrackerLogin extends BaseEntity<Long>{
         super();
     }
 
-    public IssueTrackerLogin(String userName, String password,
-            IssueTracker issueTracker, TiTAUser user) {
+    public IssueTrackerLogin(String userName, String password, IssueTracker issueTracker, TiTAUser user) {
         super();
         this.userName = userName;
         this.password = password;
@@ -106,5 +107,9 @@ public class IssueTrackerLogin extends BaseEntity<Long>{
 
     public TiTAUser getUser() {
         return this.user;
+    }
+
+    public void setUser(TiTAUser user) {
+        this.user = user;
     }
 }

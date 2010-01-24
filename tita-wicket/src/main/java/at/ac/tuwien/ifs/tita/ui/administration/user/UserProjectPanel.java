@@ -27,6 +27,7 @@ import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
@@ -131,6 +132,8 @@ public class UserProjectPanel extends Panel {
 
         addOrReplace(container);
 
+        add(new FeedbackPanel("feedback").setOutputMarkupId(true));
+
         displayTables();
         addButtons();
     }
@@ -202,10 +205,8 @@ public class UserProjectPanel extends Panel {
 
                     userProjectsList.add(up);
                 }
-                TiTAUser u = new TiTAUser(getUser().getUserName(), getUser().getPassword(), getUser().getFirstName(),
-                    getUser().getLastName(), getUser().getEmail(), getUser().isDeleted(), getUser().getRole(),
-                    userProjectsList, getUser().getIssueTrackerLogins());
-
+                TiTAUser u = getUser();
+                u.setTitaUserProjects(userProjectsList);
                 parent.displayDetailsPage(u);
             }
         });

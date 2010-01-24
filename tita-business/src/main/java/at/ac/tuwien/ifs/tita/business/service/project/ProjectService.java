@@ -30,12 +30,12 @@ import at.ac.tuwien.ifs.tita.entity.IssueTrackerTask;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTATask;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
+import at.ac.tuwien.ifs.tita.entity.TiTAUserProject;
 import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 import at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus;
 
 /**
- * Service for manipulating (insert, update, delete, search... ) tita projects
- * in TiTA.
+ * Service for manipulating (insert, update, delete, search... ) tita projects in TiTA.
  * 
  * @author herbert
  * 
@@ -47,6 +47,7 @@ public class ProjectService implements IProjectService {
     private IIssueTrackerProjectDao issueTrackerProjectDao;
     private IGenericHibernateDao<TiTATask, Long> titaTaskDao;
     private IGenericHibernateDao<IssueTracker, Long> issueTrackerDao;
+    private IGenericHibernateDao<TiTAUserProject, Long> userProjectDao;
 
     public void setTitaProjectDao(TiTAProjectDao titaProjectDao) {
         this.titaProjectDao = titaProjectDao;
@@ -56,8 +57,7 @@ public class ProjectService implements IProjectService {
         this.issueTrackerTaskDao = issueTrackerTaskDao;
     }
 
-    public void setIssueTrackerProjectDao(
-            IIssueTrackerProjectDao issueTrackerProjectDao) {
+    public void setIssueTrackerProjectDao(IIssueTrackerProjectDao issueTrackerProjectDao) {
         this.issueTrackerProjectDao = issueTrackerProjectDao;
     }
 
@@ -65,9 +65,12 @@ public class ProjectService implements IProjectService {
         this.titaTaskDao = titaTaskDao;
     }
 
-    public void setIssueTrackerDao(
-            IGenericHibernateDao<IssueTracker, Long> issueTrackerDao) {
+    public void setIssueTrackerDao(IGenericHibernateDao<IssueTracker, Long> issueTrackerDao) {
         this.issueTrackerDao = issueTrackerDao;
+    }
+
+    public void setUserProjectDao(IGenericHibernateDao<TiTAUserProject, Long> userProjectDao) {
+        this.userProjectDao = userProjectDao;
     }
 
     /** {@inheritDoc} */
@@ -84,16 +87,14 @@ public class ProjectService implements IProjectService {
 
     /** {@inheritDoc} */
     @Override
-    public IssueTrackerTask saveIssueTrackerTask(IssueTrackerTask itt)
-            throws PersistenceException {
+    public IssueTrackerTask saveIssueTrackerTask(IssueTrackerTask itt) throws PersistenceException {
         return issueTrackerTaskDao.save(itt);
     }
 
     /** {@inheritDoc} */
     @Override
     public List<TiTAProject> findAllTiTAProjects() {
-        return titaProjectDao.findAllOrdered(new Order[] { Property.forName(
-                "name").asc() });
+        return titaProjectDao.findAllOrdered(new Order[] { Property.forName("name").asc() });
     }
 
     /** {@inheritDoc} */
@@ -104,17 +105,14 @@ public class ProjectService implements IProjectService {
 
     /** {@inheritDoc} */
     @Override
-    public IssueTrackerTask findIssueTrackerTaskForTiTAProject(Long tp,
-            Long it, Long itp, Long itt) {
+    public IssueTrackerTask findIssueTrackerTaskForTiTAProject(Long tp, Long it, Long itp, Long itt) {
         return issueTrackerTaskDao.findIssueTrackerTask(tp, it, itp, itt);
     }
 
     /** {@inheritDoc} */
     @Override
-    public IssueTrackerProject findIssueTrackerProjectForTiTAProject(Long tp,
-            Long issueTrackerId, Long itp) {
-        return issueTrackerProjectDao.findIssueTrackerProjectForTiTAProject(tp,
-                issueTrackerId, itp);
+    public IssueTrackerProject findIssueTrackerProjectForTiTAProject(Long tp, Long issueTrackerId, Long itp) {
+        return issueTrackerProjectDao.findIssueTrackerProjectForTiTAProject(tp, issueTrackerId, itp);
     }
 
     /** {@inheritDoc} */
@@ -131,15 +129,13 @@ public class ProjectService implements IProjectService {
 
     /** {@inheritDoc} */
     @Override
-    public List<ProjectStatus> getAvailableProjectStati()
-            throws PersistenceException {
+    public List<ProjectStatus> getAvailableProjectStati() throws PersistenceException {
         return titaProjectDao.getAvailableProjectStati();
     }
 
     /** {@inheritDoc} */
     @Override
-    public List<TiTAProject> getOrderedProjects(int maxResult, String orderBy)
-        throws PersistenceException {
+    public List<TiTAProject> getOrderedProjects(int maxResult, String orderBy) throws PersistenceException {
         try {
             return titaProjectDao.findProjectsOrderedByName(maxResult, orderBy);
         } catch (Exception e) {
@@ -149,10 +145,15 @@ public class ProjectService implements IProjectService {
 
     /** {@inheritDoc} */
     @Override
-    public TiTAProject saveProject(TiTAProject project)
-        throws PersistenceException {
+    public TiTAProject saveProject(TiTAProject project) throws PersistenceException {
         titaProjectDao.save(project);
         return project;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public TiTAUserProject saveUserProject(TiTAUserProject project) throws PersistenceException {
+        return userProjectDao.save(project);
     }
 
 }

@@ -24,19 +24,21 @@ import at.ac.tuwien.ifs.tita.entity.IssueTrackerTask;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTATask;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
+import at.ac.tuwien.ifs.tita.entity.TiTAUserProject;
 import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 import at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus;
 
 /**
  * IProjectService encapsulates all tita project based db operations.
- *
+ * 
  * @author herbert
- *
+ * 
  */
 @Transactional
 public interface IProjectService {
     /**
      * Saves an issue tracker task.
+     * 
      * @param itt IssueTrackerTask
      * @return IssueTrackerTask
      * @throws PersistenceException pe
@@ -45,39 +47,39 @@ public interface IProjectService {
 
     /**
      * deletes an existing project.
-     *
-     * @param project
-     *            the project to be deleted
-     * @throws PersistenceException
-     *             if Parameter is null or another Exception is thrown
+     * 
+     * @param project the project to be deleted
+     * @throws PersistenceException if Parameter is null or another Exception is thrown
      */
     void deleteProject(TiTAProject project) throws PersistenceException;
 
     /**
      * returns a specific Project found to the id given.
-     *
-     * @param id
-     *            the unique identifier of an project
-     * @throws PersistenceException
-     *             if no project was found or another Exception is thrown
+     * 
+     * @param id the unique identifier of an project
+     * @throws PersistenceException if no project was found or another Exception is thrown
      * @return the specified Project, if found.
      */
     TiTAProject getProjectById(Long id) throws PersistenceException;
 
     /**
      * Returns a list of all existing tita projects.
+     * 
      * @return List of TiTAProjects
      */
     List<TiTAProject> findAllTiTAProjects();
 
     /**
      * Returns a list of all tita projects for a given user.
-     * @param user
-     *            - the specific tita user
+     * 
+     * @param user - the specific tita user
      * @return List of TiTAProjects
      */
     List<TiTAProject> findTiTAProjectsForUser(TiTAUser user);
-    /** Finds an issue tracker task for a given tita project.
+
+    /**
+     * Finds an issue tracker task for a given tita project.
+     * 
      * @param tp Long
      * @param it Long
      * @param itp Long
@@ -88,31 +90,31 @@ public interface IProjectService {
 
     /**
      * Finds an issue tracker project for a given tita project.
+     * 
      * @param tp Long
      * @param issueTrackerId Long
      * @param itp Long
      * @return IssueTrackerProject
      */
-    IssueTrackerProject findIssueTrackerProjectForTiTAProject(Long tp, Long issueTrackerId, 
-                                                              Long itp);
-    
+    IssueTrackerProject findIssueTrackerProjectForTiTAProject(Long tp, Long issueTrackerId, Long itp);
+
     /**
      * Saves a tita task in db.
+     * 
      * @param task TiTATask
      * @return TiTATask
      */
     TiTATask saveTiTATask(TiTATask task);
-    
+
     /**
      * Saves a new project or updates an existing one.
      * 
      * @param project the project to be saved
-     * @throws PersistenceException if Parameter is null or another Exception is
-     *         thrown
+     * @throws PersistenceException if Parameter is null or another Exception is thrown
      * @return the saved Project.
      */
     TiTAProject saveProject(TiTAProject project) throws PersistenceException;
-    
+
     /**
      * Returns a List of Projects, where the size of the list can be declared.
      * 
@@ -138,5 +140,14 @@ public interface IProjectService {
      * @throws PersistenceException if an Exception from DAO was thrown.
      */
     List<IssueTracker> getAvailableIssueTracker() throws PersistenceException;
+
+    /**
+     * saves a UserProject.
+     * 
+     * @param project the project to save.
+     * @return the saved project or null if operation was not successful.
+     * @throws PersistenceException if an Exception from DAO was thrown.
+     */
+    TiTAUserProject saveUserProject(TiTAUserProject project) throws PersistenceException;
 
 }

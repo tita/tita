@@ -64,7 +64,6 @@ public class TitaLoginContext extends UsernamePasswordContext {
 
             try {
                 TiTAUser u = service.getUserByUsername(username);
-
                 if (TiTASecurity.calcHash(password).equals(u.getPassword())) {
                     if (u.getRole().getDescription().equals("Administrator")) {
                         user.addPrincipal(new SimplePrincipal("admin"));

@@ -30,12 +30,19 @@
     <constructor-arg value="at.ac.tuwien.ifs.tita.entity.conv.IssueTracker"/>
   </bean><bean id="titaProjectDAO" class="at.ac.tuwien.ifs.tita.dao.project.TiTAProjectDao"/>
   <bean id="titataskDAO" class="at.ac.tuwien.ifs.tita.dao.task.TiTATaskDao"/>
+  <bean id="issueTrackerLoginDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
+    <constructor-arg value="at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin"/>
+  </bean>
+  <bean id="userProjectDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
+    <constructor-arg value="at.ac.tuwien.ifs.tita.entity.TiTAUserProject"/>
+  </bean>
 
   <!-- The Services -->
   <bean id="userService" class="at.ac.tuwien.ifs.tita.business.service.user.UserService">
     <property name="userDao" ref="userDAO" />
     <property name="roleDao" ref="roleDAO" />
     <property name="issueTrackerDao" ref="issueTrackerDAO" />
+    <property name="issueTrackerLoginDao" ref="issueTrackerLoginDAO" />
   </bean>    
   
   <bean id="timeEffortService" class="at.ac.tuwien.ifs.tita.business.service.time.EffortService">
@@ -50,6 +57,7 @@
     <property name="issueTrackerTaskDao" ref="issueTrackerTaskDAO"/>
     <property name="titaTaskDao" ref="titataskDAO"/>
     <property name="issueTrackerDao" ref="issueTrackerDAO" />
+    <property name="userProjectDao" ref="userProjectDAO" />
   </bean>
   
   <bean id="taskService" class="at.ac.tuwien.ifs.tita.business.service.tasks.TaskService">
