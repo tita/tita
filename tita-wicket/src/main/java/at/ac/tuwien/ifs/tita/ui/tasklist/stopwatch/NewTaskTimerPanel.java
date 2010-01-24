@@ -16,7 +16,6 @@
  */
 package at.ac.tuwien.ifs.tita.ui.tasklist.stopwatch;
 
-import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.IHeaderContributor;
@@ -24,7 +23,6 @@ import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
 import at.ac.tuwien.ifs.tita.ui.tasklist.TaskListPanel;
@@ -37,8 +35,8 @@ import at.ac.tuwien.ifs.tita.ui.tasklist.TaskListPanel;
  */
 public class NewTaskTimerPanel extends Panel implements IHeaderContributor {
 
-    private ResourceReference style = new CompressedResourceReference(
-            NewTaskTimerPanel.class, "tasktimer.css");
+//    private ResourceReference style = new CompressedResourceReference(
+//            NewTaskTimerPanel.class, "tasktimer.css");
     private Form<Object> taskTimerForm;
     private ITaskTrackable task;
     private TaskListPanel owner;
@@ -70,7 +68,7 @@ public class NewTaskTimerPanel extends Panel implements IHeaderContributor {
     /** {@inheritDoc} */
     @Override
     public void renderHead(IHeaderResponse response) {
-        response.renderCSSReference(style);
+//        response.renderCSSReference(style);
     }
 
     /**

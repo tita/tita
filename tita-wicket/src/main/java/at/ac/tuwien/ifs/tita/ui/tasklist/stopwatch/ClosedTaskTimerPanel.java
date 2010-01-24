@@ -16,13 +16,11 @@
  */
 package at.ac.tuwien.ifs.tita.ui.tasklist.stopwatch;
 
-import org.apache.wicket.ResourceReference;
 import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
 import at.ac.tuwien.ifs.tita.issuetracker.util.TiTATimeConverter;
@@ -35,8 +33,8 @@ import at.ac.tuwien.ifs.tita.issuetracker.util.TiTATimeConverter;
  */
 public class ClosedTaskTimerPanel extends Panel implements IHeaderContributor {
 
-    private ResourceReference style = new CompressedResourceReference(
-            ClosedTaskTimerPanel.class, "tasktimer.css");
+//    private ResourceReference style = new CompressedResourceReference(
+//            ClosedTaskTimerPanel.class, "tasktimer.css");
 //    private WebMarkupContainer container = null;
     private Form<Object> taskTimerForm;
     private ITaskTrackable task;
@@ -65,7 +63,7 @@ public class ClosedTaskTimerPanel extends Panel implements IHeaderContributor {
     /** {@inheritDoc} */
     @Override
     public void renderHead(IHeaderResponse response) {
-        response.renderCSSReference(style);
+//        response.renderCSSReference(style);
     }
 
     /**

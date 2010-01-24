@@ -356,6 +356,8 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
         
         effortService.saveEffortForTiTATask(effort, generalTimer.getDescription(), 
                 user, project);
+//        effortService.clear();
+        ape.reloadTable(target);
 //        if(effort != null){
 //            effort.setDescription(generalTimer.getDescription());
 //            effort.setUser(user);
