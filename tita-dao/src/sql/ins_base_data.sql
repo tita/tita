@@ -41,9 +41,9 @@ insert into ISSUE_TRACKER_PROJECT (ID, TITA_PROJECT_ID, ISST_ID, ISST_PROJECT_ID
 values (2,1,1,691,0, 'tita-business');
 
 insert into TITA_TASK (ID, DESCRIPTION, USER_ID, TITA_PROJECT_ID, MODIFICATION_VERSION) values
-(1, 'bla 1', 6, 1, 0);
+(1, 'titaTask 1', 6, 1, 0);
 insert into TITA_TASK (ID, DESCRIPTION, USER_ID, TITA_PROJECT_ID, MODIFICATION_VERSION) values
-(2, 'bla 1', 6, 1, 0);
+(2, 'titaTask 2', 6, 1, 0);
 
 --insert into ISSUE_TRACKER_TASK (ID, ISSUE_TRACKER_PROJECT_ID, ISST_TASK_ID, MODIFICATION_VERSION) values
 --(1,1,43, 0);

@@ -37,7 +37,6 @@ import at.ac.tuwien.ifs.tita.ui.utils.TimerCoordinator;
  * Homepage of Hello World Application.
  */
 public class HomePage extends WebPage {
-    private static TitaLoginContext loggedInUser;
     private final Logger log = LoggerFactory.getLogger(HomePage.class);
 
     @SpringBean(name = "timerCoordinator")

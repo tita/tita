@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.ac.tuwien.ifs.tita.entity.Effort;
+import at.ac.tuwien.ifs.tita.issuetracker.util.TiTATimeConverter;
 import at.ac.tuwien.ifs.tita.ui.uihelper.ButtonDelete;
 import at.ac.tuwien.ifs.tita.ui.uihelper.ButtonEdit;
 import at.ac.tuwien.ifs.tita.ui.uihelper.LinkToIssueTracker;
@@ -96,8 +97,8 @@ public class TableModelEffort extends AbstractTitaTableModel {
                 }
             } else if (col == IntegerConstants.FOUR) {
                 if (te.getDuration() != null) {
-                    return GlobalUtils.TIMELENGTHFORMAT
-                            .format(te.getDuration());
+                    return TiTATimeConverter.getDuration2String(te
+                            .getDuration());
                 } else {
                     return 0;
                 }
@@ -165,7 +166,7 @@ public class TableModelEffort extends AbstractTitaTableModel {
                     // Do nothing
                 }
                 te.setEndTime(endTime != null ? endTime : te.getStartTime()
-                        + te.getDuration() + GlobalUtils.HOUR);
+                        + te.getDuration());
             } else if (col == IntegerConstants.FOUR) {
                 Long duration = null;
                 try {
@@ -174,7 +175,7 @@ public class TableModelEffort extends AbstractTitaTableModel {
                     // Do nothing
                 }
                 te.setDuration(duration != null ? duration : te.getEndTime()
-                        - te.getStartTime() - GlobalUtils.HOUR);
+                        - te.getStartTime());
             }
         } catch (IndexOutOfBoundsException e) {
             log.error(e.getMessage());

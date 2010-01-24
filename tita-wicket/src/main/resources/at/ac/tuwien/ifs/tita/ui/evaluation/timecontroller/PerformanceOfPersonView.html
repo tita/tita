@@ -22,7 +22,7 @@
             <div class="ActualTableUser">
               <table wicket:id="popTableForTiTAProject"></table>
             </div>
-            <div class="ActualTableProject">
+            <div class="ActualTableProject" wicket:id="popUserTableContainer">
               <table wicket:id="popTableForTiTAUser"></table>
             </div>
         </div>
@@ -33,19 +33,19 @@
           <input wicket:id="btnShowPoPAsPDF" type="submit" value="Show As PDF" />
         </form>
         
-        <div wicket:id="PoP"> 
-            <!-- <h4><span wicket:id="labelDescriptionTargetActualComparison"></span></h4> -->
-            <!--<table wicket:id="popTableForTiTAResult"></table>-->
-            <!--  <div class="ActualResult">
-              <div id="targetActualResultActual">
+        <div wicket:id="PoP" class="ActualTables"> 
+            <div class="popResultTable">
+               <h4><span wicket:id="labelDescriptionPop"></span></h4>
+               <table wicket:id="popTableForTiTAResult"></table>
+            </div>
+            <div class="popLabels">
                 <h4><span wicket:id="labelDescriptionActualHours"></span>
                 <span wicket:id="labelActualHours"></span></h4>
-              </div>
-              <div id="targetActualResultTarget">
                 <h4><span wicket:id="labelDescriptionTargetHours"></span>
                 <span wicket:id="labelTargetHours"></span></h4>
-              </div>
-            </div>-->
+                <h4><span wicket:id="labelDescriptionPerformancePercent"></span>
+                <span wicket:id="labelPerformancePercent"></span></h4>
+            </div>
        </div>
 </wicket:extend>
 </body>

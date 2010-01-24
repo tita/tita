@@ -31,9 +31,9 @@ import at.ac.tuwien.ifs.tita.ui.startpages.ProjectsPage;
 
 /**
  * Panel to authenticate user.
- *
+ * 
  * @author Karin
- *
+ * 
  */
 public abstract class LoginPanel extends Panel {
 
@@ -44,7 +44,7 @@ public abstract class LoginPanel extends Panel {
 
     /**
      * The actual login process.
-     *
+     * 
      * @param username - name
      * @param password - pwd
      * @return true, if the login was successful, false otherwise
@@ -54,12 +54,13 @@ public abstract class LoginPanel extends Panel {
     /**
      * Sign in form.
      */
+    @SuppressWarnings("unchecked")
     public final class SignInForm extends StatelessForm {
         private static final long serialVersionUID = 1L;
 
         /**
          * Constructor.
-         *
+         * 
          * @param id id of the form component
          */
         public SignInForm(final String id) {

@@ -24,6 +24,7 @@
     
   <bean id="timeEffortDAO" class="at.ac.tuwien.ifs.tita.dao.time.EffortDao"/>
   <bean id="titaUserDAO" class="at.ac.tuwien.ifs.tita.dao.user.UserDAO"/>
+  <bean id="titaTaskDAO" class="at.ac.tuwien.ifs.tita.dao.task.TiTATaskDao"/>
 
   <bean id="issueTrackerDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
   	<constructor-arg value="at.ac.tuwien.ifs.tita.entity.conv.IssueTracker"/>

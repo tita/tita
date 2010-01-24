@@ -126,7 +126,7 @@ public class MonthlyViewPage extends BasePage {
 
     /**
      * Initializes buttons of form.
-     *
+     * 
      * @param form form of page.
      * @param container container of page.
      */
@@ -178,10 +178,8 @@ public class MonthlyViewPage extends BasePage {
     /**
      * loads report and sets data source.
      * 
-     * @throws JRException
-     *             JasperReports Exception
-     * @throws PersistenceException
-     *             if user cannot be found
+     * @throws JRException JasperReports Exception
+     * @throws PersistenceException if user cannot be found
      */
     private void loadReport() throws JRException, PersistenceException {
         ServletContext context = ((WebApplication) getApplication()).getServletContext();
@@ -198,7 +196,7 @@ public class MonthlyViewPage extends BasePage {
 
     /**
      * Gets time effort data by date.
-     *
+     * 
      * @param year year of effort entry
      * @param month month of effort entry
      * @return all efforts that match the date
@@ -228,7 +226,7 @@ public class MonthlyViewPage extends BasePage {
 
     /**
      * Inits all months.
-     *
+     * 
      */
     private void initMonths() {
         months = Arrays.asList(new SelectOption("0", "January"), new SelectOption("1", "February"), new SelectOption(
@@ -240,7 +238,7 @@ public class MonthlyViewPage extends BasePage {
 
     /**
      * Return years.
-     *
+     * 
      * @return the years
      */
     public List<SelectOption> getYears() {
@@ -249,7 +247,7 @@ public class MonthlyViewPage extends BasePage {
 
     /**
      * Return months.
-     *
+     * 
      * @return the months
      */
     public List<SelectOption> getMonths() {
@@ -258,7 +256,7 @@ public class MonthlyViewPage extends BasePage {
 
     /**
      * Set Months.
-     *
+     * 
      * @param months the months to set
      */
     public void setMonths(List<SelectOption> months) {
@@ -267,7 +265,7 @@ public class MonthlyViewPage extends BasePage {
 
     /**
      * Returns selected year.
-     *
+     * 
      * @return the selectedYear
      */
     public SelectOption getSelectedYear() {
@@ -276,7 +274,7 @@ public class MonthlyViewPage extends BasePage {
 
     /**
      * Sets selected year.
-     *
+     * 
      * @param selectedYear the selectedYear to set
      */
     public void setSelectedYear(SelectOption selectedYear) {
@@ -285,7 +283,7 @@ public class MonthlyViewPage extends BasePage {
 
     /**
      * Returns selected month.
-     *
+     * 
      * @return the selectedMonth
      */
     public SelectOption getSelectedMonth() {
@@ -294,7 +292,7 @@ public class MonthlyViewPage extends BasePage {
 
     /**
      * Sets selected month.
-     *
+     * 
      * @param selectedMonth the selectedMonth to set
      */
     public void setSelectedMonth(SelectOption selectedMonth) {

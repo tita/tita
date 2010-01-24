@@ -18,7 +18,10 @@ package at.ac.tuwien.ifs.tita.test.service.task;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.persistence.PersistenceException;
@@ -30,24 +33,35 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import at.ac.tuwien.ifs.tita.business.service.project.IProjectService;
 import at.ac.tuwien.ifs.tita.business.service.tasks.ITaskService;
+import at.ac.tuwien.ifs.tita.business.service.time.IEffortService;
+import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
+import at.ac.tuwien.ifs.tita.dao.interfaces.IGenericHibernateDao;
+import at.ac.tuwien.ifs.tita.dao.interfaces.ITiTAProjectDao;
+import at.ac.tuwien.ifs.tita.dao.interfaces.IUserDAO;
+import at.ac.tuwien.ifs.tita.entity.Effort;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerTask;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTATask;
+import at.ac.tuwien.ifs.tita.entity.TiTAUser;
+import at.ac.tuwien.ifs.tita.entity.TiTAUserProject;
 import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
-import at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus;
+import at.ac.tuwien.ifs.tita.entity.conv.Role;
 
 /**
  * Task Service Dao Testcases.
- *
+ * 
  * @author Christoph
- *
+ * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:datasourceContext-test.xml" })
@@ -66,22 +80,57 @@ public class TaskServiceDaoTest {
     @Resource(name = "taskService")
     private ITaskService service;
 
+    @Resource(name = "userService")
+    private IUserService userService;
+
+    @Resource(name = "timeEffortService")
+    private IEffortService timeEffortService;
+
+    @Resource(name = "projectService")
+    private IProjectService projectService;
+
+    @Qualifier("titaProjectDao")
+    @Autowired
+    private ITiTAProjectDao titaProjectDAO;
+
+    @Autowired
+    private IUserDAO titaUserDao;
+
+    @Qualifier("roleDAO")
+    @Autowired
+    private IGenericHibernateDao<Role, Long> roleDao;
+
+    private TiTAUser user;
+    private TiTAUserProject tup;
+    private Role role;
+
     /**
      * Prepare mantis connection and create a setup in mantis with projects and
      * tasks.
      */
     @Before
     public void setUp() {
-
+        // CHECKSTYLE:OFF
         // try {
         logins = new ArrayList<IssueTrackerLogin>();
         logins.add(defaultLogin);
 
-        titaProject = new TiTAProject();
-        titaProject.setName("TestProjektTita");
-        titaProject.setDeleted(false);
-        titaProject.setProjectStatus(new ProjectStatus(1L, "open"));
+        role = new Role(999L, "role1");
+        user = new TiTAUser("test-user", "test-password", "Christoph", "Zehetner", "test@example.com", false, role,
+                null, null);
+        titaProject = new TiTAProject("test-description", "test-project", false, null, null, null);
 
+        tup = new TiTAUserProject(user, titaProject, 150L);
+
+        Set<TiTAUserProject> stup = new HashSet<TiTAUserProject>();
+        stup.add(tup);
+        user.setTitaUserProjects(stup);
+
+        userService.saveRole(role);
+        projectService.saveProject(titaProject);
+        userService.saveUser(user);
+
+        // CHECKSTYLE:ON
         // this.taskService.setLogins(this.logins);
         // this.taskService.setProject(this.titaProject);
         // this.taskService.fetchTaskFromIssueTrackerProjects();
@@ -93,13 +142,15 @@ public class TaskServiceDaoTest {
 
     /**
      * Delete mantis projects for all tests.
-     *
+     * 
      * @throws InterruptedException e
      */
     @After
     public void tearDown() throws InterruptedException {
         logins = null;
-
+        projectService.deleteProject(titaProject);
+        userService.deleteUser(user);
+        userService.deleteRole(role);
     }
 
     /**
@@ -148,13 +199,45 @@ public class TaskServiceDaoTest {
     }
 
     /**
+     * Test for Performance of Person.
+     */
+    @Test
+    public void getPerformanceOfPersonViewTest() {
+        // CHECKSTYLE:OFF
+        TiTATask titaTask1 = new TiTATask("task1", user, titaProject, null);
+        TiTATask titaTask2 = new TiTATask("task2", user, titaProject, null);
+        Effort e1 = new Effort(new Date(), 3600000L, false, "effort", user);
+        Effort e2 = new Effort(new Date(), 3600000L, false, "effort2", user);
+
+        try {
+            service.saveTiTATask(titaTask1);
+            service.saveTiTATask(titaTask2);
+            e1.setTitaTask(titaTask1);
+            e2.setTitaTask(titaTask1);
+            timeEffortService.saveEffort(e1);
+            timeEffortService.saveEffort(e2);
+            Assert.assertNotNull(service.getPerformanceOfPersonView(titaProject, user));
+            Assert.assertEquals(2, service.getPerformanceOfPersonView(titaProject, user).size());
+            Assert.assertEquals(7200000L, (long) service.getPerformanceOfPersonView(titaProject, user).get(0)
+                    .getDuration());
+        } catch (PersistenceException e) {
+            fail();
+        } finally {
+            // timeEffortService.deleteEffort(e1);
+            // timeEffortService.deleteEffort(e2);
+            service.deleteTiTATask(titaTask1);
+            service.deleteTiTATask(titaTask2);
+        }
+        // CHECKSTYLE:ON
+    }
+
+    /**
      * The test case should save a issue tracker that is provided from the task
      * list.
      */
     @Test
     public void saveIssueTracker() {
-        IssueTracker issueTracker = new IssueTracker(C_100, "Mantis",
-                "http://localhost/mantisbt-1.1.8");
+        IssueTracker issueTracker = new IssueTracker(C_100, "Mantis", "http://localhost/mantisbt-1.1.8");
         try {
             service.saveIssueTracker(issueTracker);
             Assert.assertNotNull(issueTracker.getId());

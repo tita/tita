@@ -441,6 +441,17 @@ dl.accordion-menu dd.a-m-d .bd {
    width: 200px;
 }
 
+.popResultTable {
+   float: left;
+}
+
+.popLabels {
+   float: right;
+   width: 200px;
+   margin-right:150px;
+   margin-top:40px;
+}
+
 /** Project and User Administration **/
 *.innerForeGroundDiv {
    width: 800px;
