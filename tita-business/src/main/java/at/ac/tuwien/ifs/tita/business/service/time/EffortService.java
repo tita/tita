@@ -43,11 +43,11 @@ import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
  */
 public class EffortService implements IEffortService {
 
-   //TODO: constants should be refactored
+    // TODO: constants should be refactored
     private static final Long C_ISSUE_TRACKER_ID = 1L;
 
     private IProjectService projectService;
-    
+
     private IEffortDao timeEffortDao;
 
     public EffortService() {
@@ -62,14 +62,11 @@ public class EffortService implements IEffortService {
     public void setTimeEffortDao(IEffortDao timeEffortDao) {
         this.timeEffortDao = timeEffortDao;
     }
-    
-    
 
     /** {@inheritDoc} */
     @Override
     public void deleteEffort(Effort effort) throws PersistenceException {
         timeEffortDao.delete(effort);
-        timeEffortDao.flushnClear();
     }
 
     /** {@inheritDoc} */
@@ -82,15 +79,13 @@ public class EffortService implements IEffortService {
     @Override
     public void saveEffort(Effort effort) throws PersistenceException {
         timeEffortDao.save(effort);
-        timeEffortDao.flushnClear();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<Effort> getEffortsDailyView(Date date)
-        throws PersistenceException {
+    public List<Effort> getEffortsDailyView(Date date) throws PersistenceException {
         return timeEffortDao.getTimeEffortsDailyView(date);
     }
 
@@ -98,8 +93,7 @@ public class EffortService implements IEffortService {
      * {@inheritDoc}
      */
     @Override
-    public List<Effort> getEffortsMonthlyView(Integer year, Integer month)
-        throws PersistenceException {
+    public List<Effort> getEffortsMonthlyView(Integer year, Integer month) throws PersistenceException {
         return timeEffortDao.getTimeEffortsMonthlyView(year, month);
     }
 
@@ -160,22 +154,24 @@ public class EffortService implements IEffortService {
     public List<Effort> findEffortsForTiTAProjectAndTiTAUserOrdered(Long projectId, Long userId) {
         return timeEffortDao.findEffortsForTiTAProjectAndTiTAUserOrdered(projectId, userId);
     }
-    
+
     /**
      * Saves an effort for a issue tracker task.
+     * 
      * @param effort Effort
      * @param task ITaskTrackable
      * @param user - user
      * @param project - TiTaproject
      */
-    public void saveIssueTrackerTaskEfforts(Effort effort, ITaskTrackable task, TiTAUser user, 
-            TiTAProject project){
-                
-        saveIssueTrackerTaskEfforts(effort, task.getId(), task.getProject().getId(),
-                task.getDescription(), user,  project.getId());
+    public void saveIssueTrackerTaskEfforts(Effort effort, ITaskTrackable task, TiTAUser user, TiTAProject project) {
+
+        saveIssueTrackerTaskEfforts(effort, task.getId(), task.getProject().getId(), task.getDescription(), user,
+                project.getId());
     }
+
     /**
      * Saves an effort for a issue tracker task.
+     * 
      * @param effort - effort
      * @param isstTaskId - issuetracker Task id
      * @param isstProjectId - issuetracker Project id
@@ -184,20 +180,21 @@ public class EffortService implements IEffortService {
      * @param titaProjectId - tita project id
      */
     public void saveIssueTrackerTaskEfforts(Effort effort, Long isstTaskId, Long isstProjectId,
-            String isstTaskDescription, TiTAUser user,  Long titaProjectId){
-        
-        //persist issue tracker task anOd effort and read it from db to get actual effort value
-        IssueTrackerTask itt = projectService.findIssueTrackerTaskForTiTAProject(titaProjectId,
-                                       C_ISSUE_TRACKER_ID, isstProjectId, isstTaskId);
+            String isstTaskDescription, TiTAUser user, Long titaProjectId) {
+
+        // persist issue tracker task anOd effort and read it from db to get
+        // actual effort value
+        IssueTrackerTask itt = projectService.findIssueTrackerTaskForTiTAProject(titaProjectId, C_ISSUE_TRACKER_ID,
+                isstProjectId, isstTaskId);
         effort.setTitaTask(null);
         effort.setDescription(isstTaskDescription);
         effort.setUser(user);
 
-        if(itt != null){
+        if (itt != null) {
             effort.setIssueTTask(itt);
-        }else{
-            IssueTrackerProject tempProject = projectService.findIssueTrackerProjectForTiTAProject(
-                    titaProjectId, C_ISSUE_TRACKER_ID,isstProjectId);
+        } else {
+            IssueTrackerProject tempProject = projectService.findIssueTrackerProjectForTiTAProject(titaProjectId,
+                    C_ISSUE_TRACKER_ID, isstProjectId);
             Set<Effort> eff = new HashSet<Effort>();
             eff.add(effort);
             itt = new IssueTrackerTask(tempProject, isstTaskId, isstTaskDescription, eff);
@@ -209,24 +206,23 @@ public class EffortService implements IEffortService {
         }
         saveEffort(effort);
     }
-    
+
     /**
      * Saves an effort for tita task generated by some tita user.
+     * 
      * @param effort Effort
      * @param description effortdescription
      * @param user user
      * @param project TiTaProject
      */
-    public void saveEffortForTiTATask(Effort effort, String description, TiTAUser user, 
-            TiTAProject project){
-        if(effort != null){
+    public void saveEffortForTiTATask(Effort effort, String description, TiTAUser user, TiTAProject project) {
+        if (effort != null) {
             effort.setDescription(description);
             effort.setUser(user);
 
-            
             TiTATask tt = new TiTATask(description, user, project, new HashSet<Effort>());
             projectService.saveTiTATask(tt);
-                        
+
             effort.setTitaTask(tt);
             saveEffort(effort);
             tt.getTitaEfforts().add(effort);

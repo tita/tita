@@ -135,15 +135,13 @@ public class TaskService implements ITaskService {
     public IssueTracker getIssueTrackerById(Long id) throws PersistenceException {
         return issueTrackerDao.findById(id);
     }
-    
-  
+
     /** {@inheritDoc} */
-    public ITaskTrackable getIssueTrackerTaskById(Long taskId, Long projectId, Long issueTrackerId){
-        //TODO: check for issueTrackerID too!
-        for(Long i = 1L; i <= mapOfTasksFromAllProjectsIncludedInTiTAProject.size(); i++){
+    public ITaskTrackable getIssueTrackerTaskById(Long taskId, Long projectId, Long issueTrackerId) {
+        // TODO: check for issueTrackerID too!
+        for (Long i = 1L; i <= mapOfTasksFromAllProjectsIncludedInTiTAProject.size(); i++) {
             ITaskTrackable t = mapOfTasksFromAllProjectsIncludedInTiTAProject.get(i);
-            if(t.getProject().getId().equals(projectId) &&
-                    t.getId().equals(taskId)){
+            if (t.getProject().getId().equals(projectId) && t.getId().equals(taskId)) {
                 return t;
             }
         }
@@ -257,14 +255,13 @@ public class TaskService implements ITaskService {
 
     /** {@inheritDoc} */
     @Override
-    public List<UserProjectTaskEffort> getPerformanceOfPersonView(TiTAProject project, TiTAUser user,
-            String loggedInUsername) throws ProjectNotFoundException {
+    public List<UserProjectTaskEffort> getPerformanceOfPersonView(TiTAProject project, TiTAUser user) {
         List<UserProjectTaskEffort> popView = new ArrayList<UserProjectTaskEffort>();
 
         List<IssueTrackerTask> issueTrackerTasks = issueTrackerTaskDao.findIssueTrackerTasksforUserProject(project
                 .getId(), user.getId());
         for (IssueTrackerTask t : issueTrackerTasks) {
-            popView.add(new UserProjectTaskEffort("#" + t.getIsstTaskId(), "", timeEffortDao
+            popView.add(new UserProjectTaskEffort("#" + t.getIsstTaskId(), t.getDescription(), timeEffortDao
                     .findEffortsSumForIssueTrackerTasks(project.getId(), user.getId(), t.getId())));
         }
 

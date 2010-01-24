@@ -50,11 +50,9 @@ import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.entity.util.UserProjectTaskEffort;
-import at.ac.tuwien.ifs.tita.issuetracker.exceptions.ProjectNotFoundException;
 import at.ac.tuwien.ifs.tita.issuetracker.util.TiTATimeConverter;
 import at.ac.tuwien.ifs.tita.reporting.JasperPdfResource;
 import at.ac.tuwien.ifs.tita.ui.BasePage;
-import at.ac.tuwien.ifs.tita.ui.login.TitaSession;
 import at.ac.tuwien.ifs.tita.ui.models.TableModelPerformanceOfPerson;
 import at.ac.tuwien.ifs.tita.ui.models.TableModelTiTAProject;
 import at.ac.tuwien.ifs.tita.ui.models.TableModelTiTAUser;
@@ -183,6 +181,7 @@ public class PerformanceOfPersonView extends BasePage {
             @Override
             protected void onSelection(AjaxRequestTarget target) {
                 if (!(tableForTiTAProject.getSelectedRows()[0] == tmForTiTAProject.getSelectedRow())) {
+
                     tmForTiTAProject.setSelectedRow(tableForTiTAProject.getSelectedRows()[0]);
                     tmForTiTAProject.reload();
 
@@ -356,12 +355,7 @@ public class PerformanceOfPersonView extends BasePage {
                     tableForTiTAUser.getSelectedRows()[0], IntegerConstants.FIFTY);
 
             if (project != null && titaUser != null) {
-                try {
-                    upteResult = taskService.getPerformanceOfPersonView(project, titaUser, TitaSession.getSession()
-                            .getUsername());
-                } catch (ProjectNotFoundException e) {
-                    log.error(e.getMessage());
-                }
+                upteResult = taskService.getPerformanceOfPersonView(project, titaUser);
 
                 if (upteResult != null && upteResult.size() > 0) {
                     tmPop.reload(upteResult);

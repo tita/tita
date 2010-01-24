@@ -248,7 +248,6 @@ public class TaskServiceTest extends IssueTrackerServiceTest {
             e2.setTitaTask(titaTask1);
             timeEffortService.saveEffort(e1);
             timeEffortService.saveEffort(e2);
-            // calls fetchIssueTrackerTasks
 
             taskService.fetchTaskFromIssueTrackerProjects(titaProject.getId(), titaUser.getId());
             int count = 0;
@@ -273,8 +272,7 @@ public class TaskServiceTest extends IssueTrackerServiceTest {
             timeEffortService.saveEffort(e5);
             timeEffortService.saveEffort(e6);
 
-            List<UserProjectTaskEffort> list = taskService.getPerformanceOfPersonView(titaProject, titaUser, titaUser
-                    .getUserName());
+            List<UserProjectTaskEffort> list = taskService.getPerformanceOfPersonView(titaProject, titaUser);
             Assert.assertNotNull(list);
             Assert.assertEquals(4, list.size());
             Assert.assertEquals(7200000L, (long) list.get(0).getDuration());

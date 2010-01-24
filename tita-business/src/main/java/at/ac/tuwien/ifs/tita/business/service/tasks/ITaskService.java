@@ -195,9 +195,10 @@ public interface ITaskService {
      * @param taskId - the id of the task that should be closed.
      */
     void closeTask(Long taskId);
-    
+
     /**
      * Gets a IssueTrackerTask from the IssueTracker.
+     * 
      * @param taskId - issueTracker task Id
      * @param projectId - issueTracker project Id
      * @param issueTrackerId - issueTracker Id
@@ -205,18 +206,14 @@ public interface ITaskService {
      */
     ITaskTrackable getIssueTrackerTaskById(Long taskId, Long projectId, Long issueTrackerId);
 
-
     /**
      * Returns the view for performance of performacne evaluation, with data
      * from issuetracker tasks and tita tasks and the sum of their efforts.
      * 
      * @param project selected project
      * @param user selected user
-     * @param loggedInUser logged in user
-     * @throws ProjectNotFoundException pnfe - if a project is null
      * 
      * @return tasks with their sum of efforts.
      */
-    List<UserProjectTaskEffort> getPerformanceOfPersonView(TiTAProject project, TiTAUser user, String loggedInUser)
-            throws ProjectNotFoundException;
+    List<UserProjectTaskEffort> getPerformanceOfPersonView(TiTAProject project, TiTAUser user);
 }
