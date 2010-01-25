@@ -69,8 +69,8 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
 
         // CHECKSTYLE:OFF
         roleList.add(new Role(997L, "role1"));
-        roleList.add(new Role(998L, "role1"));
-        roleList.add(new Role(999L, "role1"));
+        roleList.add(new Role(998L, "role2"));
+        roleList.add(new Role(999L, "role3"));
         // CHECKSTYLE:ON
 
         try {
@@ -258,7 +258,16 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
     }
 
     /**
-     * Mockint userService for Testing FindAllTiTAUsersForProjectByRole.
+     * Test.
+     */
+    @Test
+    public void testGetRoleDescriptions() {
+        Assert.assertNotNull(service.getRoleDescriptions());
+        Assert.assertFalse(service.getRoleDescriptions().isEmpty());
+    }
+
+    /**
+     * Mocking userService for Testing FindAllTiTAUsersForProjectByRole.
      */
     @Test
     public void testFindAllTiTAUsersForProjectByRole() {
@@ -276,7 +285,7 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
     }
 
     /**
-     * Mockint userService for Testing getUserByUsername.
+     * Mocking userService for Testing getUserByUsername.
      */
     @Test
     public void testgetUserByUsername() {
@@ -288,6 +297,69 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
         uservice.getUserByUsername("doesntmatter");
 
         Mockito.verify(dao, Mockito.times(1)).findByUserName("doesntmatter");
+    }
+
+    /**
+     * Mocking userService for Testing GetOrderedUsers.
+     */
+    @Test
+    public void testGetOrderedUsers() {
+        UserDAO dao = mock(UserDAO.class);
+
+        UserService uservice = new UserService();
+        uservice.setUserDao(dao);
+
+        // CHECKSTYLE:OFF
+        uservice.getOrderedUsers(10);
+
+        Mockito.verify(dao, Mockito.times(1)).findUsersOrdered(10);
+        // CHECKSTYLE:ON
+    }
+
+    /**
+     * Mocking userService for Testing FindAllTiTAUsersForProjects.
+     */
+    @Test
+    public void testFindAllTiTAUsersForProjects() {
+        UserDAO dao = mock(UserDAO.class);
+
+        UserService uservice = new UserService();
+        uservice.setUserDao(dao);
+
+        uservice.findAllTiTAUsersForProjects(new ArrayList<String>());
+
+        Mockito.verify(dao, Mockito.times(1)).findUsersForProjectNames(new ArrayList<String>());
+    }
+
+    /**
+     * Mocking userService for Testing FindAllTiTAUsersForProject.
+     */
+    @Test
+    public void testFindAllTiTAUsersForProject() {
+        UserDAO dao = mock(UserDAO.class);
+
+        UserService uservice = new UserService();
+        uservice.setUserDao(dao);
+
+        TiTAProject p = mock(TiTAProject.class);
+        uservice.findAllTiTAUsersForProject(p);
+
+        Mockito.verify(dao, Mockito.times(1)).findUsersForTiTAProject(p);
+    }
+
+    /**
+     * Mocking userService for Testing findTargetHoursForTiTAProjectAndTiTAUser.
+     */
+    @Test
+    public void testFindTargetHoursForTiTAProjectAndTiTAUser() {
+        UserDAO dao = mock(UserDAO.class);
+
+        UserService uservice = new UserService();
+        uservice.setUserDao(dao);
+
+        uservice.findTargetHoursForTiTAProjectAndTiTAUser(1L, 1L);
+
+        Mockito.verify(dao, Mockito.times(1)).findTargetHoursForTiTAProjectAndTiTAUser(1L, 1L);
     }
 
     /**

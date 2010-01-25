@@ -50,9 +50,9 @@ import at.ac.tuwien.ifs.tita.issuetracker.issue.service.IssueTrackerService;
  * The TaskService combines the IssueTrackerService, which fetches and manage
  * the data from the issue trackers, and encapsulates all Task-concerning
  * Database operations.
- *
+ * 
  * @author Christoph
- *
+ * 
  */
 
 public class TaskService implements ITaskService {
@@ -160,13 +160,10 @@ public class TaskService implements ITaskService {
     /**
      * Private Method to fetch all tasks for the tita project and the added
      * issue tracker projects.
-     *
-     * @param projectTitaId
-     *            - id of the selected tita project
-     * @param userTitaId
-     *            - id of the logged in user
-     * @throws ProjectNotFoundException
-     *             pnfe - if a project is null
+     * 
+     * @param projectTitaId - id of the selected tita project
+     * @param userTitaId - id of the logged in user
+     * @throws ProjectNotFoundException pnfe - if a project is null
      */
     private void fetchingTasks(Long projectTitaId, Long userTitaId) throws ProjectNotFoundException {
         Map<Long, ITaskTrackable> newMap = new TreeMap<Long, ITaskTrackable>();
@@ -326,15 +323,15 @@ public class TaskService implements ITaskService {
 
     /**
      * Thread for fetching tasks.
-     *
+     * 
      * @author Christoph
-     *
+     * 
      */
     public class FetchingThread extends Thread {
 
         private Long projectTitaId;
         private Long userTitaId;
-        private final Logger log = LoggerFactory.getLogger(FetchingThread.class);
+        private final Logger logger = LoggerFactory.getLogger(FetchingThread.class);
 
         public FetchingThread(Long projectTitaId, Long userTitaId) {
             super("FetcherThread");
@@ -347,11 +344,11 @@ public class TaskService implements ITaskService {
         public void run() {
 
             try {
-                log.info("Connection opened for update.");
+                logger.info("Connection opened for update.");
                 fetchingTasks(projectTitaId, userTitaId);
 
             } catch (Exception ex) {
-                log.error("Connection error while data update.");
+                logger.error("Connection error while data update.");
             }
         }
     }
