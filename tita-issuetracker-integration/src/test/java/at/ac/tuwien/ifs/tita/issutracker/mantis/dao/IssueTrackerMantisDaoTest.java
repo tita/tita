@@ -63,7 +63,7 @@ public class IssueTrackerMantisDaoTest extends MantisBaseTest {
             deleteTestProject("tita_test");
         }
     }
-
+    
     /**
      * Test: find Task by TaskId.
      */

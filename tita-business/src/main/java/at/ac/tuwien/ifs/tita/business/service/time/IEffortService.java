@@ -41,10 +41,11 @@ public interface IEffortService {
      * Saves a new timeEffort or updates an existing one.
      * 
      * @param timeEffort the timeEffort to be saved
+     * @return saved Effort
      * @throws PersistenceException if Parameter is null or another Exception is
      *         thrown
      */
-    void saveEffort(Effort timeEffort) throws PersistenceException;
+    Effort saveEffort(Effort timeEffort) throws PersistenceException;
 
     /**
      * deletes an existing timeEffort.
@@ -162,8 +163,9 @@ public interface IEffortService {
      * @param task ITaskTrackable
      * @param user - user
      * @param project - TiTaproject
+     * @return saved effort
      */
-    void saveIssueTrackerTaskEfforts(Effort effort, ITaskTrackable task, TiTAUser user, 
+    Effort saveIssueTrackerTaskEfforts(Effort effort, ITaskTrackable task, TiTAUser user, 
             TiTAProject project);
     
     /**
@@ -172,8 +174,9 @@ public interface IEffortService {
      * @param description effortdescription
      * @param user user
      * @param project TiTaProject
+     * @return saved effort
      */
-    void saveEffortForTiTATask(Effort effort, String description, TiTAUser user, 
+    Effort saveEffortForTiTATask(Effort effort, String description, TiTAUser user, 
             TiTAProject project);
     
     /**
@@ -184,8 +187,9 @@ public interface IEffortService {
      * @param isstTaskDescription - task description
      * @param user - user
      * @param titaProjectId - tita project id
+     * @return saved effort
      */
-    void saveIssueTrackerTaskEfforts(Effort effort, Long isstTaskId, Long isstProjectId,
+    Effort saveIssueTrackerTaskEfforts(Effort effort, Long isstTaskId, Long isstProjectId,
             String isstTaskDescription, TiTAUser user,  Long titaProjectId);
     
 //    void clear();

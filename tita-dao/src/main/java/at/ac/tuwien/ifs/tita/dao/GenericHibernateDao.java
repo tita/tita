@@ -17,25 +17,19 @@
 package at.ac.tuwien.ifs.tita.dao;
 
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.PersistenceException;
 
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
-import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
-import org.hibernate.Query;
-import org.hibernate.ScrollMode;
-import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.transform.AliasToBeanResultTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -175,49 +169,49 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
         return myList;
     }
 
-    /** {@inheritDoc} */
-    public Iterator<T> findAllScrollable() {
+//    /** {@inheritDoc} */
+//    public Iterator<T> findAllScrollable() {
+//
+//        ScrollableResults myList = null;
+//
+//        try {
+//            Criteria crit = getSession().createCriteria(this.persistenceClass);
+//            crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+//            myList = crit.scroll(ScrollMode.FORWARD_ONLY);
+//        } catch (Exception e) {
+//            throw new PersistenceException("Failure during reading entities. Class=" 
+//                    + this.persistenceClass.getSimpleName()
+//                    + "\n" + e.getMessage(), e);
+//        }
+//
+//        return new ScrollableWrapper<T>(myList);
+//    }
 
-        ScrollableResults myList = null;
-
-        try {
-            Criteria crit = getSession().createCriteria(this.persistenceClass);
-            crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-            myList = crit.scroll(ScrollMode.FORWARD_ONLY);
-        } catch (Exception e) {
-            throw new PersistenceException("Failure during reading entities. Class=" 
-                    + this.persistenceClass.getSimpleName()
-                    + "\n" + e.getMessage(), e);
-        }
-
-        return new ScrollableWrapper<T>(myList);
-    }
-
-    /** {@inheritDoc} */
-    public Iterator<T> findByExampleScrollable(T exampleInstance, String... excludeProps) {
-
-        ScrollableResults myList = null;
-
-        try {
-            Criteria crit = getSession().createCriteria(this.persistenceClass);
-            Example example = Example.create(exampleInstance);
-            for (String exclude : excludeProps) {
-                example.excludeProperty(exclude);
-            }
-            crit.add(example);
-            // Tell Hibernate to remove duplicates from the result set if there
-            // is a
-            // OneToMany relation in the exampleInstance entity.
-            crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-
-            myList = crit.scroll(ScrollMode.FORWARD_ONLY);
-        } catch (Exception e) {
-            throw new PersistenceException("Failure during reading entities (by example). Class="
-                    + this.persistenceClass.getSimpleName() + "\n" + e.getMessage(), e);
-        }
-
-        return new ScrollableWrapper<T>(myList);
-    }
+//    /** {@inheritDoc} */
+//    public Iterator<T> findByExampleScrollable(T exampleInstance, String... excludeProps) {
+//
+//        ScrollableResults myList = null;
+//
+//        try {
+//            Criteria crit = getSession().createCriteria(this.persistenceClass);
+//            Example example = Example.create(exampleInstance);
+//            for (String exclude : excludeProps) {
+//                example.excludeProperty(exclude);
+//            }
+//            crit.add(example);
+//            // Tell Hibernate to remove duplicates from the result set if there
+//            // is a
+//            // OneToMany relation in the exampleInstance entity.
+//            crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+//
+//            myList = crit.scroll(ScrollMode.FORWARD_ONLY);
+//        } catch (Exception e) {
+//            throw new PersistenceException("Failure during reading entities (by example). Class="
+//                    + this.persistenceClass.getSimpleName() + "\n" + e.getMessage(), e);
+//        }
+//
+//        return new ScrollableWrapper<T>(myList);
+//    }
 
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
@@ -347,48 +341,48 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
         return crit.list();
     }
 
-    /**
-     * Find several entities via criterion.
-     *
-     * @param exceptionKeyString
-     *            for clear exception handling
-     * @param criterion
-     *            random criterias
-     * @return entitiy or null
-     * @exception PersistenceException
-     *                e
-     */
-    protected T findRecordByUniqueKeyCriteria(String exceptionKeyString, Criterion... criterion)
-        throws PersistenceException {
+//    /**
+//     * Find several entities via criterion.
+//     *
+//     * @param exceptionKeyString
+//     *            for clear exception handling
+//     * @param criterion
+//     *            random criterias
+//     * @return entitiy or null
+//     * @exception PersistenceException
+//     *                e
+//     */
+//    protected T findRecordByUniqueKeyCriteria(String exceptionKeyString, Criterion... criterion)
+//        throws PersistenceException {
+//
+//        List<T> resultList = findByCriteria(criterion);
+//
+//        if (resultList.size() == 1) {
+//            return resultList.get(0);
+//        }
+//
+//        if (resultList.size() == 0) {
+//            return null;
+//        }
+//
+//        throw new PersistenceException("Dao found more than one Record for UniqueKey ("
+//                + exceptionKeyString + ").");
+//    }
 
-        List<T> resultList = findByCriteria(criterion);
-
-        if (resultList.size() == 1) {
-            return resultList.get(0);
-        }
-
-        if (resultList.size() == 0) {
-            return null;
-        }
-
-        throw new PersistenceException("Dao found more than one Record for UniqueKey ("
-                + exceptionKeyString + ").");
-    }
-
-    /**
-     * Find entities for given criterions.
-     *
-     * @param criterion random criterias
-     * @return (empty) list of entities
-     */
-    protected Iterator<T> findScrollListByCriteria(Criterion... criterion) {
-        Criteria crit = getSession().createCriteria(this.persistenceClass);
-        for (Criterion c : criterion) {
-            crit.add(c);
-        }
-        crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-        return new ScrollableWrapper<T>(crit.scroll(ScrollMode.FORWARD_ONLY));
-    }
+//    /**
+//     * Find entities for given criterions.
+//     *
+//     * @param criterion random criterias
+//     * @return (empty) list of entities
+//     */
+//    protected Iterator<T> findScrollListByCriteria(Criterion... criterion) {
+//        Criteria crit = getSession().createCriteria(this.persistenceClass);
+//        for (Criterion c : criterion) {
+//            crit.add(c);
+//        }
+//        crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+//        return new ScrollableWrapper<T>(crit.scroll(ScrollMode.FORWARD_ONLY));
+//    }
 
     /**
      * HQL query returning a List of objects of type persistenceClass. Note that
@@ -399,18 +393,18 @@ public class GenericHibernateDao<T, ID extends Serializable> extends Persistence
      * @param query a HQL query String
      * @return a List of type persistenceClass
      */
-    @SuppressWarnings("unchecked")
-    protected List<T> findByHqlQuery(String query) {
-        Query q = getSession().createQuery(query);
-        List<T> result = null;
-        try {
-            q.setResultTransformer(new AliasToBeanResultTransformer(this.persistenceClass));
-            result = q.list();
-        } catch (HibernateException e) {
-            throw new PersistenceException("Failure during HQL-query.\n" + e.getMessage(), e);
-        }
-        return result;
-    }
+//    @SuppressWarnings("unchecked")
+//    protected List<T> findByHqlQuery(String query) {
+//        Query q = getSession().createQuery(query);
+//        List<T> result = null;
+//        try {
+//            q.setResultTransformer(new AliasToBeanResultTransformer(this.persistenceClass));
+//            result = q.list();
+//        } catch (HibernateException e) {
+//            throw new PersistenceException("Failure during HQL-query.\n" + e.getMessage(), e);
+//        }
+//        return result;
+//    }
 
     /** {@inheritDoc} */
     public void refresh(T entity) {

@@ -15,6 +15,7 @@
 package at.ac.tuwien.ifs.tita.test.service.user;
 
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
@@ -34,6 +36,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 
 import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
+import at.ac.tuwien.ifs.tita.business.service.user.UserService;
+import at.ac.tuwien.ifs.tita.dao.user.UserDAO;
+import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.entity.conv.Role;
 
@@ -250,6 +255,25 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
         } catch (PersistenceException e) {
             fail();
         }
+    }
+    
+    /**
+     * Mockint userService for Testing FindAllTiTAUsersForProjectByRole.
+     */
+    @Test
+    public void testFindAllTiTAUsersForProjectByRole(){
+        UserDAO dao = mock(UserDAO.class);
+       
+        UserService uservice = new UserService();
+        uservice.setUserDao(dao);
+       
+        TiTAProject p = mock(TiTAProject.class);
+        Role r = mock(Role.class);
+       
+        uservice.findAllTiTAUsersForProjectByRole(p, r);
+       
+
+        Mockito.verify(dao , Mockito.times(1)).findUsersForTiTAProjectByRole(p, r);
     }
 
     /**

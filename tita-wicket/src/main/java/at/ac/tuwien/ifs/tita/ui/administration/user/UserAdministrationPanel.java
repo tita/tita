@@ -110,7 +110,8 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
         addOrReplace(listContainer);
         addOrReplace(detailContainer);
         userProjectPanel = new UserProjectPanel("userProjectPanel", new TiTAUser(), this);
-        userIssueTrackerPanel = new UserIssueTrackerLoginPanel("userIssueTrackerLoginPanel", new TiTAUser(), this);
+        userIssueTrackerPanel = 
+            new UserIssueTrackerLoginPanel("userIssueTrackerLoginPanel", new TiTAUser(), this);
         addOrReplace(userProjectPanel);
         addOrReplace(userIssueTrackerPanel);
 
@@ -127,7 +128,8 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
     }
 
     /**
-     * Method for displaying a List of Users. Also hides the details page if null value is given, just switch without
+     * Method for displaying a List of Users. 
+     * Also hides the details page if null value is given, just switch without
      * refreshing data.
      * 
      * @param userList the list of users.
@@ -249,7 +251,8 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
     }
 
     /**
-     * displays the Panel to add Projects to the user. only possible if detailView has been initialized.
+     * displays the Panel to add Projects to the user. 
+     * only possible if detailView has been initialized.
      */
     public void displayProjectPanel() {
         if (form != null) {
@@ -263,7 +266,8 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
     }
 
     /**
-     * displays the Panel to add IssueTrackerLogins to the user. only possible if detailView has been initialized.
+     * displays the Panel to add IssueTrackerLogins to the user. 
+     * only possible if detailView has been initialized.
      */
     public void displayIssueTrackerLoginPanel() {
         if (form != null) {
@@ -279,8 +283,8 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
     }
 
     /**
-     * returns an IssueTrackerLogin for a specific IssueTracker if a Login for current User exists
-     * 
+     * returns an IssueTrackerLogin for a specific IssueTracker if a Login for current User exists.
+     * @param issueTracker - issuetracker
      * @return a corresponding IssueTrackerLogin if existant.
      */
     public IssueTrackerLogin getLoginForIssueTracker(IssueTracker issueTracker) {
@@ -383,8 +387,9 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
                     IssueTrackerLogin login = getLoginForIssueTracker(issProject.getIssueTracker());
                     if (login != null) {
                         IIssueTrackerService issueTrackerService = new IssueTrackerService(login);
-                        IProjectTrackable project = issueTrackerService.getProjectByProjectName(issProject
-                            .getProjectName());
+                        IProjectTrackable project = 
+                            issueTrackerService.getProjectByProjectName(issProject
+                                    .getProjectName());
                         if (project != null) {
                             issProject.setIsstProjectId(project.getId());
                         }

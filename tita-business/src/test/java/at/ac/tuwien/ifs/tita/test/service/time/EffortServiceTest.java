@@ -196,6 +196,30 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
         doReturn(new ArrayList<Effort>()).when(effortService).findEffortsForTiTAProjectAndTiTAUser(
                 1L, 1L);
     }
+    
+//    @Test
+//    public void testSaveEffortForTiTATask(){
+//        Effort e = new Effort();
+//        
+//        e = service.saveEffortForTiTATask(e, "abc", mock(TiTAUser.class), mock(TiTAProject.class));
+//        
+//        assertEquals("abc", e.getDescription());
+//    }
+    
+//    public void saveEffortForTiTATask(Effort effort, String description, TiTAUser user, TiTAProject project) {
+//        if (effort != null) {
+//            effort.setDescription(description);
+//            effort.setUser(user);
+//
+//            TiTATask tt = new TiTATask(description, user, project, new HashSet<Effort>());
+//            tt.getTitaEfforts().add(effort);
+//            projectService.saveTiTATask(tt);
+//            
+//            effort.setTitaTask(tt);
+//            return saveEffort(effort);
+//            // timeEffortDao.flushnClear();
+//        }
+//    }
 
     /**
      * Prepare database for test -> insert 3 efforts.

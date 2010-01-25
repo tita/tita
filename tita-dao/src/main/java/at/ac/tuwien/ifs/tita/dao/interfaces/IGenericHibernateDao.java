@@ -16,7 +16,6 @@
 package at.ac.tuwien.ifs.tita.dao.interfaces;
 
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
@@ -68,7 +67,7 @@ public interface IGenericHibernateDao<T, ID extends Serializable> extends IPersi
      * 
      * @return Scrollable result (cursor) with all records
      */
-    Iterator<T> findAllScrollable();
+    //Iterator<T> findAllScrollable();
 
     /**
      * Find all entities which are like example instance.
@@ -88,7 +87,7 @@ public interface IGenericHibernateDao<T, ID extends Serializable> extends IPersi
      *        will be excluded from search
      * @return a scrollable result (cursor)
      */
-    Iterator<T> findByExampleScrollable(T exampleInstance, String... excludeProps);
+    //Iterator<T> findByExampleScrollable(T exampleInstance, String... excludeProps);
 
     /**
      * Stores an entity of type T the first time or merges an entity if it is

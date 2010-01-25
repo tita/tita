@@ -128,7 +128,7 @@ public class TableModelUserProject extends AbstractTitaTableModel {
     /**
      * Returns if a specific UserProject is currently in this Tablemodel.
      * 
-     * @param userProject to check for availability.
+     * @param project - userProject to check for availability.
      * @return true if userProject already in this Model.
      */
     @SuppressWarnings("unchecked")
