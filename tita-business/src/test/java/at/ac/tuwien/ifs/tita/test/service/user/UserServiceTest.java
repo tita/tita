@@ -256,24 +256,38 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
             fail();
         }
     }
-    
+
     /**
      * Mockint userService for Testing FindAllTiTAUsersForProjectByRole.
      */
     @Test
-    public void testFindAllTiTAUsersForProjectByRole(){
+    public void testFindAllTiTAUsersForProjectByRole() {
         UserDAO dao = mock(UserDAO.class);
-       
+
         UserService uservice = new UserService();
         uservice.setUserDao(dao);
-       
+
         TiTAProject p = mock(TiTAProject.class);
         Role r = mock(Role.class);
-       
-        uservice.findAllTiTAUsersForProjectByRole(p, r);
-       
 
-        Mockito.verify(dao , Mockito.times(1)).findUsersForTiTAProjectByRole(p, r);
+        uservice.findAllTiTAUsersForProjectByRole(p, r);
+
+        Mockito.verify(dao, Mockito.times(1)).findUsersForTiTAProjectByRole(p, r);
+    }
+
+    /**
+     * Mockint userService for Testing getUserByUsername.
+     */
+    @Test
+    public void testgetUserByUsername() {
+        UserDAO dao = mock(UserDAO.class);
+
+        UserService uservice = new UserService();
+        uservice.setUserDao(dao);
+
+        uservice.getUserByUsername("doesntmatter");
+
+        Mockito.verify(dao, Mockito.times(1)).findByUserName("doesntmatter");
     }
 
     /**

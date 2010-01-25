@@ -349,6 +349,7 @@
             <exclude>**/.project</exclude>
             <exclude>**/.settings/**</exclude>
             <exclude>**/.metadata/**</exclude>
+			<exclude>**/codecoverage/**</exclude>
 
             <exclude>**/*.pdf</exclude>
             <exclude>**/*.jpg</exclude>
