@@ -45,8 +45,8 @@ public class TableModelEffort extends AbstractTitaTableModel {
     public TableModelEffort(List<Effort> list) {
         super(list);
 
-        columnNames = new String[] { "Date", "Description", "Start Time",
-                "End Time", "Duration", "", "", "Link" };
+        columnNames = new String[] { "Date", "Description", "Start Time", "End Time", "Duration", "Cost Center", "",
+                "", "Link" };
     }
 
     /**
@@ -56,11 +56,11 @@ public class TableModelEffort extends AbstractTitaTableModel {
     public Class<?> getColumnClass(int columnIndex) {
         if (columnIndex == IntegerConstants.ZERO) {
             return Date.class;
-        } else if (columnIndex == IntegerConstants.FIVE) {
-            return ButtonEdit.class;
         } else if (columnIndex == IntegerConstants.SIX) {
-            return ButtonDelete.class;
+            return ButtonEdit.class;
         } else if (columnIndex == IntegerConstants.SEVEN) {
+            return ButtonDelete.class;
+        } else if (columnIndex == IntegerConstants.EIGTH) {
             return LinkToIssueTracker.class;
         } else {
             return super.getColumnClass(columnIndex);
@@ -83,30 +83,29 @@ public class TableModelEffort extends AbstractTitaTableModel {
                 return te.getDescription();
             } else if (col == IntegerConstants.TWO) {
                 if (te.getStartTime() != null) {
-                    return GlobalUtils.TIMEFORMAT24HOURS.format(te
-                            .getStartTime());
+                    return GlobalUtils.TIMEFORMAT24HOURS.format(te.getStartTime());
                 } else {
                     return 0;
                 }
             } else if (col == IntegerConstants.THREE) {
                 if (te.getEndTime() != null) {
-                    return GlobalUtils.TIMEFORMAT24HOURS
-                            .format(te.getEndTime());
+                    return GlobalUtils.TIMEFORMAT24HOURS.format(te.getEndTime());
                 } else {
                     return 0;
                 }
             } else if (col == IntegerConstants.FOUR) {
                 if (te.getDuration() != null) {
-                    return TiTATimeConverter.getDuration2String(te
-                            .getDuration());
+                    return TiTATimeConverter.getDuration2String(te.getDuration());
                 } else {
                     return 0;
                 }
             } else if (col == IntegerConstants.FIVE) {
-                return null;
+                return te.getCostcenter();
             } else if (col == IntegerConstants.SIX) {
                 return null;
             } else if (col == IntegerConstants.SEVEN) {
+                return null;
+            } else if (col == IntegerConstants.EIGTH) {
                 return null;
             } else {
                 return te;
@@ -165,8 +164,7 @@ public class TableModelEffort extends AbstractTitaTableModel {
                 } catch (ParseException e) {
                     // Do nothing
                 }
-                te.setEndTime(endTime != null ? endTime : te.getStartTime()
-                        + te.getDuration());
+                te.setEndTime(endTime != null ? endTime : te.getStartTime() + te.getDuration());
             } else if (col == IntegerConstants.FOUR) {
                 Long duration = null;
                 try {
@@ -174,8 +172,11 @@ public class TableModelEffort extends AbstractTitaTableModel {
                 } catch (ParseException e) {
                     // Do nothing
                 }
-                te.setDuration(duration != null ? duration : te.getEndTime()
-                        - te.getStartTime());
+                te.setDuration(duration != null ? duration : te.getEndTime() - te.getStartTime());
+            } else if (col == IntegerConstants.FIVE) {
+                if (aValue != null) {
+                    te.setCostcenter(aValue.toString());
+                }
             }
         } catch (IndexOutOfBoundsException e) {
             log.error(e.getMessage());
@@ -189,7 +190,7 @@ public class TableModelEffort extends AbstractTitaTableModel {
      */
     @Override
     public boolean isCellEditable(int row, int column) {
-        if (column != IntegerConstants.SEVEN) {
+        if (column != IntegerConstants.EIGTH) {
             if (selectedRow != -1) {
                 if (selectedRow == row) {
                     return true;
