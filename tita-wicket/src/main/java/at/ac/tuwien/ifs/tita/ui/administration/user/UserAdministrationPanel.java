@@ -3,15 +3,15 @@
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
-   
+
        http://www.apache.org/licenses/LICENSE\-2.0
-       
+
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-  
+
  */
 package at.ac.tuwien.ifs.tita.ui.administration.user;
 
@@ -54,7 +54,7 @@ import at.ac.tuwien.ifs.tita.ui.utils.EffortUtils;
 
 /**
  * UserAdministrationPanel allows to manage Users over the GUI.
- * 
+ *
  * @author ASE Group 10
  */
 public class UserAdministrationPanel extends Panel implements IAdministrationPanel {
@@ -91,7 +91,7 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
 
     /**
      * public constructor.
-     * 
+     *
      * @param id the name of the Panel
      */
     public UserAdministrationPanel(String id) {
@@ -110,7 +110,7 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
         addOrReplace(listContainer);
         addOrReplace(detailContainer);
         userProjectPanel = new UserProjectPanel("userProjectPanel", new TiTAUser(), this);
-        userIssueTrackerPanel = 
+        userIssueTrackerPanel =
             new UserIssueTrackerLoginPanel("userIssueTrackerLoginPanel", new TiTAUser(), this);
         addOrReplace(userProjectPanel);
         addOrReplace(userIssueTrackerPanel);
@@ -128,10 +128,10 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
     }
 
     /**
-     * Method for displaying a List of Users. 
+     * Method for displaying a List of Users.
      * Also hides the details page if null value is given, just switch without
      * refreshing data.
-     * 
+     *
      * @param userList the list of users.
      */
     public void displayTable(final List<TiTAUser> userList) {
@@ -175,7 +175,7 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
 
     /**
      * Method for displaying the details site of a specific User. Also hides the list page.
-     * 
+     *
      * @param user the specific User to show.
      */
     public void displayDetailsPage(final TiTAUser user) {
@@ -251,7 +251,7 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
     }
 
     /**
-     * displays the Panel to add Projects to the user. 
+     * displays the Panel to add Projects to the user.
      * only possible if detailView has been initialized.
      */
     public void displayProjectPanel() {
@@ -266,7 +266,7 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
     }
 
     /**
-     * displays the Panel to add IssueTrackerLogins to the user. 
+     * displays the Panel to add IssueTrackerLogins to the user.
      * only possible if detailView has been initialized.
      */
     public void displayIssueTrackerLoginPanel() {
@@ -299,7 +299,7 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
 
     /**
      * returns a List of All available IssueTracker.
-     * 
+     *
      * @return all available issueTrackers.
      */
     public List<IssueTracker> getAvailableIssueTracker() {
@@ -314,11 +314,11 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
 
     /**
      * sets the current User to edit.
-     * 
+     *
      * @param user the user to edit
      */
     public void setCurrentUser(TiTAUser user) {
-        this.currentUser = user;
+        currentUser = user;
     }
 
     /** {@inheritDoc} */
@@ -369,12 +369,12 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
 
     /**
      * Persists a User and displays it in the current User Table.
-     * 
+     *
      * @param user the User to display.
      */
     public void saveEntity(TiTAUser user) {
         try {
-            this.currentUser = user;
+            currentUser = user;
             tm.addEntity(user);
 
             TiTAUser savedUser = service.saveUser(user);
@@ -387,15 +387,20 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
                     IssueTrackerLogin login = getLoginForIssueTracker(issProject.getIssueTracker());
                     if (login != null) {
                         IIssueTrackerService issueTrackerService = new IssueTrackerService(login);
-                        IProjectTrackable project = 
+                        IProjectTrackable project =
                             issueTrackerService.getProjectByProjectName(issProject
                                     .getProjectName());
                         if (project != null) {
                             issProject.setIsstProjectId(project.getId());
                         }
                     }
+
+                    titaProjectService.saveProject(userProject.getProject());
                 }
                 userProject.setUser(savedUser);
+                userProject.setUser(service.getUserById(savedUser.getId()));
+                userProject.setProject(titaProjectService.getProjectById(userProject.getProject()
+                        .getId()));
                 titaProjectService.saveUserProject(userProject);
             }
             tm.reload();
@@ -409,7 +414,7 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
 
     /**
      * Looks for existence of a specific User.
-     * 
+     *
      * @param user The user to look for.
      * @return true if user already exists.
      */

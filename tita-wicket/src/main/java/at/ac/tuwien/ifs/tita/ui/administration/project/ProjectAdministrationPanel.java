@@ -3,15 +3,15 @@
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
-   
+
        http://www.apache.org/licenses/LICENSE\-2.0
-       
+
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-  
+
  */
 package at.ac.tuwien.ifs.tita.ui.administration.project;
 
@@ -54,7 +54,7 @@ import at.ac.tuwien.ifs.tita.ui.utils.EffortUtils;
 
 /**
  * ProjectAdministrationPanel allows to manage Projects over the GUI.
- * 
+ *
  * @author ASE Group 10
  */
 public class ProjectAdministrationPanel extends Panel implements IAdministrationPanel {
@@ -95,7 +95,7 @@ public class ProjectAdministrationPanel extends Panel implements IAdministration
 
     /**
      * public constructor.
-     * 
+     *
      * @param id the name of the Panel
      */
     public ProjectAdministrationPanel(String id) {
@@ -131,12 +131,7 @@ public class ProjectAdministrationPanel extends Panel implements IAdministration
             issueTracker = new ArrayList<IssueTracker>();
             issueTrackerLoginMap = new HashMap<String, IssueTrackerLogin>();
 
-            if (issueTrackerLogins != null) {
-                for (IssueTrackerLogin login : issueTrackerLogins) {
-                    issueTracker.add(login.getIssueTracker());
-                    issueTrackerLoginMap.put(login.getIssueTracker().getDescription(), login);
-                }
-            }
+            issueTracker = titaProjectService.getAvailableIssueTracker();
         } catch (Exception e) {
             error("Could not load available IssueTracker for current User");
         }
@@ -149,7 +144,7 @@ public class ProjectAdministrationPanel extends Panel implements IAdministration
     /**
      * Method for displaying a List of Projects. Also hides the details page if null value is given, just switch without
      * refreshing data.
-     * 
+     *
      * @param projectList the list of Projects.
      */
     private void displayTable(final List<TiTAProject> projectList) {
@@ -189,12 +184,12 @@ public class ProjectAdministrationPanel extends Panel implements IAdministration
 
     /**
      * Method for displaying the details site of a specific Project. Also hides the list page.
-     * 
+     *
      * @param project the specific Project to show.
      */
     private void displayDetailsPage(final TiTAProject project) {
 
-        this.currentProject = project;
+        currentProject = project;
         // hide list container
         listContainer.setVisible(false);
         detailContainer.setVisible(true);
@@ -235,7 +230,7 @@ public class ProjectAdministrationPanel extends Panel implements IAdministration
 
     /**
      * displays the Panel to add IssueTrackerProjects.
-     * 
+     *
      * @param issTProject the project to update
      */
     public void displayIssueTrackerProjectForm(IssueTrackerProject issTProject) {
@@ -257,10 +252,15 @@ public class ProjectAdministrationPanel extends Panel implements IAdministration
 
                 Set<IssueTrackerProject> tmpSet = currentProject.getIssueTrackerProjects();
                 IssueTrackerProject issTProjectToAdd = issueTrackerForm.getIssueTrackerProject();
-                issueTrackerService = new IssueTrackerService(issueTrackerLoginMap.get(issTProjectToAdd
-                    .getIssueTracker().getDescription()));
+
+                if (issueTrackerLoginMap == null) {
+                    issueTrackerService = new IssueTrackerService(issueTrackerLoginMap
+                            .get(issTProjectToAdd.getIssueTracker().getDescription()));
+
+
                 issTProjectToAdd.setIsstProjectId(issueTrackerService.getProjectByProjectName(
                     issTProjectToAdd.getProjectName()).getId());
+                }
                 tmpSet.add(issTProjectToAdd);
                 currentProject.setIssueTrackerProjects(tmpSet);
 
@@ -283,16 +283,16 @@ public class ProjectAdministrationPanel extends Panel implements IAdministration
 
     /**
      * Sets the current Project to Submit.
-     * 
+     *
      * @param project the Project to submit
      */
     public void setCurrentProject(TiTAProject project) {
-        this.currentProject = project;
+        currentProject = project;
     }
 
     /**
      * Persists a Project and displays it in the current Project Table.
-     * 
+     *
      * @param project the Project to display.
      */
     public void saveEntity(TiTAProject project) {
