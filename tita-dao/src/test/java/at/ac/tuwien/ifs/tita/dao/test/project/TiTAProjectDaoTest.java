@@ -16,9 +16,12 @@
  */
 package at.ac.tuwien.ifs.tita.dao.test.project;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
+
+import junit.framework.Assert;
 
 import org.junit.After;
 import org.junit.Before;
@@ -38,35 +41,38 @@ import at.ac.tuwien.ifs.tita.dao.test.util.INativeSqlExecutorDao;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerProject;
 import at.ac.tuwien.ifs.tita.entity.IssueTrackerTask;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
+import at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus;
 
 /**
  * Testclass for all test concerning tita daos.
+ * 
  * @author herbert
- *
+ * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:datasourceContext-test.xml" })
 @TransactionConfiguration
 @Transactional
 public class TiTAProjectDaoTest {
-    
+
     @Qualifier("issueTrackerTaskDAO")
     @Autowired
     private IIssueTrackerTaskDao taskDao;
-    
+
     @Qualifier("issueTrackerProjectDAO")
     @Autowired
     private IIssueTrackerProjectDao itpDao;
-    
+
     @Qualifier("titaProjectDAO")
     @Autowired
     private ITiTAProjectDao tpDao;
-    
+
     @Autowired
     private INativeSqlExecutorDao<Object, Long> executor;
-    
+
     /**
      * Prepare on TiTA Project for testing effort dao.
+     * 
      * @throws Exception ex
      */
     @Before
@@ -78,51 +84,64 @@ public class TiTAProjectDaoTest {
      * Clean db after each test.
      */
     @After
-    public void cleanDB(){
-        executor.executeSql("delete from EFFORT;"+
-                            "delete from TITA_TASK;"+
-                            "delete from ISSUE_TRACKER_TASK;" +
-                            "delete from ISSUE_TRACKER_PROJECT;"+
-                            "delete from USER_PROJECT;"+
-                            "delete from TITA_PROJECT;"+
-                            "delete from CONV_PROJECT_STATUS;"+
-                            "delete from CONV_ISSUE_TRACKER;"+
-                            "delete from ISST_LOGIN;"+
-                            "delete from TITA_USER;"+
-                            "delete from CONV_ROLE;commit;");
+    public void cleanDB() {
+        executor.executeSql("delete from EFFORT;" + "delete from TITA_TASK;" + "delete from ISSUE_TRACKER_TASK;"
+            + "delete from ISSUE_TRACKER_PROJECT;" + "delete from USER_PROJECT;" + "delete from TITA_PROJECT;"
+            + "delete from CONV_PROJECT_STATUS;" + "delete from CONV_ISSUE_TRACKER;" + "delete from ISST_LOGIN;"
+            + "delete from TITA_USER;" + "delete from CONV_ROLE;commit;");
     }
-    
+
     /**
      * Methode.
      */
     @Test
-    public void findIssueTrackerTaskShouldSucceed(){
-        //CHECKSTYLE:OFF
+    public void findIssueTrackerTaskShouldSucceed() {
+        // CHECKSTYLE:OFF
         IssueTrackerTask itt = taskDao.findIssueTrackerTask(1L, 1L, 97L, 27L);
-        //CHECKSTYLE:ON
+        // CHECKSTYLE:ON
         assertNotNull(itt);
     }
-    
+
     /**
      * Methode.
      */
     @Test
-    public void findIssueTrackerProjectForTiTAProjectShouldSucceed(){
-        //CHECKSTYLE:OFF
+    public void findIssueTrackerProjectForTiTAProjectShouldSucceed() {
+        // CHECKSTYLE:OFF
         IssueTrackerProject project = itpDao.findIssueTrackerProjectForTiTAProject(1L, 1L, 96L);
-        //CHECKSTYLE:ON
+        // CHECKSTYLE:ON
         assertNotNull(project);
     }
-    
+
     /**
      * Methode.
      */
     @Test
-    public void findTiTAProjectsForUsernameShouldSucceed(){
-        //CHECKSTYLE:OFF
+    public void findTiTAProjectsForUsernameShouldSucceed() {
+        // CHECKSTYLE:OFF
         List<TiTAProject> projects = tpDao.findTiTAProjectsForUsername("hans");
-        //CHECKSTYLE:ON
+        // CHECKSTYLE:ON
         assertNotNull(projects);
         assertEquals(1, projects.size());
+    }
+
+    /**
+     * Test findig Projects ordered by name
+     */
+    @Test
+    public void testFindProjectsOrderedByName() {
+        List<TiTAProject> projects = tpDao.findProjectsOrderedByName(-1, "name");
+        Assert.assertNotNull(projects);
+        Assert.assertTrue(projects.size() > 0);
+    }
+
+    /**
+     * Test findig all available Project stati
+     */
+    @Test
+    public void testGetAvailableProjectStati() {
+        List<ProjectStatus> projects = tpDao.getAvailableProjectStati();
+        Assert.assertNotNull(projects);
+        Assert.assertTrue(projects.size() > 0);
     }
 }
