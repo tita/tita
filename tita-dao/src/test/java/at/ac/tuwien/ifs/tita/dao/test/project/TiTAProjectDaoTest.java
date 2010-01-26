@@ -86,9 +86,9 @@ public class TiTAProjectDaoTest {
     @After
     public void cleanDB() {
         executor.executeSql("delete from EFFORT;" + "delete from TITA_TASK;" + "delete from ISSUE_TRACKER_TASK;"
-            + "delete from ISSUE_TRACKER_PROJECT;" + "delete from USER_PROJECT;" + "delete from TITA_PROJECT;"
-            + "delete from CONV_PROJECT_STATUS;" + "delete from CONV_ISSUE_TRACKER;" + "delete from ISST_LOGIN;"
-            + "delete from TITA_USER;" + "delete from CONV_ROLE;commit;");
+                + "delete from ISSUE_TRACKER_PROJECT;" + "delete from USER_PROJECT;" + "delete from TITA_PROJECT;"
+                + "delete from CONV_PROJECT_STATUS;" + "delete from CONV_ISSUE_TRACKER;" + "delete from ISST_LOGIN;"
+                + "delete from TITA_USER;" + "delete from CONV_ROLE;commit;");
     }
 
     /**
@@ -126,7 +126,7 @@ public class TiTAProjectDaoTest {
     }
 
     /**
-     * Test findig Projects ordered by name
+     * Test findig Projects ordered by name.
      */
     @Test
     public void testFindProjectsOrderedByName() {
@@ -136,7 +136,7 @@ public class TiTAProjectDaoTest {
     }
 
     /**
-     * Test findig all available Project stati
+     * Test findig all available Project stati.
      */
     @Test
     public void testGetAvailableProjectStati() {

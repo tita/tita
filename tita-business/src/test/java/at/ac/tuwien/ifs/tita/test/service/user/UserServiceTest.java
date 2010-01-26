@@ -389,8 +389,10 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
             TiTAUser u = new TiTAUser();
             u.setUserName("testname");
             u.setPassword("testpwd");
+            // CHECKSTYLE:OFF
             IssueTrackerLogin login = new IssueTrackerLogin("username", "password", new IssueTracker(200L, "url",
-                "name"), u);
+                    "name"), u);
+            // CHECKSTYLE:ON
             IssueTrackerLogin l = service.saveIssueTrackerLogin(login, u);
             Assert.assertNotNull(l);
         } catch (Exception e) {
@@ -407,7 +409,9 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
             List<IssueTracker> list = service.getAvailableIssueTracker();
             Assert.assertNotNull(list);
 
+            // CHECKSTYLE:OFF
             IssueTracker it = new IssueTracker(99L, "test", "test");
+            // CHECKSTYLE:ON
             service.saveIssueTracker(it);
             List<IssueTracker> newList = service.getAvailableIssueTracker();
             Assert.assertNotNull(newList);
