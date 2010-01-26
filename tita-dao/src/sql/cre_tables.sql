@@ -52,7 +52,7 @@ create table ISST_LOGIN(
 	USER_ID bigint references TITA_USER (ID),
 	ISST_ID bigint references CONV_ISSUE_TRACKER(ID),
 	NAME varchar(20),
-	PASSWORD text,
+	PASSWORD varchar(2100),
 	MODIFICATION_VERSION bigint,
 	primary key (ID)
 );

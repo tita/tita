@@ -38,6 +38,9 @@ import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 @Table(name = "ISST_LOGIN")
 @SequenceGenerator(name = "seq_isst_login", sequenceName = "ISST_LOGIN_ID_SEQ", allocationSize = 1)
 public class IssueTrackerLogin extends BaseEntity<Long> {
+
+    private static final int C_MAX_ENCRYPTED_PWD_LENGTH = 2100;
+
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_isst_login")
@@ -46,7 +49,7 @@ public class IssueTrackerLogin extends BaseEntity<Long> {
     @Column(name = "NAME")
     private String userName;
 
-    @Column(name = "PASSWORD")
+    @Column(name = "PASSWORD", length = C_MAX_ENCRYPTED_PWD_LENGTH)
     private String password;
 
     @ManyToOne
