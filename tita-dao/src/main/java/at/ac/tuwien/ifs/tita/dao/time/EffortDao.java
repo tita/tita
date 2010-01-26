@@ -403,19 +403,41 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements
             Long projectId, Long userId) {
         List<Effort> returnValue = new ArrayList<Effort>();
 
-        String queryString = "select e1 from Effort e1 "
-                + "join e1.titaTask as tt " + "join tt.titaProject as tp "
-                + "where e1.user = " + userId + " and tp.id = " + projectId
+        String queryString = "select e1.ID, e1.DESCRIPTION, e1.TITA_TASK_ID, e1.ISSUET_TASK_ID, "
+                + "e1.DATE, e1.START_TIME, e1.END_TIME, e1.DURATION, e1.DELETED, "
+                + "e1.USER_ID, e1.COST_CENTER from Effort e1 "
+                + "join tita_task tt on e1.tita_task_id = tt.id "
+                + "join tita_project tp on tt.tita_project_id = tp.id "
+                + "join tita_user tu on tu.id = e1.user_id "
+                + "where tu.id = "
+                + userId
+                + " and tp.id = "
+                + projectId
                 + " and e1.deleted != true "
-                + "UNION select e2 from Effort e2 "
-                + "join e2.issueTTask as itt " + "join itt.isstProject as itp "
-                + "join itp.titaProject as tp2 " + "where e2.user = " + userId
-                + " and tp2.id = " + projectId + " and e2.deleted != true "
+                + "UNION "
+                + "select e2.ID, e2.DESCRIPTION, e2.TITA_TASK_ID, e2.ISSUET_TASK_ID, e2.DATE, "
+                + "e2.START_TIME, e2.END_TIME, e2.DURATION, e2.DELETED, "
+                + "e2.USER_ID, e2.COST_CENTER from Effort e2 "
+                + "join issue_tracker_task itt on e2.issuet_task_id = itt.id "
+                + "join issue_tracker_project itp on itt.issue_tracker_project_id = itp.id "
+                + "join tita_project tp2 on tp2.id = itp.tita_project_id "
+                + "join tita_user tu2 on tu2.id = e2.user_id "
+                + "where tu2.id = "
+                + userId
+                + " and tp2.id = "
+                + projectId
+                + " and e2.deleted != true "
                 + "order by date desc, end_time desc";
 
-        Query query1 = getSession().createQuery(queryString);
-        List<Effort> list1 = query1.list();
+        org.hibernate.SQLQuery q = getSession().createSQLQuery(queryString);
+        q.addEntity(Effort.class);
+        q.setFetchSize(C_FETCHSIZE);
 
-        return list1;
+        try {
+            returnValue = q.list();
+        } catch (NoResultException e) {
+            // no results
+        }
+        return returnValue;
     }
 }
