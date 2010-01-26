@@ -41,12 +41,12 @@ public class HomePage extends WebPage {
 
     @SpringBean(name = "timerCoordinator")
     private TimerCoordinator timerCoordinator;
-
+    
     @SpringBean(name = "userService")
     private IUserService userService;
 
     public HomePage() {
-        new Thread(timerCoordinator).start();
+        
         setStatelessHint(true);
         add(new FeedbackPanel("feedback"));
         newLoginPanel("loginPanel");
