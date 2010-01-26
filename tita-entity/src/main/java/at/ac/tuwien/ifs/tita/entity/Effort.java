@@ -70,6 +70,9 @@ public class Effort extends BaseEntity<Long> {
     @Column(name = "DELETED")
     private Boolean deleted;
 
+    @Column(name = "COST_CENTER")
+    private String costcenter = "W580";
+
     @ManyToOne(cascade = { CascadeType.MERGE })
     @JoinColumn(name = "USER_ID")
     // , referencedColumnName = "ID")
@@ -99,9 +102,8 @@ public class Effort extends BaseEntity<Long> {
         this.user = user;
     }
 
-    public Effort(Long id, TiTATask titaTask, IssueTrackerTask issueTTask, String description) {
+    public Effort(TiTATask titaTask, IssueTrackerTask issueTTask, String description) {
         super();
-        this.id = id;
         this.titaTask = titaTask;
         this.issueTTask = issueTTask;
         this.description = description;
@@ -118,6 +120,21 @@ public class Effort extends BaseEntity<Long> {
         this.duration = duration;
         this.description = description;
         this.deleted = deleted;
+        this.user = user;
+    }
+
+    public Effort(TiTATask titaTask, IssueTrackerTask issueTTask, Date date, Long startTime, Long endTime,
+            Long duration, String description, Boolean deleted, String costcenter, TiTAUser user) {
+        super();
+        this.titaTask = titaTask;
+        this.issueTTask = issueTTask;
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.duration = duration;
+        this.description = description;
+        this.deleted = deleted;
+        this.costcenter = costcenter;
         this.user = user;
     }
 
@@ -193,6 +210,16 @@ public class Effort extends BaseEntity<Long> {
     }
 
     /**
+     * Filter out all matching Efforts with a specific costcenter.
+     * 
+     * @param filterString - Filter string
+     * @return true if it contains the string pattern.
+     */
+    public Boolean matchCostCenter(String filterString) {
+        return costcenter.toLowerCase().contains(filterString.toLowerCase());
+    }
+
+    /**
      * Filter out all matching Efforts with a date after the parameter date.
      * 
      * @param date1 - filter date
@@ -230,6 +257,14 @@ public class Effort extends BaseEntity<Long> {
 
     public void setStartTime(Long startTime) {
         this.startTime = startTime;
+    }
+
+    public String getCostcenter() {
+        return costcenter;
+    }
+
+    public void setCostcenter(String costcenter) {
+        this.costcenter = costcenter;
     }
 
     /**

@@ -48,16 +48,16 @@ import at.ac.tuwien.ifs.tita.entity.Effort;
 
 /**
  * Effort Service Test.
- *
+ * 
  * @author herbert
- *
+ * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:datasourceContext-test.xml" })
 @TransactionConfiguration
 @Transactional
 public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextTests {
-    
+
     private static final long C_MOCKING_VALUE_1 = 311500L;
 
     private static IEffortService effortService;
@@ -71,9 +71,6 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
     @Autowired
     private IEffortService service;
 
-
-
-
     /**
      * Test.
      */
@@ -81,7 +78,7 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
     public void testSaveTimeEffort() {
 
         String strdate = "18.10.2009";
-        
+
         Date date = null;
 
         try {
@@ -113,11 +110,12 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
 
     /**
      * Test.
+     * 
      * @throws PersistenceException - ex
      */
     @Test
-    public void testDeleteTimeEffort() throws PersistenceException{
-        Effort timeEffort = new Effort(null, null, null, "Das ist die Test TimeEffort 2");
+    public void testDeleteTimeEffort() throws PersistenceException {
+        Effort timeEffort = new Effort(null, null, "Das ist die Test TimeEffort 2");
         service.saveEffort(timeEffort);
         Assert.assertNotNull(timeEffort.getId());
         timeEffort = service.getEffortById(timeEffort.getId());
@@ -132,7 +130,7 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
      */
     @Test
     public void testUpdateTimeEffort() {
-        Effort timeEffort = new Effort(null, null, null, "Das ist die Test TimeEffort 3");
+        Effort timeEffort = new Effort(null, null, "Das ist die Test TimeEffort 3");
         try {
             service.saveEffort(timeEffort);
             Assert.assertNotNull(timeEffort.getId());
@@ -140,8 +138,8 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
             Date date = new Date();
             timeEffort.setDate(date);
             service.saveEffort(timeEffort);
-            Assert.assertEquals(formatter.format(date), 
-                    formatter.format(service.getEffortById(timeEffort.getId()).getDate()));
+            Assert.assertEquals(formatter.format(date), formatter.format(service.getEffortById(timeEffort.getId())
+                    .getDate()));
         } catch (PersistenceException e) {
             fail();
         }
@@ -152,7 +150,7 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
      */
     @Test
     public void testSearchTimeEffort() {
-        Effort timeEffort = new Effort(null, null, null, "Das ist die Test TimeEffort 4");
+        Effort timeEffort = new Effort(null, null, "Das ist die Test TimeEffort 4");
         try {
             service.saveEffort(timeEffort);
             Assert.assertNotNull(timeEffort.getId());
@@ -170,15 +168,14 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
      * 
      * The test case shows that the dao returns the values fetched from the
      * database and is provided from the service.
-     *
+     * 
      * In this case the sum of efforts from a project a user has worked for, is
      * expected.
      */
     @Test
     public void totalizeEffortsForTiTAProjectAndTiTAUserMocking() {
         effortService = mock(IEffortService.class);
-        doReturn(C_MOCKING_VALUE_1).when(effortService).totalizeEffortsForTiTAProjectAndTiTAUser(
-                1L, 1L);
+        doReturn(C_MOCKING_VALUE_1).when(effortService).totalizeEffortsForTiTAProjectAndTiTAUser(1L, 1L);
     }
 
     /**
@@ -187,43 +184,45 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
      * 
      * The test case shows that the dao returns the values fetched from the
      * database and is provided from the service.
-     *
+     * 
      * In this case a list of efforts is expected.
      */
     @Test
     public void findEffortsForTiTAProjectAndTiTAUserMocking() {
         effortService = mock(IEffortService.class);
-        doReturn(new ArrayList<Effort>()).when(effortService).findEffortsForTiTAProjectAndTiTAUser(
-                1L, 1L);
+        doReturn(new ArrayList<Effort>()).when(effortService).findEffortsForTiTAProjectAndTiTAUser(1L, 1L);
     }
-    
-//    @Test
-//    public void testSaveEffortForTiTATask(){
-//        Effort e = new Effort();
-//        
-//        e = service.saveEffortForTiTATask(e, "abc", mock(TiTAUser.class), mock(TiTAProject.class));
-//        
-//        assertEquals("abc", e.getDescription());
-//    }
-    
-//    public void saveEffortForTiTATask(Effort effort, String description, TiTAUser user, TiTAProject project) {
-//        if (effort != null) {
-//            effort.setDescription(description);
-//            effort.setUser(user);
-//
-//            TiTATask tt = new TiTATask(description, user, project, new HashSet<Effort>());
-//            tt.getTitaEfforts().add(effort);
-//            projectService.saveTiTATask(tt);
-//            
-//            effort.setTitaTask(tt);
-//            return saveEffort(effort);
-//            // timeEffortDao.flushnClear();
-//        }
-//    }
+
+    // @Test
+    // public void testSaveEffortForTiTATask(){
+    // Effort e = new Effort();
+    //        
+    // e = service.saveEffortForTiTATask(e, "abc", mock(TiTAUser.class),
+    // mock(TiTAProject.class));
+    //        
+    // assertEquals("abc", e.getDescription());
+    // }
+
+    // public void saveEffortForTiTATask(Effort effort, String description,
+    // TiTAUser user, TiTAProject project) {
+    // if (effort != null) {
+    // effort.setDescription(description);
+    // effort.setUser(user);
+    //
+    // TiTATask tt = new TiTATask(description, user, project, new
+    // HashSet<Effort>());
+    // tt.getTitaEfforts().add(effort);
+    // projectService.saveTiTATask(tt);
+    //            
+    // effort.setTitaTask(tt);
+    // return saveEffort(effort);
+    // // timeEffortDao.flushnClear();
+    // }
+    // }
 
     /**
      * Prepare database for test -> insert 3 efforts.
-     *
+     * 
      * @return List of efforts
      */
     private List<Effort> prepareEfforts() {
@@ -260,7 +259,7 @@ public class EffortServiceTest extends AbstractTransactionalJUnit4SpringContextT
 
     /**
      * Delete all inserted efforts.
-     *
+     * 
      * @param efforts List
      * @throws PersistenceException titaDao
      */

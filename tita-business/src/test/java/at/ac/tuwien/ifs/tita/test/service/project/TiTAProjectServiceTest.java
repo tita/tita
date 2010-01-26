@@ -92,14 +92,17 @@ public class TiTAProjectServiceTest extends AbstractTransactionalJUnit4SpringCon
         try {
             service.deleteProject(p1);
         } catch (Exception e) {
+            // do nothing
         }
         try {
             service.deleteProject(p2);
         } catch (Exception e) {
+            // do nothing
         }
         try {
             service.deleteProject(p3);
         } catch (Exception e) {
+            // do nothing
         }
     }
 
@@ -170,7 +173,7 @@ public class TiTAProjectServiceTest extends AbstractTransactionalJUnit4SpringCon
     }
 
     /**
-     * Test finding all Tita Projects
+     * Test finding all Tita Projects.
      */
     @Test
     public void testFindAllTiTAProjects() {

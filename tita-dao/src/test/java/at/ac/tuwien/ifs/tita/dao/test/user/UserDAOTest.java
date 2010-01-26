@@ -83,7 +83,8 @@ public class UserDAOTest {
     private IGenericHibernateDao<Role, Long> roleDao;
 
     /**
-     * Prepare a tita user and tita project with titaUserProject entity for testing fetching the target hours.
+     * Prepare a tita user and tita project with titaUserProject entity for
+     * testing fetching the target hours.
      */
     @Before
     public void setUp() {
@@ -91,7 +92,7 @@ public class UserDAOTest {
         role = new Role(1L, "Administrator");
         role2 = new Role(2L, "TimeConsumer");
         titaUser = new TiTAUser("test-user", "test-password", "Christoph", "Zehetner", "test@example.com", false, role,
-            null, null);
+                null, null);
         titaProject = new TiTAProject("test-description", "test-project", false, null, null, null);
         tup = new TiTAUserProject(titaUser, titaProject, C_150);
 
@@ -115,16 +116,19 @@ public class UserDAOTest {
         try {
             titaProjectDAO.delete(titaProject.getId());
         } catch (Exception e) {
+            // do nothing
         }
         // titaProjectDAO.flush();
         try {
             titaUserDao.delete(titaUser.getId());
         } catch (Exception e) {
+            // do nothing
         }
     }
 
     /**
-     * The test case should return the target hours for a tita user and tita project.
+     * The test case should return the target hours for a tita user and tita
+     * project.
      */
     @Test
     public void findTargetHoursForTiTAProjectAndTiTAUser() {
@@ -134,7 +138,8 @@ public class UserDAOTest {
     }
 
     /**
-     * The test case should return null, because there is no entry for a tita user and tita project.
+     * The test case should return null, because there is no entry for a tita
+     * user and tita project.
      */
     @Test
     public void findTargetHoursForTiTAProjectAndTiTAUserShouldReturnNull() {
@@ -147,13 +152,14 @@ public class UserDAOTest {
     }
 
     /**
-     * The test case should return null, because there is no entry for a tita user and tita project.
+     * The test case should return null, because there is no entry for a tita
+     * user and tita project.
      */
     @Test
     public void findUsersForTiTAProject() {
         List<TiTAUser> users = titaUserDao.findUsersForTiTAProject(titaProject);
         Assert.assertEquals("Administrator", titaUserDao.findById(users.get(0).getId(), false).getRole()
-            .getDescription());
+                .getDescription());
         Assert.assertNotNull(users);
         Assert.assertEquals(1, users.size());
     }
@@ -210,7 +216,7 @@ public class UserDAOTest {
     }
 
     /**
-     * tests findusrs ordered
+     * tests findusrs ordered.
      */
     @Test
     public void testFindUsersOrdered() {
@@ -230,7 +236,9 @@ public class UserDAOTest {
             us1 = titaUserDao.save(us1);
             us2 = titaUserDao.save(us2);
             us3 = titaUserDao.save(us3);
+            // CHECKSTYLE:OFF
             List<TiTAUser> users = titaUserDao.findUsersOrdered(10);
+            // CHECKSTYLE:ON
             Assert.assertNotNull(users);
             Assert.assertTrue(users.size() > 0);
 
