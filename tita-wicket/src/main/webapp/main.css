@@ -13,9 +13,11 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */ /* Global Style */
-bod,html {
+body,html {
    margin: 0;
    padding: 0;
+   width:100%;
+   height:100%;
 }
 
 body {
@@ -36,13 +38,20 @@ p {
 
 /* Header */
 #header {
-   width: 1024px;
-   margin: 0 auto;
+   //width: 1024px;
+   //margin: 0 auto;
+   height:50px;
+   padding-left:50px;
+   padding-right:50px;
+}
+
+#logo_small {
+  float: left;
 }
 
 #title_left {
    float: left;
-   width: 400px;
+   margin-left:15px;
 }
 
 #title_right {
@@ -51,33 +60,57 @@ p {
    text-align: right;
 }
 
+#navigation {
+	margin-top:10px;
+  height:40px;
+  margin-bottom:10px;
+  border-top:1px solid black;
+  border-bottom:1px solid black;
+}
+
+#timeConsumerGroup {
+	margin:10px;
+}
+
 /* Content */
+#container {
+	 width:100%;
+	 height:100%;
+	 background:#dcdcdc;
+	 position:fixed;
+	 padding:15px;
+}
 #contents {
-   width: 1024px;
-   margin: 0 auto;
-   padding-top: 10px;
+	 top:20px;
+   padding-left:50px;
+   padding-right:50px;
+   min-height:70%;
 }
 
 #main {
    float: left;
-   width: 724px;
 }
 
 #taskbar {
    float: right;
-   width: 290px;
-   height: 500px;
+   top:120px;
+   position:fixed;
+   height:100%;
+   padding-left:10px;
+   border-left:2px dotted black;
 }
 
 #loginpanel{
-   margin-left: auto;
-    margin-right: auto;
-    width: 250px;
+	margin-top:70px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 250px;
 }
 
 .textcenter {
     text-align:center;
 }
+
 
 /* Tabbed Panel for Efforts */
 div.effortsTabbedPanel div.tab-row ul {

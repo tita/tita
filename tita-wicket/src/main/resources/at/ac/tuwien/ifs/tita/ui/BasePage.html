@@ -21,6 +21,7 @@
     <body>
     <div id="container">
          <div id="header">
+               <img id="logo_small" src="images/logo_50x50.png" />
                <div id="title_left">
                    <strong>Ti</strong>ny 
                    <strong>T</strong>ime 
@@ -33,29 +34,27 @@
                </div>
             </div>
             <div id="contents">
-                <br/><hr/>
                 <div id="navigation">
                    <wicket:link>
-                        <div wicket:id="timeConsumerGroup"> 
+                        <div wicket:id="timeConsumerGroup" id="timeConsumerGroup"> 
                            <a wicket:id="effortsPageLink" href="effort/EffortsPage.html">Efforts</a>
                            <a wicket:id="dailyViewPageLink" href="evaluation/timeconsumer/DailyViewPage.html">Daily View</a>
                            <a wicket:id="monthlyViewPageLink" href="evaluation/timeconsumer/MonthlyViewPage.html">Monthly View</a>
                            <a wicket:id="effortsImportCSVPageLink" href="importing/efforts/csv/EffortImportCSVPage.html">Import Efforts</a>
                        </div> 
-                       <div wicket:id="timeControllerGroup"> 
+                       <div wicket:id="timeControllerGroup" id="timeControllerGroup"> 
                            <a wicket:id="projectsPageLink" href="startpages/ProjectsPage.html">Projects</a>
                            <a wicket:id="targetActualViewLink" href="evaluation/timecontroller/TargetActualView.html">Target/Actual comparison</a>
                            <a wicket:id="multipleProjectsViewLink" href="evaluation/timecontroller/MultipleProjectsView.html">multiple projects evaluation</a>
                            <a wicket:id="performanceOfPersonViewLink" href="evaluation/timecontroller/PerformanceOfPersonView.html">personal time evaluation</a>
                       </div>
-                       <div wicket:id="administratorGroup">
+                       <div wicket:id="administratorGroup" id="administratorGroup">
                            <a wicket:id="adminPageLink" href="startpages/AdminPage.html">Home</a> 
                            <a wicket:id="userAdministrationLink" href="administration/user/UserAdministrationPage.html">User Administration</a>
                            <a wicket:id="projectAdministrationLink" href="administration/project/ProjectAdministrationPage.html">Project Administration</a>
                        </div>
                    </wicket:link>
                 </div>
-                <hr/>
                 <div id="main">
                     <wicket:child />
                 </div>
