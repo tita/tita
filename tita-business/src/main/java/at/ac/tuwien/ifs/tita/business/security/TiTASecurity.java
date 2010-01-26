@@ -325,7 +325,7 @@ public class TiTASecurity {
         File keyStoreFile = new File(KEY_STORE_PATH);
         try {
             InputStream is = null;
-            if (checkExistance(keyStoreFile)) {
+            if (checkExistence(keyStoreFile)) {
                 is = new FileInputStream(keyStoreFile);
             }
 
@@ -360,7 +360,7 @@ public class TiTASecurity {
         File keyStoreFile = new File(KEY_STORE_PATH);
 
         try {
-            checkExistance(keyStoreFile);
+            checkExistence(keyStoreFile);
 
             OutputStream os = new FileOutputStream(keyStoreFile);
             try {
@@ -464,7 +464,7 @@ public class TiTASecurity {
      * @return true if file exists, else false
      * @throws TiTASecurityException if I/O-Exception occurs
      */
-    private static boolean checkExistance(File keyStoreFile) throws TiTASecurityException {
+    private static boolean checkExistence(File keyStoreFile) throws TiTASecurityException {
         if (!keyStoreFile.exists()) {
             try {
                 // first create Folders

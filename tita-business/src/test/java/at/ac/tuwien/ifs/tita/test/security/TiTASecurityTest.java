@@ -81,6 +81,29 @@ public class TiTASecurityTest extends AbstractTransactionalJUnit4SpringContextTe
     }
 
     /**
+     * Test saving and Restoring passwords.
+     */
+    @Test
+    public void testGetEncryptedPassword() {
+        String originalPassword = "PasswordToEncrypt";
+        String userName = "testUser";
+        String userPassword = "testPassword";
+
+        String encryptedPassword = "";
+
+        try {
+            encryptedPassword = TiTASecurity.getEncryptedPassword(userName, userPassword, originalPassword);
+            Assert.assertTrue(!originalPassword.equals(encryptedPassword));
+
+            // check if method for existing user works
+            encryptedPassword = TiTASecurity.getEncryptedPassword(userName, originalPassword);
+            Assert.assertTrue(!originalPassword.equals(encryptedPassword));
+        } catch (TiTASecurityException e) {
+            Assert.fail();
+        }
+    }
+
+    /**
      * Tests restoring a Password from a Non-Existant User.
      */
     @Test
