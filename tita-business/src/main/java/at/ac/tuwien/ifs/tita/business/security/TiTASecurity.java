@@ -172,6 +172,11 @@ public class TiTASecurity {
      */
     public static String getEncryptedPassword(String userName, String password, String issueTrackerPassword)
         throws TiTASecurityException {
+
+        if (password == null || userName == null || issueTrackerPassword == null) {
+            throw new TiTASecurityException("Username, Password and IssueTrackerPassword must not be null!");
+        }
+
         if (!isKeyStoreInitialized()) {
             initOrLoadKeyStore();
         }

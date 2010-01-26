@@ -190,4 +190,10 @@ public class UserService implements IUserService {
         login.setUser(user);
         return issueTrackerLoginDao.save(login);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public IssueTracker saveIssueTracker(IssueTracker issueTracker) throws PersistenceException {
+        return issueTrackerDao.save(issueTracker);
+    }
 }

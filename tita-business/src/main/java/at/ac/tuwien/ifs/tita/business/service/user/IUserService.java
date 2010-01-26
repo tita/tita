@@ -187,4 +187,13 @@ public interface IUserService {
      */
     IssueTrackerLogin saveIssueTrackerLogin(IssueTrackerLogin login, TiTAUser user) throws PersistenceException;
 
+    /**
+     * saves an IssueTracker.
+     * 
+     * @param issueTracker the IssueTracker to save.
+     * @return the saved issueTracker.
+     * @throws PersistenceException if an Exception from DAO was thrown.
+     */
+    IssueTracker saveIssueTracker(IssueTracker issueTracker) throws PersistenceException;
+
 }

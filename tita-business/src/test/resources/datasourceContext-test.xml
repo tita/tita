@@ -37,6 +37,10 @@
   <bean id="userTitaDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
     <constructor-arg value="at.ac.tuwien.ifs.tita.entity.TiTAUserProject"/>
   </bean>
+  
+  <bean id="issueTrackerLoginDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
+    <constructor-arg value="at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin"/>
+  </bean>
 
   
   <!-- The Services -->
@@ -49,6 +53,7 @@
     <property name="userDao" ref="userDAO" />
     <property name="roleDao" ref="roleDAO" />
     <property name="issueTrackerDao" ref="issueTrackerDAO"/>
+    <property name="issueTrackerLoginDao" ref="issueTrackerLoginDAO"/>
   </bean>       
    <bean id="timeEffortService" class="at.ac.tuwien.ifs.tita.business.service.time.EffortService">
     <constructor-arg  ref="timeEffortDAO"/>

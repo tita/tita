@@ -38,8 +38,10 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
 import at.ac.tuwien.ifs.tita.business.service.user.UserService;
 import at.ac.tuwien.ifs.tita.dao.user.UserDAO;
+import at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin;
 import at.ac.tuwien.ifs.tita.entity.TiTAProject;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
+import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 import at.ac.tuwien.ifs.tita.entity.conv.Role;
 
 /**
@@ -360,6 +362,78 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
         uservice.findTargetHoursForTiTAProjectAndTiTAUser(1L, 1L);
 
         Mockito.verify(dao, Mockito.times(1)).findTargetHoursForTiTAProjectAndTiTAUser(1L, 1L);
+    }
+
+    /**
+     * Mocking userService for Testing getUserById.
+     */
+    @Test
+    public void testGetUserById() {
+        UserDAO dao = mock(UserDAO.class);
+
+        UserService uservice = new UserService();
+        uservice.setUserDao(dao);
+
+        uservice.getUserById(1L);
+
+        Mockito.verify(dao, Mockito.times(1)).findById(1L);
+    }
+
+    /**
+     * test saving an issueTracker.
+     */
+    @Test
+    public void testSaveIssueTrackerLogin() {
+
+        try {
+            TiTAUser u = new TiTAUser();
+            u.setUserName("testname");
+            u.setPassword("testpwd");
+            IssueTrackerLogin login = new IssueTrackerLogin("username", "password", new IssueTracker(200L, "url",
+                "name"), u);
+            IssueTrackerLogin l = service.saveIssueTrackerLogin(login, u);
+            Assert.assertNotNull(l);
+        } catch (Exception e) {
+            Assert.fail();
+        }
+    }
+
+    /**
+     * Test to save an IssueTracker.
+     */
+    @Test
+    public void testSaveIssueTracker() {
+        try {
+            List<IssueTracker> list = service.getAvailableIssueTracker();
+            Assert.assertNotNull(list);
+
+            IssueTracker it = new IssueTracker(99L, "test", "test");
+            service.saveIssueTracker(it);
+            List<IssueTracker> newList = service.getAvailableIssueTracker();
+            Assert.assertNotNull(newList);
+            Assert.assertEquals(list.size() + 1, newList.size());
+        } catch (Exception e) {
+            Assert.fail();
+        }
+
+    }
+
+    /**
+     * Tests getting a list of available Issue Tracker.
+     */
+    @Test
+    public void testGetAvailableIssueTracker() {
+        try {
+            IssueTracker it = new IssueTracker(1L, "url", "name");
+            service.saveIssueTracker(it);
+
+            List<IssueTracker> list = service.getAvailableIssueTracker();
+            Assert.assertNotNull(list);
+            Assert.assertTrue(list.size() > 0);
+        } catch (Exception e) {
+            Assert.fail();
+        }
+
     }
 
     /**
