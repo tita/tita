@@ -81,7 +81,8 @@ public class Effort extends BaseEntity<Long> {
     public Effort() {
     }
 
-    public Effort(Date date, Long duration, Boolean deleted, String description, TiTAUser user) {
+    public Effort(Date date, Long duration, Boolean deleted,
+            String description, TiTAUser user) {
         super();
         this.date = date;
         this.duration = duration;
@@ -90,8 +91,8 @@ public class Effort extends BaseEntity<Long> {
         this.user = user;
     }
 
-    public Effort(Date date, String description, Long startTime, Long endTime, Long duration, Boolean deleted,
-            TiTAUser user) {
+    public Effort(Date date, String description, Long startTime, Long endTime,
+            Long duration, Boolean deleted, TiTAUser user) {
         super();
         this.date = date;
         this.description = description;
@@ -102,15 +103,17 @@ public class Effort extends BaseEntity<Long> {
         this.user = user;
     }
 
-    public Effort(TiTATask titaTask, IssueTrackerTask issueTTask, String description) {
+    public Effort(TiTATask titaTask, IssueTrackerTask issueTTask,
+            String description) {
         super();
         this.titaTask = titaTask;
         this.issueTTask = issueTTask;
         this.description = description;
     }
 
-    public Effort(TiTATask titaTask, IssueTrackerTask issueTTask, Date date, Long startTime, Long endTime,
-            Long duration, String description, Boolean deleted, TiTAUser user) {
+    public Effort(TiTATask titaTask, IssueTrackerTask issueTTask, Date date,
+            Long startTime, Long endTime, Long duration, String description,
+            Boolean deleted, TiTAUser user) {
         super();
         this.titaTask = titaTask;
         this.issueTTask = issueTTask;
@@ -123,8 +126,9 @@ public class Effort extends BaseEntity<Long> {
         this.user = user;
     }
 
-    public Effort(TiTATask titaTask, IssueTrackerTask issueTTask, Date date, Long startTime, Long endTime,
-            Long duration, String description, Boolean deleted, String costcenter, TiTAUser user) {
+    public Effort(TiTATask titaTask, IssueTrackerTask issueTTask, Date date,
+            Long startTime, Long endTime, Long duration, String description,
+            Boolean deleted, String costcenter, TiTAUser user) {
         super();
         this.titaTask = titaTask;
         this.issueTTask = issueTTask;
@@ -202,27 +206,32 @@ public class Effort extends BaseEntity<Long> {
     /**
      * Filter out all matching Efforts with a specific description.
      * 
-     * @param filterString - Filter string
+     * @param filterString
+     *            - Filter string
      * @return true if it contains the string pattern.
      */
     public Boolean matchDescription(String filterString) {
-        return description.toLowerCase().contains(filterString.toLowerCase());
+        return description != null ? description.toLowerCase().contains(
+                filterString.toLowerCase()) : false;
     }
 
     /**
      * Filter out all matching Efforts with a specific costcenter.
      * 
-     * @param filterString - Filter string
+     * @param filterString
+     *            - Filter string
      * @return true if it contains the string pattern.
      */
     public Boolean matchCostCenter(String filterString) {
-        return costcenter.toLowerCase().contains(filterString.toLowerCase());
+        return costcenter != null ? costcenter.toLowerCase().contains(
+                filterString.toLowerCase()) : false;
     }
 
     /**
      * Filter out all matching Efforts with a date after the parameter date.
      * 
-     * @param date1 - filter date
+     * @param date1
+     *            - filter date
      * @return true if it contains the string pattern.
      */
     public Boolean matchDateFrom(Date date1) {
@@ -232,7 +241,8 @@ public class Effort extends BaseEntity<Long> {
     /**
      * Filter out all matching Efforts with a date before the parameter date.
      * 
-     * @param date1 - filter date
+     * @param date1
+     *            - filter date
      * @return true if it contains the string pattern.
      */
     public Boolean matchDateUntil(Date date1) {
@@ -270,7 +280,8 @@ public class Effort extends BaseEntity<Long> {
     /**
      * Adds time to current duration.
      * 
-     * @param dur duration to add as long.
+     * @param dur
+     *            duration to add as long.
      */
     public void addDuration(Long dur) {
         duration += dur;
