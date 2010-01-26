@@ -197,13 +197,17 @@ public class UserForm extends Form<TiTAUser> {
                 try {
                     user.setPassword(TiTASecurity.calcHash(user.getPassword()));
                     if (!parent.userExists(user) || !isUserNewlyCreated) {
-                        parent.saveEntity(user);
-                        parent.loadListEntities();
+                        if (dropDownrole.getConvertedInput() != null) {
+                            parent.saveEntity(user);
+                            parent.loadListEntities();
+                        } else {
+                            this.error("Please choose a valid Role!");
+                        }
                     } else {
                         this.error("Username already exists.");
                     }
                 } catch (NoSuchAlgorithmException e) {
-                    log.error("Fatal Error, User cannot be found due to unknown Algorithm.");
+                    log.error("Fatal Error, User cannot be saved due to unknown Algorithm.");
                 }
             } else {
                 this.error("Entered Password does not equal Password Repetition.");

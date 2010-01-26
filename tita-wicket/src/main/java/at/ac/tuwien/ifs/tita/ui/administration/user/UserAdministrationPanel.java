@@ -54,7 +54,7 @@ import at.ac.tuwien.ifs.tita.ui.utils.EffortUtils;
 
 /**
  * UserAdministrationPanel allows to manage Users over the GUI.
- *
+ * 
  * @author ASE Group 10
  */
 public class UserAdministrationPanel extends Panel implements IAdministrationPanel {
@@ -91,7 +91,7 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
 
     /**
      * public constructor.
-     *
+     * 
      * @param id the name of the Panel
      */
     public UserAdministrationPanel(String id) {
@@ -110,8 +110,7 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
         addOrReplace(listContainer);
         addOrReplace(detailContainer);
         userProjectPanel = new UserProjectPanel("userProjectPanel", new TiTAUser(), this);
-        userIssueTrackerPanel =
-            new UserIssueTrackerLoginPanel("userIssueTrackerLoginPanel", new TiTAUser(), this);
+        userIssueTrackerPanel = new UserIssueTrackerLoginPanel("userIssueTrackerLoginPanel", new TiTAUser(), this);
         addOrReplace(userProjectPanel);
         addOrReplace(userIssueTrackerPanel);
 
@@ -128,10 +127,9 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
     }
 
     /**
-     * Method for displaying a List of Users.
-     * Also hides the details page if null value is given, just switch without
+     * Method for displaying a List of Users. Also hides the details page if null value is given, just switch without
      * refreshing data.
-     *
+     * 
      * @param userList the list of users.
      */
     public void displayTable(final List<TiTAUser> userList) {
@@ -175,7 +173,7 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
 
     /**
      * Method for displaying the details site of a specific User. Also hides the list page.
-     *
+     * 
      * @param user the specific User to show.
      */
     public void displayDetailsPage(final TiTAUser user) {
@@ -251,8 +249,7 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
     }
 
     /**
-     * displays the Panel to add Projects to the user.
-     * only possible if detailView has been initialized.
+     * displays the Panel to add Projects to the user. only possible if detailView has been initialized.
      */
     public void displayProjectPanel() {
         if (form != null) {
@@ -266,8 +263,7 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
     }
 
     /**
-     * displays the Panel to add IssueTrackerLogins to the user.
-     * only possible if detailView has been initialized.
+     * displays the Panel to add IssueTrackerLogins to the user. only possible if detailView has been initialized.
      */
     public void displayIssueTrackerLoginPanel() {
         if (form != null) {
@@ -284,6 +280,7 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
 
     /**
      * returns an IssueTrackerLogin for a specific IssueTracker if a Login for current User exists.
+     * 
      * @param issueTracker - issuetracker
      * @return a corresponding IssueTrackerLogin if existant.
      */
@@ -299,7 +296,7 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
 
     /**
      * returns a List of All available IssueTracker.
-     *
+     * 
      * @return all available issueTrackers.
      */
     public List<IssueTracker> getAvailableIssueTracker() {
@@ -314,7 +311,7 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
 
     /**
      * sets the current User to edit.
-     *
+     * 
      * @param user the user to edit
      */
     public void setCurrentUser(TiTAUser user) {
@@ -369,7 +366,7 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
 
     /**
      * Persists a User and displays it in the current User Table.
-     *
+     * 
      * @param user the User to display.
      */
     public void saveEntity(TiTAUser user) {
@@ -387,9 +384,8 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
                     IssueTrackerLogin login = getLoginForIssueTracker(issProject.getIssueTracker());
                     if (login != null) {
                         IIssueTrackerService issueTrackerService = new IssueTrackerService(login);
-                        IProjectTrackable project =
-                            issueTrackerService.getProjectByProjectName(issProject
-                                    .getProjectName());
+                        IProjectTrackable project = issueTrackerService.getProjectByProjectName(issProject
+                            .getProjectName());
                         if (project != null) {
                             issProject.setIsstProjectId(project.getId());
                         }
@@ -399,14 +395,12 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
                 }
                 userProject.setUser(savedUser);
                 userProject.setUser(service.getUserById(savedUser.getId()));
-                userProject.setProject(titaProjectService.getProjectById(userProject.getProject()
-                        .getId()));
+                userProject.setProject(titaProjectService.getProjectById(userProject.getProject().getId()));
                 titaProjectService.saveUserProject(userProject);
             }
             tm.reload();
         } catch (PersistenceException e) {
             form.error("Could not save the User!");
-            e.printStackTrace();
             log.error("Could not save User");
             log.error(e.getMessage());
         }
@@ -414,13 +408,13 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
 
     /**
      * Looks for existence of a specific User.
-     *
+     * 
      * @param user The user to look for.
      * @return true if user already exists.
      */
     public boolean userExists(TiTAUser user) {
         try {
-            if (service.getUserByUsername(user.getUserName()) != null) {
+            if (service.getUserByUsername(user.getUserName()) != null && user.getId() != null) {
                 return true;
             }
         } catch (Exception e) {
