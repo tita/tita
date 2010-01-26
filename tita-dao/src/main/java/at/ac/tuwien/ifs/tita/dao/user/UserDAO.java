@@ -22,6 +22,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 
 import org.hibernate.Criteria;
+import org.hibernate.ObjectDeletedException;
 import org.hibernate.Query;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Order;
@@ -43,8 +44,7 @@ import at.ac.tuwien.ifs.tita.entity.util.StringUtil;
 public class UserDAO extends GenericHibernateDao<TiTAUser, Long> implements IUserDAO {
 
     /**
-     * public constructor, needed for telling the generic EntityManager the
-     * actual type.
+     * public constructor, needed for telling the generic EntityManager the actual type.
      */
     public UserDAO() {
         super(TiTAUser.class);
@@ -73,8 +73,8 @@ public class UserDAO extends GenericHibernateDao<TiTAUser, Long> implements IUse
         String names = StringUtil.generateIdStringFromStringList(projects);
 
         String queryString = "select u.* from tita_user u join user_project up on "
-                + "u.id = up.user_id join tita_project tp on up.tita_project_id = tp.id " + " where tp.name in ("
-                + names + ")";
+            + "u.id = up.user_id join tita_project tp on up.tita_project_id = tp.id " + " where tp.name in (" + names
+            + ")";
 
         org.hibernate.SQLQuery query = getSession().createSQLQuery(queryString);
 
@@ -96,7 +96,7 @@ public class UserDAO extends GenericHibernateDao<TiTAUser, Long> implements IUse
     public List<TiTAUser> findUsersForTiTAProject(TiTAProject project) {
 
         String queryString = "select u.* from tita_user u join user_project up on "
-                + "u.id = up.user_id join tita_project tp on up.tita_project_id = tp.id " + " where tp.name in (" + ")";
+            + "u.id = up.user_id join tita_project tp on up.tita_project_id = tp.id " + " where tp.name in (" + ")";
 
         // String first =
         // "select e.id, e.description, e.date, e.startTime, e.endTime, e.duration, e.deleted "
@@ -110,7 +110,7 @@ public class UserDAO extends GenericHibernateDao<TiTAUser, Long> implements IUse
         // + " and e.deleted != true";
 
         queryString = "select u " + "from TiTAUserProject tup," + " TiTAUser as u "
-                + "where tup.user = u.id and tup.project = " + project.getId();
+            + "where tup.user = u.id and tup.project = " + project.getId();
 
         // u.id = r.id and - , Role as r
 
@@ -137,7 +137,7 @@ public class UserDAO extends GenericHibernateDao<TiTAUser, Long> implements IUse
     @Override
     public List<TiTAUser> findUsersForTiTAProjectByRole(TiTAProject project, Role role) {
         String queryString = "select u " + "from TiTAUserProject tup," + " TiTAUser as u "
-                + "where tup.user = u.id and tup.project = " + project.getId() + " and u.role=" + role.getId();
+            + "where tup.user = u.id and tup.project = " + project.getId() + " and u.role=" + role.getId();
         Query query = getSession().createQuery(queryString);
         return query.list();
     }
@@ -147,10 +147,15 @@ public class UserDAO extends GenericHibernateDao<TiTAUser, Long> implements IUse
     public Long findTargetHoursForTiTAProjectAndTiTAUser(Long userId, Long projectId) {
 
         String queryString = "select tup.targetHours " + "from TiTAUserProject tup " + "where tup.user = " + userId
-                + " and tup.project = " + projectId;
+            + " and tup.project = " + projectId;
 
-        Query query = getSession().createQuery(queryString);
-        Long targetHours = (Long) query.uniqueResult();
+        Long targetHours;
+        try {
+            Query query = getSession().createQuery(queryString);
+            targetHours = (Long) query.uniqueResult();
+        } catch (ObjectDeletedException e) {
+            return null;
+        }
 
         if (targetHours == null || targetHours == -1) {
             return null;

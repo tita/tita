@@ -83,8 +83,7 @@ public class UserDAOTest {
     private IGenericHibernateDao<Role, Long> roleDao;
 
     /**
-     * Prepare a tita user and tita project with titaUserProject entity for
-     * testing fetching the target hours.
+     * Prepare a tita user and tita project with titaUserProject entity for testing fetching the target hours.
      */
     @Before
     public void setUp() {
@@ -92,7 +91,7 @@ public class UserDAOTest {
         role = new Role(1L, "Administrator");
         role2 = new Role(2L, "TimeConsumer");
         titaUser = new TiTAUser("test-user", "test-password", "Christoph", "Zehetner", "test@example.com", false, role,
-                null, null);
+            null, null);
         titaProject = new TiTAProject("test-description", "test-project", false, null, null, null);
         tup = new TiTAUserProject(titaUser, titaProject, C_150);
 
@@ -113,14 +112,19 @@ public class UserDAOTest {
      */
     @After
     public void tearDown() {
-        titaProjectDAO.delete(titaProject.getId());
+        try {
+            titaProjectDAO.delete(titaProject.getId());
+        } catch (Exception e) {
+        }
         // titaProjectDAO.flush();
-        titaUserDao.delete(titaUser.getId());
+        try {
+            titaUserDao.delete(titaUser.getId());
+        } catch (Exception e) {
+        }
     }
 
     /**
-     * The test case should return the target hours for a tita user and tita
-     * project.
+     * The test case should return the target hours for a tita user and tita project.
      */
     @Test
     public void findTargetHoursForTiTAProjectAndTiTAUser() {
@@ -130,30 +134,26 @@ public class UserDAOTest {
     }
 
     /**
-     * The test case should return null, because there is no entry for a tita
-     * user and tita project.
+     * The test case should return null, because there is no entry for a tita user and tita project.
      */
     @Test
     public void findTargetHoursForTiTAProjectAndTiTAUserShouldReturnNull() {
         // TODO: repair test
-        // utpDao.delete(utpDao.findById(tup.getId()));
-        //
-        // Long targetHours =
-        // titaUserDao.findTargetHoursForTiTAProjectAndTiTAUser(titaUser.getId(),
-        // titaProject.getId());
-        //
-        // Assert.assertNull(targetHours);
+        utpDao.delete(utpDao.findById(tup.getId()));
+
+        Long targetHours = titaUserDao.findTargetHoursForTiTAProjectAndTiTAUser(titaUser.getId(), titaProject.getId());
+
+        Assert.assertNull(targetHours);
     }
 
     /**
-     * The test case should return null, because there is no entry for a tita
-     * user and tita project.
+     * The test case should return null, because there is no entry for a tita user and tita project.
      */
     @Test
     public void findUsersForTiTAProject() {
         List<TiTAUser> users = titaUserDao.findUsersForTiTAProject(titaProject);
         Assert.assertEquals("Administrator", titaUserDao.findById(users.get(0).getId(), false).getRole()
-                .getDescription());
+            .getDescription());
         Assert.assertNotNull(users);
         Assert.assertEquals(1, users.size());
     }
@@ -206,6 +206,53 @@ public class UserDAOTest {
             Assert.assertEquals(0, u2.size());
         } catch (PersistenceException e) {
             fail();
+        }
+    }
+
+    /**
+     * tests findusrs ordered
+     */
+    @Test
+    public void testFindUsersOrdered() {
+        TiTAUser us1 = new TiTAUser();
+        TiTAUser us2 = new TiTAUser();
+        TiTAUser us3 = new TiTAUser();
+
+        us1.setUserName("a");
+        us2.setUserName("b");
+        us3.setUserName("c");
+
+        boolean aFound = false;
+        boolean bFound = false;
+        boolean cFound = false;
+
+        try {
+            us1 = titaUserDao.save(us1);
+            us2 = titaUserDao.save(us2);
+            us3 = titaUserDao.save(us3);
+            List<TiTAUser> users = titaUserDao.findUsersOrdered(10);
+            Assert.assertNotNull(users);
+            Assert.assertTrue(users.size() > 0);
+
+            for (TiTAUser user : users) {
+                if (user.getUserName().equals("a")) {
+                    aFound = true;
+                }
+                if (user.getUserName().equals("b")) {
+                    bFound = true;
+                }
+                if (user.getUserName().equals("c")) {
+                    cFound = true;
+                }
+                if (cFound && (!aFound || !bFound)) {
+                    Assert.fail("Wrong order");
+                }
+                if (bFound && !aFound) {
+                    Assert.fail("Wrong order");
+                }
+            }
+        } catch (Exception e) {
+            Assert.fail(e.getMessage());
         }
     }
 }
