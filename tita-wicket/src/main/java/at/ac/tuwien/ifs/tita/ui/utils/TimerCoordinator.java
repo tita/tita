@@ -72,11 +72,13 @@ public class TimerCoordinator implements Runnable {
                             }
                         }
                     }
-                    // then fetch a tita task, if user
-                    // registered one and
-                    // split its time too
-                    synchronized (titaTasks) {
-                        users = registeredUsers.keySet().iterator();
+                }
+                // then fetch a tita task, if user
+                // registered one and
+                // split its time too
+                synchronized (titaTasks) {
+                    synchronized (registeredUsers) {
+                    users = registeredUsers.keySet().iterator();
                         while (users.hasNext()) {
                             user = users.next();
                             taskCount = registeredUsers.get(user);
@@ -92,7 +94,7 @@ public class TimerCoordinator implements Runnable {
                             }
                         }
                     }
-                }
+                }                
                 Thread.sleep(C_DURATION_IN_MILLIS);
             } catch (InterruptedException e) {
                 // TODO: refactoring
@@ -162,11 +164,11 @@ public class TimerCoordinator implements Runnable {
                     effort.setEndTime(System.currentTimeMillis());
                     active.removeEffortForUser(userId);
                     // subtract active tasks by 1 for given user and tasks count
-//                    if (registeredUsers.containsKey(userId)) {
-                        count = registeredUsers.get(userId);
+                    count = registeredUsers.get(userId);
+                    if(count > 0 ){
                         count--;
                         registeredUsers.put(userId, count);
-//                    }
+                    }
                 }
             }
         }
@@ -225,12 +227,12 @@ public class TimerCoordinator implements Runnable {
             if (ate != null) {
                 effort = ate.getEffort();
                 effort.setEndTime(System.currentTimeMillis());
-                titaTasks.remove(userId);
-//                if (registeredUsers.containsKey(userId)) {
-                    count = registeredUsers.get(userId);
-                    count--;
-                    registeredUsers.put(userId, count);
-//                }
+                titaTasks.remove(ate);
+                count = registeredUsers.get(userId);
+                if(count > 0){
+                    count--;   
+                }
+                registeredUsers.put(userId, count);
             }
         }
         return effort;

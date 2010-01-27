@@ -28,17 +28,22 @@ import org.apache.wicket.security.hive.authentication.LoginContext;
 import org.apache.wicket.security.hive.config.PolicyFileHiveFactory;
 import org.apache.wicket.security.hive.config.SwarmPolicyFileHiveFactory;
 import org.apache.wicket.security.swarm.SwarmWebApplication;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.file.Folder;
 
 import at.ac.tuwien.ifs.tita.ui.importing.effort.csv.EffortImportCSVPage;
 import at.ac.tuwien.ifs.tita.ui.login.TitaLoginContext;
 import at.ac.tuwien.ifs.tita.ui.login.TitaSession;
+import at.ac.tuwien.ifs.tita.ui.utils.TimerCoordinator;
 
 /**
  * Wicket Application for testing Hello World from DB.
  */
 public class TiTAApplication extends SwarmWebApplication {
+    @SpringBean(name = "timerCoordinator")
+    private TimerCoordinator timerCoordinator;
+    
     private Folder uploadFolder = null;
     
     public TiTAApplication() {
@@ -58,7 +63,7 @@ public class TiTAApplication extends SwarmWebApplication {
         uploadFolder.mkdirs();
 
         mountBookmarkablePage("/single", EffortImportCSVPage.class);
-
+        new Thread(timerCoordinator).start();
     }
 
     /**

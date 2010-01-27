@@ -227,9 +227,8 @@ public class EffortService implements IEffortService {
             effort.setUser(user);
 
             TiTATask tt = new TiTATask(description, user, project, new HashSet<Effort>());
-            tt.getTitaEfforts().add(effort);
+//            tt.getTitaEfforts().add(effort);
             projectService.saveTiTATask(tt);
-
             effort.setTitaTask(tt);
             return saveEffort(effort);
 
