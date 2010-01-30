@@ -36,8 +36,8 @@
   <dependencies>
     <!-- H2DB -->
     <dependency>
-      <groupId>postgresql</groupId>
-      <artifactId>postgresql</artifactId>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
     </dependency>
 
     <!-- dependency>

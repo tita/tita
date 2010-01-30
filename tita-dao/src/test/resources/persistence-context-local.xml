@@ -44,10 +44,17 @@
     <property name="url" value="jdbc:h2:db/main1" />
     <property name="username" value="sa" />
     <property name="password" value="" /-->
-    <property name="driverClassName" value="org.postgresql.Driver" />
+     <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+    <property name="url" value="jdbc:mysql://localhost:3306/test" />
+    <property name="username" value="root" />
+    <property name="password" value="root" />
+    <!-- property name="min-pool-size" value="1" />
+    <property name="max-pool-size" value="20" />
+    <property name="myeclipse.connection.profile" value="MySql Connector 5.0.5"/--> 
+    <!--  property name="driverClassName" value="org.postgresql.Driver" />
     <property name="url" value="jdbc:postgresql://localhost:1234/postgres" />
     <property name="username" value="postgres" />
-    <property name="password" value="sa" />    
+    <property name="password" value="sa" /-->    
   </bean>
 
   <!-- Autowired to the EntityManagerFactory -->

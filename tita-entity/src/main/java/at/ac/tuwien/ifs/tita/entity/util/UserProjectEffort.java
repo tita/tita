@@ -22,7 +22,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -32,12 +31,12 @@ import javax.persistence.Table;
  */
 @Table(name = "MULTIPLE_PROJECTS_EVALUATION_HELPER")
 @Entity
-@SequenceGenerator(name = "seq_user_project_effort", sequenceName = "USER_PROJECT_EFFORT_1_ID_SEQ", allocationSize = 1)
+//@SequenceGenerator(name = "seq_user_project_effort", sequenceName = "USER_PROJECT_EFFORT_1_ID_SEQ", allocationSize = 1)
 public class UserProjectEffort implements Serializable {
 
     @Id
     @Column (name = "ID", insertable=false, updatable=false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_user_project_effort")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column (name = "PROJECT", insertable=false, updatable=false)

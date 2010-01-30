@@ -23,7 +23,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -36,12 +35,12 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name = "USER_PROJECT")
-@SequenceGenerator(name = "seq_tita_user_project", sequenceName = "TITA_USER_PROJECT_ID_SEQ", allocationSize = 1)
+//@SequenceGenerator(name = "seq_tita_user_project", sequenceName = "TITA_USER_PROJECT_ID_SEQ", allocationSize = 1)
 public class TiTAUserProject extends BaseEntity<Long> {
 
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_tita_user_project")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "TARGET_HOURS")

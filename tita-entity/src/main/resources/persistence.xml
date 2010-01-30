@@ -40,7 +40,7 @@
       <property name="hibernate.show_sql" value="true" />
       <property name="hibernate.show_comment" value="true" />
       <!-- property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/-->
-      <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
+      <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
     </properties>
   </persistence-unit>
 </persistence>

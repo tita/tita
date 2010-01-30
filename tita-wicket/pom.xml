@@ -109,9 +109,9 @@
 	      <artifactId>h2</artifactId>
 	    </dependency-->
 	     <dependency>
-	      <groupId>postgresql</groupId>
-	      <artifactId>postgresql</artifactId>
-	     </dependency>
+	      <groupId>mysql</groupId>
+	      <artifactId>mysql-connector-java</artifactId>
+	    </dependency>
 
 		<!-- JPA & Hibernate -->
 		<dependency>

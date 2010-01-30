@@ -22,7 +22,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -36,14 +35,14 @@ import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
  */
 @Entity
 @Table(name = "ISST_LOGIN")
-@SequenceGenerator(name = "seq_isst_login", sequenceName = "ISST_LOGIN_ID_SEQ", allocationSize = 1)
+//@SequenceGenerator(name = "seq_isst_login", sequenceName = "ISST_LOGIN_ID_SEQ", allocationSize = 1)
 public class IssueTrackerLogin extends BaseEntity<Long> {
 
     private static final int C_MAX_ENCRYPTED_PWD_LENGTH = 2100;
 
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_isst_login")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "NAME")
