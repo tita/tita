@@ -460,12 +460,10 @@ dl.accordion-menu dd.a-m-d .bd {
 }
 
 .ActualTableProject {
-   height: 200px;
    float: right;
 }
 
 .ActualTableUser {
-   height: 200px;
    float: left;
 }
 
@@ -483,6 +481,11 @@ dl.accordion-menu dd.a-m-d .bd {
    width: 200px;
    margin-right:150px;
    margin-top:40px;
+}
+
+#formPopContainer 
+{
+    margin-top:25px;  
 }
 
 /** Project and User Administration **/
