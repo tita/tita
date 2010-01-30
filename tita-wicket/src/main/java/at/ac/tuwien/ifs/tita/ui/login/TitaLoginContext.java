@@ -64,14 +64,15 @@ public class TitaLoginContext extends UsernamePasswordContext {
 
             try {
                 TiTAUser u = service.getUserByUsername(username);
+
                 if (TiTASecurity.calcHash(password).equals(u.getPassword())) {
                     if (u.getRole().getDescription().equals("Administrator")) {
                         user.addPrincipal(new SimplePrincipal("admin"));
                         TitaSession.getSession().setRole("admin");
-                    } else if (u.getRole().getDescription().equals("Time controller")) {
+                    } else if (u.getRole().getDescription().equals("Time Controller")) {
                         user.addPrincipal(new SimplePrincipal("timecontroller"));
                         TitaSession.getSession().setRole("timecontroller");
-                    } else if (u.getRole().getDescription().equals("Time consumer")) {
+                    } else if (u.getRole().getDescription().equals("Time Consumer")) {
                         user.addPrincipal(new SimplePrincipal("timeconsumer"));
                         TitaSession.getSession().setRole("timeconsumer");
                     } else {
