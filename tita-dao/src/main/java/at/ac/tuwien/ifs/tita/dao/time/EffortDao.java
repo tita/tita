@@ -185,7 +185,7 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements
             List<String> projectIds, String grouping) {
         String pIds = StringUtil.generateIdStringFromStringList(projectIds);
 
-        String queryString = "select nextval('USER_PROJECT_EFFORT_1_ID_SEQ') as ID, "
+        String queryString = "select _rowid as ID," 
                 + " sum(duration) as DURATION, project as PROJECT, null as USERNAME";
 
         if (grouping.equals("month")) {
@@ -199,11 +199,11 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements
         queryString += " from (select sum(e1.duration) as duration, tp.name as project ";
 
         if (grouping.equals("month")) {
-            queryString += ", date_part('year', e1.date) as YEAR, "
-                    + " date_part('month', e1.date) as MONTH, null as DAY ";
+            queryString += ", year(e1.date) as YEAR, "
+                    + " month(e1.date) as MONTH, null as DAY ";
         } else if (grouping.equals("day")) {
-            queryString += ", date_part('year', e1.date) as YEAR, "
-                    + " date_part('month', e1.date) as MONTH, date_part('day',e1.date) as DAY";
+            queryString += ", year(e1.date) as YEAR, "
+                    + " month(e1.date) as MONTH, day(e1.date) as DAY";
         } else if (grouping.equals("overall")) {
             queryString += ", null as YEAR, null as MONTH, null as DAY";
         }
@@ -213,11 +213,11 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements
                 + "where tp.name in (" + pIds + ") ";
 
         if (grouping.equals("month")) {
-            queryString += " group by tp.name, date_part('year', e1.date), "
-                    + " date_part('month', e1.date) ";
+            queryString += " group by tp.name, year(e1.date), "
+                    + " month(e1.date) ";
         } else if (grouping.equals("day")) {
-            queryString += " group by tp.name, date_part('year', e1.date), "
-                    + " date_part('month', e1.date), date_part('day', e1.date) ";
+            queryString += " group by tp.name, year(e1.date), "
+                    + " month(e1.date), day(e1.date) ";
         } else if (grouping.equals("overall")) {
             queryString += " group by tp.name ";
         }
@@ -226,11 +226,11 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements
                 + " select sum(e2.duration) as duration, tp2.name as project ";
 
         if (grouping.equals("month")) {
-            queryString += ", date_part('year', e2.date) as year, "
-                    + " date_part('month', e2.date) as month, null as day ";
+            queryString += ", year(e2.date) as year, "
+                    + " month(e2.date) as month, null as day ";
         } else if (grouping.equals("day")) {
-            queryString += ", date_part('year', e2.date) as year, "
-                    + " date_part('month', e2.date) as month, date_part('day',e2.date) as day";
+            queryString += ", year(e2.date) as year, "
+                    + "month(e2.date) as month, day(e2.date) as day";
         } else if (grouping.equals("overall")) {
             queryString += ", null as year, null as month, null as day";
         }
@@ -242,11 +242,11 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements
                 + "where tp2.name in (" + pIds + ") ";
 
         if (grouping.equals("month")) {
-            queryString += " group by tp2.name, date_part('year', e2.date), "
-                    + " date_part('month', e2.date) ";
+            queryString += " group by tp2.name, year(e2.date), "
+                    + " month(e2.date) ";
         } else if (grouping.equals("day")) {
-            queryString += " group by tp2.name, date_part('year', e2.date), "
-                    + " date_part('month', e2.date), date_part('day', e2.date) ";
+            queryString += " group by tp2.name, year(e2.date), "
+                    + " month(e2.date), day(e2.date) ";
         } else if (grouping.equals("overall")) {
             queryString += " group by tp2.name ";
         }
