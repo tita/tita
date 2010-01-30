@@ -40,7 +40,8 @@ import at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus;
  */
 @Entity
 @Table(name = "TITA_PROJECT")
-//@SequenceGenerator(name = "seq_project", sequenceName = "PROJECT_ID_SEQ", allocationSize = 1)
+// @SequenceGenerator(name = "seq_project", sequenceName = "PROJECT_ID_SEQ",
+// allocationSize = 1)
 public class TiTAProject extends BaseEntity<Long> {
 
     @Id
@@ -76,7 +77,7 @@ public class TiTAProject extends BaseEntity<Long> {
     private Long modificationVersion;
 
     public TiTAProject(String description, String name, Boolean deleted, ProjectStatus projectStatus,
-        Set<TiTATask> titaTasks, Set<IssueTrackerProject> issueTrackerProjects) {
+            Set<TiTATask> titaTasks, Set<IssueTrackerProject> issueTrackerProjects) {
         super();
         this.description = description;
         this.name = name;

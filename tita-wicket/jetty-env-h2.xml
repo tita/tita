@@ -40,10 +40,10 @@
 		<Arg>jdbc/titaDatasource</Arg>
 		<Arg>
 			<New class="org.apache.commons.dbcp.BasicDataSource">
-				<Set name="driverClassName">org.postgresql.Driver</Set>
-				<Set name="url">jdbc:postgresql://localhost:1234/postgres</Set>
-				<Set name="username">postgres</Set>
-				<Set name="password">sa</Set>
+				<Set name="driverClassName">com.mysql.jdbc.Driver</Set>
+				<Set name="url">jdbc:mysql://localhost:3306/tita</Set>
+				<Set name="username">root</Set>
+				<Set name="password">root</Set>
 			</New>
 		</Arg>
 	</New>
