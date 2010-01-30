@@ -30,9 +30,9 @@ import javax.persistence.Table;
 
 /**
  * Entity for storing time producer's effort of his/her assigned tasks.
- * 
+ *
  * @author herbert
- * 
+ *
  */
 @Entity
 @Table(name = "EFFORT")
@@ -41,7 +41,7 @@ public class Effort extends BaseEntity<Long> {
 
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_effort")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "seq_effort")
     private Long id;
 
     @ManyToOne(cascade = { CascadeType.MERGE })
@@ -205,7 +205,7 @@ public class Effort extends BaseEntity<Long> {
 
     /**
      * Filter out all matching Efforts with a specific description.
-     * 
+     *
      * @param filterString
      *            - Filter string
      * @return true if it contains the string pattern.
@@ -217,7 +217,7 @@ public class Effort extends BaseEntity<Long> {
 
     /**
      * Filter out all matching Efforts with a specific costcenter.
-     * 
+     *
      * @param filterString
      *            - Filter string
      * @return true if it contains the string pattern.
@@ -229,7 +229,7 @@ public class Effort extends BaseEntity<Long> {
 
     /**
      * Filter out all matching Efforts with a date after the parameter date.
-     * 
+     *
      * @param date1
      *            - filter date
      * @return true if it contains the string pattern.
@@ -240,7 +240,7 @@ public class Effort extends BaseEntity<Long> {
 
     /**
      * Filter out all matching Efforts with a date before the parameter date.
-     * 
+     *
      * @param date1
      *            - filter date
      * @return true if it contains the string pattern.
@@ -279,7 +279,7 @@ public class Effort extends BaseEntity<Long> {
 
     /**
      * Adds time to current duration.
-     * 
+     *
      * @param dur
      *            duration to add as long.
      */

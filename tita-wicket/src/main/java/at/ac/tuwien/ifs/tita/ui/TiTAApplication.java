@@ -17,6 +17,8 @@
 package at.ac.tuwien.ifs.tita.ui;
 
 import java.net.MalformedURLException;
+import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 import org.apache.wicket.Request;
 import org.apache.wicket.Response;
@@ -32,6 +34,14 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.file.Folder;
 
+import at.ac.tuwien.ifs.tita.business.security.TiTASecurity;
+import at.ac.tuwien.ifs.tita.business.service.project.IProjectService;
+import at.ac.tuwien.ifs.tita.business.service.tasks.ITaskService;
+import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
+import at.ac.tuwien.ifs.tita.entity.TiTAUser;
+import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
+import at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus;
+import at.ac.tuwien.ifs.tita.entity.conv.Role;
 import at.ac.tuwien.ifs.tita.ui.importing.effort.csv.EffortImportCSVPage;
 import at.ac.tuwien.ifs.tita.ui.login.TitaLoginContext;
 import at.ac.tuwien.ifs.tita.ui.login.TitaSession;
@@ -41,11 +51,26 @@ import at.ac.tuwien.ifs.tita.ui.utils.TimerCoordinator;
  * Wicket Application for testing Hello World from DB.
  */
 public class TiTAApplication extends SwarmWebApplication {
+
+    private static final Long C_ONE = 1L;
+    private static final Long C_TWO = 2L;
+    private static final Long C_THREE = 3L;
+
+    // the service for DB-Operations
+    @SpringBean(name = "titaProjectService")
+    private IProjectService titaProjectService;
+
+    @SpringBean(name = "userService")
+    private IUserService userService;
+
+    @SpringBean(name = "taskService")
+    private ITaskService taskService;
+
     @SpringBean(name = "timerCoordinator")
     private TimerCoordinator timerCoordinator;
-    
+
     private Folder uploadFolder = null;
-    
+
     public TiTAApplication() {
     }
 
@@ -57,18 +82,105 @@ public class TiTAApplication extends SwarmWebApplication {
         super.init();
         addComponentInstantiationListener(new SpringComponentInjector(this));
         InjectorHolder.getInjector().inject(this);
-        
+
         uploadFolder = new Folder(System.getProperty("java.io.tmpdir"), "wicket-uploads");
         // Ensure folder exists
         uploadFolder.mkdirs();
+
+        // try {
+        // initDatabase();
+        // } catch (NoSuchAlgorithmException e) {
+        // // TODO Auto-generated catch block
+        // e.printStackTrace();
+        // }
 
         mountBookmarkablePage("/single", EffortImportCSVPage.class);
         new Thread(timerCoordinator).start();
     }
 
     /**
+     * Init database if the values are not available.
+     *
+     * @throws NoSuchAlgorithmException
+     *             n
+     */
+    private void initDatabase() throws NoSuchAlgorithmException {
+
+        Role admin = new Role(C_ONE, "Administrator");
+        Role timeconsumer = new Role(C_TWO, "Time Consumer");
+        Role timecontroller = new Role(C_THREE, "Time Controller");
+
+        IssueTracker issueTracker = new IssueTracker(C_ONE, "Mantis-OpenEngSB",
+                "http://localhost/mantisbt-1.1.8");
+        ProjectStatus open = new ProjectStatus(C_ONE, "open");
+        ProjectStatus closed = new ProjectStatus(C_TWO, "closed");
+
+        TiTAUser user1 = new TiTAUser("admin", TiTASecurity.calcHash("admin"), "Andreas", "Pieber",
+                "anpi@gmx.at", false,
+                admin, null, null);
+        TiTAUser user2 = new TiTAUser("timecontroller", TiTASecurity.calcHash("timecontroller"),
+                "Andreas", "Pieber",
+                "anpi@gmx.at", false, timecontroller, null, null);
+        TiTAUser user3 = new TiTAUser("timeconsumer", TiTASecurity.calcHash("timeconsumer"),
+                "Christoph", "Zehetner",
+                "christoph.zehetner@gmx.at", false, timeconsumer, null, null);
+
+
+        IssueTracker i = taskService.getIssueTrackerById(issueTracker.getId());
+
+        if (taskService.getIssueTrackerById(issueTracker.getId()) != null) {
+            taskService.deleteIssueTracker(issueTracker);
+        }
+        taskService.saveAndFlushIssueTracker(issueTracker);
+
+        List a = titaProjectService.findAllTiTAProjects();
+
+        if (titaProjectService.findAllTiTAProjects().contains(open)) {
+            titaProjectService.deleteProjectStatus(open);
+        }
+        titaProjectService.saveAndFlushProjectStatus(open);
+
+        if (titaProjectService.findAllTiTAProjects().contains(closed)) {
+            titaProjectService.deleteProjectStatus(closed);
+        }
+        titaProjectService.saveAndFlushProjectStatus(closed);
+
+        if (userService.getRoles().contains(admin)) {
+            userService.deleteRole(admin);
+        }
+        userService.saveAndFlushRole(admin);
+
+        if (userService.getRoles().contains(timeconsumer)) {
+            userService.deleteRole(timeconsumer);
+        }
+        userService.saveAndFlushRole(timeconsumer);
+
+        if (userService.getRoles().contains(timecontroller)) {
+            userService.deleteRole(timecontroller);
+        }
+        userService.saveAndFlushRole(timecontroller);
+
+        List u = userService.getAvailableTiTAUser();
+
+        if (userService.getAvailableTiTAUser().contains(user1)) {
+            userService.deleteUser(user1);
+        }
+        userService.saveAndFlushUser(user1);
+
+        if (userService.getAvailableTiTAUser().contains(user2)) {
+            userService.deleteUser(user2);
+        }
+        userService.saveAndFlushUser(user2);
+
+        if (userService.getAvailableTiTAUser().contains(user3)) {
+            userService.deleteUser(user3);
+        }
+        userService.saveAndFlushUser(user3);
+    }
+
+    /**
      * Gets current homepage of application.
-     * 
+     *
      * @return homepage of app
      */
     @Override
@@ -152,10 +264,10 @@ public class TiTAApplication extends SwarmWebApplication {
     public LoginContext getLogoffContext() {
         return new TitaLoginContext();
     }
-    
+
     /**
      * Return the upload folder.
-     * 
+     *
      * @return the folder for uploads
      */
     public Folder getUploadFolder() {

@@ -45,7 +45,7 @@ public class TiTATask extends BaseEntity<Long>{
 
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_tita_task")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "seq_tita_task")
     private Long id;
 
     @Column(name = "DESCRIPTION")
@@ -71,9 +71,9 @@ public class TiTATask extends BaseEntity<Long>{
 
     public TiTATask(TiTAUser user, Set<Effort> efforts) {
         this.user = user;
-        this.titaEfforts = efforts;
+        titaEfforts = efforts;
     }
-    
+
      public TiTATask(String description, TiTAUser user, TiTAProject titaProject,
             Set<Effort> titaEfforts) {
         super();
@@ -90,23 +90,23 @@ public class TiTATask extends BaseEntity<Long>{
 
     @Override
     public Long getId() {
-        return this.id;
+        return id;
     }
 
     public String getDescription() {
-        return this.description;
+        return description;
     }
 
     public TiTAProject getProject() {
-        return this.titaProject;
+        return titaProject;
     }
 
     public Set<Effort> getTitaEfforts() {
-        return this.titaEfforts;
+        return titaEfforts;
     }
 
     public TiTAUser getUser(){
-        return this.user;
+        return user;
     }
 
     public void setTitaProject(TiTAProject titaProject) {

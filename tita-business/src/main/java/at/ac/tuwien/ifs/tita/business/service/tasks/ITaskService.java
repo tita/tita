@@ -113,6 +113,17 @@ public interface ITaskService {
     IssueTracker saveIssueTracker(IssueTracker issueTracker) throws PersistenceException;
 
     /**
+     * Method to save a issue tracker and flush it to the db.
+     * 
+     * @param issueTracker
+     *            - issue tracker configuration
+     * @return the issue tracker to be saved.
+     * @throws PersistenceException
+     *             - if parameter is null or another Exception is thrown
+     */
+    IssueTracker saveAndFlushIssueTracker(IssueTracker issueTracker) throws PersistenceException;
+
+    /**
      * Method to delete a issue tracker.
      *
      * @param issueTracker - the issue tracker to be deleted

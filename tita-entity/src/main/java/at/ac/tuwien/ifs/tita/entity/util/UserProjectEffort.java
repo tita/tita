@@ -37,7 +37,7 @@ public class UserProjectEffort implements Serializable {
 
     @Id
     @Column (name = "ID", insertable=false, updatable=false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_user_project_effort")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "seq_user_project_effort")
     private Long id;
 
     @Column (name = "PROJECT", insertable=false, updatable=false)

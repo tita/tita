@@ -35,9 +35,9 @@ import at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus;
 
 /**
  * Entity for storing projects that are associated with an issue tracker.
- * 
+ *
  * @author herbert
- * 
+ *
  */
 @Entity
 @Table(name = "TITA_PROJECT")
@@ -45,8 +45,8 @@ import at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus;
 public class TiTAProject extends BaseEntity<Long> {
 
     @Id
-    @Column(name = "ID", insertable = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_project")
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "seq_project")
     private Long id;
 
     @Column(name = "DESCRIPTION")
@@ -92,15 +92,15 @@ public class TiTAProject extends BaseEntity<Long> {
 
     @Override
     public Long getId() {
-        return this.id;
+        return id;
     }
 
     public String getDescription() {
-        return this.description;
+        return description;
     }
 
     public Set<IssueTrackerProject> getIssueTrackerProjects() {
-        return this.issueTrackerProjects;
+        return issueTrackerProjects;
     }
 
     public void setDescription(String description) {
@@ -120,12 +120,12 @@ public class TiTAProject extends BaseEntity<Long> {
     }
 
     public Set<TiTAUserProject> getUsers() {
-        return this.users;
+        return users;
 
     }
 
     public ProjectStatus getProjectStatus() {
-        return this.projectStatus;
+        return projectStatus;
     }
 
     public void setProjectStatus(ProjectStatus projectStatus) {
@@ -133,11 +133,11 @@ public class TiTAProject extends BaseEntity<Long> {
     }
 
     public Set<TiTATask> getTitaTasks() {
-        return this.titaTasks;
+        return titaTasks;
     }
 
     public String getName() {
-        return this.name;
+        return name;
     }
 
     public void setName(String name) {
@@ -145,7 +145,7 @@ public class TiTAProject extends BaseEntity<Long> {
     }
 
     public Boolean getDeleted() {
-        return this.deleted;
+        return deleted;
     }
 
     public void setDeleted(Boolean deleted) {

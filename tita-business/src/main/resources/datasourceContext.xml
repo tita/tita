@@ -26,6 +26,9 @@
   <bean id="issueTrackerDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
     <constructor-arg value="at.ac.tuwien.ifs.tita.entity.conv.IssueTracker"/>
   </bean>
+  <bean id="projectStatusDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
+    <constructor-arg value="at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus"/>
+  </bean>
   <bean id="issueTrackerProjectDAO" class="at.ac.tuwien.ifs.tita.dao.issuetracker.IssueTrackerProjectDao"/>
   
   <bean id="userDAO" class="at.ac.tuwien.ifs.tita.dao.user.UserDAO" />
@@ -40,12 +43,13 @@
     <constructor-arg ref="titaEffortService"/>
   </bean>
   
-    <bean id="titaProjectService" class="at.ac.tuwien.ifs.tita.business.service.project.ProjectService">
+  <bean id="titaProjectService" class="at.ac.tuwien.ifs.tita.business.service.project.ProjectService">
     <property name="titaProjectDao" ref="titaProjectDAO"/>
     <property name="issueTrackerProjectDao" ref="issueTrackerProjectDAO"/>
     <property name="issueTrackerTaskDao" ref="issueTrackerTaskDAO"/>
     <property name="titataskDAO" ref="titataskDAO"/>
     <property name="issueTrackerDao" ref="issueTrackerDAO" />
+    <property name="projectStatusDao" ref="projectStatusDAO" />
   </bean>
  
   <bean id="titaEffortService" class="at.ac.tuwien.ifs.tita.business.service.time.EffortService">

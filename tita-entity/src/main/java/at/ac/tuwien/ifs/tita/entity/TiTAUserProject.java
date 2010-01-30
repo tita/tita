@@ -41,7 +41,7 @@ public class TiTAUserProject extends BaseEntity<Long> {
 
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_tita_user_project")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "seq_tita_user_project")
     private Long id;
 
     @Column(name = "TARGET_HOURS")

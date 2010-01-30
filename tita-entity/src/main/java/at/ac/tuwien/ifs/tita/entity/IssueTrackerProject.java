@@ -34,9 +34,9 @@ import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 
 /**
  * Entity for storing projects comming from different issue trackers.
- * 
+ *
  * @author herbert
- * 
+ *
  */
 @Entity
 @Table(name = "ISSUE_TRACKER_PROJECT")
@@ -45,7 +45,7 @@ public class IssueTrackerProject extends BaseEntity<Long> {
 
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_issue_project")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "seq_issue_project")
     private Long id;
 
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
@@ -75,26 +75,26 @@ public class IssueTrackerProject extends BaseEntity<Long> {
 
     public IssueTrackerProject(IssueTracker issTracker, Long isstProjectId, Set<IssueTrackerTask> issueTrackerTasks) {
         super();
-        this.issueTracker = issTracker;
+        issueTracker = issTracker;
         this.isstProjectId = isstProjectId;
         this.issueTrackerTasks = issueTrackerTasks;
     }
 
     @Override
     public Long getId() {
-        return this.id;
+        return id;
     }
 
     public TiTAProject getProject() {
-        return this.titaProject;
+        return titaProject;
     }
 
     public Long getIsstProjectId() {
-        return this.isstProjectId;
+        return isstProjectId;
     }
 
     public Set<IssueTrackerTask> getIssueTrackerTasks() {
-        return this.issueTrackerTasks;
+        return issueTrackerTasks;
     }
 
     public void setIssueTracker(IssueTracker issueTracker) {
@@ -102,7 +102,7 @@ public class IssueTrackerProject extends BaseEntity<Long> {
     }
 
     public IssueTracker getIssueTracker() {
-        return this.issueTracker;
+        return issueTracker;
     }
 
     public void setProjectName(String projectName) {
@@ -110,7 +110,7 @@ public class IssueTrackerProject extends BaseEntity<Long> {
     }
 
     public String getProjectName() {
-        return this.projectName;
+        return projectName;
     }
 
     public void setTitaProject(TiTAProject titaProject) {

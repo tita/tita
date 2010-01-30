@@ -34,17 +34,22 @@
   </description>
 
   <dependencies>
-     <!-- H2DB -->
-    <dependency>
+
+    <!--dependency>
       <groupId>postgresql</groupId>
       <artifactId>postgresql</artifactId>
     </dependency>
 
-	<!-- dependency>
+    < dependency>
 		<groupId>com.h2database</groupId>
 		<artifactId>h2</artifactId>
 	</dependency-->
-    
+
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+    </dependency>
+
     <!-- JPA & Hibernate -->
     <dependency>
       <groupId>javax.persistence</groupId>
@@ -59,18 +64,18 @@
           <groupId>javax.transaction</groupId>
           <artifactId>jta</artifactId>
         </exclusion>
-		<exclusion>
-			<groupId>asm</groupId>
-			<artifactId>asm</artifactId>
-		</exclusion>
-		<exclusion>
-			<groupId>asm</groupId>
-			<artifactId>asm-attrs</artifactId>
-		</exclusion>
-		<exclusion>
-			<groupId>cglib</groupId>
-			<artifactId>cglib</artifactId>
-		</exclusion>
+        <exclusion>
+          <groupId>asm</groupId>
+          <artifactId>asm</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>asm</groupId>
+          <artifactId>asm-attrs</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>cglib</groupId>
+          <artifactId>cglib</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
 
@@ -101,22 +106,22 @@
       <artifactId>spring-jms</artifactId>
     </dependency>
     <dependency>
-		<groupId>cglib</groupId>
-		<artifactId>cglib-nodep</artifactId>
-	</dependency>
-	<dependency>
-        <groupId>supercsv</groupId>
-        <artifactId>supercsv</artifactId>
-      </dependency>
-      <dependency>
-        <groupId>spiffy</groupId>
-        <artifactId>spiffy</artifactId>
-      </dependency>
-  <dependency>
-    <groupId>bouncycastle</groupId>
-    <artifactId>bcprov-jdk14</artifactId>
-  </dependency>
-  
+      <groupId>cglib</groupId>
+      <artifactId>cglib-nodep</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>supercsv</groupId>
+      <artifactId>supercsv</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>spiffy</groupId>
+      <artifactId>spiffy</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>bouncycastle</groupId>
+      <artifactId>bcprov-jdk14</artifactId>
+    </dependency>
+
 
     <!-- logging support -->
     <dependency>
@@ -142,40 +147,46 @@
       <groupId>org.mockito</groupId>
       <artifactId>mockito-all</artifactId>
     </dependency>
-    
+
     <!-- project dependencies -->
-	<dependency>
-		<groupId>at.ac.tuwien.ifs</groupId>
-		<artifactId>tita-entity</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
-	</dependency>
-	<dependency>
-		<groupId>at.ac.tuwien.ifs</groupId>
-		<artifactId>tita-dao</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
-	</dependency>
-  
+    <dependency>
+      <groupId>at.ac.tuwien.ifs</groupId>
+      <artifactId>tita-entity</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>at.ac.tuwien.ifs</groupId>
+      <artifactId>tita-dao</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+    </dependency>
+
     <dependency>
       <groupId>at.ac.tuwien.ifs</groupId>
       <artifactId>tita-issuetracker-integration</artifactId>
       <version>1.0.0-SNAPSHOT</version>
-  </dependency>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
-    <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <configuration>
-            <excludes>
-              <!--<exclude>**/MantisBaseTest.java</exclude>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <excludes>
+            
+              <exclude>**/MantisBaseTest.java</exclude>
               <exclude>**/IssueTrackerServiceTest.java</exclude>
-              <exclude>**/TaskServiceTest.java</exclude>
-			  <exclude>**/CSVReaderTest.java</exclude>
-			  <exclude>**/TaskServiceDaoTest.java</exclude>-->
-            </excludes>
-          </configuration>
-        </plugin>
-      </plugins>
+              <exclude>**/TaskServiceTest.java</exclude> 
+              <exclude>**/TaskServiceDaoTest.java</exclude>
+              <exclude>**/CSVReaderTest.java</exclude>
+              <exclude>**/TiTASecurityTest.java</exclude>
+              <exclude>**/TiTAProjectServiceTest.java</exclude>
+              <exclude>**/EffortServiceTest.java</exclude>
+              <exclude>**/UserServiceTest.java</exclude>
+            
+          </excludes>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 </project>

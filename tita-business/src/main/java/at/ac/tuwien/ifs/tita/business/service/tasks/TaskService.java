@@ -50,9 +50,9 @@ import at.ac.tuwien.ifs.tita.issuetracker.issue.service.IssueTrackerService;
  * The TaskService combines the IssueTrackerService, which fetches and manage
  * the data from the issue trackers, and encapsulates all Task-concerning
  * Database operations.
- * 
+ *
  * @author Christoph
- * 
+ *
  */
 
 public class TaskService implements ITaskService {
@@ -86,13 +86,24 @@ public class TaskService implements ITaskService {
 
     /** {@inheritDoc} */
     @Override
-    public IssueTrackerTask saveIssueTrackerTask(IssueTrackerTask issueTrackerTask) throws PersistenceException {
+    public IssueTrackerTask saveIssueTrackerTask(IssueTrackerTask issueTrackerTask)
+            throws PersistenceException {
         return issueTrackerTaskDao.save(issueTrackerTask);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void deleteIssueTrackerTask(IssueTrackerTask issueTrackerTask) throws PersistenceException {
+    public IssueTracker saveAndFlushIssueTracker(IssueTracker issueTracker)
+            throws PersistenceException {
+        IssueTracker issueTracker1 = issueTrackerDao.save(issueTracker);
+        issueTrackerTaskDao.flush();
+        return issueTracker1;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void deleteIssueTrackerTask(IssueTrackerTask issueTrackerTask)
+            throws PersistenceException {
         issueTrackerTaskDao.delete(issueTrackerTask);
     }
 
@@ -152,7 +163,8 @@ public class TaskService implements ITaskService {
 
     /** {@inheritDoc} */
     @Override
-    public void fetchTaskFromIssueTrackerProjects(Long projectTitaId, Long userTitaId) throws ProjectNotFoundException {
+    public void fetchTaskFromIssueTrackerProjects(Long projectTitaId, Long userTitaId)
+            throws ProjectNotFoundException {
         fetcher = new FetchingThread(projectTitaId, userTitaId);
         fetcher.run();
     }
@@ -160,10 +172,13 @@ public class TaskService implements ITaskService {
     /**
      * Private Method to fetch all tasks for the tita project and the added
      * issue tracker projects.
-     * 
-     * @param projectTitaId - id of the selected tita project
-     * @param userTitaId - id of the logged in user
-     * @throws ProjectNotFoundException pnfe - if a project is null
+     *
+     * @param projectTitaId
+     *            - id of the selected tita project
+     * @param userTitaId
+     *            - id of the logged in user
+     * @throws ProjectNotFoundException
+     *             pnfe - if a project is null
      */
     private void fetchingTasks(Long projectTitaId, Long userTitaId) throws ProjectNotFoundException {
         Map<Long, ITaskTrackable> newMap = new TreeMap<Long, ITaskTrackable>();
@@ -180,26 +195,32 @@ public class TaskService implements ITaskService {
         Long key = 0L;
 
         for (IssueTrackerLogin login : titaUser.getIssueTrackerLogins()) {
-            log.debug("Take issue tracker login: " + login.getId() + " to use the issue tracker service.");
+            log.debug("Take issue tracker login: " + login.getId()
+                    + " to use the issue tracker service.");
             issueTrackerService = new IssueTrackerService(login);
 
             Map<Long, IProjectTrackable> mapOfProjects = issueTrackerService.getProjects();
 
-            log.info("Check all accessible projects from the Issue Tracker: " + login.getIssueTracker().getUrl());
+            log.info("Check all accessible projects from the Issue Tracker: "
+                    + login.getIssueTracker().getUrl());
             if (titaProject.getIssueTrackerProjects() != null && mapOfProjects != null
                     && mapOfProjects.values() != null) {
-                for (IssueTrackerProject issueTrackerProject : titaProject.getIssueTrackerProjects()) {
+                for (IssueTrackerProject issueTrackerProject : titaProject
+                        .getIssueTrackerProjects()) {
 
                     for (IProjectTrackable projectTrackable : mapOfProjects.values()) {
 
                         if (projectTrackable.getId().equals(issueTrackerProject.getIsstProjectId())) {
 
-                            log.info("Updating the project before fetching: " + projectTrackable.getName());
+                            log.info("Updating the project before fetching: "
+                                    + projectTrackable.getName());
                             issueTrackerService.updateProject(projectTrackable);
 
-                            log.info("Fetching tasks for the project: " + projectTrackable.getName());
+                            log.info("Fetching tasks for the project: "
+                                    + projectTrackable.getName());
                             Map<Long, ITaskTrackable> mapOfTasks = issueTrackerService
-                                    .getIssueTrackerTasksByProjectName(issueTrackerProject.getProjectName());
+                                    .getIssueTrackerTasksByProjectName(issueTrackerProject
+                                            .getProjectName());
 
                             if (mapOfTasks != null) {
 
@@ -276,18 +297,20 @@ public class TaskService implements ITaskService {
     public List<UserProjectTaskEffort> getPerformanceOfPersonView(TiTAProject project, TiTAUser user) {
         List<UserProjectTaskEffort> popView = new ArrayList<UserProjectTaskEffort>();
 
-        List<IssueTrackerTask> issueTrackerTasks = issueTrackerTaskDao.findIssueTrackerTasksforUserProject(project
-                .getId(), user.getId());
+        List<IssueTrackerTask> issueTrackerTasks = issueTrackerTaskDao
+                .findIssueTrackerTasksforUserProject(project.getId(), user.getId());
         for (IssueTrackerTask t : issueTrackerTasks) {
-            popView.add(new UserProjectTaskEffort("#" + t.getIsstTaskId(), t.getDescription(), timeEffortDao
-                    .findEffortsSumForIssueTrackerTasks(project.getId(), user.getId(), t.getId())));
+            popView.add(new UserProjectTaskEffort("#" + t.getIsstTaskId(), t.getDescription(),
+                    timeEffortDao.findEffortsSumForIssueTrackerTasks(project.getId(), user.getId(),
+                            t.getId())));
         }
 
         // get all titatasks with their efforts sum
         List<TiTATask> titaTasks = titaTaskDao.findTiTATasksforUserProject(project, user);
         for (TiTATask t : titaTasks) {
-            popView.add(new UserProjectTaskEffort("T" + t.getId(), t.getDescription(), timeEffortDao
-                    .findEffortsSumForTiTATasks(project.getId(), user.getId(), t.getId())));
+            popView.add(new UserProjectTaskEffort("T" + t.getId(), t.getDescription(),
+                    timeEffortDao.findEffortsSumForTiTATasks(project.getId(), user.getId(), t
+                            .getId())));
         }
 
         return popView;
@@ -323,9 +346,9 @@ public class TaskService implements ITaskService {
 
     /**
      * Thread for fetching tasks.
-     * 
+     *
      * @author Christoph
-     * 
+     *
      */
     public class FetchingThread extends Thread {
 

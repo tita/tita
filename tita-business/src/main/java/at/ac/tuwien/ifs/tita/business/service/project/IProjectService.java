@@ -30,15 +30,15 @@ import at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus;
 
 /**
  * IProjectService encapsulates all tita project based db operations.
- * 
+ *
  * @author herbert
- * 
+ *
  */
 @Transactional
 public interface IProjectService {
     /**
      * Saves an issue tracker task.
-     * 
+     *
      * @param itt IssueTrackerTask
      * @return IssueTrackerTask
      * @throws PersistenceException pe
@@ -47,7 +47,7 @@ public interface IProjectService {
 
     /**
      * deletes an existing project.
-     * 
+     *
      * @param project the project to be deleted
      * @throws PersistenceException if Parameter is null or another Exception is thrown
      */
@@ -55,7 +55,7 @@ public interface IProjectService {
 
     /**
      * returns a specific Project found to the id given.
-     * 
+     *
      * @param id the unique identifier of an project
      * @throws PersistenceException if no project was found or another Exception is thrown
      * @return the specified Project, if found.
@@ -64,14 +64,14 @@ public interface IProjectService {
 
     /**
      * Returns a list of all existing tita projects.
-     * 
+     *
      * @return List of TiTAProjects
      */
     List<TiTAProject> findAllTiTAProjects();
 
     /**
      * Returns a list of all tita projects for a given user.
-     * 
+     *
      * @param user - the specific tita user
      * @return List of TiTAProjects
      */
@@ -79,7 +79,7 @@ public interface IProjectService {
 
     /**
      * Finds an issue tracker task for a given tita project.
-     * 
+     *
      * @param tp Long
      * @param it Long
      * @param itp Long
@@ -90,7 +90,7 @@ public interface IProjectService {
 
     /**
      * Finds an issue tracker project for a given tita project.
-     * 
+     *
      * @param tp Long
      * @param issueTrackerId Long
      * @param itp Long
@@ -100,7 +100,7 @@ public interface IProjectService {
 
     /**
      * Saves a tita task in db.
-     * 
+     *
      * @param task TiTATask
      * @return TiTATask
      */
@@ -108,7 +108,7 @@ public interface IProjectService {
 
     /**
      * Saves a new project or updates an existing one.
-     * 
+     *
      * @param project the project to be saved
      * @throws PersistenceException if Parameter is null or another Exception is thrown
      * @return the saved Project.
@@ -117,7 +117,7 @@ public interface IProjectService {
 
     /**
      * Returns a List of Projects, where the size of the list can be declared.
-     * 
+     *
      * @param maxResult the maximum size of list
      * @param orderBy the attribute of TiTAProject to be ordered by.
      * @return a list of TiTAProjects
@@ -127,7 +127,7 @@ public interface IProjectService {
 
     /**
      * Returns a List of all available Project Stati.
-     * 
+     *
      * @return a List of all stored Project Stati.
      * @throws PersistenceException if an Exception from the DAO was thrown.
      */
@@ -135,7 +135,7 @@ public interface IProjectService {
 
     /**
      * Fetches all available IssueTracker.
-     * 
+     *
      * @return a List of all available IssueTracker.
      * @throws PersistenceException if an Exception from DAO was thrown.
      */
@@ -143,11 +143,33 @@ public interface IProjectService {
 
     /**
      * saves a UserProject.
-     * 
+     *
      * @param project the project to save.
      * @return the saved project or null if operation was not successful.
      * @throws PersistenceException if an Exception from DAO was thrown.
      */
     TiTAUserProject saveUserProject(TiTAUserProject project) throws PersistenceException;
+
+    /**
+     * Saves a ProjectStatus.
+     *
+     * @param projectStatus
+     *            the project status to save.
+     * @return the saved project status or null if operation was not successful.
+     * @throws PersistenceException
+     *             if an Exception from DAO was thrown.
+     */
+    ProjectStatus saveAndFlushProjectStatus(ProjectStatus projectStatus)
+            throws PersistenceException;
+
+    /**
+     * Deletes an existing projectStatus.
+     * 
+     * @param projectStatus
+     *            the projectStatus to be deleted
+     * @throws PersistenceException
+     *             if Parameter is null or another Exception is thrown
+     */
+    void deleteProjectStatus(ProjectStatus projectStatus) throws PersistenceException;
 
 }

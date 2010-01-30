@@ -45,7 +45,7 @@ public class IssueTrackerTask extends BaseEntity<Long>{
 
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_issue_task")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "seq_issue_task")
     private Long id;
 
     @ManyToOne(cascade = {CascadeType.MERGE})
@@ -120,7 +120,7 @@ public class IssueTrackerTask extends BaseEntity<Long>{
 
     /**
      * Add effort to issueTrackerTask.
-     * 
+     *
      * @param effort
      *            the chosen effort
      */
