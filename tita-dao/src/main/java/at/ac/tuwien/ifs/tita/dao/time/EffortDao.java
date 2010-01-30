@@ -184,7 +184,7 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements
     public List<UserProjectEffort> findEffortsForTiTAProjectId(
             List<String> projectIds, String grouping) {
         String pIds = StringUtil.generateIdStringFromStringList(projectIds);
-
+ 
         String queryString = "select nextval('USER_PROJECT_EFFORT_1_ID_SEQ') as ID, "
                 + " sum(duration) as DURATION, project as PROJECT, null as USERNAME";
 
