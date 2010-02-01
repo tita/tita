@@ -119,7 +119,7 @@ public class IssueTrackerTask extends BaseEntity<Long>{
 
     /**
      * Add effort to issueTrackerTask.
-     * 
+     *
      * @param effort
      *            the chosen effort
      */

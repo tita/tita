@@ -4,16 +4,17 @@
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
+   
        http://www.apache.org/licenses/LICENSE\-2.0
+       
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
  -->
- 
-<persistence xmlns="http://java.sun.com/xml/ns/persistence"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
       http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
   version="1.0">
@@ -21,26 +22,47 @@
     <!-- Add Classes that are ment to be persisted here -->
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
     <non-jta-data-source>jdbc/titaDatasource</non-jta-data-source>
-    
-    <class>at.ac.tuwien.ifs.tita.entity.conv.IssueTracker</class> 
+
+    <class>at.ac.tuwien.ifs.tita.entity.conv.IssueTracker</class>
     <class>at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus</class>
     <class>at.ac.tuwien.ifs.tita.entity.conv.Role</class>
     <class>at.ac.tuwien.ifs.tita.entity.TiTATask</class>
     <class>at.ac.tuwien.ifs.tita.entity.IssueTrackerProject</class>
     <class>at.ac.tuwien.ifs.tita.entity.IssueTrackerTask</class>
     <class>at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin</class>
-    <class>at.ac.tuwien.ifs.tita.entity.TiTAProject</class>
     <class>at.ac.tuwien.ifs.tita.entity.TiTAUserProject</class>
     <class>at.ac.tuwien.ifs.tita.entity.Effort</class>
     <class>at.ac.tuwien.ifs.tita.entity.TiTAUser</class>
     <class>at.ac.tuwien.ifs.tita.entity.util.UserProjectEffort</class>
+    <class>at.ac.tuwien.ifs.tita.entity.TiTAProject</class>
     <properties>
       <property name="hibernate.archive.autodetection" value="class, hbm" />
       <property name="hibernate.hbm2ddl.auto" value="update" />
       <property name="hibernate.show_sql" value="true" />
       <property name="hibernate.show_comment" value="true" />
-      <!-- property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/-->
-      <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+      <!-- <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>-->
+      <!-- <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />-->
+      <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
+
+      <!-- Session context -->
+      <property name="hibernate.transaction.factory_class" value="org.hibernate.transaction.JDBCTransactionFactory"/>
+      <property name="hibernate.current_session_context_class" value="thread"/>
+
+      <!-- Scan for annotated classes and Hibernate mapping XML files -->
+      <!-- This doesn't work in Hibernate native mode, requires JPA -->
+      <!--<property name="hibernate.archive.autodetection">class, hbm</property>-->
+
+      <!-- SQL stdout logging -->
+      <property name="hibernate.show_sql" value="true"/>
+      <property name="hibernate.format_sql" value="true"/>
+      <property name="use_sql_comments" value="true"/>
+
+      <!-- Connection Pooling & Caching -->
+      <property name="hibernate.c3p0.min_size" value="5"/>
+      <property name="hibernate.c3p0.max_size" value="20"/>
+      <property name="hibernate.c3p0.timeout" value="300"/>
+      <property name="hibernate.c3p0.max_statements" value="50"/>
+      <property name="hibernate.c3p0.idle_test_period" value="3000"/>
     </properties>
   </persistence-unit>
 </persistence>

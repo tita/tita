@@ -19,22 +19,27 @@
     http://www.springframework.org/schema/tx/spring-tx.xsd"
   default-autowire="byName">
 
-  <bean id="timeEffortDAO" class="at.ac.tuwien.ifs.tita.dao.time.EffortDao"/>
+  <bean id="timeEffortDAO" class="at.ac.tuwien.ifs.tita.dao.time.EffortDao" />
   <bean id="userDAO" class="at.ac.tuwien.ifs.tita.dao.user.UserDAO" />
   <bean id="roleDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
-    <constructor-arg value="at.ac.tuwien.ifs.tita.entity.conv.Role"/>
+    <constructor-arg value="at.ac.tuwien.ifs.tita.entity.conv.Role" />
   </bean>
-  <bean id="issueTrackerTaskDAO" class="at.ac.tuwien.ifs.tita.dao.issuetracker.task.IssueTrackerTaskDao"/>
-  <bean id="issueTrackerProjectDAO" class="at.ac.tuwien.ifs.tita.dao.issuetracker.IssueTrackerProjectDao"/>
+  <bean id="issueTrackerTaskDAO" class="at.ac.tuwien.ifs.tita.dao.issuetracker.task.IssueTrackerTaskDao" />
+  <bean id="issueTrackerProjectDAO" class="at.ac.tuwien.ifs.tita.dao.issuetracker.IssueTrackerProjectDao" />
   <bean id="issueTrackerDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
-    <constructor-arg value="at.ac.tuwien.ifs.tita.entity.conv.IssueTracker"/>
-  </bean><bean id="titaProjectDAO" class="at.ac.tuwien.ifs.tita.dao.project.TiTAProjectDao"/>
-  <bean id="titataskDAO" class="at.ac.tuwien.ifs.tita.dao.task.TiTATaskDao"/>
+    <constructor-arg value="at.ac.tuwien.ifs.tita.entity.conv.IssueTracker" />
+  </bean>
+  <bean id="titaProjectDAO" class="at.ac.tuwien.ifs.tita.dao.project.TiTAProjectDao" />
+  <bean id="titataskDAO" class="at.ac.tuwien.ifs.tita.dao.task.TiTATaskDao" />
   <bean id="issueTrackerLoginDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
-    <constructor-arg value="at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin"/>
+    <constructor-arg value="at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin" />
   </bean>
   <bean id="userProjectDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
-    <constructor-arg value="at.ac.tuwien.ifs.tita.entity.TiTAUserProject"/>
+    <constructor-arg value="at.ac.tuwien.ifs.tita.entity.TiTAUserProject" />
+  </bean>
+
+  <bean id="projectStatusDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
+    <constructor-arg value="at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus" />
   </bean>
 
   <!-- The Services -->
@@ -43,44 +48,46 @@
     <property name="roleDao" ref="roleDAO" />
     <property name="issueTrackerDao" ref="issueTrackerDAO" />
     <property name="issueTrackerLoginDao" ref="issueTrackerLoginDAO" />
-  </bean>    
-  
-  <bean id="timeEffortService" class="at.ac.tuwien.ifs.tita.business.service.time.EffortService">
-    <constructor-arg ref="timeEffortDAO"/>
-    <constructor-arg ref="titaProjectService"/>
   </bean>
 
-  
+  <bean id="timeEffortService" class="at.ac.tuwien.ifs.tita.business.service.time.EffortService">
+    <constructor-arg ref="timeEffortDAO" />
+    <constructor-arg ref="titaProjectService" />
+  </bean>
+
+
   <bean id="titaProjectService" class="at.ac.tuwien.ifs.tita.business.service.project.ProjectService">
-    <property name="titaProjectDao" ref="titaProjectDAO"/>
-    <property name="issueTrackerProjectDao" ref="issueTrackerProjectDAO"/>
-    <property name="issueTrackerTaskDao" ref="issueTrackerTaskDAO"/>
-    <property name="titaTaskDao" ref="titataskDAO"/>
+    <property name="titaProjectDao" ref="titaProjectDAO" />
+    <property name="issueTrackerProjectDao" ref="issueTrackerProjectDAO" />
+    <property name="issueTrackerTaskDao" ref="issueTrackerTaskDAO" />
+    <property name="titaTaskDao" ref="titataskDAO" />
     <property name="issueTrackerDao" ref="issueTrackerDAO" />
     <property name="userProjectDao" ref="userProjectDAO" />
+    <property name="projectStatusDao" ref="projectStatusDAO" />
   </bean>
-  
+
+
   <bean id="taskService" class="at.ac.tuwien.ifs.tita.business.service.tasks.TaskService">
-    <property name="issueTrackerTaskDao" ref="issueTrackerTaskDAO"/>
-    <property name="titaTaskDao" ref="titataskDAO"/>
-    <property name="issueTrackerDao" ref="issueTrackerDAO"/>
-    <property name="titaUserDao" ref="userDAO"/>
-    <property name="titaProjectDao" ref="titaProjectDAO"/>
-    <property name="timeEffortDao" ref="timeEffortDAO"/>
+    <property name="issueTrackerTaskDao" ref="issueTrackerTaskDAO" />
+    <property name="titaTaskDao" ref="titataskDAO" />
+    <property name="issueTrackerDao" ref="issueTrackerDAO" />
+    <property name="titaUserDao" ref="userDAO" />
+    <property name="titaProjectDao" ref="titaProjectDAO" />
+    <property name="timeEffortDao" ref="timeEffortDAO" />
   </bean>
-  
-   <bean id="titaCSVReader" class="at.ac.tuwien.ifs.tita.business.csv.CSVReader">
-    <constructor-arg ref="titaEffortService"/>
+
+  <bean id="titaCSVReader" class="at.ac.tuwien.ifs.tita.business.csv.CSVReader">
+    <constructor-arg ref="titaEffortService" />
   </bean>
- 
+
   <bean id="titaEffortService" class="at.ac.tuwien.ifs.tita.business.service.time.EffortService">
-    <constructor-arg ref="timeEffortDAO"/>
-    <constructor-arg ref="titaProjectService"/>
+    <constructor-arg ref="timeEffortDAO" />
+    <constructor-arg ref="titaProjectService" />
   </bean>
-  
+
   <!-- <bean id="generalTimer" class="at.ac.tuwien.ifs.tita.entity.util.GeneralTimer"/>  -->
 
   <bean id="timerCoordinator" class="at.ac.tuwien.ifs.tita.ui.utils.TimerCoordinator" />
-  
-  <import resource="classpath:persistence-context.xml"/>
+
+  <import resource="classpath:persistence-context.xml" />
 </beans>

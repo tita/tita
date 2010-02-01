@@ -29,9 +29,9 @@ import at.ac.tuwien.ifs.tita.entity.conv.IssueTracker;
 
 /**
  * Entity for storing login-Data for Users to login at IssueTrackers.
- * 
+ *
  * @author karin
- * 
+ *
  */
 @Entity
 @Table(name = "ISST_LOGIN")
@@ -79,7 +79,7 @@ public class IssueTrackerLogin extends BaseEntity<Long> {
     }
 
     public String getUserName() {
-        return this.userName;
+        return userName;
     }
 
     public void setUserName(String userName) {
@@ -87,7 +87,7 @@ public class IssueTrackerLogin extends BaseEntity<Long> {
     }
 
     public String getPassword() {
-        return this.password;
+        return password;
     }
 
     public void setPassword(String password) {
@@ -96,11 +96,11 @@ public class IssueTrackerLogin extends BaseEntity<Long> {
 
     @Override
     public Long getId() {
-        return this.id;
+        return id;
     }
 
     public IssueTracker getIssueTracker() {
-        return this.issueTracker;
+        return issueTracker;
     }
 
     public void setIssueTracker(IssueTracker issueTracker) {
@@ -108,7 +108,7 @@ public class IssueTrackerLogin extends BaseEntity<Long> {
     }
 
     public TiTAUser getUser() {
-        return this.user;
+        return user;
     }
 
     public void setUser(TiTAUser user) {

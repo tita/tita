@@ -34,9 +34,9 @@ import at.ac.tuwien.ifs.tita.entity.conv.Role;
 
 /**
  * Entity for storing TiTA user.
- * 
+ *
  * @author karin
- * 
+ *
  */
 @Entity
 @Table(name = "TITA_USER")
@@ -83,7 +83,7 @@ public class TiTAUser extends BaseEntity<Long> {
     private Long modificationVersion;
 
     public TiTAUser() {
-        this.deleted = false;
+        deleted = false;
     }
 
     public TiTAUser(String userName, String password, String firstName, String lastName, String email, Boolean deleted,
@@ -101,7 +101,7 @@ public class TiTAUser extends BaseEntity<Long> {
     }
 
     public Boolean getDeleted() {
-        return this.deleted;
+        return deleted;
     }
 
     public void setDeleted(Boolean deleted) {
@@ -113,7 +113,7 @@ public class TiTAUser extends BaseEntity<Long> {
     }
 
     public String getUserName() {
-        return this.userName;
+        return userName;
     }
 
     public void setUserName(String userName) {
@@ -121,7 +121,7 @@ public class TiTAUser extends BaseEntity<Long> {
     }
 
     public String getPassword() {
-        return this.password;
+        return password;
     }
 
     public void setPassword(String password) {
@@ -129,7 +129,7 @@ public class TiTAUser extends BaseEntity<Long> {
     }
 
     public String getFirstName() {
-        return this.firstName;
+        return firstName;
     }
 
     public void setFirstName(String firstName) {
@@ -137,7 +137,7 @@ public class TiTAUser extends BaseEntity<Long> {
     }
 
     public String getLastName() {
-        return this.lastName;
+        return lastName;
     }
 
     public void setLastName(String lastName) {
@@ -145,7 +145,7 @@ public class TiTAUser extends BaseEntity<Long> {
     }
 
     public String getEmail() {
-        return this.email;
+        return email;
     }
 
     public void setEmail(String email) {
@@ -153,7 +153,7 @@ public class TiTAUser extends BaseEntity<Long> {
     }
 
     public boolean isDeleted() {
-        return this.deleted;
+        return deleted;
     }
 
     public void setDeleted(boolean deleted) {
@@ -162,11 +162,11 @@ public class TiTAUser extends BaseEntity<Long> {
 
     @Override
     public Long getId() {
-        return this.id;
+        return id;
     }
 
     public Role getRole() {
-        return this.role;
+        return role;
     }
 
     public void setRole(Role role) {
@@ -174,7 +174,7 @@ public class TiTAUser extends BaseEntity<Long> {
     }
 
     public Set<IssueTrackerLogin> getIssueTrackerLogins() {
-        return this.issueTrackerLogins;
+        return issueTrackerLogins;
     }
 
     public void setTitaUserProjects(Set<TiTAUserProject> titaUserProjects) {
@@ -182,7 +182,7 @@ public class TiTAUser extends BaseEntity<Long> {
     }
 
     public Set<TiTAUserProject> getTitaUserProjects() {
-        return this.titaUserProjects;
+        return titaUserProjects;
     }
 
 }

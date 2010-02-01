@@ -34,16 +34,22 @@
   </description>
 
   <dependencies>
-    <!-- H2DB -->
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
     </dependency>
 
-    <!-- dependency>
+    <!-- 
+    <dependency>
 		<groupId>com.h2database</groupId>
 		<artifactId>h2</artifactId>
-	</dependency-->
+	</dependency>
+  
+    <dependency>
+      <groupId>postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+    </dependency>
+    -->
 
     <!-- JPA & Hibernate -->
     <dependency>
@@ -140,9 +146,11 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <excludes>
-			<!--<exclude>**/EffortDaoTest.java</exclude>
+			<exclude>**/EffortDaoTest.java</exclude>
 			<exclude>**/TiTAProjectDaoTest.java</exclude>
-			<exclude>**/UserDAOTest.java</exclude>-->
+			<exclude>**/UserDAOTest.java</exclude>
+            <exclude>**/IssueTrackerTaskDaoTest.java</exclude>
+            <exclude>**/TiTATaskDaoTest.java</exclude>
           </excludes>
         </configuration>
       </plugin>

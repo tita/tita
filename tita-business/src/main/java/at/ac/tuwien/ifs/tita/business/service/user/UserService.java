@@ -31,9 +31,9 @@ import at.ac.tuwien.ifs.tita.entity.conv.Role;
 
 /**
  * Service for manipulating (insert, update, delete, search... ) users and roles in TiTA.
- * 
+ *
  * @author ASE Group 10 - TiTA
- * 
+ *
  */
 public class UserService implements IUserService {
 
@@ -162,7 +162,7 @@ public class UserService implements IUserService {
         Role r = new Role();
         r.setDescription(name);
         List<Role> roles = roleDao.findByExample(r);
-        return (roles.size() > 0) ? roles.get(0) : null;
+        return roles.size() > 0 ? roles.get(0) : null;
     }
 
     /** {@inheritDoc} */
@@ -195,5 +195,27 @@ public class UserService implements IUserService {
     @Override
     public IssueTracker saveIssueTracker(IssueTracker issueTracker) throws PersistenceException {
         return issueTrackerDao.save(issueTracker);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<TiTAUser> getAvailableTiTAUser() throws PersistenceException {
+        return userDao.findAll();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Role saveAndFlushRole(Role role) throws PersistenceException {
+        Role role1 = roleDao.save(role);
+        roleDao.flush();
+        return role1;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public TiTAUser saveAndFlushUser(TiTAUser user) throws PersistenceException {
+        TiTAUser user1 = userDao.save(user);
+        userDao.save(user);
+        return user1;
     }
 }

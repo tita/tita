@@ -21,7 +21,8 @@ body,html {
 }
 
 body {
-   font-size: 100%
+   font-size: 100%;
+   background:#dcdcdc;
 }
 
 h1 {
@@ -38,8 +39,8 @@ p {
 
 /* Header */
 #header {
-   //width: 1024px;
-   //margin: 0 auto;
+   /*width: 1024px;
+   margin: 0 auto; */
    height:50px;
    padding-left:50px;
    padding-right:50px;
@@ -74,11 +75,9 @@ p {
 
 /* Content */
 #container {
-	 width:100%;
-	 height:100%;
-	 background:#dcdcdc;
-	 position:fixed;
 	 padding:15px;
+	 overflow:auto;
+	 right:0; left:0; top:0; margin:0;
 }
 #contents {
 	 top:20px;
@@ -460,12 +459,10 @@ dl.accordion-menu dd.a-m-d .bd {
 }
 
 .ActualTableProject {
-   height: 200px;
    float: right;
 }
 
 .ActualTableUser {
-   height: 200px;
    float: left;
 }
 

@@ -28,7 +28,7 @@
   <licenses>
     <license>
       <name>Propietary</name>
-      <comments>(C) 2009 TiTA</comments>
+      <comments>(C) 2009 - 2010 TiTA</comments>
     </license>
   </licenses>
 
@@ -41,7 +41,7 @@
     <persistence.version>1.0</persistence.version>
     <hibcore.version>3.3.2.GA</hibcore.version>
     <hibentity.version>3.4.0.GA</hibentity.version>
-    <h2db.version>1.2.121</h2db.version>
+    
     <slf4j.version>1.5.8</slf4j.version>
     <jgit.version>0.5.0</jgit.version>
     <log4j.version>1.2.14</log4j.version>
@@ -66,7 +66,13 @@
     <commons-collections.version>20040616</commons-collections.version>
     <supercsv.version>1.52</supercsv.version>
     <spiffy.version>0.05</spiffy.version>
-		<bouncycastle.version>138</bouncycastle.version>
+	<bouncycastle.version>138</bouncycastle.version>
+    
+    <!-- DB Versions -->
+    <postgreSql.version>8.4-701.jdbc4</postgreSql.version>
+    <h2db.version>1.2.121</h2db.version>
+    <mySql.version>5.1.10</mySql.version>
+    
     
     <!-- mantis libs versions -->
     <mantis.connect.version>1.1.1.0</mantis.connect.version>
@@ -510,9 +516,8 @@
       <dependency>
         <groupId>mysql</groupId>
         <artifactId>mysql-connector-java</artifactId>
-        <version>5.0.5</version>
-	  </dependency>
-      
+        <version>${mySql.version}</version>
+      </dependency>      
 
       <!-- Util Dependencies -->
       <dependency>

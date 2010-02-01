@@ -36,9 +36,9 @@ import at.ac.tuwien.ifs.tita.entity.conv.ProjectStatus;
 
 /**
  * Service for manipulating (insert, update, delete, search... ) tita projects in TiTA.
- * 
+ *
  * @author herbert
- * 
+ *
  */
 public class ProjectService implements IProjectService {
 
@@ -47,6 +47,7 @@ public class ProjectService implements IProjectService {
     private IIssueTrackerProjectDao issueTrackerProjectDao;
     private IGenericHibernateDao<TiTATask, Long> titaTaskDao;
     private IGenericHibernateDao<IssueTracker, Long> issueTrackerDao;
+    private IGenericHibernateDao<ProjectStatus, Long> projectStatusDao;
     private IGenericHibernateDao<TiTAUserProject, Long> userProjectDao;
 
     public void setTitaProjectDao(TiTAProjectDao titaProjectDao) {
@@ -67,6 +68,10 @@ public class ProjectService implements IProjectService {
 
     public void setIssueTrackerDao(IGenericHibernateDao<IssueTracker, Long> issueTrackerDao) {
         this.issueTrackerDao = issueTrackerDao;
+    }
+
+    public void setProjectStatusDao(IGenericHibernateDao<ProjectStatus, Long> projectStatusDao) {
+        this.projectStatusDao = projectStatusDao;
     }
 
     public void setUserProjectDao(IGenericHibernateDao<TiTAUserProject, Long> userProjectDao) {
@@ -154,6 +159,20 @@ public class ProjectService implements IProjectService {
     @Override
     public TiTAUserProject saveUserProject(TiTAUserProject project) throws PersistenceException {
         return userProjectDao.save(project);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ProjectStatus saveAndFlushProjectStatus(ProjectStatus projectStatus) throws PersistenceException {
+        ProjectStatus projectStatus1 = projectStatusDao.save(projectStatus);
+        projectStatusDao.flush();
+        return projectStatus1;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void deleteProjectStatus(ProjectStatus projectStatus) throws PersistenceException {
+        projectStatusDao.delete(projectStatus);
     }
 
 }
