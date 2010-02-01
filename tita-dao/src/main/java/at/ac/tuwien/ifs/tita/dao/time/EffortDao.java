@@ -138,7 +138,7 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements
                     + " month(e2.date) as MONTH, null as DAY";
         } else if (grouping.equals("day")) {
             queryString += ", year(e2.date) as YEAR, "
-                    + " month(e2.date) as MONTH, date_part('day',e2.date) as DAY";
+                    + " month(e2.date) as MONTH, day(e2.date) as DAY";
         } else if (grouping.equals("overall")) {
             queryString += ", null as YEAR, null as MONTH, null as DAY";
         }
