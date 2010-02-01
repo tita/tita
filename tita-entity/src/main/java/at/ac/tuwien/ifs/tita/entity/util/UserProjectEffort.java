@@ -35,7 +35,7 @@ public class UserProjectEffort implements Serializable {
     @Id
     @Column (name = "ID", insertable=false, updatable=false)
 //    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private String id;
 
     @Column (name = "PROJECT", insertable=false, updatable=false)
     private String project;
@@ -82,7 +82,7 @@ public class UserProjectEffort implements Serializable {
         return day;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 }

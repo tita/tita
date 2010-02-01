@@ -87,7 +87,7 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements
         String pIds = StringUtil.generateIdStringFromStringList(projectIds);
         String tcIds = StringUtil.generateIdStringFromStringList(tIds);
 
-        String queryString = "select nextval('USER_PROJECT_EFFORT_1_ID_SEQ') as ID, "
+        String queryString = "select UUID() as ID, "
                 + " sum(duration) as DURATION, username as USERNAME, project as PROJECT";
 
         if (grouping.equals("month")) {
@@ -102,12 +102,12 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements
                 + " tp.name as project ";
 
         if (grouping.equals("month")) {
-            queryString += ", date_part('year', e1.date) as YEAR, "
-                    + " date_part('month', e1.date) as MONTH, null as DAY";
+            queryString += ", year(e1.date) as YEAR, "
+                    + " month(e1.date) as MONTH, null as DAY";
         } else if (grouping.equals("day")) {
-            queryString += ", date_part('year', e1.date) as YEAR, "
-                    + " date_part('month', e1.date) as MONTH, "
-                    + " date_part('day', e1.date) as DAY";
+            queryString += ", year(e1.date) as YEAR, "
+                    + " month(e1.date) as MONTH, "
+                    + " day(e1.date) as DAY";
         } else if (grouping.equals("overall")) {
             queryString += ", null as YEAR, null as MONTH, null as DAY";
         }
@@ -120,11 +120,11 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements
                 + tcIds + ") ";
 
         if (grouping.equals("month")) {
-            queryString += " group by tp.name, tu.username, date_part('year', e1.date), "
-                    + " date_part('month', e1.date) ";
+            queryString += " group by tp.name, tu.username, year(e1.date), "
+                    + " month(e1.date) ";
         } else if (grouping.equals("day")) {
-            queryString += " group by tp.name, tu.username, date_part('year', e1.date), "
-                    + " date_part('month', e1.date), date_part('day', e1.date) ";
+            queryString += " group by tp.name, tu.username, year(e1.date), "
+                    + " month(e1.date), day(e1.date) ";
         } else if (grouping.equals("overall")) {
             queryString += " group by tp.name, tu.username ";
         }
@@ -134,11 +134,11 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements
                 + " tp2.name as project ";
 
         if (grouping.equals("month")) {
-            queryString += ", date_part('year', e2.date) as YEAR, "
-                    + " date_part('month', e2.date) as MONTH, null as DAY";
+            queryString += ", year(e2.date) as YEAR, "
+                    + " month(e2.date) as MONTH, null as DAY";
         } else if (grouping.equals("day")) {
-            queryString += ", date_part('year', e2.date) as YEAR, "
-                    + " date_part('month', e2.date) as MONTH, date_part('day',e2.date) as DAY";
+            queryString += ", year(e2.date) as YEAR, "
+                    + " month(e2.date) as MONTH, date_part('day',e2.date) as DAY";
         } else if (grouping.equals("overall")) {
             queryString += ", null as YEAR, null as MONTH, null as DAY";
         }
@@ -152,11 +152,11 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements
                 + tcIds + ")";
 
         if (grouping.equals("month")) {
-            queryString += " group by tp2.name, tu1.username, date_part('year', e2.date), "
-                    + " date_part('month', e2.date)";
+            queryString += " group by tp2.name, tu1.username, year(e2.date), "
+                    + " month(e2.date)";
         } else if (grouping.equals("day")) {
-            queryString += " group by tp2.name, tu1.username, date_part('year', e2.date), "
-                    + " date_part('month', e2.date), date_part('day', e2.date)";
+            queryString += " group by tp2.name, tu1.username, year(e2.date), "
+                    + " month(e2.date), day(e2.date)";
         } else if (grouping.equals("overall")) {
             queryString += " group by tp2.name, tu1.username";
         }
@@ -185,7 +185,7 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements
             List<String> projectIds, String grouping) {
         String pIds = StringUtil.generateIdStringFromStringList(projectIds);
 
-        String queryString = "select _rowid as ID," 
+        String queryString = "select UUID() as ID," 
                 + " sum(duration) as DURATION, project as PROJECT, null as USERNAME";
 
         if (grouping.equals("month")) {
