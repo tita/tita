@@ -17,6 +17,7 @@ package at.ac.tuwien.ifs.tita.ui;
 
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.persistence.PersistenceException;
 
 import org.apache.wicket.Application;
@@ -29,6 +30,7 @@ import org.apache.wicket.security.components.markup.html.links.SecurePageLink;
 import org.apache.wicket.security.hive.authentication.LoginContext;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import at.ac.tuwien.ifs.tita.business.service.project.IProjectService;
 import at.ac.tuwien.ifs.tita.business.service.tasks.ITaskService;
 import at.ac.tuwien.ifs.tita.business.service.time.IEffortService;
 import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
@@ -71,6 +73,9 @@ public class BasePage extends SecureWebPage {
     
     @SpringBean(name = "taskService")
     private ITaskService taskService;
+    
+    @Resource(name = "projectService")
+    private IProjectService projectService;
     
     private TaskListPanel panel;
 
@@ -167,21 +172,27 @@ public class BasePage extends SecureWebPage {
                             ITaskTrackable task = taskService.getIssueTrackerTaskById(
                                     at.getIssueId(), 
                                     at.getIssueTProjetId(), at.getIssueTrackerId());
-                            effortService.saveIssueTrackerTaskEfforts(e, 
+                           
+                                effortService.saveIssueTrackerTaskEfforts(e, 
                                     at.getIssueId(), at.getIssueTProjetId(), 
                                     task.getDescription(), 
-                                    user, panel.getProject().getId());
+                                    user, at.getTitaProjectId());
+
                         }
                         
-                        ActiveTaskEffort ate = timerCoordinator.findTiTATaskForUser(user.getId());
-                        if (ate != null) {
-                            Effort e = timerCoordinator.stopTiTATimer(user.getId());
-                            effortService.saveEffortForTiTATask(e, 
-                                  panel.getGeneralTimer().getDescription(), user, 
-                                  panel.getProject());
-                        }
+//                        ActiveTaskEffort ate = timerCoordinator.findTiTATaskForUser(user.getId());
+//                        if (ate != null && panel != null) {
+//                            Effort e = timerCoordinator.stopTiTATimer(user.getId());
+//                            effortService.saveEffortForTiTATask(e, 
+//                                  panel.getGeneralTimer().getDescription(), user, 
+//                                  panel.getProject());
+//                        }
+                        
+                        timerCoordinator.unregisterUser(user.getId());
+                        activeTasks = 
+                            timerCoordinator.getActiveTasks(user.getId());
                        
-                    } catch (PersistenceException e) {
+                    } catch (Exception e) {
                         error("couldn't log out - user didn't exist in database");
                     }
                     setResponsePage(Application.get().getHomePage());

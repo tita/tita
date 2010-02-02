@@ -163,6 +163,7 @@ public class TimerCoordinator implements Runnable {
                 if (effort != null) {
                     effort.setEndTime(System.currentTimeMillis());
                     active.removeEffortForUser(userId);
+                    activeTasks.remove(active);
                     // subtract active tasks by 1 for given user and tasks count
                     count = registeredUsers.get(userId);
                     if(count > 0 ){
