@@ -41,20 +41,22 @@ public class HomePage extends WebPage {
 
     @SpringBean(name = "timerCoordinator")
     private TimerCoordinator timerCoordinator;
-    
+
     @SpringBean(name = "userService")
     private IUserService userService;
 
+    private FeedbackPanel feedback = new FeedbackPanel("feedback");
+
     public HomePage() {
-        
+
         setStatelessHint(true);
-        add(new FeedbackPanel("feedback"));
+        add(feedback);
         newLoginPanel("loginPanel");
     }
 
     /**
      * Creates a sign in panel with a username and a password field.
-     * 
+     *
      * @param panelId - id
      */
     protected void newLoginPanel(String panelId) {
@@ -62,7 +64,7 @@ public class HomePage extends WebPage {
             private static final long serialVersionUID = 1L;
 
             @Override
-            public boolean signIn(String username, String password) {
+            public boolean signIn(String username, String password) throws LoginException {
                 TiTAUser titaUser;
 
                 TitaLoginContext ctx = new TitaLoginContext(username, password, userService);
@@ -75,9 +77,6 @@ public class HomePage extends WebPage {
                     timerCoordinator.registerUser(titaUser.getId());
                 } catch (PersistenceException ex) {
                     log.error("Could find user in db " + username, ex);
-                    return false;
-                } catch (LoginException e) {
-                    log.error("Could not login " + username, e);
                     return false;
                 }
                 return true;

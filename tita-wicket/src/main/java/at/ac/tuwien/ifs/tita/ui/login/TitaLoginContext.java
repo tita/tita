@@ -34,9 +34,9 @@ import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 
 /**
  * Login Context for Tita - to authenticate Users and grant principals.
- * 
+ *
  * @author Karin
- * 
+ *
  */
 public class TitaLoginContext extends UsernamePasswordContext {
     private final Logger log = LoggerFactory.getLogger(TitaLoginContext.class);
@@ -75,6 +75,17 @@ public class TitaLoginContext extends UsernamePasswordContext {
                     } else if (u.getRole().getDescription().toLowerCase().equals("time consumer")) {
                         user.addPrincipal(new SimplePrincipal("timeconsumer"));
                         TitaSession.getSession().setRole("timeconsumer");
+
+                        if (u.getTitaUserProjects().size() <= 0) {
+                            throw new LoginException(
+                                    "Login of user "
+                                            + username
+                                            + " was correct. But the "
+                                            + username
+                                    + " is not assign to a open project. "
+                                    + "Please contact the administartor!");
+                        }
+
                     } else {
                         throw new LoginException("Login of user " + username + " failed.");
                     }

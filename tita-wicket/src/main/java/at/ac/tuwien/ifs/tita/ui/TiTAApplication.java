@@ -87,12 +87,12 @@ public class TiTAApplication extends SwarmWebApplication {
         // Ensure folder exists
         uploadFolder.mkdirs();
 
-        // try {
-        // initDatabase();
-        // } catch (NoSuchAlgorithmException e) {
-        // // TODO Auto-generated catch block
-        // e.printStackTrace();
-        // }
+        try {
+            initDatabase();
+        } catch (NoSuchAlgorithmException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         mountBookmarkablePage("/single", EffortImportCSVPage.class);
         new Thread(timerCoordinator).start();

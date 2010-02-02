@@ -16,12 +16,15 @@
  */
 package at.ac.tuwien.ifs.tita.ui.controls.panel;
 
+import java.util.MissingResourceException;
+
 import org.apache.wicket.Application;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.security.authentication.LoginException;
 import org.apache.wicket.util.value.ValueMap;
 
 import at.ac.tuwien.ifs.tita.ui.login.TitaSession;
@@ -31,9 +34,9 @@ import at.ac.tuwien.ifs.tita.ui.startpages.ProjectsPage;
 
 /**
  * Panel to authenticate user.
- * 
+ *
  * @author Karin
- * 
+ *
  */
 public abstract class LoginPanel extends Panel {
 
@@ -45,11 +48,16 @@ public abstract class LoginPanel extends Panel {
     /**
      * The actual login process.
      * 
-     * @param username - name
-     * @param password - pwd
+     * @param username
+     *            - name
+     * @param password
+     *            - pwd
      * @return true, if the login was successful, false otherwise
+     * @throws LoginException
+     *             login - if a user with role timeconsumer has no assign tita
+     *             project
      */
-    public abstract boolean signIn(String username, String password);
+    public abstract boolean signIn(String username, String password) throws LoginException;
 
     /**
      * Sign in form.
@@ -60,7 +68,7 @@ public abstract class LoginPanel extends Panel {
 
         /**
          * Constructor.
-         * 
+         *
          * @param id id of the form component
          */
         public SignInForm(final String id) {
@@ -86,26 +94,34 @@ public abstract class LoginPanel extends Panel {
             String username = values.getString("username");
             String password = values.getString("password");
 
-            if (signIn(username, password)) {
-                TitaSession session = TitaSession.getSession();
-                if (session != null) {
-                    if (session.getRole().equals("admin")) {
-                        setResponsePage(AdminPage.class);
-                    } else if (session.getRole().equals("timecontroller")) {
-                        setResponsePage(ProjectsPage.class);
-                    } else if (session.getRole().equals("timeconsumer")) {
-                        setResponsePage(EffortsPage.class);
+            try {
+                if (signIn(username, password)) {
+                    TitaSession session = TitaSession.getSession();
+                    if (session != null) {
+                        if (session.getRole().equals("admin")) {
+                            setResponsePage(AdminPage.class);
+                        } else if (session.getRole().equals("timecontroller")) {
+                            setResponsePage(ProjectsPage.class);
+                        } else if (session.getRole().equals("timeconsumer")) {
+                            setResponsePage(EffortsPage.class);
+                        }
+                    } else {
+                        // continue or homepage?
+                        if (!getPage().continueToOriginalDestination()) {
+                            setResponsePage(Application.get().getHomePage());
+                        }
                     }
                 } else {
-                    // continue or homepage?
-                    if (!getPage().continueToOriginalDestination()) {
-                        setResponsePage(Application.get().getHomePage());
-                    }
+                    // Try the component based localizer first. If not found try
+                    // the
+                    // application localizer. Else use the default
+                    error(getLocalizer().getString("exception.login", this,
+                            "Illegal username password combo"));
                 }
-            } else {
-                // Try the component based localizer first. If not found try the
-                // application localizer. Else use the default
-                error(getLocalizer().getString("exception.login", this, "Illegal username password combo"));
+            } catch (MissingResourceException e) {
+                error("No resources is available");
+            } catch (LoginException e) {
+                error(e.getMessage());
             }
         }
 
