@@ -44,7 +44,6 @@ import org.apache.wicket.util.file.Files;
 import org.apache.wicket.util.file.Folder;
 import org.apache.wicket.util.lang.Bytes;
 import org.supercsv.cellprocessor.ParseDate;
-import org.supercsv.cellprocessor.ParseLong;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.wicketstuff.table.Table;
 
@@ -455,7 +454,7 @@ public class EffortImportCSVPage extends BasePage {
             }
 
             if (headers[i].equals("duration")) {
-                processors[i] = new ParseLong();
+                processors[i] = new ParseDate("HH:mm:ss");
             }
 
             if (headers[i].equals("description")) {

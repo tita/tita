@@ -172,9 +172,10 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <excludes>
-            
+              
               <exclude>**/MantisBaseTest.java</exclude>
               <exclude>**/IssueTrackerServiceTest.java</exclude>
+              <!--
               <exclude>**/TaskServiceTest.java</exclude> 
               <exclude>**/TaskServiceDaoTest.java</exclude>
               <exclude>**/CSVReaderTest.java</exclude>
@@ -182,7 +183,7 @@
               <exclude>**/TiTAProjectServiceTest.java</exclude>
               <exclude>**/EffortServiceTest.java</exclude>
               <exclude>**/UserServiceTest.java</exclude>
-            
+              -->
           </excludes>
         </configuration>
       </plugin>

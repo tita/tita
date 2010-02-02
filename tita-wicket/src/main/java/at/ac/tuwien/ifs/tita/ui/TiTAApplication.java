@@ -129,7 +129,7 @@ public class TiTAApplication extends SwarmWebApplication {
         IssueTracker i = taskService.getIssueTrackerById(issueTracker.getId());
 
         if (taskService.getIssueTrackerById(issueTracker.getId()) != null) {
-            taskService.deleteIssueTracker(issueTracker);
+            // taskService.deleteIssueTracker(issueTracker);
         }
         taskService.saveAndFlushIssueTracker(issueTracker);
 

@@ -38,6 +38,9 @@ import at.ac.tuwien.ifs.tita.entity.TiTAUser;
  */
 public class CSVReader implements IImportReader {
 
+    private static final Long C_THREE_THOUSAND_SIX_HUNDRED = 3600L;
+    private static final Long C_MILLI_SECONDS = 1000L;
+
     private IEffortService effortService;
 
     public CSVReader(IEffortService effortService) {
@@ -65,7 +68,8 @@ public class CSVReader implements IImportReader {
      */
     @Override
     public List<Effort> importEffortData(String path, String[] header, CellProcessor[] processors,
-            TiTATask task, TiTAUser user) throws IOException, PersistenceException {
+            TiTATask task, TiTAUser user) throws IOException, PersistenceException,
+            IllegalArgumentException {
         ICsvBeanReader inFile = new CsvBeanReader(new FileReader(path),
                 CsvPreference.EXCEL_NORTH_EUROPE_PREFERENCE);
 
@@ -76,13 +80,28 @@ public class CSVReader implements IImportReader {
         try {
             EffortBean effortBean;
             while ((effortBean = inFile.read(EffortBean.class, header, processors)) != null) {
-                Effort effort = new Effort(task, null, effortBean.getDate(), effortBean
-                        .getStartTime().getTime(), effortBean.getEndTime().getTime(), effortBean
-                        .getDuration(), effortBean.getDescription(), false, user);
-                effortService.saveEffort(effort);
-                task.getTitaEfforts().add(effort);
 
-                listOfImportedEfforts.add(effort);
+                Long start = effortBean.getStartTime().getTime();
+                Long ende = effortBean.getEndTime().getTime();
+                Long duration = effortBean.getDurationAsLong();
+
+                Long test = start + duration;
+
+                Long hour1 = C_THREE_THOUSAND_SIX_HUNDRED * C_MILLI_SECONDS;
+
+                Long test2 = duration + hour1;
+
+                if (start + duration >= ende) {
+                    throw new IllegalArgumentException("The values are the not valid.");
+                } else {
+
+                    Effort effort = new Effort(task, null, effortBean.getDate(), start, ende,
+                            duration, effortBean.getDescription(), false, user);
+                    effortService.saveEffort(effort);
+                    task.getTitaEfforts().add(effort);
+
+                    listOfImportedEfforts.add(effort);
+                }
             }
         } finally {
             inFile.close();

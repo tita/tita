@@ -42,7 +42,7 @@
       <property name="hibernate.show_comment" value="true" />
       <!-- <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>-->
       <!-- <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />-->
-      <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
+      <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
 
       <!-- Session context -->
       <property name="hibernate.transaction.factory_class" value="org.hibernate.transaction.JDBCTransactionFactory"/>

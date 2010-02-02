@@ -26,7 +26,7 @@ public class EffortBean implements Serializable {
     private Date date;
     private Date startTime;
     private Date endTime;
-    private Long duration;
+    private Date duration;
     private String description;
 
     public Date getDate() {
@@ -47,10 +47,16 @@ public class EffortBean implements Serializable {
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
-    public Long getDuration() {
+
+    public Date getDuration() {
         return duration;
     }
-    public void setDuration(Long duration) {
+
+    public Long getDurationAsLong() {
+        return duration.getTime();
+    }
+
+    public void setDuration(Date duration) {
         this.duration = duration;
     }
     public String getDescription() {

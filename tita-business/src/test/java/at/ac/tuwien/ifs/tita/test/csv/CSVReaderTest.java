@@ -38,7 +38,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import org.supercsv.cellprocessor.ParseDate;
-import org.supercsv.cellprocessor.ParseLong;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 
 import at.ac.tuwien.ifs.tita.business.csv.CSVReader;
@@ -59,9 +58,9 @@ import at.ac.tuwien.ifs.tita.entity.conv.Role;
 
 /**
  * CSV Reader Testcases.
- * 
+ *
  * @author karin
- * 
+ *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:datasourceContext-test.xml" })
@@ -216,14 +215,15 @@ public class CSVReaderTest extends
 
     /**
      * Test.
-     * 
+     *
      * @throws IOException
      *             ioe
      */
     @Test
     public void testImportCSV() throws IOException {
         CellProcessor[] processors = new CellProcessor[] {
-                new ParseDate("dd.MM.yyyy"), null, new ParseLong(),
+ new ParseDate("dd.MM.yyyy"), null,
+                new ParseDate("HH:mm:ss"),
                 new ParseDate("HH:mm:ss"), new ParseDate("HH:mm:ss") };
 
         IImportReader reader = new CSVReader(service);

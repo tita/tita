@@ -41,9 +41,9 @@
 		<Arg>
 			<New class="org.apache.commons.dbcp.BasicDataSource">
 				<Set name="driverClassName">com.mysql.jdbc.Driver</Set>
-				<Set name="url">jdbc:mysql://localhost:3308/institutdb</Set>
+				<Set name="url">jdbc:mysql://localhost:3306/tita</Set>
 				<Set name="username">root</Set>
-				<Set name="password">sa</Set>
+				<Set name="password">root</Set>
 			</New>
 		</Arg>
 	</New>
