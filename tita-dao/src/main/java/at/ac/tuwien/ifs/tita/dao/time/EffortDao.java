@@ -33,6 +33,7 @@ import org.hibernate.criterion.Restrictions;
 import at.ac.tuwien.ifs.tita.dao.GenericHibernateDao;
 import at.ac.tuwien.ifs.tita.dao.interfaces.IEffortDao;
 import at.ac.tuwien.ifs.tita.entity.Effort;
+import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.entity.util.StringUtil;
 import at.ac.tuwien.ifs.tita.entity.util.UserProjectEffort;
 
@@ -42,8 +43,7 @@ import at.ac.tuwien.ifs.tita.entity.util.UserProjectEffort;
  * @author markus
  * 
  */
-public class EffortDao extends GenericHibernateDao<Effort, Long> implements
-        IEffortDao {
+public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEffortDao {
     private static final int C_FETCHSIZE = 1000;
 
     public EffortDao() {
@@ -51,30 +51,36 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements
     }
 
     /** {@inheritDoc} */
-    public List<Effort> getTimeEffortsMonthlyView(Integer year, Integer month) {
+    public List<Effort> getTimeEffortsMonthlyView(Integer year, Integer month, TiTAUser user) {
         Calendar start = Calendar.getInstance();
         Calendar end = Calendar.getInstance();
         start.set(year, month, 1);
         end.set(year, month, start.getActualMaximum(Calendar.DAY_OF_MONTH));
 
-        return findByCriteriaOrdered(new Criterion[] {
-                Restrictions.between("date", start.getTime(), end.getTime()),
-                Restrictions.eq("deleted", false) }, new Order[] { Property
-                .forName("date").asc() }, new String[] {});
-    }
-
-    /** {@inheritDoc} */
-    public List<Effort> getTimeEffortsDailyView(Date date) {
-        return findByCriteriaOrdered(new Criterion[] {
-                Restrictions.eq("date", date),
-                Restrictions.eq("deleted", false) }, new Order[] { Property
-                .forName("date").asc() }, new String[] {});
+        return findByCriteriaOrdered(new Criterion[] { Restrictions.between("date", start.getTime(), end.getTime()),
+                Restrictions.eq("deleted", false), Restrictions.eq("user", user) }, new Order[] { Property.forName(
+                "date").asc() }, new String[] {});
     }
 
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
-    public List<Integer> getTimeEffortsYears() {
-        String query = "select distinct year(te.date) from Effort te where deleted=false order by 1 desc";
+    public List<Effort> getTimeEffortsDailyView(Date date, Long userId) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+
+        String query = "Select e from Effort e where e.deleted=false and " + " day(e.date) = "
+                + cal.get(Calendar.DAY_OF_MONTH) + " and month(e.date) = " + (cal.get(Calendar.MONTH) + 1)
+                + " and year(e.date)= " + cal.get(Calendar.YEAR) + " and e.user=" + userId + " order by e.date";
+
+        Query q = getSession().createQuery(query);
+        return q.list();
+    }
+
+    /** {@inheritDoc} */
+    @SuppressWarnings("unchecked")
+    public List<Integer> getTimeEffortsYears(Long userId) {
+        String query = "select distinct year(te.date) from Effort te where deleted=false " + " and te.user = " + userId
+                + " order by 1 desc";
         Query q = getSession().createQuery(query);
         return q.list();
     }
@@ -82,8 +88,8 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
     @Override
-    public List<UserProjectEffort> findEffortsForTiTAProjectAndTimeConsumerId(
-            List<String> projectIds, List<String> tIds, String grouping) {
+    public List<UserProjectEffort> findEffortsForTiTAProjectAndTimeConsumerId(List<String> projectIds,
+            List<String> tIds, String grouping) {
         String pIds = StringUtil.generateIdStringFromStringList(projectIds);
         String tcIds = StringUtil.generateIdStringFromStringList(tIds);
 
@@ -98,65 +104,49 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements
             queryString += ", null as YEAR, null as MONTH, null as DAY";
         }
 
-        queryString += " from (select sum(e1.duration) as duration, tu.username as username,"
-                + " tp.name as project ";
+        queryString += " from (select sum(e1.duration) as duration, tu.username as username," + " tp.name as project ";
 
         if (grouping.equals("month")) {
-            queryString += ", year(e1.date) as YEAR, "
-                    + " month(e1.date) as MONTH, null as DAY";
+            queryString += ", year(e1.date) as YEAR, " + " month(e1.date) as MONTH, null as DAY";
         } else if (grouping.equals("day")) {
-            queryString += ", year(e1.date) as YEAR, "
-                    + " month(e1.date) as MONTH, "
-                    + " day(e1.date) as DAY";
+            queryString += ", year(e1.date) as YEAR, " + " month(e1.date) as MONTH, " + " day(e1.date) as DAY";
         } else if (grouping.equals("overall")) {
             queryString += ", null as YEAR, null as MONTH, null as DAY";
         }
 
-        queryString += " from effort e1 "
-                + "join tita_task tt on e1.tita_task_id = tt.id "
-                + "join tita_project tp on tt.tita_project_id = tp.id "
-                + "join tita_user tu on tu.id = e1.user_id "
-                + "where tp.name in (" + pIds + ") and tu.username in ("
-                + tcIds + ") ";
+        queryString += " from effort e1 " + "join tita_task tt on e1.tita_task_id = tt.id "
+                + "join tita_project tp on tt.tita_project_id = tp.id " + "join tita_user tu on tu.id = e1.user_id "
+                + "where tp.name in (" + pIds + ") and tu.username in (" + tcIds + ") ";
 
         if (grouping.equals("month")) {
-            queryString += " group by tp.name, tu.username, year(e1.date), "
-                    + " month(e1.date) ";
+            queryString += " group by tp.name, tu.username, year(e1.date), " + " month(e1.date) ";
         } else if (grouping.equals("day")) {
-            queryString += " group by tp.name, tu.username, year(e1.date), "
-                    + " month(e1.date), day(e1.date) ";
+            queryString += " group by tp.name, tu.username, year(e1.date), " + " month(e1.date), day(e1.date) ";
         } else if (grouping.equals("overall")) {
             queryString += " group by tp.name, tu.username ";
         }
 
-        queryString += " union all"
-                + " select sum(e2.duration) as duration, tu1.username as username, "
+        queryString += " union all" + " select sum(e2.duration) as duration, tu1.username as username, "
                 + " tp2.name as project ";
 
         if (grouping.equals("month")) {
-            queryString += ", year(e2.date) as YEAR, "
-                    + " month(e2.date) as MONTH, null as DAY";
+            queryString += ", year(e2.date) as YEAR, " + " month(e2.date) as MONTH, null as DAY";
         } else if (grouping.equals("day")) {
-            queryString += ", year(e2.date) as YEAR, "
-                    + " month(e2.date) as MONTH, day(e2.date) as DAY";
+            queryString += ", year(e2.date) as YEAR, " + " month(e2.date) as MONTH, day(e2.date) as DAY";
         } else if (grouping.equals("overall")) {
             queryString += ", null as YEAR, null as MONTH, null as DAY";
         }
 
-        queryString += " from effort e2 "
-                + "join issue_tracker_task it on e2.issuet_task_id = it.id "
+        queryString += " from effort e2 " + "join issue_tracker_task it on e2.issuet_task_id = it.id "
                 + "join issue_tracker_project itp on it.issue_tracker_project_id ="
                 + "itp.id join tita_project tp2 on tp2.id = itp.tita_project_id "
-                + "join tita_user tu1 on tu1.id = e2.user_id "
-                + "where tp2.name in (" + pIds + ") and tu1.username in ("
-                + tcIds + ")";
+                + "join tita_user tu1 on tu1.id = e2.user_id " + "where tp2.name in (" + pIds
+                + ") and tu1.username in (" + tcIds + ")";
 
         if (grouping.equals("month")) {
-            queryString += " group by tp2.name, tu1.username, year(e2.date), "
-                    + " month(e2.date)";
+            queryString += " group by tp2.name, tu1.username, year(e2.date), " + " month(e2.date)";
         } else if (grouping.equals("day")) {
-            queryString += " group by tp2.name, tu1.username, year(e2.date), "
-                    + " month(e2.date), day(e2.date)";
+            queryString += " group by tp2.name, tu1.username, year(e2.date), " + " month(e2.date), day(e2.date)";
         } else if (grouping.equals("overall")) {
             queryString += " group by tp2.name, tu1.username";
         }
@@ -181,11 +171,10 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
     @Override
-    public List<UserProjectEffort> findEffortsForTiTAProjectId(
-            List<String> projectIds, String grouping) {
+    public List<UserProjectEffort> findEffortsForTiTAProjectId(List<String> projectIds, String grouping) {
         String pIds = StringUtil.generateIdStringFromStringList(projectIds);
 
-        String queryString = "select UUID() as ID," 
+        String queryString = "select UUID() as ID,"
                 + " sum(duration) as DURATION, project as PROJECT, null as USERNAME";
 
         if (grouping.equals("month")) {
@@ -199,54 +188,42 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements
         queryString += " from (select sum(e1.duration) as duration, tp.name as project ";
 
         if (grouping.equals("month")) {
-            queryString += ", year(e1.date) as YEAR, "
-                    + " month(e1.date) as MONTH, null as DAY ";
+            queryString += ", year(e1.date) as YEAR, " + " month(e1.date) as MONTH, null as DAY ";
         } else if (grouping.equals("day")) {
-            queryString += ", year(e1.date) as YEAR, "
-                    + " month(e1.date) as MONTH, day(e1.date) as DAY";
+            queryString += ", year(e1.date) as YEAR, " + " month(e1.date) as MONTH, day(e1.date) as DAY";
         } else if (grouping.equals("overall")) {
             queryString += ", null as YEAR, null as MONTH, null as DAY";
         }
 
         queryString += " from effort e1 join tita_task tt on e1.tita_task_id = tt.id "
-                + "join tita_project tp on tt.tita_project_id = tp.id "
-                + "where tp.name in (" + pIds + ") ";
+                + "join tita_project tp on tt.tita_project_id = tp.id " + "where tp.name in (" + pIds + ") ";
 
         if (grouping.equals("month")) {
-            queryString += " group by tp.name, year(e1.date), "
-                    + " month(e1.date) ";
+            queryString += " group by tp.name, year(e1.date), " + " month(e1.date) ";
         } else if (grouping.equals("day")) {
-            queryString += " group by tp.name, year(e1.date), "
-                    + " month(e1.date), day(e1.date) ";
+            queryString += " group by tp.name, year(e1.date), " + " month(e1.date), day(e1.date) ";
         } else if (grouping.equals("overall")) {
             queryString += " group by tp.name ";
         }
 
-        queryString += " union all"
-                + " select sum(e2.duration) as duration, tp2.name as project ";
+        queryString += " union all" + " select sum(e2.duration) as duration, tp2.name as project ";
 
         if (grouping.equals("month")) {
-            queryString += ", year(e2.date) as year, "
-                    + " month(e2.date) as month, null as day ";
+            queryString += ", year(e2.date) as year, " + " month(e2.date) as month, null as day ";
         } else if (grouping.equals("day")) {
-            queryString += ", year(e2.date) as year, "
-                    + "month(e2.date) as month, day(e2.date) as day";
+            queryString += ", year(e2.date) as year, " + "month(e2.date) as month, day(e2.date) as day";
         } else if (grouping.equals("overall")) {
             queryString += ", null as year, null as month, null as day";
         }
 
-        queryString += " from effort e2 "
-                + "join issue_tracker_task it on e2.issuet_task_id = it.id "
+        queryString += " from effort e2 " + "join issue_tracker_task it on e2.issuet_task_id = it.id "
                 + "join issue_tracker_project itp on it.issue_tracker_project_id ="
-                + "itp.id join tita_project tp2 on tp2.id = itp.tita_project_id "
-                + "where tp2.name in (" + pIds + ") ";
+                + "itp.id join tita_project tp2 on tp2.id = itp.tita_project_id " + "where tp2.name in (" + pIds + ") ";
 
         if (grouping.equals("month")) {
-            queryString += " group by tp2.name, year(e2.date), "
-                    + " month(e2.date) ";
+            queryString += " group by tp2.name, year(e2.date), " + " month(e2.date) ";
         } else if (grouping.equals("day")) {
-            queryString += " group by tp2.name, year(e2.date), "
-                    + " month(e2.date), day(e2.date) ";
+            queryString += " group by tp2.name, year(e2.date), " + " month(e2.date), day(e2.date) ";
         } else if (grouping.equals("overall")) {
             queryString += " group by tp2.name ";
         }
@@ -279,13 +256,12 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements
 
     /** {@inheritDoc} */
     @Override
-    public Long findEffortsSumForIssueTrackerTask(Long tpId, String username,
-            Long issTProjectId, Long isstTTaskId, Long isstId) {
+    public Long findEffortsSumForIssueTrackerTask(Long tpId, String username, Long issTProjectId, Long isstTTaskId,
+            Long isstId) {
         String queryString = "select sum(duration) as duration from effort e "
                 + "join issue_tracker_task itt on e.issuet_task_id = itt.id "
                 + "join issue_tracker_project itp on itt.issue_tracker_project_id = itp.id "
-                + "join tita_project tp on itp.tita_project_id = tp.id "
-                + "join tita_user tu on e.user_id = tu.id "
+                + "join tita_project tp on itp.tita_project_id = tp.id " + "join tita_user tu on e.user_id = tu.id "
                 + "where tp.id = ? and itp.isst_id = ? and itp.isst_project_id = ? "
                 + "and itt.isst_task_id = ? and tu.username = ?";
 
@@ -309,13 +285,10 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements
 
     /** {@inheritDoc} */
     @Override
-    public Long findEffortsSumForTiTATasks(Long projectId, Long userId,
-            Long taskId) {
-        String queryString = "select sum(e.duration) as sum "
-                + "from Effort e " + "join e.titaTask as tt "
-                + "join tt.titaProject as tp " + "where e.user = " + userId
-                + " and tp.id = " + projectId + " and tt.id=" + taskId
-                + " and e.deleted != true";
+    public Long findEffortsSumForTiTATasks(Long projectId, Long userId, Long taskId) {
+        String queryString = "select sum(e.duration) as sum " + "from Effort e " + "join e.titaTask as tt "
+                + "join tt.titaProject as tp " + "where e.user = " + userId + " and tp.id = " + projectId
+                + " and tt.id=" + taskId + " and e.deleted != true";
 
         Query q = getSession().createQuery(queryString);
 
@@ -325,14 +298,10 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements
 
     /** {@inheritDoc} */
     @Override
-    public Long findEffortsSumForIssueTrackerTasks(Long projectId, Long userId,
-            Long taskId) {
-        String queryString = "select sum(e.duration) as sum "
-                + "from Effort e " + "join e.issueTTask as itt "
-                + "join itt.isstProject as itp "
-                + "join itp.titaProject as tp " + "where e.user = " + userId
-                + " and tp.id = " + projectId + " and itt.id= " + taskId
-                + " and e.deleted != true";
+    public Long findEffortsSumForIssueTrackerTasks(Long projectId, Long userId, Long taskId) {
+        String queryString = "select sum(e.duration) as sum " + "from Effort e " + "join e.issueTTask as itt "
+                + "join itt.isstProject as itp " + "join itp.titaProject as tp " + "where e.user = " + userId
+                + " and tp.id = " + projectId + " and itt.id= " + taskId + " and e.deleted != true";
 
         Query q = getSession().createQuery(queryString);
 
@@ -342,17 +311,14 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements
 
     /** {@inheritDoc} */
     @Override
-    public Long totalizeEffortsForTiTAProjectAndTiTAUser(Long projectId,
-            Long userId) {
+    public Long totalizeEffortsForTiTAProjectAndTiTAUser(Long projectId, Long userId) {
 
-        String first = "select sum(e.duration) as sum " + "from Effort e "
-                + "join e.titaTask as tt " + "join tt.titaProject as tp "
-                + "where e.user = " + userId + " and tp.id = " + projectId
+        String first = "select sum(e.duration) as sum " + "from Effort e " + "join e.titaTask as tt "
+                + "join tt.titaProject as tp " + "where e.user = " + userId + " and tp.id = " + projectId
                 + " and e.deleted != true";
 
-        String second = "select sum(e.duration) as sum " + "from Effort e "
-                + "join e.issueTTask as itt " + "join itt.isstProject as itp "
-                + "join itp.titaProject as tp " + "where e.user = " + userId
+        String second = "select sum(e.duration) as sum " + "from Effort e " + "join e.issueTTask as itt "
+                + "join itt.isstProject as itp " + "join itp.titaProject as tp " + "where e.user = " + userId
                 + " and tp.id = " + projectId + " and e.deleted != true";
 
         Query query1 = getSession().createQuery(first);
@@ -373,18 +339,14 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements
 
     /** {@inheritDoc} */
     @Override
-    public List<Effort> findEffortsForTiTAProjectAndTiTAUser(Long projectId,
-            Long userId) {
+    public List<Effort> findEffortsForTiTAProjectAndTiTAUser(Long projectId, Long userId) {
 
-        String first = "select e " + "from Effort e "
-                + "join e.titaTask as tt " + "join tt.titaProject as tp "
-                + "where e.user = " + userId + " and tp.id = " + projectId
+        String first = "select e " + "from Effort e " + "join e.titaTask as tt " + "join tt.titaProject as tp "
+                + "where e.user = " + userId + " and tp.id = " + projectId + " and e.deleted != true";
+
+        String second = "select e " + "from Effort e " + "join e.issueTTask as itt " + "join itt.isstProject as itp "
+                + "join itp.titaProject as tp " + "where e.user = " + userId + " and tp.id = " + projectId
                 + " and e.deleted != true";
-
-        String second = "select e " + "from Effort e "
-                + "join e.issueTTask as itt " + "join itt.isstProject as itp "
-                + "join itp.titaProject as tp " + "where e.user = " + userId
-                + " and tp.id = " + projectId + " and e.deleted != true";
 
         Query query1 = getSession().createQuery(first);
         Query query2 = getSession().createQuery(second);
@@ -399,35 +361,22 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements
 
     /** {@inheritDoc} */
     @Override
-    public List<Effort> findEffortsForTiTAProjectAndTiTAUserOrdered(
-            Long projectId, Long userId) {
+    public List<Effort> findEffortsForTiTAProjectAndTiTAUserOrdered(Long projectId, Long userId) {
         List<Effort> returnValue = new ArrayList<Effort>();
 
         String queryString = "select e1.ID, e1.DESCRIPTION, e1.TITA_TASK_ID, e1.ISSUET_TASK_ID, "
                 + "e1.DATE, e1.START_TIME, e1.END_TIME, e1.DURATION, e1.DELETED, "
-                + "e1.USER_ID, e1.COST_CENTER from Effort e1 "
-                + "join tita_task tt on e1.tita_task_id = tt.id "
-                + "join tita_project tp on tt.tita_project_id = tp.id "
-                + "join tita_user tu on tu.id = e1.user_id "
-                + "where tu.id = "
-                + userId
-                + " and tp.id = "
-                + projectId
-                + " and e1.deleted != true "
-                + "UNION "
+                + "e1.USER_ID, e1.COST_CENTER from Effort e1 " + "join tita_task tt on e1.tita_task_id = tt.id "
+                + "join tita_project tp on tt.tita_project_id = tp.id " + "join tita_user tu on tu.id = e1.user_id "
+                + "where tu.id = " + userId + " and tp.id = " + projectId + " and e1.deleted != true " + "UNION "
                 + "select e2.ID, e2.DESCRIPTION, e2.TITA_TASK_ID, e2.ISSUET_TASK_ID, e2.DATE, "
                 + "e2.START_TIME, e2.END_TIME, e2.DURATION, e2.DELETED, "
                 + "e2.USER_ID, e2.COST_CENTER from Effort e2 "
                 + "join issue_tracker_task itt on e2.issuet_task_id = itt.id "
                 + "join issue_tracker_project itp on itt.issue_tracker_project_id = itp.id "
                 + "join tita_project tp2 on tp2.id = itp.tita_project_id "
-                + "join tita_user tu2 on tu2.id = e2.user_id "
-                + "where tu2.id = "
-                + userId
-                + " and tp2.id = "
-                + projectId
-                + " and e2.deleted != true "
-                + "order by date desc, end_time desc";
+                + "join tita_user tu2 on tu2.id = e2.user_id " + "where tu2.id = " + userId + " and tp2.id = "
+                + projectId + " and e2.deleted != true " + "order by date desc, end_time desc";
 
         org.hibernate.SQLQuery q = getSession().createSQLQuery(queryString);
         q.addEntity(Effort.class);

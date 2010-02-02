@@ -163,7 +163,8 @@ public class MonthlyViewPage extends BasePage {
             protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
                 Integer year = Integer.valueOf(selectedYear.toString());
                 Integer month = Integer.valueOf(selectedMonth.toString());
-                tableModel.reload(getTimeEffortsMonthlyView(year, month));
+                List<Effort> tlist = getTimeEffortsMonthlyView(year, month);
+                tableModel.reload(tlist);
                 target.addComponent(container);
                 target.addComponent(btnShowAsPDF);
             }
@@ -171,6 +172,11 @@ public class MonthlyViewPage extends BasePage {
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form1) {
                 // TODO Set border red on textfields which are'nt filled
+            }
+
+            @Override
+            public boolean isEnabled() {
+                return !years.isEmpty();
             }
         });
     }
@@ -204,7 +210,8 @@ public class MonthlyViewPage extends BasePage {
     private List<Effort> getTimeEffortsMonthlyView(Integer year, Integer month) {
         List<Effort> list = null;
         try {
-            list = effortService.getEffortsMonthlyView(year, month);
+            list = effortService.getEffortsMonthlyView(year, month, userService.getUserByUsername(TitaSession
+                    .getSession().getUsername()));
         } catch (PersistenceException e) {
             // TODO: GUI Exception Handling
             log.error(e.getMessage());
@@ -218,7 +225,8 @@ public class MonthlyViewPage extends BasePage {
      */
     private void initYears() {
         years = new ArrayList<SelectOption>();
-        List<Integer> effortYears = effortService.getEffortsYears();
+        List<Integer> effortYears = effortService.getEffortsYears(userService.getUserByUsername(TitaSession
+                .getSession().getUsername()));
         for (Integer e : effortYears) {
             years.add(new SelectOption(e.toString(), e.toString()));
         }

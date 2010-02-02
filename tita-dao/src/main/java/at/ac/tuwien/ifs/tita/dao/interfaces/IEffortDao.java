@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 import at.ac.tuwien.ifs.tita.entity.Effort;
+import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 import at.ac.tuwien.ifs.tita.entity.util.UserProjectEffort;
 
 /**
@@ -34,24 +35,27 @@ public interface IEffortDao extends IGenericHibernateDao<Effort, Long> {
      * 
      * @param year year which is selected
      * @param month month which is selected
+     * @param user specifies from which user
      * @return list of efforts that match dates
      */
-    List<Effort> getTimeEffortsMonthlyView(Integer year, Integer month);
+    List<Effort> getTimeEffortsMonthlyView(Integer year, Integer month, TiTAUser user);
 
     /**
      * Gets a view for a day.
      * 
      * @param date dates which are selected
+     * @param userId specifies from which user
      * @return list of efforts that match dates
      */
-    List<Effort> getTimeEffortsDailyView(Date date);
+    List<Effort> getTimeEffortsDailyView(Date date, Long userId);
 
     /**
      * Gets all years for which efforts are stored.
      * 
+     * @param userId specifies from which user
      * @return list of years as list of integer
      */
-    List<Integer> getTimeEffortsYears();
+    List<Integer> getTimeEffortsYears(Long userId);
 
     /**
      * Find all efforts for a specific tita-project.

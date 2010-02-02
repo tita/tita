@@ -13,7 +13,6 @@
  */
 package at.ac.tuwien.ifs.tita.ui.evaluation.timeconsumer;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -141,10 +140,8 @@ public class DailyViewPage extends BasePage {
     /**
      * loads report and sets data source.
      * 
-     * @throws JRException
-     *             JasperReports Exception
-     * @throws PersistenceException
-     *             if user cannot be found
+     * @throws JRException JasperReports Exception
+     * @throws PersistenceException if user cannot be found
      */
     private void loadReport() throws JRException, PersistenceException {
         ServletContext context = ((WebApplication) getApplication()).getServletContext();
@@ -161,16 +158,16 @@ public class DailyViewPage extends BasePage {
 
     /**
      * Gets time effort data by date.
-     *
+     * 
      * @param d date of timeeffort entry
      * @return all timeefforts that match the date
      */
     private List<Effort> getTimeEffortsDailyView(Date d) {
         List<Effort> list = null;
 
-        Date de = getMidnightDateTime(d);
         try {
-            list = effortService.getEffortsDailyView(de);
+            list = effortService.getEffortsDailyView(d, userService.getUserByUsername(TitaSession.getSession()
+                    .getUsername()));
         } catch (PersistenceException e) {
             // TODO: GUI Exception Handling
             log.error(e.getMessage());
@@ -180,24 +177,8 @@ public class DailyViewPage extends BasePage {
     }
 
     /**
-     * Sets time of date to midnight.
-     *
-     * @param d date to convert
-     * @return midnight date.
-     */
-    private Date getMidnightDateTime(Date d) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(d);
-        cal.set(Calendar.MILLISECOND, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        return cal.getTime();
-    }
-
-    /**
      * Returns date for datePicker.
-     *
+     * 
      * @return the date
      */
     public Date getDate() {

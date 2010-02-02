@@ -18,7 +18,6 @@ package at.ac.tuwien.ifs.tita.ui;
 import java.util.List;
 
 import javax.annotation.Resource;
-import javax.persistence.PersistenceException;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.WicketRuntimeException;
@@ -36,7 +35,6 @@ import at.ac.tuwien.ifs.tita.business.service.time.IEffortService;
 import at.ac.tuwien.ifs.tita.business.service.user.IUserService;
 import at.ac.tuwien.ifs.tita.entity.Effort;
 import at.ac.tuwien.ifs.tita.entity.TiTAUser;
-import at.ac.tuwien.ifs.tita.entity.util.ActiveTaskEffort;
 import at.ac.tuwien.ifs.tita.entity.util.ActiveTaskId;
 import at.ac.tuwien.ifs.tita.issuetracker.interfaces.ITaskTrackable;
 import at.ac.tuwien.ifs.tita.ui.administration.project.ProjectAdministrationPage;
@@ -67,16 +65,16 @@ public class BasePage extends SecureWebPage {
 
     @SpringBean(name = "timerCoordinator")
     private TimerCoordinator timerCoordinator;
-    
+
     @SpringBean(name = "titaEffortService")
     private IEffortService effortService;
-    
+
     @SpringBean(name = "taskService")
     private ITaskService taskService;
-    
+
     @Resource(name = "projectService")
     private IProjectService projectService;
-    
+
     private TaskListPanel panel;
 
     public BasePage() {
@@ -86,8 +84,7 @@ public class BasePage extends SecureWebPage {
         add(new Label("showUser", "Signed in as " + username));
 
         final WebMarkupContainer timeConsumergroup = new WebMarkupContainer("timeConsumerGroup");
-        final WebMarkupContainer timeControllergroup = 
-            new WebMarkupContainer("timeControllerGroup");
+        final WebMarkupContainer timeControllergroup = new WebMarkupContainer("timeControllerGroup");
         final WebMarkupContainer administratorGroup = new WebMarkupContainer("administratorGroup");
 
         addAdminLinks(administratorGroup);
@@ -99,11 +96,9 @@ public class BasePage extends SecureWebPage {
         add(administratorGroup);
     }
 
-
     public void setPanel(TaskListPanel panel) {
         this.panel = panel;
     }
-
 
     /**
      * Adds the secure Links for TimeController.
@@ -112,11 +107,9 @@ public class BasePage extends SecureWebPage {
      */
     private void addTimeControllerLinks(WebMarkupContainer timeControllergroup) {
         timeControllergroup.add(new SecurePageLink("projectsPageLink", ProjectsPage.class));
-        timeControllergroup.add(
-                new SecurePageLink("multipleProjectsViewLink", MultipleProjectsView.class));
+        timeControllergroup.add(new SecurePageLink("multipleProjectsViewLink", MultipleProjectsView.class));
         timeControllergroup.add(new SecurePageLink("targetActualViewLink", TargetActualView.class));
-        timeControllergroup.add(
-                new SecurePageLink("performanceOfPersonViewLink", PerformanceOfPersonView.class));
+        timeControllergroup.add(new SecurePageLink("performanceOfPersonViewLink", PerformanceOfPersonView.class));
     }
 
     /**
@@ -128,8 +121,7 @@ public class BasePage extends SecureWebPage {
         timeConsumergroup.add(new SecurePageLink("effortsPageLink", EffortsPage.class));
         timeConsumergroup.add(new SecurePageLink("dailyViewPageLink", DailyViewPage.class));
         timeConsumergroup.add(new SecurePageLink("monthlyViewPageLink", MonthlyViewPage.class));
-        timeConsumergroup.add(
-                new SecurePageLink("effortsImportCSVPageLink", EffortImportCSVPage.class));
+        timeConsumergroup.add(new SecurePageLink("effortsImportCSVPageLink", EffortImportCSVPage.class));
 
     }
 
@@ -140,10 +132,8 @@ public class BasePage extends SecureWebPage {
      */
     private void addAdminLinks(WebMarkupContainer administratorGroup) {
         administratorGroup.add(new SecurePageLink("adminPageLink", AdminPage.class));
-        administratorGroup.add(
-                new SecurePageLink("userAdministrationLink", UserAdministrationPage.class));
-        administratorGroup.add(
-                new SecurePageLink("projectAdministrationLink", ProjectAdministrationPage.class));
+        administratorGroup.add(new SecurePageLink("userAdministrationLink", UserAdministrationPage.class));
+        administratorGroup.add(new SecurePageLink("projectAdministrationLink", ProjectAdministrationPage.class));
 
     }
 
@@ -162,44 +152,39 @@ public class BasePage extends SecureWebPage {
                 TitaSession titaSession = TitaSession.getSession();
                 if (titaSession.logoff(getLogoffContext())) {
                     try {
-                        TiTAUser user = userService.getUserByUsername(
-                                TitaSession.getSession().getUsername());
-                        List<ActiveTaskId> activeTasks = 
-                            timerCoordinator.getActiveTasks(user.getId());
-                        
+                        TiTAUser user = userService.getUserByUsername(TitaSession.getSession().getUsername());
+                        List<ActiveTaskId> activeTasks = timerCoordinator.getActiveTasks(user.getId());
+
                         for (ActiveTaskId at : activeTasks) {
                             Effort e = timerCoordinator.stopIssueTimer(user.getId(), at);
-                            ITaskTrackable task = taskService.getIssueTrackerTaskById(
-                                    at.getIssueId(), 
-                                    at.getIssueTProjetId(), at.getIssueTrackerId());
-                           
-                                effortService.saveIssueTrackerTaskEfforts(e, 
-                                    at.getIssueId(), at.getIssueTProjetId(), 
-                                    task.getDescription(), 
-                                    user, at.getTitaProjectId());
+                            ITaskTrackable task = taskService.getIssueTrackerTaskById(at.getIssueId(), at
+                                    .getIssueTProjetId(), at.getIssueTrackerId());
+
+                            effortService.saveIssueTrackerTaskEfforts(e, at.getIssueId(), at.getIssueTProjetId(), task
+                                    .getDescription(), user, at.getTitaProjectId());
 
                         }
-                        
-//                        ActiveTaskEffort ate = timerCoordinator.findTiTATaskForUser(user.getId());
-//                        if (ate != null && panel != null) {
-//                            Effort e = timerCoordinator.stopTiTATimer(user.getId());
-//                            effortService.saveEffortForTiTATask(e, 
-//                                  panel.getGeneralTimer().getDescription(), user, 
-//                                  panel.getProject());
-//                        }
-                        
+
+                        // ActiveTaskEffort ate =
+                        // timerCoordinator.findTiTATaskForUser(user.getId());
+                        // if (ate != null && panel != null) {
+                        // Effort e =
+                        // timerCoordinator.stopTiTATimer(user.getId());
+                        // effortService.saveEffortForTiTATask(e,
+                        // panel.getGeneralTimer().getDescription(), user,
+                        // panel.getProject());
+                        // }
+
                         timerCoordinator.unregisterUser(user.getId());
-                        activeTasks = 
-                            timerCoordinator.getActiveTasks(user.getId());
-                       
+                        activeTasks = timerCoordinator.getActiveTasks(user.getId());
+
                     } catch (Exception e) {
                         error("couldn't log out - user didn't exist in database");
                     }
                     setResponsePage(Application.get().getHomePage());
                     titaSession.invalidate();
                 } else {
-                    error("A problem occured during the logoff process, please " 
-                            + "try again or contact support");
+                    error("A problem occured during the logoff process, please " + "try again or contact support");
                 }
             }
         };

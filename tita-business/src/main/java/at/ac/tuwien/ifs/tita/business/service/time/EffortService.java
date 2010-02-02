@@ -86,23 +86,23 @@ public class EffortService implements IEffortService {
      * {@inheritDoc}
      */
     @Override
-    public List<Effort> getEffortsDailyView(Date date) throws PersistenceException {
-        return timeEffortDao.getTimeEffortsDailyView(date);
+    public List<Effort> getEffortsDailyView(Date date, TiTAUser user) throws PersistenceException {
+        return timeEffortDao.getTimeEffortsDailyView(date, user.getId());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<Effort> getEffortsMonthlyView(Integer year, Integer month) throws PersistenceException {
-        return timeEffortDao.getTimeEffortsMonthlyView(year, month);
+    public List<Effort> getEffortsMonthlyView(Integer year, Integer month, TiTAUser user) throws PersistenceException {
+        return timeEffortDao.getTimeEffortsMonthlyView(year, month, user);
     }
 
     /**
      * {@inheritDoc}
      */
-    public List<Integer> getEffortsYears() {
-        return timeEffortDao.getTimeEffortsYears();
+    public List<Integer> getEffortsYears(TiTAUser user) {
+        return timeEffortDao.getTimeEffortsYears(user.getId());
     }
 
     /**
@@ -227,7 +227,7 @@ public class EffortService implements IEffortService {
             effort.setUser(user);
 
             TiTATask tt = new TiTATask(description, user, project, new HashSet<Effort>());
-//            tt.getTitaEfforts().add(effort);
+            // tt.getTitaEfforts().add(effort);
             projectService.saveTiTATask(tt);
             effort.setTitaTask(tt);
             return saveEffort(effort);
