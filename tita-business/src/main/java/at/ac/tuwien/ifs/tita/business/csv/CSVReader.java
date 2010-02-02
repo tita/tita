@@ -38,8 +38,7 @@ import at.ac.tuwien.ifs.tita.entity.TiTAUser;
  */
 public class CSVReader implements IImportReader {
 
-    private static final Long C_THREE_THOUSAND_SIX_HUNDRED = 3600L;
-    private static final Long C_MILLI_SECONDS = 1000L;
+    private static final Long C_ONE_HOUR = 3600000L;
 
     private IEffortService effortService;
 
@@ -81,17 +80,18 @@ public class CSVReader implements IImportReader {
             EffortBean effortBean;
             while ((effortBean = inFile.read(EffortBean.class, header, processors)) != null) {
 
-                Long start = effortBean.getStartTime().getTime();
-                Long ende = effortBean.getEndTime().getTime();
-                Long duration = effortBean.getDurationAsLong();
+                // Add one hour, because the csv converter does not work correct
+                Long start = effortBean.getStartTime().getTime() + C_ONE_HOUR;
+                Long ende = effortBean.getEndTime().getTime() + C_ONE_HOUR;
+                Long duration = effortBean.getDurationAsLong() + C_ONE_HOUR;
 
-                Long test = start + duration;
+                // Use this lines, if the csv lib change
+                // String start1 = TiTATimeConverter.getDuration2String(start);
+                // String ende1 = TiTATimeConverter.getDuration2String(ende);
+                // String duration1 =
+                // TiTATimeConverter.getDuration2String(duration);
 
-                Long hour1 = C_THREE_THOUSAND_SIX_HUNDRED * C_MILLI_SECONDS;
-
-                Long test2 = duration + hour1;
-
-                if (start + duration >= ende) {
+                if (start + duration > ende) {
                     throw new IllegalArgumentException("The values are the not valid.");
                 } else {
 
