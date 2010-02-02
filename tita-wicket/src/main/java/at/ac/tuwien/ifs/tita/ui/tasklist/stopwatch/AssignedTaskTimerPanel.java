@@ -46,7 +46,8 @@ public class AssignedTaskTimerPanel extends Panel implements IHeaderContributor 
     private Boolean started;
     private Label lab;
     private AjaxSelfUpdatingTimerBehavior beh;
-
+    private AjaxButton startstop;
+    
     public AssignedTaskTimerPanel(String id, ITaskTrackable task, Long effort, TaskListPanel owner) {
         super(id);
         this.task = task;
@@ -65,7 +66,7 @@ public class AssignedTaskTimerPanel extends Panel implements IHeaderContributor 
 
         taskTimerForm.add(new Label("taskId", task.getId().toString()));
         taskTimerForm.add(new Label("taskDescription", task.getDescription()));
-        taskTimerForm.add(new AjaxButton("startStopTimer", new Model<String>(), taskTimerForm) {
+        startstop = new AjaxButton("startStopTimer", new Model<String>(), taskTimerForm) {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
                
@@ -81,7 +82,8 @@ public class AssignedTaskTimerPanel extends Panel implements IHeaderContributor 
                 this.setLabel(this.getModel());
                 target.addComponent(this);
             }
-        });
+        };
+        taskTimerForm.add(startstop);
         taskTimerForm.add(new AjaxButton("closeTask", taskTimerForm) {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
@@ -117,6 +119,7 @@ public class AssignedTaskTimerPanel extends Panel implements IHeaderContributor 
      */
     public void setTaskStarted() {
         started = true;
+        startstop.getModel().setObject("Stop");
     }
 
     /**

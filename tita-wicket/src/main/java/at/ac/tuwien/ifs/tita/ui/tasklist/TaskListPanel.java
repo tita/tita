@@ -299,6 +299,9 @@ public class TaskListPanel extends SecurePanel implements IHeaderContributor {
                 assignedTasks.get(at.getIssueId()).setTaskStarted();
             }
         }
+        if(timerCoordinator.isActivGeneralTask(user.getId())){
+            generalTimer.setTaskStarted();
+        }
     }
 
     /**

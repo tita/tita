@@ -296,4 +296,18 @@ public class TimerCoordinator implements Runnable {
         }
         return ids;
     }
+    
+    /**
+     * Look for an active tita task of current logged in user.
+     * @param userId Long
+     * @return true, is user started task before, otherwise false.
+     */
+    public Boolean isActivGeneralTask(Long userId){
+        for(ActiveTaskEffort ate : titaTasks){
+            if(userId.equals(ate.getUserId())){
+                return true;
+            }
+        }
+        return false;
+    }
 }

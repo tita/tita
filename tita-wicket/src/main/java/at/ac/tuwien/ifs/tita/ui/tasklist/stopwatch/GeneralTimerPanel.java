@@ -45,7 +45,8 @@ public class GeneralTimerPanel extends Panel implements IHeaderContributor {
     private Effort effort = null;
     private Boolean started;
     private TextField<String> description, duration;
-
+    private AjaxButton startstop;
+    
     public GeneralTimerPanel(String id, TaskListPanel owner) {
         super(id);
         this.owner = owner;
@@ -71,8 +72,8 @@ public class GeneralTimerPanel extends Panel implements IHeaderContributor {
 
         taskTimerForm.add(duration);
         taskTimerForm.add(description);
-
-        taskTimerForm.add(new AjaxButton("startStopTimer", new Model<String>(), taskTimerForm) {
+        
+        startstop = new AjaxButton("startStopTimer", new Model<String>(), taskTimerForm) {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
                 if (!started) {
@@ -89,7 +90,8 @@ public class GeneralTimerPanel extends Panel implements IHeaderContributor {
                 this.setLabel(this.getModel());
                 target.addComponent(this);
             }
-        });
+        };
+        taskTimerForm.add(startstop);
         taskTimerForm.add(new AjaxButton("saveEffort", taskTimerForm) {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form1) {
@@ -115,6 +117,7 @@ public class GeneralTimerPanel extends Panel implements IHeaderContributor {
      */
     public void setTaskStarted() {
         started = true;
+        startstop.getModel().setObject("Stop");
     }
 
     /**
