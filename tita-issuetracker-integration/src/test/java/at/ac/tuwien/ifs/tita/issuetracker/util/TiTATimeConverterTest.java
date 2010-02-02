@@ -18,7 +18,6 @@ import static org.junit.Assert.assertEquals;
 import java.text.ParseException;
 import java.util.GregorianCalendar;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -47,13 +46,17 @@ public class TiTATimeConverterTest {
      * @throws ParseException
      *             - ex
      */
-    @Ignore
     @Test
     public void testGetString2Duration() throws ParseException {
         // CHECKSTYLE:OFF
-        Long l = new GregorianCalendar(2009, 11, 10).getTimeInMillis();
+        GregorianCalendar c1 = new GregorianCalendar();
+        GregorianCalendar c2 = new GregorianCalendar();
+        c1.set(2009, GregorianCalendar.JANUARY, 10, 10, 23, 15);
+        c2.set(2009, GregorianCalendar.JANUARY, 10, 0, 0, 0);
+
+        Long l = c1.getTimeInMillis() - c2.getTimeInMillis();
         // CHECKSTYLE:ON
         String s = TiTATimeConverter.getDuration2String(l);
-        assertEquals("22:34:01", s);
+        assertEquals("10:23:15", s);
     }
 }
