@@ -14,527 +14,568 @@
    limitations under the License.
 */ /* Global Style */
 body,html {
-   margin: 0;
-   padding: 0;
-   width:100%;
-   height:100%;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	font-family: 'Trebuchet MS';
+	overflow: auto;
 }
 
 body {
-   font-size: 100%;
-   background:#dcdcdc;
+	font-size: 100%;
 }
 
 h1 {
-   font-size: 2.5em
+	font-size: 2.9em;
+	color:black;
 }
 
 h2 {
-   font-size: 1.875em
+	font-size: 1.875em
 }
 
 p {
-   font-size: 0.875em
+	font-size: 0.875em
 }
 
-/* Header */
-#header {
-   /*width: 1024px;
-   margin: 0 auto; */
-   height:50px;
-   padding-left:50px;
-   padding-right:50px;
-}
-
-#logo_small {
-  float: left;
-}
-
-#title_left {
-   float: left;
-   margin-left:15px;
-}
-
-#title_right {
-   float: right;
-   width: 624px;
-   text-align: right;
-}
-
-#navigation {
-	margin-top:10px;
-  height:40px;
-  margin-bottom:10px;
-  border-top:1px solid black;
-  border-bottom:1px solid black;
-}
-
-#timeConsumerGroup {
-	margin:10px;
-}
-
-/* Content */
+/*
+  First Level: Container
+*/
 #container {
-	 padding:15px;
-	 overflow:auto;
-	 right:0; left:0; top:0; margin:0;
+	padding: 20px;
+	overflow: auto;
+	width:80%;
+  margin:0 auto;
 }
+
+/*
+  Second Level: Header and Contents
+*/
+#header {
+	height: 90px;
+	background: white;
+	float: left;
+	width: 100%;
+}
+
 #contents {
-	 top:20px;
-   padding-left:50px;
-   padding-right:50px;
-   min-height:70%;
+	top: 20px;
+	float: left;
+	width: 100%;
+}
+
+/*
+  Third Level: Navigation and main
+*/
+#navigation {
+	height: 40px;
+	//background: #ebf2f8;
+	float: left;
+	width: 100%;
+	margin-bottom:15px;
 }
 
 #main {
-   float: left;
+	float: left;
+	width:100%;
+}
+
+#logo_small {
+	float: left;
+}
+
+/*
+#title_left {
+	float: left;
+	margin-left: 20px;
+	height:90px;
+}*/
+
+#title_right {
+	float: right;
+	text-align: right;
+	font-size:0.8em;
+	margin-top:65px;
+	margin-right:3px;
 }
 
 #taskbar {
-   float: right;
-   top:120px;
-   position:fixed;
-   height:100%;
-   padding-left:10px;
-   border-left:2px dotted black;
+  float: right;
+  margin-top: 15px; 
+  //padding-left: 10px;
+  height: 100%;
+  width:100%;
 }
 
-#loginpanel{
-	margin-top:70px;
-  margin-left: auto;
-  margin-right: auto;
-  width: 250px;
+#timeConsumerGroup {
+	margin: 10px;
+}
+
+#loginpanel {
+	margin-top: 90px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 250px;
 }
 
 .textcenter {
-    text-align:center;
+	text-align: center;
 }
-
 
 /* Tabbed Panel for Efforts */
+div.effortsTabbedPanel div.tab-panel h3 {
+	margin-top: 0px;
+}
+
+div.effortsTabbedPanel div.tab-panel {
+	padding:20px;
+	background: #f2f2f2;
+}
+
+div.effortsTabbedPanel div.tab-row {
+	padding: 0px;
+	height: 30px;
+}
+
 div.effortsTabbedPanel div.tab-row ul {
-   height: 20px;
-   margin: 0;
-   padding-left: 10px;
-   background: url( tabs4/tab_bottom.gif ) repeat-x bottom;
+	height: 30px;
+	padding: 0px;
+	margin: 15 0 0 0;
 }
 
-div.effortsTabbedPanel div.tab-row li {
-   margin: 0;
-   padding: 0;
-   display: inline;
-   list-style-type: none;
+div.effortsTabbedPanel div.tab-row ul li {
+	height: 30px;
+	text-decoration: none;
+	float: left;
+	padding: 0 0 0 20;
+	display: block;
+	list-style-type: none;
+	background: #f2f2f2 url(images/tabs/middle_right_2.png) no-repeat left top;
 }
 
-div.effortsTabbedPanel div.tab-row a:link,div.effortsTabbedPanel div.tab-row a:visited
-   {
-   float: left;
-   background: #f3f3f3;
-   font-size: 12px;
-   line-height: 14px;
-   font-weight: bold;
-   padding: 2px 10px 2px 10px;
-   margin-right: 4px;
-   border: 1px solid #ccc;
-   text-decoration: none;
-   color: #666;
+div.effortsTabbedPanel div.tab-row ul li.tab0 {
+	background: #f2f2f2 url(images/tabs/first_left_2.png) no-repeat left top;
 }
 
-div.effortsTabbedPanel div.tab-row li.selected a:link,div.effortsTabbedPanel div.tab-row a:visited.active
-   {
-   border-bottom: 1px solid #fff;
-   background: #fff;
-   color: #000;
+div.effortsTabbedPanel div.tab-row ul li.tab0.selected {
+	background: #f2f2f2 url(images/tabs/first_left_2.png) no-repeat left top;
 }
 
-div.effortsTabbedPanel div.tab-row a:hover {
-   background: #fff;
+div.effortsTabbedPanel div.tab-row ul li.selected {
+	background: #f2f2f2 url(images/tabs/middle_left_2.png) no-repeat left top;
+}
+
+div.effortsTabbedPanel div.tab-row ul li.selected a {
+	text-decoration: none;
+	height: 30px;
+	display: block;
+}
+
+div.effortsTabbedPanel div.tab-row ul li.last a {
+	padding-right: 20px;
+	text-decoration: none;
+	height: 30px;
+	display: block;
+	background: #f2f2f2 url(images/tabs/last_right_2.png) no-repeat right top;
+}
+
+div.effortsTabbedPanel div.tab-row ul li a {
+	text-decoration: none;
+}
+
+div.effortsTabbedPanel div.tab-row ul li a span {
+	height: 30px;
+	display: block;
+	padding-top: 8px;
 }
 
 /* Tabbed Panel for Efforts */ /* Table Style */
 table {
-   font-size: 80%;
-   border: thin;
-   border-bottom-color: #003;
+	font-size: 80%;
+	border: thin;
+	border-bottom-color: #003;
 }
 
 a {
-	color:#000;
+	color: #000;
 }
 
-
 thead {
-   background-color: rgb(10, 36, 106);
-   color: #FFF;
+	background-color: rgb(10, 36, 106);
+	color: #FFF;
 }
 
 .titleheader {
-   background-color: #003;
-   color: #FFF;
-   height: 2.5em;
+	background-color: #003;
+	color: #FFF;
+	height: 2.5em;
 }
 
 .odd {
-   background-color: rgb(240, 240, 240);
+	background-color: rgb(240, 240, 240);
 }
 
 .even {
-   background-color: #FFFFFF;
+	background-color: #FFFFFF;
 }
 
 tr.onMouseOver {
-   background-color: #096;
+	background-color: #096;
 }
 
 .selected {
-   background-color: #86CEFE;
-   color: white;
-   font-weight: bold;
+	background-color: #86CEFE;
+	color: white;
+	font-weight: bold;
 }
 
 tr {
-   height: 30px;
+	height: 30px;
 }
 
 .editCell {
-   font-size: 80%;
+	font-size: 80%;
 }
 
 .dateCell {
-   font-size: 80%;
-   width: 72%;
+	font-size: 80%;
+	width: 72%;
 }
 
 .headerLabel {
-   text-align: center;
-   width: 100%;
+	text-align: center;
+	width: 100%;
 }
 
 .buttonDelete {
-   display: block;
-   background-color: transparent;
-   background-image: url(images/bt-delete.png);
-   background-position: center;
-   background-repeat: no-repeat;
-   width: 30px;
-   height: 30px;
-   border: none;
+	display: block;
+	background-color: transparent;
+	background-image: url(images/bt-delete.png);
+	background-position: center;
+	background-repeat: no-repeat;
+	width: 30px;
+	height: 30px;
+	border: none;
 }
 
 .buttonEdit {
-   display: block;
-   background-color: transparent;
-   background-image: url(images/bt-edit.png);
-   background-position: center;
-   background-repeat: no-repeat;
-   width: 30px;
-   height: 30px;
-   border: none;
+	display: block;
+	background-color: transparent;
+	background-image: url(images/bt-edit.png);
+	background-position: center;
+	background-repeat: no-repeat;
+	width: 30px;
+	height: 30px;
+	border: none;
 }
 
 .buttonSave {
-   display: block;
-   background-color: transparent;
-   background-image: url(images/bt-add.png);
-   background-position: center;
-   background-repeat: no-repeat;
-   width: 30px;
-   height: 30px;
-   border: none;
+	display: block;
+	background-color: transparent;
+	background-image: url(images/bt-add.png);
+	background-position: center;
+	background-repeat: no-repeat;
+	width: 30px;
+	height: 30px;
+	border: none;
 }
 
 .buttonCancelDateFrom {
-   display: block;
-   background-color: transparent;
-   background-image: url(images/bt-delete.png);
-   background-position: center;
-   background-repeat: no-repeat;
-   width: 20px;
-   height: 20px;
-   border: none;
+	display: block;
+	background-color: transparent;
+	background-image: url(images/bt-delete.png);
+	background-position: center;
+	background-repeat: no-repeat;
+	width: 20px;
+	height: 20px;
+	border: none;
 }
 
 .buttonCancelDateUntil {
-   display: block;
-   background-color: transparent;
-   background-image: url(images/bt-delete.png);
-   background-position: center;
-   background-repeat: no-repeat;
-   width: 20px;
-   height: 20px;
-   border: none;
+	display: block;
+	background-color: transparent;
+	background-image: url(images/bt-delete.png);
+	background-position: center;
+	background-repeat: no-repeat;
+	width: 20px;
+	height: 20px;
+	border: none;
 }
 
 /* Efforts Table Column Width*/
-.tecol1 {
-   width: 140px;
+/*.tecol1 {
+	width: 140px;
 }
 
 .tecol2 {
-   width: 300px;
+	width: 300px;
 }
 
 .tecol3 {
-   width: 80px;
+	width: 80px;
 }
 
 .tecol4 {
-   width: 80px;
+	width: 80px;
 }
 
 .tecol5 {
-   width: 78px;
+	width: 78px;
 }
 
 .tecol6 {
-   width: 30px;
+	width: 30px;
 }
 
 .tecol7 {
-   width: 30px;
+	width: 30px;
 }
 
 .tecol8 {
-   width: 50px;
-}
+	width: 50px;
+}*/
 
 /* TaskList Accoridion */
 #dummy {
-   width: 30px;
-   background-color: #2b5286;
+	width: 30px;
+	background-color: #2b5286;
 }
 
 #tasklistheader {
-   float: left;
+	float: left;
 }
 
 #accordion {
-   clear: both;
+	clear: both;
 }
 
 #taskTimer_content {
-   border: 1px #ffffff outset;
-   padding: 10px 10px 10px 10px;
-   color: #FFFFFF;
-   font-family: Verdana, Arial, Helvetica, sans-serif;
-   font-size: 1em;
-   font-weight: bold;
+	border: 1px #ffffff outset;
+	padding: 10px 10px 10px 10px;
+	color: #FFFFFF;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 1em;
+	font-weight: bold;
 }
 
 dl.accordion-menu {
-   margin: 0;
-   padding: 0;
-   width: 25em;
+	margin: 0;
+	padding: 0;
+	width: 25em;
 }
 
 dl.accordion-menu dt.a-m-t {
-   margin: 0;
-   background: #2b5286;
-   padding: 0.3em 1em;
-   color: #444444;
-   border: solid 1px #222222;
-   border-left-color: #dfdfdf;
-   border-top-color: #dfdfdf;
-   background-color: #2b5286;
-   font-size: 0.8em;
-   color: #FFFFFF;
-   font-family: 'Trebuchet MS';
-   font-weight: bold;
-   height: 1.2em;
+	margin: 0;
+	background: #2b5286;
+	padding: 0.3em 1em;
+	color: #444444;
+	border: solid 1px #222222;
+	border-left-color: #dfdfdf;
+	border-top-color: #dfdfdf;
+	background-color: #2b5286;
+	font-size: 0.8em;
+	color: #FFFFFF;
+	font-family: 'Trebuchet MS';
+	font-weight: bold;
+	height: 1.2em;
 }
 
 dl.accordion-menu dt.a-m-t-hover {
-   background: #87CEFA;
+	background: #87CEFA;
 }
 
 dl.accordion-menu dt.a-m-t-down {
-   border: solid 1px #222222;
-   border-right-color: #dfdfdf;
-   border-bottom-color: #dfdfdf;
+	border: solid 1px #222222;
+	border-right-color: #dfdfdf;
+	border-bottom-color: #dfdfdf;
 }
 
 html.accordion-menu-js dt.a-m-t {
-   cursor: pointer;
-   zoom: 1;
+	cursor: pointer;
+	zoom: 1;
 }
 
 dl.accordion-menu dd.a-m-d {
-   margin: 0;
-   padding: 0;
-   padding: 0;
+	margin: 0;
+	padding: 0;
+	padding: 0;
 }
 
 html.accordion-menu-js dd.a-m-d {
-   display: none;
+	display: none;
 }
 
 html.accordion-menu-js dd.a-m-d-expand {
-   display: block;
+	display: block;
 }
 
 html.accordion-menu-js dd.a-m-d-before-expand {
-   display: block;
-   position: relative;
-   z-index: -1;
-   opacity: 0;
-   height: auto !important;
-   /* patch from jchapelle*/ /*  visibility:hidden; */
-   overflow: visible;
+	display: block;
+	position: relative;
+	z-index: -1;
+	opacity: 0;
+	height: auto !important;
+	/* patch from jchapelle*/ /*  visibility:hidden; */
+	overflow: visible;
 }
 
 html.accordion-menu-js dt.a-m-t-expand {
-   border-left-color: #222222;
-   color: white;
-   background: #0000FF;
+	border-left-color: #222222;
+	color: white;
+	background: #0000FF;
 }
 
 html.accordion-menu-js dd.a-m-d-anim {
-   overflow: hidden;
-   display: block;
+	overflow: hidden;
+	display: block;
 }
 
 dl.accordion-menu dd.a-m-d .bd {
-   padding: 0.5em;
-   border: Solid 1px #aaaaaa;
-   background-color: #6495ED;
+	padding: 0.5em;
+	border: Solid 1px #aaaaaa;
+	background-color: #6495ED;
 }
 
 .invalid {
-   border: 2px solid red;
-   color: red;
+	border: 2px solid red;
+	color: red;
 }
 
 .valid {
-   color: green;
+	color: green;
 }
 
 #effortImportCSVChooser {
-   width: 1024px;
-   height: 235px;
+	//width: 1024px;
+	//height: 235px;
 }
 
 #effortChosingDiv {
-   float: left;
-   width: 1024px;
-   height: 200px;
+	float: left;
+	//width: 1024px;
+	//height: 200px;
 }
 
 #effortImportColumnChoice {
-   float: left;
-   width: 400px;
-   height: 100px;
+	float: left;
+	//width: 400px;
+	//height: 100px;
 }
 
 #effortImportProjectChooser {
-   float: left;
-   overflow: auto;
-   width: 300px;
-   height: 100px;
+	float: left;
+	overflow: auto;
+	//width: 300px;
+	//height: 100px;
 }
 
 #effortImportResult {
-   width: 1024px;
-   height: 300px;
-   clear: both;
+	//width: 1024px;
+	//height: 300px;
+	clear: both;
 }
 
 #effortImportButton {
-   float: right;
-   margin-left: 350px;
-   margin
+	float: right;
+	margin-left: 350px;
+	margin
 }
 
 .floatingLabelAndDropdwon {
-   width: 120px;
-   float: left;
+	width: 120px;
+	float: left;
 }
 
 .paddingForElements {
-   padding: 3px;
+	padding: 3px;
 }
 
 .ActualTables {
-   float: left;
-   width: 1024px;
+	float: left;
+	width: 100%;
 }
 
 .ActualTableProject {
-   float: right;
+	float: left;
+	margin-left:20px;
+	margin-bottom:10px;
 }
 
 .ActualTableUser {
-   float: left;
+	float: left;
+	margin-bottom:10px;
 }
 
 .targetActualResult {
-   margin-left: 400px;
-   width: 200px;
+	margin-left: 400px;
+	width: 200px;
 }
 
 .popResultTable {
-   float: left;
+	float: left;
 }
 
 .popLabels {
-   float: right;
-   width: 200px;
-   margin-right:150px;
-   margin-top:40px;
+	float: left;
+	width: 200px;
+	margin-top: 40px;
+	margin-left:20px;
 }
 
 /** Project and User Administration **/
 *.innerForeGroundDiv {
-   width: 800px;
-   height: 600px;
-   position: absolute;
-   top: 50%;
-   left: 50%;
-   margin-top: -300px;
-   margin-left: -400px;
-   background-color: white;
-   text-align: center;
-   z-index: 1;
-   opacity: 1;
-   -moz-opacity: 1;
-   filter: alpha(opacity :   100);
-   -moz-background-clip: border;
-   -moz-background-origin: padding;
-   -moz-background-inline-policy: continuous;
-   padding: 20px;
+	width: 800px;
+	height: 600px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-top: -300px;
+	margin-left: -400px;
+	background-color: white;
+	text-align: center;
+	z-index: 1;
+	opacity: 1;
+	-moz-opacity: 1;
+	filter: alpha(opacity :       100);
+	-moz-background-clip: border;
+	-moz-background-origin: padding;
+	-moz-background-inline-policy: continuous;
+	padding: 20px;
 }
 
 *.foreGroundDiv {
-   opacity: 0.96;
-   -moz-opacity: 0.96;
-   filter: alpha(opacity :   96);
-   background-color: #708090;
-   width: 100%;
-   height: 100%;
-   top: 0px;
-   left: 0px;
-   position: absolute;
-   z-index: 1;
-   -moz-background-clip: border;
-   -moz-background-origin: padding;
-   -moz-background-inline-policy: continuous;
+	opacity: 0.96;
+	-moz-opacity: 0.96;
+	filter: alpha(opacity :       96);
+	background-color: #708090;
+	width: 100%;
+	height: 100%;
+	top: 0px;
+	left: 0px;
+	position: absolute;
+	z-index: 1;
+	-moz-background-clip: border;
+	-moz-background-origin: padding;
+	-moz-background-inline-policy: continuous;
 }
 
 table.leftSide {
-   float: left;
-   margin-left: 0px;
-   width: 40%;
+	float: left;
+	margin-left: 0px;
+	width: 40%;
 }
 
 form.middleSide {
-   float: left;
-   width: 10%;
-   text-align: center;
-   margin-top: 50px;
+	float: left;
+	width: 10%;
+	text-align: center;
+	margin-top: 50px;
 }
 
 table.rightSide {
-   float: left;
-   width: 40%;
+	float: left;
+	width: 40%;
 }
 
 .red {
