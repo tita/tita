@@ -1,0 +1,85 @@
+11.10.2009;Erstellen eines groben Projektvorschlags auf Basis der vorliegenden Dokumente;13:00:00;14:30:00;01:30:00
+12.10.2009;Meeting mit Andi um Features auszuformulieren, ausreichende Anzahl zu besprechen, Review;10:30:00;14:00:00;02:30:00
+13.10.2009;Features ausformulieren und weiterleiten, Domänenmodell;15:00:00;16:30:00;01:30:00
+15.10.2009;Brainstorming zum Projektvorschlag speziell Features und Technologien dazu;13:00:00;14:30:00;01:30:00
+16.10.2009;Kickoff Meeting;12:00:00;14:00:00;02:00:00
+17.10.2009;Features -> Anforderungen, Use Cases 16-22;18:00:00;19:00:00;01:00:00
+20.10.2009;Überarbeitung Anforderungen, Abgrenzungen, Zeitschätzung, Iceberglist;18:00:00;20:00:00;02:00:00
+21.10.2009;Meeting;14:00:00;16:30:00;02:30:00
+21.10.2009;Aktualisierung Anforderungen;17:30:00;18:30:00;01:00:00
+21.10.2009;Featureverteilung ;21:30:00;23:00:00;01:30:00
+22.10.2009;Iceberglist, Gliederung der Anforderungszeiten in Subkapitel;21:00:00;23:59:59;02:50:00
+23.10.2009;Git Tutorial;18:00:00;21:30:00;03:30:00
+24.10.2009;Management für Projektauftrag erstellung;12:00:00;17:00:00;05:00:00
+25.10.2009;Git Workflow und Git Config;16:00:00;17:00:00;01:00:00
+26.10.2009;Präsentation erstellen;23:30:00;23:59:00;00:29:00
+27.10.2009;MR 1 ;14:00:00;15:30:00;01:30:00
+30.10.2009;IR;12:00:00;13:00:00;01:00:00
+31.10.2009;Konzepterstellung, Userstory;15:00:00;18:30:00;03:30:00
+01.11.2009;Maven Root Pom;16:00:00;17:00:00;01:00:00
+02.11.2009;Repository umlegen, Eclipse Versions;09:30:00;13:30:00;04:00:00
+04.11.2009;MR 1 Nachbesprechung;14:00:00;15:00:00;01:00:00
+06.11.2009;Iceberglist angefangen;09:30:00;10:00:00;00:30:00
+06.11.2009;Start mit Issue Tracker Research, ER Modell;20:30:00;23:00:00;02:30:00
+07.11.2009;Issue Tracker Research und Proposal, Eclipse Config, ;11:00:00;20:30:00;08:30:00
+07.11.2009;GitHub HowTo, Mergen vom Master;22:00:00;23:00:00;01:00:00
+08.11.2009;Risikoabschätzung;22:00:00;23:59:00;01:59:00
+11.11.2009;IR;08:00:00;09:00:00;01:00:00
+13.11.2009;Problem und Code Review von Datasource;20:00:00;23:00:00;03:00:00
+14.11.2009;Iceberlist aktualisieren, neu definieren, licenses mergen;14:00:00;19:00:00;05:00:00
+15.11.2009;wicket review, war plugin, mantis review, mergen von allem, taggen;14:00:00;20:00:00;06:00:00
+16.11.2009;use cases;21:00:00;22:30:00;01:30:00
+18.11.2009;IR;08:00:00;09:00:00;01:00:00
+20.11.2009;Iceberglist - Tausch von Features, Issue 28 und 29, Support für Fragen und Mails;10:00:00;12:00:00;02:00:00
+21.11.2009;Use Cases(Issuetracker, JMS), Sub Use Case Diagrams;09:00:00;16:00:00;07:00:00
+21.11.2009;Status Reports für 4 Termine, 1 fehlt noch;18:00:00;22:00:00;04:00:00
+22.11.2009;Bugfixing für Adding TimeEffort;11:30:00;13:00:00;01:30:00
+22.11.2009;Issue Administration(Service definieren, Interface, Testfälle);13:00:00;16:00:00;03:00:00
+22.11.2009;Use Case Review;17:00:00;18:00:00;01:00:00
+25.11.2009;IR;08:00:00;09:30:00;01:30:00
+25.11.2009;Eclipse Problem und Jetty Config anschauen, verstehen;10:00:00;11:30:00;01:30:00
+27.11.2009;Thread Aufbau bestimmen;20:00:00;22:00:00;02:00:00
+28.11.2009;Task Verwaltung implementieren und testen, auf GUI integrieren;09:30:00;12:00:00;02:30:00
+28.11.2009;Task Verwaltung implementieren und testen, auf GUI integrieren;13:00:00;16:30:00;03:30:00
+29.11.2009;Status Reports, Risiken erweitert um 9, Jetty Configuration;11:00:00;17:00:00;06:00:00
+29.11.2009;Release erstellen;19:00:00;20:00:00;01:00:00
+01.12.2009;Wcket anschauen für onchange behavior für MR2 Prototype;21:30:00;22:30:00;00:30:00
+02.12.2009;Bug Fixing, Merging neuer Features for MR2;08:00:00;14:00:00;06:00:00
+02.12.2009;MR2;14:00:00;15:30:00;01:30:00
+09.12.2009;Mail Konversation, Architektur überlegungen, DB Mapping überlegen, Logo Meeting;11:00:00;15:30:00;04:00:00
+10.12.2009;Meeting;08:00:00;11:30:00;03:30:00
+12.12.2009;Wicket Research, Elemente ausprobieren, Wicket Stuff Elemente durchgeschaut, Java Script Frameworks;11:00:00;17:00:00;06:00:00
+13.12.2009;Tasklist mit Accordion mit AccordionItems, Tasktimer, CSS und HTML dazu;10:00:00;18:00:00;08:00:00
+16.12.2009;Meeting;08:00:00;10:00:00;02:00:00
+16.12.2009;Bugfixing nach Refactoring(Licenses, Beans);10:00:00;12:00:00;02:00:00
+17.12.2009;Checkstyle und Merging in Master ;12:30:00;13:45:00;01:15:00
+19.12.2009;Taggen, JDNI Fehler identifiziert;13:30:00;14:30:00;01:00:00
+20.12.2009;Refactoring IssueTrackerService and MantisDao - Fetching Tasks für Projekte erst wenn ich diese brauche;09:00:00;12:00:00;03:00:00
+20.12.2009;TaskService - erste Überleitungen für projektspezifischen Zugriff;13:00:00;15:00:00;02:00:00
+23.12.2009;Meeting;10:00:00;12:00:00;02:00:00
+25.12.2009;Status Report und Protokolle;11:00:00;12:00:00;01:00:00
+28.12.2009;TaskService - fetching tasks erledigt für multiple issuetracker projekte;13:30:00;17:30:00;04:00:00
+30.12.2009;Meeting, Merging postgre umstellung, Projekt anbindung, vor dem Meeting H2DB Engine und Probleme mit DBs überprüft;08:00:00;16:00:00;08:00:00
+02.01.2010;TaskService fertig gestellt;10:00:00;14:00:00;04:00:00
+04.01.2010;Meeting IR;16:30:00;19:00:00;02:30:00
+05.01.2010;GUI für dem CSV Import;17:00:00;21:00:00;04:00:00
+07.01.2010;HQL queries für target/actual comparison;09:30:00;12:00:00;02:30:00
+07.01.2010;GUI für target/actual comparison;13:00:00;22:00:00;09:00:00
+08.01.2010;Adding Labels for result in target/actual;10:00:00;12:00:00;02:00:00
+09.01.2010;PDF für target/actual comparison;17:00:00;20:00:00;03:00:00
+10.01.2010;PDF für target/actual comparison - Button change, Design;15:00:00;17:00:00;02:00:00
+13.01.2010;Refactoring, Checkstyle, Test complete;12:30:00;17:30:00;05:00:00
+13.01.2010;GUI Import Style - FileChoser;18:00:00;20:00:00;02:00:00
+14.01.2010;Status Reports - Excel File Update and Picture für Trend;22:00:00;23:00:00;01:00:00
+15.01.2010;Status Reports fertigstellen, Iceberglist Update;10:30:00;12:00:00;01:30:00
+16.01.2010;View Target/Actual Update;13:00:00;15:00:00;02:00:00
+16.01.2010;GUI Import - DropDownChooser;18:00:00;21:00:00;03:00:00
+17.01.2010;GUI fertigstellen, Fehlermeldung fehlt noch, Issue für Exception überprüfen;11:00:00;14:00:00;03:00:00
+24.01.2010;GUI Import - Excption Handling;10:00:00;12:30:00;02:30:00
+24.01.2010;Testen der Features auf der GUI, Bug Searching;13:00:00;15:00:00;02:00:00
+24.01.2010;Performance Update for TaskService;15:00:00;15:30:00;00:30:00
+24.01.2010;Developer Guide;18:00:00;20:30:00;02:30:00
+25.01.2010;ASE DAY mit Präsentationserstellung;15:30:00;18:00:00;02:30:00
+26.01.2010;Bugfixing IssueTrackerProjekt ID, Bug searching;17:45:00;20:45:00;03:00:00
+27.01.2010;MR3 Präsentation erstellen, Szenario testen, Bug fixing(weiß ich jetzt schon);09:00:00;12:00:00;03:00:00
+27.01.2010;MR3;14:00:00;16:00:00;02:00:00
