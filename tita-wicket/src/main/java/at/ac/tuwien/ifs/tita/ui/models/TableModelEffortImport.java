@@ -23,14 +23,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.ac.tuwien.ifs.tita.entity.Effort;
+import at.ac.tuwien.ifs.tita.issuetracker.util.TiTATimeConverter;
 import at.ac.tuwien.ifs.tita.ui.utils.GlobalUtils;
 import at.ac.tuwien.ifs.tita.ui.utils.IntegerConstants;
 
 /**
  * Provides all necessary table model methods for entity Effort.
- * 
+ *
  * @author Christoph
- * 
+ *
  */
 public class TableModelEffortImport extends AbstractTitaTableModel {
 
@@ -62,20 +63,19 @@ public class TableModelEffortImport extends AbstractTitaTableModel {
                 if (effort.getStartTime() == null) {
                     return "";
                 } else {
-                    return GlobalUtils.TIMEFORMAT24HOURS.format(effort.getStartTime());
+                    return TiTATimeConverter.getDuration2String(effort.getStartTime());
                 }
             } else if (col == IntegerConstants.THREE) {
                 if (effort.getEndTime() == null) {
                     return "";
                 } else {
-                    return GlobalUtils.TIMEFORMAT24HOURS.format(effort.getEndTime());
+                    return TiTATimeConverter.getDuration2String(effort.getEndTime());
                 }
             } else if (col == IntegerConstants.FOUR) {
                 if (effort.getDuration() == null) {
                     return "";
                 } else {
-                    return GlobalUtils.TIMEFORMAT24HOURS.format(GlobalUtils.getDateFromLong(effort
-                            .getDuration()));
+                    return TiTATimeConverter.getDuration2String(effort.getDuration());
                 }
             } else {
                 return effort;

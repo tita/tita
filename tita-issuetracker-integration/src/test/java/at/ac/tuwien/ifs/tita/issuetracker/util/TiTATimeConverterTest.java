@@ -16,25 +16,43 @@ package at.ac.tuwien.ifs.tita.issuetracker.util;
 import static org.junit.Assert.assertEquals;
 
 import java.text.ParseException;
+import java.util.GregorianCalendar;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
  * Class for testing the TiTATimeConverter.
- * 
+ *
  * @author Karin
- * 
+ *
  */
 public class TiTATimeConverterTest {
 
     /**
      * Tests the convertMethods.
-     * 
+     *
      * @throws ParseException - ex
      */
     @Test
     public void testGetString2DurationAndBack() throws ParseException {
         Long l = TiTATimeConverter.getString2Duration("22:34:01");
+        String s = TiTATimeConverter.getDuration2String(l);
+        assertEquals("22:34:01", s);
+    }
+
+    /**
+     * Tests the convertMethods.
+     *
+     * @throws ParseException
+     *             - ex
+     */
+    @Ignore
+    @Test
+    public void testGetString2Duration() throws ParseException {
+        // CHECKSTYLE:OFF
+        Long l = new GregorianCalendar(2009, 11, 10).getTimeInMillis();
+        // CHECKSTYLE:ON
         String s = TiTATimeConverter.getDuration2String(l);
         assertEquals("22:34:01", s);
     }
