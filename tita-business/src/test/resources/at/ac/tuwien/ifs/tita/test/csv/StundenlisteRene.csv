@@ -1,0 +1,79 @@
+15.10.2009;Brainstorming zum Projektvorschlag speziell Features und Technologien dazu;08:00:00;09:30:00;01:30:00
+16.10.2009;Kickoff Meeting;08:00:00;10:00:00;02:00:00
+17.10.2009;Features  9-15 Anforderungen ausformulieren;08:00:00;10:00:00;02:00:00
+19.10.2009;Review Features;08:00:00;09:00:00;01:00:00
+20.10.2009;Features ueberarbeiten, Zeiten schaetzen;08:00:00;10:00:00;02:00:00
+21.10.2009;Meeting;08:00:00;10:30:00;02:30:00
+22.10.2009;Feature Aufsplittung;08:00:00;08:50:00;00:50:00
+23.10.2009;Git Tutorial;08:00:00;11:30:00;03:30:00
+24.10.2009;Projektauftrag Review, Vertikal Horizontal Review, Feature2Component Review, Technologiestack ;08:00:00;11:00:00;03:00:00
+27.10.2009;MR1;14:00:00;15:30:00;01:30:00
+30.10.2009;IR (Meeting);08:00:00;09:00:00;01:00:00
+06.11.2009;IR (Meeting);08:00:00;09:00:00;01:00:00
+08.11.2009;Research JFReeChart, Jasper, Wicket;08:00:00;11:00:00;03:00:00
+09.11.2009;ER/Klassendiagramm Erweiterung +  wiki einstellen;08:00:00;12:00:00;04:00:00
+09.11.2009;Entwicklungsumgebung einrichten;13:00:00;15:00:00;02:00:00
+09.11.2009;github branch mit mergen in den master;10:00:00;11:00:00;01:00:00
+10.11.2009;JFreeChart Wicket Integration +  wiki Tutorial;08:00:00;13:00:00;05:00:00
+10.11.2009;JasperReports Wicket Integration +  wiki Tutorial;13:00:00;16:00:00;03:00:00
+10.11.2009;root pom, childpom, JasperReports Klassen in Branch begonnen;16:00:00;19:00:00;03:00:00
+11.11.2009;IR (Meeting);08:00:00;10:00:00;02:00:00
+13.11.2009;Sequence Diagram;08:00:00;08:30:00;00:30:00
+14.11.2009;Wicket Examples PDF Button Click + JasperReports Klassen + Testen mit wicket examples;08:00:00;18:00:00;10:00:00
+14.11.2009;Git-Tutorials lesen;18:00:00;20:00:00;02:00:00
+15.11.2009;Sequence Diagram;08:00:00;08:30:00;00:30:00
+15.11.2009;JasperReports Klassen + Hello World PDF + maven config;09:00:00;20:00:00;11:00:00
+16.11.2009;PDF Hello World, maven config;08:00:00;10:00:00;02:00:00
+16.11.2009;Use-Cases;10:00:00;12:00:00;02:00:00
+16.11.2009;GUI-Konzept;13:00:00;18:00:00;05:00:00
+17.11.2009;GUI-Konzept;08:00:00;11:00:00;03:00:00
+18.11.2009;IR (Meeting);13:00:00;14:30:00;01:30:00
+18.11.2009;GUI-Konzept, Sequenzdiagramm, Use-Cases;08:00:00;09:00:00;01:00:00
+19.11.2009;Master merge mit Christoph;08:00:00;10:00:00;02:00:00
+20.11.2009;Use Cases, Mantis Installation, merge conflict, issues;08:00:00;09:00:00;01:00:00
+20.11.2009;Use Case Diagramme, move tita-docs to src/site/resources;09:00:00;11:00:00;02:00:00
+22.11.2009;Markus persistence-context.xml problem;08:00:00;09:00:00;01:00:00
+22.11.2009;Use-Case Review + Aenderungen;10:00:00;12:00:00;02:00:00
+25.11.2009;IR (Meeting);08:00:00;10:00:00;02:00:00
+26.11.2009;Markus Wicket Problem;08:00:00;09:00:00;01:00:00
+27.11.2009;Merge master - addtimeeffort - mantis + jetty config mit karin ;08:00:00;11:00:00;03:00:00
+27.11.2009;iss#36, compile reports on the fly;11:00:00;12:00:00;01:00:00
+27.11.2009;iss#27 + gui;15:00:00;21:00:00;06:00:00
+28.11.2009;iss#27 + gui;08:00:00;15:00:00;07:00:00
+28.11.2009;master merge;16:00:00;18:30:00;02:30:00
+02.12.2009;Meeting vor MR2;12:00:00;14:00:00;02:00:00
+02.12.2009;MR2;14:00:00;15:00:00;01:00:00
+03.12.2009;MR2 Protokoll formulieren und formatieren;08:00:00;09:00:00;01:00:00
+08.12.2009;wasp/swarm research;08:00:00;10:00:00;02:00:00
+09.12.2009;IR (Meeting);08:00:00;12:00:00;04:00:00
+14.12.2009;Projekt nach Aenderungen zum Laufen bringen;08:00:00;10:00:00;02:00:00
+14.12.2009;wicket recherche;10:00:00;12:00:00;02:00:00
+14.12.2009;checkstyle ausbesserungen;13:00:00;14:00:00;01:00:00
+15.12.2009;navigation, tabbed pane, gui refactoring;08:00:00;16:00:00;08:00:00
+15.12.2009;multiple project evaluation + klassendiagramm;18:00:00;22:00:00;04:00:00
+16.12.2009;IR (Meeting);08:00:00;10:00:00;02:00:00
+20.12.2009;named queries -> criterias, css layout, gui anpassungen;08:00:00;10:00:00;02:00:00
+21.12.2009;time consumer evaluation;08:00:00;10:00:00;02:00:00
+23.12.2009;IR (Meeting);08:00:00;10:00:00;02:00:00
+28.12.2009;time consumer pdf, login/logout;08:00:00;15:00:00;07:00:00
+29.12.2009;time consumer pdf, login/logout;08:00:00;12:00:00;04:00:00
+03.01.2010;korrekturen nach datenbankumstellung, login;08:00:00;10:00:00;02:00:00
+04.01.2010;effortdao, structuralchanges, startpages;08:00:00;10:00:00;02:00:00
+06.01.2010;structural changes, tests;08:00:00;10:00:00;02:00:00
+10.01.2010;bugfixes, tests, finalisierung;08:00:00;12:00:00;04:00:00
+11.01.2010;bugfixes, tests, finalisierung, multiple project pdf;08:00:00;13:00:00;05:00:00
+12.01.2010;bugfix master branch, multiple project pdf;08:00:00;12:00:00;04:00:00
+13.01.2010;IR (Meeting);08:00:00;10:00:00;02:00:00
+15.01.2010;hashing, multiple project pdf, unit tests;08:00:00;12:30:00;04:30:00
+15.01.2010;dynamic caption button + dynamic link generation;14:00:00;18:00:00;04:00:00
+18.01.2010;Performance of Person;08:00:00;11:00:00;03:00:00
+19.01.2010;Performance of Person;08:00:00;10:00:00;02:00:00
+20.01.2010;IR (Meeting);08:00:00;10:00:00;02:00:00
+22.01.2010;projectinformationpanel timecontroller;08:00:00;10:00:00;02:00:00
+23.01.2010;Performance of Person + PDF;07:00:00;23:00:00;16:00:00
+24.01.2010;Performance of Person;08:00:00;09:00:00;01:00:00
+25.01.2010;Unit-Tests;08:00:00;09:00:00;01:00:00
+26.01.2010;added costcenter, refactoring, unit-tests, checkstyle, class diagram;09:00:00;12:00:00;03:00:00
+27.01.2010;MR3;08:00:00;09:00:00;01:00:00
+30.01.2010;mysql config, css bugs;08:00:00;11:00:00;03:00:00
+
