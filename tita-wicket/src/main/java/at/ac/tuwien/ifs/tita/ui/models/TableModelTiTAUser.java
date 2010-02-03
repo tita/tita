@@ -29,9 +29,9 @@ import at.ac.tuwien.ifs.tita.ui.utils.IntegerConstants;
 
 /**
  * Provides all necessary table model methods for entity Effort.
- *
+ * 
  * @author msiedler
- *
+ * 
  */
 public class TableModelTiTAUser extends AbstractTitaTableModel {
 
@@ -79,7 +79,11 @@ public class TableModelTiTAUser extends AbstractTitaTableModel {
             } else if (col == IntegerConstants.THREE) {
                 return titaUser.getEmail();
             } else if (col == IntegerConstants.FOUR) {
-                return titaUser.getRole().getDescription();
+                if (titaUser != null && titaUser.getRole() != null) {
+                    return titaUser.getRole().getDescription();
+                } else {
+                    return null;
+                }
             } else {
                 return titaUser;
             }
@@ -91,7 +95,6 @@ public class TableModelTiTAUser extends AbstractTitaTableModel {
         }
         return null;
     }
-
 
     /**
      * {@inheritDoc}
