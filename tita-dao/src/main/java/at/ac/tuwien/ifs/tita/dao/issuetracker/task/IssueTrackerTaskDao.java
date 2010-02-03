@@ -46,7 +46,7 @@ public class IssueTrackerTaskDao extends GenericHibernateDao<IssueTrackerTask, L
                 + "join tita_project tp on itp.tita_project_id = tp.id "
                 + "where tp.id = ? and itp.isst_id = ? and itp.isst_project_id = ? " + "and itt.isst_task_id = ? ";
 
-        org.hibernate.SQLQuery q = getSession().createSQLQuery(queryString);
+        org.hibernate.SQLQuery q = getSession().createSQLQuery(queryString.toUpperCase());
         q.addEntity(IssueTrackerTask.class);
         // CHECKSTYLE:OFF
         q.setParameter(0, tp);

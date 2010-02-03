@@ -12,7 +12,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 
-*/
+ */
 
 package at.ac.tuwien.ifs.tita.dao.test.util;
 
@@ -28,16 +28,16 @@ import at.ac.tuwien.ifs.tita.dao.GenericHibernateDao;
 
 /**
  * Class for executing sql files to fill and clean db.
+ * 
  * @author herbert
- *
+ * 
  * @param <T> persistenceClass
  * @param <ID> Serializeable ID
  */
-public class NativeSqlExecutorDao<T,ID extends Serializable> 
-    extends GenericHibernateDao<T,ID> implements INativeSqlExecutorDao<T,ID>,
-    INativeSqlExecutor {
-    
-    private SQLFileParser parser        = new SQLFileParser();
+public class NativeSqlExecutorDao<T, ID extends Serializable> extends GenericHibernateDao<T, ID> implements
+        INativeSqlExecutorDao<T, ID>, INativeSqlExecutor {
+
+    private SQLFileParser parser = new SQLFileParser();
 
     public NativeSqlExecutorDao(Class<T> persistenceClass) {
         super(persistenceClass);
@@ -45,17 +45,17 @@ public class NativeSqlExecutorDao<T,ID extends Serializable>
 
     /** {@inheritDoc} */
     @Override
-    @Transactional(propagation=Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED)
     public void executeSql(String query) {
         Session session = getSession();
         SQLQuery q;
-        q = session.createSQLQuery(query);
+        q = session.createSQLQuery(query.toUpperCase());
         q.executeUpdate();
     }
 
     /** {@inheritDoc} */
     @Override
-    @Transactional(propagation=Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED)
     public void executeSqlFile(Object class1) throws Exception {
         List<String> statements = null;
         statements = parser.readSqlFile(class1);
@@ -63,18 +63,18 @@ public class NativeSqlExecutorDao<T,ID extends Serializable>
         for (String stm : statements) {
             executeSql(stm);
         }
-        
+
     }
 
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("unchecked")
-    @Transactional(propagation=Propagation.REQUIRED)
-    public List<Object> getQueryList(String str){
-        
+    @Transactional(propagation = Propagation.REQUIRED)
+    public List<Object> getQueryList(String str) {
+
         Session session = getSession();
         SQLQuery q;
-        q = session.createSQLQuery(str);
+        q = session.createSQLQuery(str.toUpperCase());
         return q.list();
     }
 }

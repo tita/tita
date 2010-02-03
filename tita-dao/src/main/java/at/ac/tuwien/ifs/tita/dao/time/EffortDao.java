@@ -154,7 +154,7 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
         queryString += ") as U group by project, username, year, month, day "
                 + " order by project, year, month, day, duration, username";
 
-        org.hibernate.SQLQuery q = getSession().createSQLQuery(queryString);
+        org.hibernate.SQLQuery q = getSession().createSQLQuery(queryString.toUpperCase());
         q.addEntity(UserProjectEffort.class);
         q.setFetchSize(C_FETCHSIZE);
 
@@ -231,7 +231,7 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
         queryString += ") as U group by project, year, month, day, username "
                 + " order by project, year, month, day, duration";
 
-        org.hibernate.SQLQuery q = getSession().createSQLQuery(queryString);
+        org.hibernate.SQLQuery q = getSession().createSQLQuery(queryString.toUpperCase());
         q.addEntity(UserProjectEffort.class);
         q.setFetchSize(C_FETCHSIZE);
         List<UserProjectEffort> efforts = new ArrayList<UserProjectEffort>();
@@ -265,7 +265,7 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
                 + "where tp.id = ? and itp.isst_id = ? and itp.isst_project_id = ? "
                 + "and itt.isst_task_id = ? and tu.username = ?";
 
-        org.hibernate.SQLQuery q = getSession().createSQLQuery(queryString);
+        org.hibernate.SQLQuery q = getSession().createSQLQuery(queryString.toUpperCase());
         // q.addEntity(Long.class);
         // CHECKSTYLE:OFF
         q.setParameter(0, tpId);
@@ -378,7 +378,7 @@ public class EffortDao extends GenericHibernateDao<Effort, Long> implements IEff
                 + "join tita_user tu2 on tu2.id = e2.user_id " + "where tu2.id = " + userId + " and tp2.id = "
                 + projectId + " and e2.deleted != true " + "order by date desc, end_time desc";
 
-        org.hibernate.SQLQuery q = getSession().createSQLQuery(queryString);
+        org.hibernate.SQLQuery q = getSession().createSQLQuery(queryString.toUpperCase());
         q.addEntity(Effort.class);
         q.setFetchSize(C_FETCHSIZE);
 
