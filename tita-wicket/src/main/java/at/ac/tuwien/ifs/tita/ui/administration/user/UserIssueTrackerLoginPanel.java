@@ -139,11 +139,9 @@ public class UserIssueTrackerLoginPanel extends Panel implements IAdministration
      */
     public void displayDetailsPage(IssueTrackerLogin login) {
         if (login == null) {
-            form = new IssueTrackerLoginForm("userIssueTrackerLoginForm",
-                    parent.getAvailableIssueTracker(), this);
+            form = new IssueTrackerLoginForm("userIssueTrackerLoginForm", parent.getAvailableIssueTracker(), this);
         } else {
-            form = new IssueTrackerLoginForm("userIssueTrackerLoginForm", 
-                    parent.getAvailableIssueTracker(), login,
+            form = new IssueTrackerLoginForm("userIssueTrackerLoginForm", parent.getAvailableIssueTracker(), login,
                 this);
         }
 
@@ -226,9 +224,7 @@ public class UserIssueTrackerLoginPanel extends Panel implements IAdministration
             list.add(login);
         }
 
-        setUser(new TiTAUser(getUser().getUserName(), getUser().getPassword(), getUser().getFirstName(), getUser()
-            .getLastName(), getUser().getEmail(), getUser().isDeleted(), getUser().getRole(), getUser()
-            .getTitaUserProjects(), new HashSet<IssueTrackerLogin>(list)));
+        this.user.setIssueTrackerLogins(new HashSet<IssueTrackerLogin>(list));
 
         displayTable(list);
     }

@@ -192,7 +192,10 @@ public class UserProjectPanel extends Panel {
                     if (!actualProjectsTM.containsProject(project)) {
                         TiTAUserProject up = new TiTAUserProject();
                         up.setProject(project);
-                        up.setUser(user);
+                        // commented just out for finding
+                        // if this bugfix causes unexpected behavior
+                        // bug: hibernate saves User 2times because of cascading in userprojects
+                        // up.setUser(user);
                         up.setTargetHours(targetHours);
                         actualProjectsTM.addEntity(up);
                         actualProjectsTM.reload();
