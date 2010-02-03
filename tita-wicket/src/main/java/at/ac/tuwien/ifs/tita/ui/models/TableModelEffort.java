@@ -83,13 +83,15 @@ public class TableModelEffort extends AbstractTitaTableModel {
                 return te.getDescription();
             } else if (col == IntegerConstants.TWO) {
                 if (te.getStartTime() != null) {
-                    return GlobalUtils.TIMEFORMAT24HOURS.format(te.getStartTime());
+                    return GlobalUtils.removeSecondsFromDateString(GlobalUtils.TIMELENGTHFORMAT.format(te
+                            .getStartTime()));
                 } else {
                     return 0;
                 }
             } else if (col == IntegerConstants.THREE) {
                 if (te.getEndTime() != null) {
-                    return GlobalUtils.TIMEFORMAT24HOURS.format(te.getEndTime());
+                    return GlobalUtils
+                            .removeSecondsFromDateString(GlobalUtils.TIMELENGTHFORMAT.format(te.getEndTime()));
                 } else {
                     return 0;
                 }
