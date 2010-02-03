@@ -46,6 +46,16 @@ public final class GlobalUtils {
     private static final int C_MILLI_SECONDS = 1000;
 
     /**
+     * Removes seconds from string for view in list.
+     * 
+     * @param sdate string where seconds will be removed
+     * @return date without seconds as string
+     */
+    public static String removeSecondsFromDateString(String sdate) {
+        return sdate.substring(0, sdate.lastIndexOf(":"));
+    }
+
+    /**
      * Converts date into Calendar.
      * 
      * @param d date to convert

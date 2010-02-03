@@ -32,9 +32,9 @@ import at.ac.tuwien.ifs.tita.entity.TiTAUser;
 
 /**
  * The implementation of the import reader using a csv reader.
- *
+ * 
  * @author Christoph
- *
+ * 
  */
 public class CSVReader implements IImportReader {
 
@@ -48,16 +48,13 @@ public class CSVReader implements IImportReader {
 
     /**
      * Returns the first data row or the headers of the csv file.
-     *
-     * @param path
-     *            - file path
+     * 
+     * @param path - file path
      * @return the first data row or the headers
-     * @throws IOException
-     *             io
+     * @throws IOException io
      */
     public String[] getFirstDataSourceOrHeader(String path) throws IOException {
-        ICsvBeanReader inFile = new CsvBeanReader(new FileReader(path),
-                CsvPreference.EXCEL_NORTH_EUROPE_PREFERENCE);
+        ICsvBeanReader inFile = new CsvBeanReader(new FileReader(path), CsvPreference.EXCEL_NORTH_EUROPE_PREFERENCE);
 
         return inFile.getCSVHeader(true);
     }
@@ -66,11 +63,9 @@ public class CSVReader implements IImportReader {
      * {@inheritDoc}
      */
     @Override
-    public List<Effort> importEffortData(String path, String[] header, CellProcessor[] processors,
-            TiTATask task, TiTAUser user) throws IOException, PersistenceException,
-            IllegalArgumentException {
-        ICsvBeanReader inFile = new CsvBeanReader(new FileReader(path),
-                CsvPreference.EXCEL_NORTH_EUROPE_PREFERENCE);
+    public List<Effort> importEffortData(String path, String[] header, CellProcessor[] processors, TiTATask task,
+            TiTAUser user) throws IOException, PersistenceException, IllegalArgumentException {
+        ICsvBeanReader inFile = new CsvBeanReader(new FileReader(path), CsvPreference.EXCEL_NORTH_EUROPE_PREFERENCE);
 
         List<Effort> listOfImportedEfforts = new ArrayList<Effort>();
 
@@ -81,8 +76,8 @@ public class CSVReader implements IImportReader {
             while ((effortBean = inFile.read(EffortBean.class, header, processors)) != null) {
 
                 // Add one hour, because the csv converter does not work correct
-                Long start = effortBean.getStartTime().getTime() + C_ONE_HOUR;
-                Long ende = effortBean.getEndTime().getTime() + C_ONE_HOUR;
+                Long start = effortBean.getStartTime().getTime();
+                Long ende = effortBean.getEndTime().getTime();
                 Long duration = effortBean.getDurationAsLong() + C_ONE_HOUR;
 
                 // Use this lines, if the csv lib change
@@ -95,8 +90,8 @@ public class CSVReader implements IImportReader {
                     throw new IllegalArgumentException("The values are the not valid.");
                 } else {
 
-                    Effort effort = new Effort(task, null, effortBean.getDate(), start, ende,
-                            duration, effortBean.getDescription(), false, user);
+                    Effort effort = new Effort(task, null, effortBean.getDate(), start, ende, duration, effortBean
+                            .getDescription(), false, user);
                     effortService.saveEffort(effort);
                     task.getTitaEfforts().add(effort);
 
