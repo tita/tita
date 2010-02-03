@@ -376,10 +376,7 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
 
             TiTAUser savedUser = service.saveUser(user);
 
-            for (IssueTrackerLogin login : user.getIssueTrackerLogins()) {
-                service.saveIssueTrackerLogin(login, savedUser);
-            }
-            for (TiTAUserProject userProject : user.getTitaUserProjects()) {
+            for (TiTAUserProject userProject : savedUser.getTitaUserProjects()) {
                 for (IssueTrackerProject issProject : userProject.getProject().getIssueTrackerProjects()) {
                     IssueTrackerLogin login = getLoginForIssueTracker(issProject.getIssueTracker());
                     if (login != null) {
@@ -394,12 +391,17 @@ public class UserAdministrationPanel extends Panel implements IAdministrationPan
                     titaProjectService.saveProject(userProject.getProject());
                 }
                 userProject.setUser(savedUser);
-                userProject.setUser(service.getUserById(savedUser.getId()));
                 userProject.setProject(titaProjectService.getProjectById(userProject.getProject().getId()));
                 titaProjectService.saveUserProject(userProject);
             }
+
+            for (IssueTrackerLogin login : savedUser.getIssueTrackerLogins()) {
+                service.saveIssueTrackerLogin(login, savedUser);
+            }
+
             tm.reload();
         } catch (PersistenceException e) {
+            e.printStackTrace();
             form.error("Could not save the User!");
             log.error("Could not save User");
             log.error(e.getMessage());

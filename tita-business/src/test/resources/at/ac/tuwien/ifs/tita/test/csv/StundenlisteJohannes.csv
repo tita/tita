@@ -1,0 +1,58 @@
+16.10.2009;Kickoff Meeting mit Andreas Pieber;12:00:00;14:00:00;02:00:00
+17.10.2009;Extrahierung von funktionalen Anforderungen aus Features;15:00:00;16:30:00;01:30:00
+18.10.2009;ueberarbeitung der funktionalen Anforderungen aus Features;17:00:00;17:30:00;00:30:00
+19.10.2009;Kurzer Review eigener Anforderungen;19:00:00;19:30:00;00:30:00
+20.10.2009;ueberarbeitung Anforderungen, Userstories, Zeitabschaetzung, Abgrenzungen;15:30:00;18:00:00;02:30:00
+20.10.2009;ueberarbeitung Anforderungen, Userstories, Zeitabschaetzung, Abgrenzungen;21:00:00;22:30:00;01:30:00
+21.10.2009;Gruppentreffen mit Andreas Pieber;14:00:00;16:30:00;02:30:00
+21.10.2009;Feature Zuteilung;21:30:00;23:00:00;01:30:00
+22.10.2009;Iceberglist, Gliederung der Anforderungszeiten in Subkapitel;21:00:00;23:59:00;02:59:00
+23.10.2009;Git Tutrial mit Andi Pieber;18:00:00;21:00:00;03:00:00
+24.10.2009;WBS;14:00:00;18:00:00;04:00:00
+27.10.2009;MR 1 mit Andreas Pieber und Stefan Biffl;14:00:00;15:30:00;01:30:00
+31.10.2009;Konzepterstellung fuer Praesentation fuer Stefan Biffl;15:00:00;18:30:00;03:30:00
+02.11.2009;Spring Documentation;16:30:00;20:30:00;04:00:00
+03.11.2009;Spring Documentation;00:01:00;02:01:00;02:00:00
+04.11.2009;MR 1 Nachbesprechung;14:00:00;15:00:00;01:00:00
+06.11.2009;Gruppentreffen;12:00:00;13:00:00;01:00:00
+08.11.2009;Spring Documentation und Tutorial Spring JPA Hibernate erweitert;22:00:00;23:59:00;01:59:00
+09.11.2009;Spring Documentation und Tutorial Spring JPA Hibernate erweitert;00:01:00;02:01:00;02:00:00
+09.11.2009;Spring Documentation und Tutorial Spring JPA Hibernate erweitert;17:00:00;19:00:00;02:00:00
+10.11.2009;Spring Documentation;18:00:00;21:00:00;03:00:00
+11.11.2009;Gruppentreffen;08:00:00;09:00:00;01:00:00
+12.11.2009;Spring Documentation;20:00:00;21:30:00;01:30:00
+13.11.2009;Spring Hibernate JPA config ;12:00:00;15:00:00;03:00:00
+13.11.2009;Spring Hibernate JPA config ;21:00:00;23:30:00;02:30:00
+14.11.2009;Spring Hibernate JPA feineinstellungen und Copyleft eintraege, TestCase und InitKlasse erstellt;01:30:00;03:00:00;01:30:00
+17.11.2009;UseCase Erstellung;19:00:00;20:00:00;01:00:00
+18.11.2009;Gruppentreffen;08:00:00;09:00:00;01:00:00
+20.11.2009;Usecase Erstellung;16:00:00;20:00:00;04:00:00
+22.11.2009;Usecase Erstellung;14:00:00;16:00:00;02:00:00
+22.11.2009;Use Case Review;16:00:00;17:00:00;01:00:00
+23.11.2009;Fehlersuche bei Maven Plugin, Tomcat und Projekteinstellungen;15:00:00;22:00:00;07:00:00
+24.11.2009;Recherche ueber Integrationsmoeglichkeiten von JPA, Spring und JNDI;09:00:00;12:00:00;03:00:00
+24.11.2009;Implementierung des Moduls Userverwaltung und verschiebung der Funktionalitaet von der Datasource ins Modul tita user administration;14:00:00;19:00:00;05:00:00
+24.11.2009;Implementierung des Moduls Userverwaltung und verschiebung der Funktionalitaet von der Datasource ins Modul tita user administration;20:00:00;22:00:00;02:00:00
+26.11.2009;Spring, JNDI Konfig;19:00:00;23:00:00;04:00:00
+27.11.2009;Spring JNDI Konfig;00:01:00;01:01:00;01:00:00
+29.11.2009;Zusammenfuegen von Spring, JNDI Konfig und Jetty Startup, anpassen der bestehenden Module;16:00:00;20:00:00;04:00:00
+30.11.2009;Issue nr 39 User Administration;09:00:00;12:00:00;03:00:00
+28.12.2009;Zwischenentity fuer Mapping von Sollstunden von Timeconsumern zu Projekten;09:30:00;14:00:00;04:30:00
+28.12.2009;Issue nr 39 und nr 49;14:30:00;16:30:00;02:00:00
+29.12.2009;Issue nr 49;16:30:00;19:30:00;03:00:00
+03.01.2010;Issue nr 39 und nr 49;09:00:00;15:00:00;06:00:00
+04.01.2010;Issue nr 39 und nr 49;11:00:00;16:00:00;05:00:00
+07.01.2010;Issue nr 39 und nr 49;09:00:00;13:30:00;04:30:00
+09.01.2010;Issue nr 39 und nr 49;10:00:00;18:00:00;08:00:00
+11.01.2010;Issue nr 39 und nr 49;14:00:00;20:00:00;06:00:00
+13.01.2010;Issue nr 39 und nr 49;16:30:00;19:00:00;02:30:00
+14.01.2010;Issue nr 39 und nr 49;18:00:00;22:00:00;04:00:00
+17.01.2010;Issue nr 39 und nr 49;12:00:00;21:00:00;09:00:00
+19.01.2010;Issue nr 39 und nr 49;16:00:00;21:00:00;05:00:00
+21.01.2010;Issue nr 39 und nr 49;19:00:00;23:00:00;04:00:00
+23.01.2010;Issue nr 39 und nr 49;19:30:00;23:00:00;03:30:00
+24.01.2010;Issue nr 39 und nr 49;15:00:00;21:00:00;06:00:00
+26.01.2010;Issue nr 39 und nr 49;14:30:00;21:30:00;07:00:00
+25.01.2010;ASE DAY mit Praesentationserstellung;15:30:00;18:00:00;02:30:00
+27.01.2010;GUI Update;13:00:00;15:00:00;02:00:00
+28.01.2010;MR 3;14:00:00;16:00:00;02:00:00
