@@ -17,14 +17,10 @@
   default-autowire="byName">
 
   <!-- The DAOs -->
-  <!-- bean id="userDAO" class="at.ac.tuwien.ifs.tita.common.dao.GenericHibernateDao">
-	<constructor-arg value="at.ac.tuwien.ifs.tita.entity.User"/>
-  </bean-->
-  <bean id="titaProjectDAO" class="at.ac.tuwien.ifs.tita.dao.project.TiTAProjectDao"/>
-    
   <bean id="timeEffortDAO" class="at.ac.tuwien.ifs.tita.dao.time.EffortDao"/>
   <bean id="titaUserDAO" class="at.ac.tuwien.ifs.tita.dao.user.UserDAO"/>
   <bean id="titaTaskDAO" class="at.ac.tuwien.ifs.tita.dao.task.TiTATaskDao"/>
+  <bean id="titaProjectDAO" class="at.ac.tuwien.ifs.tita.dao.project.TiTAProjectDao"/>
 
   <bean id="issueTrackerDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
   	<constructor-arg value="at.ac.tuwien.ifs.tita.entity.conv.IssueTracker"/>
@@ -47,12 +43,11 @@
    </bean>
        
    <bean id="issueTrackerProjectDAO" class="at.ac.tuwien.ifs.tita.dao.issuetracker.IssueTrackerProjectDao"/>
-   
    <bean id="issueTrackerTaskDAO" class="at.ac.tuwien.ifs.tita.dao.issuetracker.task.IssueTrackerTaskDao"/>
-  
-  	<bean id="executor" class="at.ac.tuwien.ifs.tita.dao.test.util.NativeSqlExecutorDao">
-  		<constructor-arg value="java.lang.Object"/>
-   	</bean>
+   
+   <bean id="executor" class="at.ac.tuwien.ifs.tita.dao.test.util.NativeSqlExecutorDao">
+	<constructor-arg value="java.lang.Object"/>
+   </bean>
    
   <import resource="classpath:persistence-context-local.xml"/>
 </beans>
