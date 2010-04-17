@@ -15,6 +15,7 @@
  */
 package at.ac.tuwien.ifs.tita.entity;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -96,6 +97,10 @@ public class TiTATask extends BaseEntity<Long>{
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public TiTAProject getProject() {
         return titaProject;
     }
@@ -104,8 +109,28 @@ public class TiTATask extends BaseEntity<Long>{
         return titaEfforts;
     }
 
+    public void setTitaEfforts(Set<Effort> titaEfforts) {
+        this.titaEfforts = titaEfforts;
+    }
+
+    public void addEffort(Effort effort) {
+        if (titaEfforts == null) {
+            titaEfforts = new HashSet<Effort>();
+        }
+
+        titaEfforts.add(effort);
+    }
+
     public TiTAUser getUser(){
         return user;
+    }
+
+    public void setUser(TiTAUser user) {
+        this.user = user;
+    }
+
+    public TiTAProject getTitaProject() {
+        return titaProject;
     }
 
     public void setTitaProject(TiTAProject titaProject) {

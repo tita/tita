@@ -15,6 +15,7 @@
  */
 package at.ac.tuwien.ifs.tita.entity;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -93,8 +94,17 @@ public class IssueTrackerTask extends BaseEntity<Long>{
         return issueTEfforts;
     }
 
+
+    public void setIssueTEfforts(Set<Effort> issueTEfforts) {
+        this.issueTEfforts = issueTEfforts;
+    }
+
     public IssueTrackerProject getIsstProject(){
         return isstProject;
+    }
+
+    public void setIsstProject(IssueTrackerProject isstProject) {
+        this.isstProject = isstProject;
     }
 
     public void setDescription(String description) {
@@ -103,10 +113,6 @@ public class IssueTrackerTask extends BaseEntity<Long>{
 
     public String getDescription() {
         return description;
-    }
-
-    public void setIsstProject(IssueTrackerProject isstProject) {
-        this.isstProject = isstProject;
     }
 
     public Long getIsstTaskId() {
@@ -124,6 +130,10 @@ public class IssueTrackerTask extends BaseEntity<Long>{
      *            the chosen effort
      */
     public void addEffort(Effort effort) {
+        if (issueTEfforts == null) {
+            issueTEfforts = new HashSet<Effort>();
+        }
+
         issueTEfforts.add(effort);
     }
 }

@@ -24,7 +24,7 @@ import at.ac.tuwien.ifs.tita.entity.IssueTrackerProject;
  * @author herbert
  *
  */
-public interface IIssueTrackerProjectDao {
+public interface IIssueTrackerProjectDao extends IGenericHibernateDao<IssueTrackerProject, Long> {
 
     /**
      * Finds an issue tracker project to given tita project.

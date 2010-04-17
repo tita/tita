@@ -29,6 +29,10 @@
   <bean id="issueTrackerDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
   	<constructor-arg value="at.ac.tuwien.ifs.tita.entity.conv.IssueTracker"/>
   </bean>
+  
+  <bean id="issueTrackerLoginDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
+    <constructor-arg value="at.ac.tuwien.ifs.tita.entity.IssueTrackerLogin"/>
+  </bean>
    
   <bean id="titaUserProjectDAO" class="at.ac.tuwien.ifs.tita.dao.GenericHibernateDao">
   	<constructor-arg value="at.ac.tuwien.ifs.tita.entity.TiTAUserProject"/>

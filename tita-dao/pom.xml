@@ -149,12 +149,9 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
-          <skipTests>true</skipTests>
           <excludes>
-            <!-- 
 			<exclude>**/EffortDaoTest.java</exclude>
-            -->
-			<exclude>**/TiTAProjectDaoTest.java</exclude>
+          	<exclude>**/TiTAProjectDaoTest.java</exclude>
 			<exclude>**/UserDAOTest.java</exclude>
             <exclude>**/IssueTrackerTaskDaoTest.java</exclude>
             <exclude>**/TiTATaskDaoTest.java</exclude>
