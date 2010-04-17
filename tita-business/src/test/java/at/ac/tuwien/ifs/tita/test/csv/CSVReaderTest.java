@@ -182,12 +182,12 @@ public class CSVReaderTest extends
         Set<IssueTrackerTask> si2 = new HashSet<IssueTrackerTask>();
         si2.add(itt2);
 
-        IssueTrackerProject ip1 = new IssueTrackerProject(it, 97L, si1);
+        IssueTrackerProject ip1 = new IssueTrackerProject(it, 97L, "", si1);
 
         itt1.setIsstProject(ip1);
         itt2.setIsstProject(ip1);
 
-        IssueTrackerProject ip2 = new IssueTrackerProject(it, 98L, si2);
+        IssueTrackerProject ip2 = new IssueTrackerProject(it, 98L, "", si2);
 
         Set<IssueTrackerProject> sip = new HashSet<IssueTrackerProject>();
         sip.add(ip1);

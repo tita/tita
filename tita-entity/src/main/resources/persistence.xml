@@ -37,15 +37,14 @@
     <class>at.ac.tuwien.ifs.tita.entity.TiTAProject</class>
     <properties>
       <property name="hibernate.archive.autodetection" value="class, hbm" />
-      <property name="hibernate.hbm2ddl.auto" value="update" />
-      <property name="hibernate.show_sql" value="true" />
-      <property name="hibernate.show_comment" value="true" />
-      <!-- <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>-->
+      <property name="hibernate.hbm2ddl.auto" value="create" />
+      <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+      <!-- <property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/> -->
       <!-- <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />-->
-      <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+      <!-- <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />  -->
 
       <!-- Session context -->
-      <property name="hibernate.transaction.factory_class" value="org.hibernate.transaction.JDBCTransactionFactory"/>
+      <!--  <property name="hibernate.transaction.factory_class" value="org.hibernate.transaction.JDBCTransactionFactory"/> -->
       <property name="hibernate.current_session_context_class" value="thread"/>
 
       <!-- Scan for annotated classes and Hibernate mapping XML files -->

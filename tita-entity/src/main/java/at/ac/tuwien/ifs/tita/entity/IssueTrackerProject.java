@@ -72,7 +72,17 @@ public class IssueTrackerProject extends BaseEntity<Long> {
     public IssueTrackerProject() {
     }
 
-    public IssueTrackerProject(IssueTracker issTracker, Long isstProjectId, Set<IssueTrackerTask> issueTrackerTasks) {
+    public IssueTrackerProject(IssueTracker issTracker, Long isstProjectId, String isstProjectName,
+            Set<IssueTrackerTask> issueTrackerTasks) {
+        super();
+        issueTracker = issTracker;
+        this.isstProjectId = isstProjectId;
+        this.issueTrackerTasks = issueTrackerTasks;
+        projectName = isstProjectName;
+    }
+
+    public IssueTrackerProject(IssueTracker issTracker, Long isstProjectId,
+            Set<IssueTrackerTask> issueTrackerTasks) {
         super();
         issueTracker = issTracker;
         this.isstProjectId = isstProjectId;

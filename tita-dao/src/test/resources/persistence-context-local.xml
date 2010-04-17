@@ -36,25 +36,47 @@
   </bean>
 
   <!-- The data source -->
-  <!-- 
-	   Datasource is a H2DB
-	 -->
   <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-    <!-- property name="driverClassName" value="org.h2.Driver" />
+    
+    <!-- H2 DB -->
+    
+    <property name="driverClassName" value="org.h2.Driver" />
     <property name="url" value="jdbc:h2:db/main1" />
     <property name="username" value="sa" />
-    <property name="password" value="" /-->
+    <property name="password" value="" />    
+     
+    
+    <!-- HSQL DB -->
+    <!--  
+    <property name="driverClassName" value="org.hsqldb.jdbcDriver" />
+    <property name="url" value="jdbc:hsqldb:db/tita"/>
+    <property name="username" value="sa" />
+    <property name="password" value="" />
+    <property name="connectionProperties">
+      <props>
+        <prop key="shutdown">true</prop>
+      </props>
+    </property>
+    -->
+    
+    <!-- MySQL DB -->
+    <!-- 
     <property name="driverClassName" value="com.mysql.jdbc.Driver" />
     <property name="url" value="jdbc:mysql://localhost:3306/tita" />
     <property name="username" value="root" />
     <property name="password" value="root" />
-    <!-- property name="min-pool-size" value="1" />
-    <property name="max-pool-size" value="20" />
-    <property name="myeclipse.connection.profile" value="MySql Connector 5.0.5"/--> 
-    <!--  property name="driverClassName" value="org.postgresql.Driver" />
+    -->
+
+    <!-- PostgreSQL DB -->
+    <!-- 
+    <property name="driverClassName" value="org.postgresql.Driver" />
     <property name="url" value="jdbc:postgresql://localhost:1234/postgres" />
     <property name="username" value="postgres" />
-    <property name="password" value="sa" /-->    
+    <property name="password" value="sa" />
+    -->    
+    
+    
+    
   </bean>
 
   <!-- Autowired to the EntityManagerFactory -->
